@@ -33,7 +33,7 @@ const int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9Bu
 const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
 const int speed = 15, time = 15, SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
 //end variables
-enum Screen{
+enum Screen {
 	ScreenMenu,
 	ScreenPause,
 	ScreenEndless,
