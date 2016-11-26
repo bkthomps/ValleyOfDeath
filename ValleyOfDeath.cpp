@@ -1,7 +1,8 @@
 //====================================================//
 //                   Valley Of Death                  //
 //====================================================//
-//Release 1.0.1
+//Release 1.0.2
+//26 November 2016
 //Bailey Thompson
 
 //including the header file used for many app functions
@@ -158,172 +159,23 @@ int ContainerOptions;
 int ContainerDeleteCheckOne;
 int ContainerDeleteCheckTwo;
 
-void IntFileToGame(){
-	IntTempNum=0;
-	//for  10,000's
-	if(FileBuffer[0]=='9'){
-		IntTempNum+=90000;
-	}
-	else if(FileBuffer[0]=='8'){
-		IntTempNum+=80000;
-	}
-	else if(FileBuffer[0]=='7'){
-		IntTempNum+=70000;
-	}
-	else if(FileBuffer[0]=='6'){
-		IntTempNum+=60000;
-	}
-	else if(FileBuffer[0]=='5'){
-		IntTempNum+=50000;
-	}
-	else if(FileBuffer[0]=='4'){
-		IntTempNum+=40000;
-	}
-	else if(FileBuffer[0]=='3'){
-		IntTempNum+=30000;
-	}
-	else if(FileBuffer[0]=='2'){
-		IntTempNum+=20000;
-	}
-	else if(FileBuffer[0]=='1'){
-		IntTempNum+=10000;
-	}
-	else if(FileBuffer[0]=='0'){
-		IntTempNum+=0;
-	}
-	//for  1,000's
-	if(FileBuffer[1]=='9'){
-		IntTempNum+=9000;
-	}
-	else if(FileBuffer[1]=='8'){
-		IntTempNum+=8000;
-	}
-	else if(FileBuffer[1]=='7'){
-		IntTempNum+=7000;
-	}
-	else if(FileBuffer[1]=='6'){
-		IntTempNum+=6000;
-	}
-	else if(FileBuffer[1]=='5'){
-		IntTempNum+=5000;
-	}
-	else if(FileBuffer[1]=='4'){
-		IntTempNum+=4000;
-	}
-	else if(FileBuffer[1]=='3'){
-		IntTempNum+=3000;
-	}
-	else if(FileBuffer[1]=='2'){
-		IntTempNum+=2000;
-	}
-	else if(FileBuffer[1]=='1'){
-		IntTempNum+=1000;
-	}
-	else if(FileBuffer[1]=='0'){
-		IntTempNum+=0;
-	}
-	//for  100's
-	if(FileBuffer[2]=='9'){
-		IntTempNum+=900;
-	}
-	else if(FileBuffer[2]=='8'){
-		IntTempNum+=800;
-	}
-	else if(FileBuffer[2]=='7'){
-		IntTempNum+=700;
-	}
-	else if(FileBuffer[2]=='6'){
-		IntTempNum+=600;
-	}
-	else if(FileBuffer[2]=='5'){
-		IntTempNum+=500;
-	}
-	else if(FileBuffer[2]=='4'){
-		IntTempNum+=400;
-	}
-	else if(FileBuffer[2]=='3'){
-		IntTempNum+=300;
-	}
-	else if(FileBuffer[2]=='2'){
-		IntTempNum+=200;
-	}
-	else if(FileBuffer[2]=='1'){
-		IntTempNum+=100;
-	}
-	else if(FileBuffer[2]=='0'){
-		IntTempNum+=0;
-	}
-	//for  10's
-	if(FileBuffer[3]=='9'){
-		IntTempNum+=90;
-	}
-	else if(FileBuffer[3]=='8'){
-		IntTempNum+=80;
-	}
-	else if(FileBuffer[3]=='7'){
-		IntTempNum+=70;
-	}
-	else if(FileBuffer[3]=='6'){
-		IntTempNum+=60;
-	}
-	else if(FileBuffer[3]=='5'){
-		IntTempNum+=50;
-	}
-	else if(FileBuffer[3]=='4'){
-		IntTempNum+=40;
-	}
-	else if(FileBuffer[3]=='3'){
-		IntTempNum+=30;
-	}
-	else if(FileBuffer[3]=='2'){
-		IntTempNum+=20;
-	}
-	else if(FileBuffer[3]=='1'){
-		IntTempNum+=10;
-	}
-	else if(FileBuffer[3]=='0'){
-		IntTempNum+=0;
-	}
-	//for  1's
-	if(FileBuffer[4]=='9'){
-		IntTempNum+=9;
-	}
-	else if(FileBuffer[4]=='8'){
-		IntTempNum+=8;
-	}
-	else if(FileBuffer[4]=='7'){
-		IntTempNum+=7;
-	}
-	else if(FileBuffer[4]=='6'){
-		IntTempNum+=6;
-	}
-	else if(FileBuffer[4]=='5'){
-		IntTempNum+=5;
-	}
-	else if(FileBuffer[4]=='4'){
-		IntTempNum+=4;
-	}
-	else if(FileBuffer[4]=='3'){
-		IntTempNum+=3;
-	}
-	else if(FileBuffer[4]=='2'){
-		IntTempNum+=2;
-	}
-	else if(FileBuffer[4]=='1'){
-		IntTempNum+=1;
-	}
-	else if(FileBuffer[4]=='0'){
-		IntTempNum+=0;
+void IntFileToGame() {
+	IntTempNum = 0;
+	IntTempNum += ((int)FileBuffer[0] - 48) * 10000;
+	IntTempNum += ((int)FileBuffer[1] - 48) * 1000;
+	IntTempNum += ((int)FileBuffer[2] - 48) * 100;
+	IntTempNum += ((int)FileBuffer[3] - 48) * 10;
+	IntTempNum += (int)FileBuffer[4] - 48;
+}
+
+void BoolFileToGame() {
+	if(FileBuffer[0] == 't'){
+		BoolTempNum = true;
+	} else if(FileBuffer[0] == 'f'){
+		BoolTempNum = false;
 	}
 }
-void BoolFileToGame(){
-	if(FileBuffer[0]=='t'){
-		BoolTempNum=true;
-	}
-	else if(FileBuffer[0]=='f'){
-		BoolTempNum=false;
-	}
-}
+
 void LoadGame(){
 	FileSound=FileOpen("Sound.txt");
 	FileUpdateHighscore=FileOpen("UpdateHighscore.txt");
