@@ -1,7 +1,7 @@
 //====================================================//
 //                   Valley Of Death                  //
 //====================================================//
-//Release 1.0.2
+//Release 1.0.3
 //26 November 2016
 //Bailey Thompson
 
@@ -176,74 +176,62 @@ void BoolFileToGame() {
 	}
 }
 
-void LoadGame(){
-	FileSound=FileOpen("Sound.txt");
-	FileUpdateHighscore=FileOpen("UpdateHighscore.txt");
-	FileXp=FileOpen("Xp.txt");
-	FileShip=FileOpen("Ship.txt");
-	FileHighscore=FileOpen("Highscore.txt");
-	FileCounter=FileOpen("Counter.txt");
-	if(!FileSound){
-		FileSound=FileCreate("Sound.txt");
-		sound=true;
-	}
-	else if(FileSound){
-		//FileSound
-		FileSound=FileOpen("Sound.txt");
+void LoadGame() {
+	FileSound = FileOpen("Sound.txt");
+	FileUpdateHighscore = FileOpen("UpdateHighscore.txt");
+	FileXp = FileOpen("Xp.txt");
+	FileShip = FileOpen("Ship.txt");
+	FileHighscore = FileOpen("Highscore.txt");
+	FileCounter = FileOpen("Counter.txt");
+	if(!FileSound) {
+		FileSound = FileCreate("Sound.txt");
+		sound = true;
+	} else {
+		FileSound = FileOpen("Sound.txt");
 		FileRead(FileSound, FileBuffer, 1);
 		BoolFileToGame();
-		sound=BoolTempNum;
+		sound = BoolTempNum;
 	}
-	if(!FileUpdateHighscore){
-		FileUpdateHighscore=FileCreate("UpdateHighscore.txt");
-	}
-	else if(FileUpdateHighscore){
-		//FileUpdateHighscore
-		FileUpdateHighscore=FileOpen("UpdateHighscore.txt");
+	if(!FileUpdateHighscore) {
+		FileUpdateHighscore = FileCreate("UpdateHighscore.txt");
+	} else {
+		FileUpdateHighscore = FileOpen("UpdateHighscore.txt");
 		FileRead(FileUpdateHighscore, FileBuffer, 1);
 		BoolFileToGame();
-		UpdateHighscore=BoolTempNum;
+		UpdateHighscore = BoolTempNum;
 	}
 	if(!FileXp){
-		FileXp=FileCreate("Xp.txt");
-	}
-	else if(FileXp){
-		//FileXp
-		FileXp=FileOpen("Xp.txt");
+		FileXp = FileCreate("Xp.txt");
+	} else {
+		FileXp = FileOpen("Xp.txt");
 		FileRead(FileXp, FileBuffer, 5);
 		IntFileToGame();
-		xp=IntTempNum;
+		xp = IntTempNum;
 	}
 	if(!FileShip){
-		FileShip=FileCreate("Ship.txt");
-		ship=1;
-	}
-	else if(FileShip){
-		//FileShip
-		FileShip=FileOpen("Ship.txt");
+		FileShip = FileCreate("Ship.txt");
+		ship = 1;
+	} else {
+		FileShip = FileOpen("Ship.txt");
 		FileRead(FileShip, FileBuffer, 5);
 		IntFileToGame();
-		ship=IntTempNum;
+		ship = IntTempNum;
 	}
 	if(!FileHighscore){
-		FileHighscore=FileCreate("Highscore.txt");
-	}
-	else if(FileHighscore){
-		//FileHighscore
-		FileHighscore=FileOpen("Highscore.txt");
+		FileHighscore = FileCreate("Highscore.txt");
+	} else {
+		FileHighscore = FileOpen("Highscore.txt");
 		FileRead(FileHighscore, FileBuffer, 5);
 		IntFileToGame();
-		highscore=IntTempNum;
+		highscore = IntTempNum;
 	}
 	if(!FileCounter){
 		FileCounter=FileCreate("Counter.txt");
-	}
-	else if(FileCounter){
-		//FileCounter
-		FileCounter=FileOpen("Counter.txt");
+	} else {
+		FileCounter = FileOpen("Counter.txt");
 		FileRead(FileCounter, FileBuffer, 5);
 		IntFileToGame();
-		counter=IntTempNum;
+		counter = IntTempNum;
 	}
 	FileClose(FileSound);
 	FileClose(FileUpdateHighscore);
@@ -252,123 +240,106 @@ void LoadGame(){
 	FileClose(FileHighscore);
 	FileClose(FileCounter);
 }
-void Reset(){
+
+void Reset() {
 	int picture, ship;
-		HealthUpdate=true;
-		counter2=0;
-		counter3=0;
-		mX=113;
-		mY=380;
-		newX=113;
-		newY=380;
-		for(counter9=0; counter9<15; counter9++){
+	HealthUpdate = true;
+	counter2 = 0;
+	counter3 = 0;
+	mX = 113;
+	mY = 380;
+	newX = 113;
+	newY = 380;
+	for(counter9 = 0; counter9 < 15; counter9++){
 		ViewSetxy(mBullet1[counter9], -10, -10);
-		}
-		for(counter9=0; counter9<15; counter9++){
 		ViewSetxy(mBullet2[counter9], -20, -20);
-		}
-		for(counter9=0; counter9<15; counter9++){
 		ViewSetxy(mBullet3[counter9], -10, -10);
-		}
-	for(counter9=0; counter9<50; counter9++){
+	}
+	for(counter9 = 0; counter9 < 50; counter9++){
 		ViewSetxy(e1Bullet1[counter9], 600, 600);
-	}
-	for(counter9=0; counter9<50; counter9++){
 		ViewSetxy(e2Bullet1[counter9], 600, 600);
-	}
-	for(counter9=0; counter9<50; counter9++){
 		ViewSetxy(e3Bullet1[counter9], 600, 600);
-	}
-	for(counter9=0; counter9<50; counter9++){
 		ViewSetxy(e4Bullet1[counter9], 600, 600);
 	}
-	for(counter9=0; counter9<25; counter9++){
+	for(counter9 = 0; counter9 < 25; counter9++){
 		ViewSetxy(e5Bullet1[counter9], 600, 600);
 		ViewSetxy(e5Bullet3[counter9], 600, 600);
-	}
-	for(counter9=0; counter9<25; counter9++){
 		ViewSetxy(e6Bullet1[counter9], 600, 600);
 		ViewSetxy(e6Bullet3[counter9], 600, 600);
-	}
-	for(counter9=0; counter9<25; counter9++){
 		ViewSetxy(e7Bullet2[counter9], 600, 600);
-	}
-	for(counter9=0; counter9<25; counter9++){
 		ViewSetxy(e8Bullet1[counter9], 600, 600);
 		ViewSetxy(e8Bullet2[counter9], 600, 600);
 		ViewSetxy(e8Bullet3[counter9], 600, 600);
 	}
-	for(counter9=0; counter9<5; counter9++){
+	for(counter9 = 0; counter9 < 5; counter9++){
 		ViewSetxy(e9Bullet1[counter9], 600, 600);
 		ViewSetxy(e9Bullet2[counter9], 600, 600);
 		ViewSetxy(e9Bullet3[counter9], 600, 600);
-	}
-	for(counter9=0; counter9<5; counter9++){
 		ViewSetxy(e10Bullet1[counter9], 600, 600);
 		ViewSetxy(e10Bullet2[counter9], 600, 600);
 		ViewSetxy(e10Bullet3[counter9], 600, 600);
 	}
-		for(counter9=0; counter9<10; counter9++){
+	for(counter9 = 0; counter9 < 10; counter9++){
+		//throwing ship 1 off the screen
 		ViewSetxy(eShip1[counter9], 600, 600);
-		ship=(eShip1[counter9]);
-		picture=ImageAdd("Images/eShip_1.png");
+		ship = (eShip1[counter9]);
+		picture = ImageAdd("Images/eShip_1.png");
 		ViewSetImage(ship, picture);
-		}
-		for(counter9=0; counter9<10; counter9++){
+		//throwing ship 2 off the screen
 		ViewSetxy(eShip2[counter9], 600, 600);
-		ship=(eShip2[counter9]);
-		picture=ImageAdd("Images/eShip_2.png");
+		ship = (eShip2[counter9]);
+		picture = ImageAdd("Images/eShip_2.png");
 		ViewSetImage(ship, picture);
-		}
-		for(counter9=0; counter9<10; counter9++){
+		//throwing ship 3 off the screen
 		ViewSetxy(eShip3[counter9], 600, 600);
-		ship=(eShip3[counter9]);
-		picture=ImageAdd("Images/eShip_3.png");
+		ship = (eShip3[counter9]);
+		picture = ImageAdd("Images/eShip_3.png");
 		ViewSetImage(ship, picture);
-		}
-		for(counter9=0; counter9<10; counter9++){
+		//throwing ship 4 off the screen
 		ViewSetxy(eShip4[counter9], 600, 600);
-		ship=(eShip4[counter9]);
-		picture=ImageAdd("Images/eShip_4.png");
+		ship = (eShip4[counter9]);
+		picture = ImageAdd("Images/eShip_4.png");
 		ViewSetImage(ship, picture);
-		}
-		for(counter9=0; counter9<5; counter9++){
+	}
+	for(counter9 = 0; counter9 < 5; counter9++){
+		//throwing ship 5 off the screen
 		ViewSetxy(eShip5[counter9], 600, 600);
-		ship=(eShip5[counter9]);
-		picture=ImageAdd("Images/eShip_5.png");
+		ship = (eShip5[counter9]);
+		picture = ImageAdd("Images/eShip_5.png");
 		ViewSetImage(ship, picture);
-		}
-		for(counter9=0; counter9<5; counter9++){
+		//throwing ship 6 off the screen
 		ViewSetxy(eShip6[counter9], 600, 600);
-		ship=(eShip6[counter9]);
-		picture=ImageAdd("Images/eShip_6.png");
+		ship = (eShip6[counter9]);
+		picture = ImageAdd("Images/eShip_6.png");
 		ViewSetImage(ship, picture);
-		}
-		for(counter9=0; counter9<5; counter9++){
+		//throwing ship 7 off the screen
 		ViewSetxy(eShip7[counter9], 600, 600);
-		ship=(eShip7[counter9]);
-		picture=ImageAdd("Images/eShip_7.png");
+		ship = (eShip7[counter9]);
+		picture = ImageAdd("Images/eShip_7.png");
 		ViewSetImage(ship, picture);
-		}
-		for(counter9=0; counter9<5; counter9++){
+		//throwing ship 8 off the screen
 		ViewSetxy(eShip8[counter9], 600, 600);
-		ship=(eShip8[counter9]);
-		picture=ImageAdd("Images/eShip_8.png");
+		ship = (eShip8[counter9]);
+		picture = ImageAdd("Images/eShip_8.png");
 		ViewSetImage(ship, picture);
-		}
-		ViewSetxy(eShip9, 600, 600);
-		ship=(eShip9);
-		picture=ImageAdd("Images/eMini-Boss.png");
-		ViewSetImage(ship, picture);
-		ViewSetxy(eShip10, 600, 600);
-		ship=(eShip10);
-		picture=ImageAdd("Images/eBoss.png");
-		ViewSetImage(ship, picture);
-		health=PossibleHealth;
-		HealthUpdate=true;
-		pause=false;
+	}
+	//throwing ship 9 off the screen
+	ViewSetxy(eShip9, 600, 600);
+	ship = (eShip9);
+	picture = ImageAdd("Images/eMini-Boss.png");
+	ViewSetImage(ship, picture);
+	//throwing ship 10 off the screen
+	ViewSetxy(eShip10, 600, 600);
+	ship = (eShip10);
+	picture = ImageAdd("Images/eBoss.png");
+	ViewSetImage(ship, picture);
+	//resetting variables
+	health = PossibleHealth;
+	HealthUpdate = true;
+	pause = false;
 }
-void ScreenSwitch(){
+
+void ScreenSwitch() {
 	ContainerSetVisible(ContainerPause, 0);
 	ContainerSetVisible(ContainerMenu, 0);
 	ContainerSetVisible(ContainerEndless, 0);
@@ -426,541 +397,539 @@ void ScreenSwitch(){
 	ContainerSetVisible(ContainerOptions, 0);
 	ContainerSetVisible(ContainerDeleteCheckOne, 0);
 	ContainerSetVisible(ContainerDeleteCheckTwo, 0);
-	switch(CurrentScreen){
-	case ScreenPause:
-		ContainerSetVisible(ContainerPause, 1);
-		break;
-	case ScreenMenu:
-		ContainerSetVisible(ContainerMenu, 1);
-		break;
-	case ScreenHighscore:
-		ContainerSetVisible(ContainerHighscore, 1);
-		break;
-	case ScreenDied:
-		ContainerSetVisible(ContainerDied, 1);
-		break;
-	case ScreenEndless:
-		ContainerSetVisible(ContainerEndless, 1);
-		break;
-	case ScreenStory1a1:
-		ContainerSetVisible(ContainerStory1a1, 1);
-		break;
-	case ScreenStory1a2:
-		ContainerSetVisible(ContainerStory1a2, 1);
-		break;
-	case ScreenStory1s3:
-		ContainerSetVisible(ContainerStory1s3, 1);
-		break;
-	case ScreenStory1p3:
-		ContainerSetVisible(ContainerStory1p3, 1);
-		break;
-	case ScreenStory1a4:
-		ContainerSetVisible(ContainerStory1a4, 1);
-		break;
-	case ScreenStory1r5:
-		ContainerSetVisible(ContainerStory1r5, 1);
-		break;
-	case ScreenStory1e5:
-		ContainerSetVisible(ContainerStory1e5, 1);
-		break;
-	case ScreenStoryBattle1:
-		ContainerSetVisible(ContainerEndless, 1);
-		break;
-	case ScreenStory2a1:
-		ContainerSetVisible(ContainerStory2a1, 1);
-		break;
-	case ScreenStory2a2:
-		ContainerSetVisible(ContainerStory2a2, 1);
-		break;
-	case ScreenStory2a3:
-		ContainerSetVisible(ContainerStory2a3, 1);
-		break;
-	case ScreenStory2b4:
-		ContainerSetVisible(ContainerStory2b4, 1);
-		break;
-	case ScreenStory2a5:
-		ContainerSetVisible(ContainerStory2a5, 1);
-		break;
-	case ScreenStory2a6:
-		ContainerSetVisible(ContainerStory2a6, 1);
-		break;
-	case ScreenStory2e7:
-		ContainerSetVisible(ContainerStory2e7, 1);
-		break;
-	case ScreenStory2a7:
-		ContainerSetVisible(ContainerStory2a7, 1);
-		break;
-	case ScreenStoryBattle2:
-		ContainerSetVisible(ContainerEndless, 1);
-		break;
-	case ScreenStory3a1:
-		ContainerSetVisible(ContainerStory3a1, 1);
-		break;
-	case ScreenStory3b2:
-		ContainerSetVisible(ContainerStory3b2, 1);
-		break;
-	case ScreenStory3a3:
-		ContainerSetVisible(ContainerStory3a3, 1);
-		break;
-	case ScreenStory3a4:
-		ContainerSetVisible(ContainerStory3a4, 1);
-		break;
-	case ScreenStory3a5:
-		ContainerSetVisible(ContainerStory3a5, 1);
-		break;
-	case ScreenStory3a6:
-		ContainerSetVisible(ContainerStory3a6, 1);
-		break;
-	case ScreenStory3a7:
-		ContainerSetVisible(ContainerStory3a7, 1);
-		break;
-	case ScreenStory3a8:
-		ContainerSetVisible(ContainerStory3a8, 1);
-		break;
-	case ScreenStoryTorture:
-		int ImageTorturing;
-		ImageTorturing=ImageAdd("Images/20HP.png");
-		ViewSetImage(HpTorture, ImageTorturing);
-		HpCounterTorture=2000;
-		CounterTorture=0;
-		ContainerSetVisible(ContainerStoryTorture, 1);
-		break;
-	case ScreenStory4a1:
-		ContainerSetVisible(ContainerStory4a1, 1);
-		break;
-	case ScreenStory4a2:
-		ContainerSetVisible(ContainerStory4a2, 1);
-		break;
-	case ScreenStory4a3:
-		ContainerSetVisible(ContainerStory4a3, 1);
-		break;
-	case ScreenStory4a4:
-		ContainerSetVisible(ContainerStory4a4, 1);
-		break;
-	case ScreenStory4b5:
-		ContainerSetVisible(ContainerStory4b5, 1);
-		break;
-	case ScreenStory4a6:
-		ContainerSetVisible(ContainerStory4a6, 1);
-		break;
-	case ScreenStory4a7:
-		ContainerSetVisible(ContainerStory4a7, 1);
-		break;
-	case ScreenStory4b7:
-		ContainerSetVisible(ContainerStory4b7, 1);
-		break;
-	case ScreenStory4a8:
-		ContainerSetVisible(ContainerStory4a8, 1);
-		break;
-	case ScreenStoryBattle4:
-		ContainerSetVisible(ContainerEndless, 1);
-		break;
-	case ScreenStory5a1:
-		ContainerSetVisible(ContainerStory5a1, 1);
-		break;
-	case ScreenStory5a2:
-		ContainerSetVisible(ContainerStory5a2, 1);
-		break;
-	case ScreenStory5a3:
-		ContainerSetVisible(ContainerStory5a3, 1);
-		break;
-	case ScreenStory5b4:
-		ContainerSetVisible(ContainerStory5b4, 1);
-		break;
-	case ScreenStory5a5:
-		ContainerSetVisible(ContainerStory5a5, 1);
-		break;
-	case ScreenStory5a6:
-		ContainerSetVisible(ContainerStory5a6, 1);
-		break;
-	case ScreenStory5b6:
-		ContainerSetVisible(ContainerStory5b6, 1);
-		break;
-	case ScreenStoryBattle5:
-		ContainerSetVisible(ContainerEndless, 1);
-		break;
-	case ScreenStory6a1:
-		ContainerSetVisible(ContainerStory6a1, 1);
-		break;
-	case ScreenStory6a2:
-		ContainerSetVisible(ContainerStory6a2, 1);
-		break;
-	case ScreenStory6a3:
-		ContainerSetVisible(ContainerStory6a3, 1);
-		break;
-	case ScreenStory6b3:
-		ContainerSetVisible(ContainerStory6b3, 1);
-		break;
-	case ScreenStoryBattle6:
-		ContainerSetVisible(ContainerEndless, 1);
-		break;
-	case ScreenStory7w1:
-		ContainerSetVisible(ContainerStory7w1, 1);
-		break;
-	case ScreenStory7l1:
-		ContainerSetVisible(ContainerStory7l1, 1);
-		break;
-	case ScreenStory7a2:
-		ContainerSetVisible(ContainerStory7a2, 1);
-		break;
-	case ScreenStory7b2:
-		ContainerSetVisible(ContainerStory7b2, 1);
-		break;
-	case ScreenUnlocks:
-		ContainerSetVisible(ContainerUnlocks, 1);
-		break;
-	case ScreenOptions:
-		ContainerSetVisible(ContainerOptions, 1);
-		break;
-	case ScreenDeleteCheckOne:
-		ContainerSetVisible(ContainerDeleteCheckOne, 1);
-		break;
-	case ScreenDeleteCheckTwo:
-		ContainerSetVisible(ContainerDeleteCheckTwo, 1);
-		break;
+	switch(CurrentScreen) {
+		case ScreenPause:
+			ContainerSetVisible(ContainerPause, 1);
+			break;
+		case ScreenMenu:
+			ContainerSetVisible(ContainerMenu, 1);
+			break;
+		case ScreenHighscore:
+			ContainerSetVisible(ContainerHighscore, 1);
+			break;
+		case ScreenDied:
+			ContainerSetVisible(ContainerDied, 1);
+			break;
+		case ScreenEndless:
+			ContainerSetVisible(ContainerEndless, 1);
+			break;
+		case ScreenStory1a1:
+			ContainerSetVisible(ContainerStory1a1, 1);
+			break;
+		case ScreenStory1a2:
+			ContainerSetVisible(ContainerStory1a2, 1);
+			break;
+		case ScreenStory1s3:
+			ContainerSetVisible(ContainerStory1s3, 1);
+			break;
+		case ScreenStory1p3:
+			ContainerSetVisible(ContainerStory1p3, 1);
+			break;
+		case ScreenStory1a4:
+			ContainerSetVisible(ContainerStory1a4, 1);
+			break;
+		case ScreenStory1r5:
+			ContainerSetVisible(ContainerStory1r5, 1);
+			break;
+		case ScreenStory1e5:
+			ContainerSetVisible(ContainerStory1e5, 1);
+			break;
+		case ScreenStoryBattle1:
+			ContainerSetVisible(ContainerEndless, 1);
+			break;
+		case ScreenStory2a1:
+			ContainerSetVisible(ContainerStory2a1, 1);
+			break;
+		case ScreenStory2a2:
+			ContainerSetVisible(ContainerStory2a2, 1);
+			break;
+		case ScreenStory2a3:
+			ContainerSetVisible(ContainerStory2a3, 1);
+			break;
+		case ScreenStory2b4:
+			ContainerSetVisible(ContainerStory2b4, 1);
+			break;
+		case ScreenStory2a5:
+			ContainerSetVisible(ContainerStory2a5, 1);
+			break;
+		case ScreenStory2a6:
+			ContainerSetVisible(ContainerStory2a6, 1);
+			break;
+		case ScreenStory2e7:
+			ContainerSetVisible(ContainerStory2e7, 1);
+			break;
+		case ScreenStory2a7:
+			ContainerSetVisible(ContainerStory2a7, 1);
+			break;
+		case ScreenStoryBattle2:
+			ContainerSetVisible(ContainerEndless, 1);
+			break;
+		case ScreenStory3a1:
+			ContainerSetVisible(ContainerStory3a1, 1);
+			break;
+		case ScreenStory3b2:
+			ContainerSetVisible(ContainerStory3b2, 1);
+			break;
+		case ScreenStory3a3:
+			ContainerSetVisible(ContainerStory3a3, 1);
+			break;
+		case ScreenStory3a4:
+			ContainerSetVisible(ContainerStory3a4, 1);
+			break;
+		case ScreenStory3a5:
+			ContainerSetVisible(ContainerStory3a5, 1);
+			break;
+		case ScreenStory3a6:
+			ContainerSetVisible(ContainerStory3a6, 1);
+			break;
+		case ScreenStory3a7:
+			ContainerSetVisible(ContainerStory3a7, 1);
+			break;
+		case ScreenStory3a8:
+			ContainerSetVisible(ContainerStory3a8, 1);
+			break;
+		case ScreenStoryTorture:
+			int ImageTorturing;
+			ImageTorturing = ImageAdd("Images/20HP.png");
+			ViewSetImage(HpTorture, ImageTorturing);
+			HpCounterTorture = 2000;
+			CounterTorture = 0;
+			ContainerSetVisible(ContainerStoryTorture, 1);
+			break;
+		case ScreenStory4a1:
+			ContainerSetVisible(ContainerStory4a1, 1);
+			break;
+		case ScreenStory4a2:
+			ContainerSetVisible(ContainerStory4a2, 1);
+			break;
+		case ScreenStory4a3:
+			ContainerSetVisible(ContainerStory4a3, 1);
+			break;
+		case ScreenStory4a4:
+			ContainerSetVisible(ContainerStory4a4, 1);
+			break;
+		case ScreenStory4b5:
+			ContainerSetVisible(ContainerStory4b5, 1);
+			break;
+		case ScreenStory4a6:
+			ContainerSetVisible(ContainerStory4a6, 1);
+			break;
+		case ScreenStory4a7:
+			ContainerSetVisible(ContainerStory4a7, 1);
+			break;
+		case ScreenStory4b7:
+			ContainerSetVisible(ContainerStory4b7, 1);
+			break;
+		case ScreenStory4a8:
+			ContainerSetVisible(ContainerStory4a8, 1);
+			break;
+		case ScreenStoryBattle4:
+			ContainerSetVisible(ContainerEndless, 1);
+			break;
+		case ScreenStory5a1:
+			ContainerSetVisible(ContainerStory5a1, 1);
+			break;
+		case ScreenStory5a2:
+			ContainerSetVisible(ContainerStory5a2, 1);
+			break;
+		case ScreenStory5a3:
+			ContainerSetVisible(ContainerStory5a3, 1);
+			break;
+		case ScreenStory5b4:
+			ContainerSetVisible(ContainerStory5b4, 1);
+			break;
+		case ScreenStory5a5:
+			ContainerSetVisible(ContainerStory5a5, 1);
+			break;
+		case ScreenStory5a6:
+			ContainerSetVisible(ContainerStory5a6, 1);
+			break;
+		case ScreenStory5b6:
+			ContainerSetVisible(ContainerStory5b6, 1);
+			break;
+		case ScreenStoryBattle5:
+			ContainerSetVisible(ContainerEndless, 1);
+			break;
+		case ScreenStory6a1:
+			ContainerSetVisible(ContainerStory6a1, 1);
+			break;
+		case ScreenStory6a2:
+			ContainerSetVisible(ContainerStory6a2, 1);
+			break;
+		case ScreenStory6a3:
+			ContainerSetVisible(ContainerStory6a3, 1);
+			break;
+		case ScreenStory6b3:
+			ContainerSetVisible(ContainerStory6b3, 1);
+			break;
+		case ScreenStoryBattle6:
+			ContainerSetVisible(ContainerEndless, 1);
+			break;
+		case ScreenStory7w1:
+			ContainerSetVisible(ContainerStory7w1, 1);
+			break;
+		case ScreenStory7l1:
+			ContainerSetVisible(ContainerStory7l1, 1);
+			break;
+		case ScreenStory7a2:
+			ContainerSetVisible(ContainerStory7a2, 1);
+			break;
+		case ScreenStory7b2:
+			ContainerSetVisible(ContainerStory7b2, 1);
+			break;
+		case ScreenUnlocks:
+			ContainerSetVisible(ContainerUnlocks, 1);
+			break;
+		case ScreenOptions:
+			ContainerSetVisible(ContainerOptions, 1);
+			break;
+		case ScreenDeleteCheckOne:
+			ContainerSetVisible(ContainerDeleteCheckOne, 1);
+			break;
+		case ScreenDeleteCheckTwo:
+			ContainerSetVisible(ContainerDeleteCheckTwo, 1);
+			break;
 	}
 }
 
-int OnTorture(int id, int event, int x, int y){
-	if(event==1 || event==3){
-		if(torture==false){
-			torture=true;
-		}
-		else if(torture==true){
-			torture=false;
-		}
+int OnTorture(int id, int event, int x, int y) {
+	if(event == 1 || event == 3) {
+		torture = !torture;
 	}
 	return 0;
 }
-int OnHighscore(int id, int event, int x, int y){
-	CurrentScreen=ScreenMenu;
+
+int OnHighscore(int id, int event, int x, int y) {
+	CurrentScreen = ScreenMenu;
 	ScreenSwitch();
 	TextSetText(text1, "");
 	TextSetText(text2, "");
 	TextSetText(text3, "");
 	return 0;
 }
-int OnDied(int id, int event, int x, int y){
-	CurrentScreen=ScreenMenu;
+
+int OnDied(int id, int event, int x, int y) {
+	CurrentScreen = ScreenMenu;
 	ScreenSwitch();
 	return 0;
 }
-int OnReturnToMenu(int id, int event, int x, int y){
-	if(event==3){
+
+int OnReturnToMenu(int id, int event, int x, int y) {
+	if(event == 3) {
 		Reset();
-		if(PreviousScreen==ScreenEndless){
-			UpdateHighscore=true;
+		if(PreviousScreen == ScreenEndless) {
+			UpdateHighscore = true;
 			//switch screen
-			CurrentScreen=ScreenHighscore;
+			CurrentScreen = ScreenHighscore;
+			ScreenSwitch();
+		} else if(PreviousScreen == ScreenUnlocks || PreviousScreen == ScreenOptions) {
+			CurrentScreen = ScreenMenu;
+			ScreenSwitch();
+		} else {
+			CurrentScreen = ScreenDied;
 			ScreenSwitch();
 		}
-		else if(PreviousScreen==ScreenUnlocks || PreviousScreen==ScreenOptions){
-			CurrentScreen=ScreenMenu;
-			ScreenSwitch();
-		}
-		else{
-			CurrentScreen=ScreenDied;
-			ScreenSwitch();
-		}
-	}
-	return 0;
-}
-int OnResume(int id, int event, int x, int y){
-	if(event==3){
-		CurrentScreen=PreviousScreen;
-		ScreenSwitch();
-		pause=false;
-	}
-	return 0;
-}
-int OnPause(int id, int event, int x, int y){
-	if(event==1){
-		PreviousScreen=CurrentScreen;
-		CurrentScreen=ScreenPause;
-		ScreenSwitch();
-		pause=true;
 	}
 	return 0;
 }
 
-int OnStoryLevel7(int id, int event, int x, int y){
-	if(event==3){
-		if(id==1){
-			CurrentScreen=ScreenStory7a2;
+int OnResume(int id, int event, int x, int y) {
+	if(event == 3) {
+		CurrentScreen = PreviousScreen;
+		ScreenSwitch();
+		pause = false;
+	}
+	return 0;
+}
+
+int OnPause(int id, int event, int x, int y) {
+	if(event == 1) {
+		PreviousScreen = CurrentScreen;
+		CurrentScreen = ScreenPause;
+		ScreenSwitch();
+		pause = true;
+	}
+	return 0;
+}
+
+int OnStoryLevel7(int id, int event, int x, int y) {
+	if(event == 3) {
+		if(id == 1) {
+			CurrentScreen = ScreenStory7a2;
 			ScreenSwitch();
-		}
-		else if(id==2){
-			if(date==true && marry==false){
+		} else if(id == 2) {
+			if(date && !marry) {
 				TextSetText(SaveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your girlfriend that you \nwere a great man.");
-			}
-			else if(date==true && marry==true){
+			} else if(date && marry) {
 				TextSetText(SaveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your wife that you were a \ngreat man.");
-			}
-			else if(date==false && marry==false){
+			} else if(!date && !marry) {
 				TextSetText(SaveRon, "\n\nRon: \nThe world will know of your \ngreatness.");
 			}
-			CurrentScreen=ScreenStory7b2;
+			CurrentScreen = ScreenStory7b2;
 			ScreenSwitch();
-		}
-		else if(id==3){
-			xp+=10;
-			CurrentScreen=ScreenMenu;
+		} else if(id == 3) {
+			xp += 10;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
 		}
 	}
 	return 0;
 }
-int OnStoryLevel6(int id, int event, int x, int y){
-	if(event==3){
-		if(id==1){
-			CurrentScreen=ScreenStory6a2;
+
+int OnStoryLevel6(int id, int event, int x, int y) {
+	if(event == 3) {
+		if(id == 1) {
+			CurrentScreen = ScreenStory6a2;
 			ScreenSwitch();
-		}
-		else if(id==2){
-			CurrentScreen=ScreenStory6a3;
+		} else if(id == 2) {
+			CurrentScreen = ScreenStory6a3;
 			ScreenSwitch();
-		}
-		else if(id==3){
-			CurrentScreen=ScreenStory6b3;
+		} else if(id == 3) {
+			CurrentScreen = ScreenStory6b3;
 			ScreenSwitch();
-		}
-		else if(id==4){
-			CurrentScreen=ScreenStoryBattle6;
+		} else if(id == 4) {
+			CurrentScreen = ScreenStoryBattle6;
 			ScreenSwitch();
 			Reset();
-			set=5;
-			level=1;
+			set = 5;
+			level = 1;
 		}
 	}
 	return 0;
 }
-int OnStoryLevel5(int id, int event, int x, int y){
-	if(event==3){
-		if(id==1 && date==false){
-			CurrentScreen=ScreenStory5a3;
+
+int OnStoryLevel5(int id, int event, int x, int y) {
+	if(event == 3) {
+		if(id == 1 && !date) {
+			CurrentScreen = ScreenStory5a3;
 			ScreenSwitch();
-		}
-		if(id==1 && date==true){
-			CurrentScreen=ScreenStory5a2;
+		} else if(id == 1 && date) {
+			CurrentScreen = ScreenStory5a2;
 			ScreenSwitch();
-		}
-		else if(id==2){
-			marry=true;
-			CurrentScreen=ScreenStory5a3;
+		} else if(id == 2) {
+			marry = true;
+			CurrentScreen = ScreenStory5a3;
 			ScreenSwitch();
-		}
-		else if(id==8){
-			marry=false;
-			CurrentScreen=ScreenStory5a3;
+		} else if(id == 3) {
+			CurrentScreen = ScreenStory5b4;
 			ScreenSwitch();
-		}
-		else if(id==3){
-			CurrentScreen=ScreenStory5b4;
+		} else if(id == 4) {
+			CurrentScreen = ScreenStory5a5;
 			ScreenSwitch();
-		}
-		else if(id==4){
-			CurrentScreen=ScreenStory5a5;
+		} else if(id == 5) {
+			CurrentScreen = ScreenStory5a6;
 			ScreenSwitch();
-		}
-		else if(id==5){
-			CurrentScreen=ScreenStory5a6;
+		} else if(id == 6) {
+			CurrentScreen = ScreenStory5b6;
 			ScreenSwitch();
-		}
-		else if(id==6){
-			CurrentScreen=ScreenStory5b6;
-			ScreenSwitch();
-		}
-		else if(id==7){
-			CurrentScreen=ScreenStoryBattle5;
+		} else if(id == 7) {
+			CurrentScreen = ScreenStoryBattle5;
 			ScreenSwitch();
 			Reset();
-			set=4;
-			level=1;
-		}
-	}
-	return 0;
-}
-int OnStoryLevel4(int id, int event, int x, int y){
-	if(event==3){
-		if(id==1){
-			CurrentScreen=ScreenDied;
-			ScreenSwitch();
-		}
-		else if(id==2){
-			CurrentScreen=ScreenStory4a2;
-			ScreenSwitch();
-		}
-		else if(id==3){
-			CurrentScreen=ScreenStory4a3;
-			ScreenSwitch();
-		}
-		else if(id==4){
-			CurrentScreen=ScreenStory4a4;
-			ScreenSwitch();
-		}
-		else if(id==5){
-			CurrentScreen=ScreenStory4b5;
-			ScreenSwitch();
-		}
-		else if(id==6){
-			CurrentScreen=ScreenStory4a6;
-			ScreenSwitch();
-		}
-		else if(id==7){
-			CurrentScreen=ScreenStory4a7;
-			ScreenSwitch();
-		}
-		else if(id==8){
-			CurrentScreen=ScreenStory4b7;
-			ScreenSwitch();
-		}
-		else if(id==9){
-			CurrentScreen=ScreenStory4a8;
-			ScreenSwitch();
-		}
-		else if(id==10){
-			CurrentScreen=ScreenStoryBattle4;
-			ScreenSwitch();
-			Reset();
-			set=3;
-			level=1;
-		}
-	}
-	return 0;
-}
-int OnStoryLevel3(int id, int event, int x, int y){
-	if(event==3){
-		if(id==1){
-			CurrentScreen=ScreenStory3b2;
-			ScreenSwitch();
-		}
-		else if(id==2){
-			CurrentScreen=ScreenStory3a3;
-			ScreenSwitch();
-		}
-		else if(id==3){
-			CurrentScreen=ScreenStory3a4;
-			ScreenSwitch();
-		}
-		else if(id==4){
-			CurrentScreen=ScreenStory3a5;
-			ScreenSwitch();
-		}
-		else if(id==5){
-			CurrentScreen=ScreenStory3a6;
-			ScreenSwitch();
-		}
-		else if(id==6){
-			CurrentScreen=ScreenStory3a7;
-			ScreenSwitch();
-		}
-		else if(id==7){
-			CurrentScreen=ScreenStory3a8;
-			ScreenSwitch();
-		}
-		else if(id==8){
-			CurrentScreen=ScreenStoryTorture;
+			set = 4;
+			level = 1;
+		} else if(id == 8) {
+			marry = false;
+			CurrentScreen = ScreenStory5a3;
 			ScreenSwitch();
 		}
 	}
 	return 0;
 }
-int OnStoryLevel2(int id, int event, int x, int y){
-	if(event==3){
-		if(id==1){
-			CurrentScreen=ScreenStory2a2;
-			ScreenSwitch();
-		}
-		else if(id==3){
-			date=true;
-			CurrentScreen=ScreenStory2a3;
-			ScreenSwitch();
-		}
-		else if(id==4){
-			date=false;
-			CurrentScreen=ScreenStory2a3;
-			ScreenSwitch();
-		}
-		else if(id==5){
-			CurrentScreen=ScreenStory2a5;
-			ScreenSwitch();
-		}
-		else if(id==6){
-			CurrentScreen=ScreenStory2b4;
-			ScreenSwitch();
-		}
-		else if(id==7){
-			CurrentScreen=ScreenStory2a5;
-			ScreenSwitch();
-		}
-		else if(id==8){
-			CurrentScreen=ScreenStory2a6;
-			ScreenSwitch();
-		}
-		else if(id==9){
-			CurrentScreen=ScreenStory2e7;
-			ScreenSwitch();
-		}
-		else if(id==10){
-			CurrentScreen=ScreenStory2a7;
-			ScreenSwitch();
-		}
-		else if(id==11){
-			CurrentScreen=ScreenStoryBattle2;
-			ScreenSwitch();
-			Reset();
-			set=2;
-			level=1;
-		}
-	}
-	return 0;
-}
-int OnStoryLevel1(int id, int event, int x, int y){
-	if(event==3){
-		if(id==1){
-			CurrentScreen=ScreenStory1a2;
-			ScreenSwitch();
-		}
-		else if(id==3){
-			CurrentScreen=ScreenStory1s3;
-			ScreenSwitch();
-		}
-		else if(id==4){
-			CurrentScreen=ScreenStory1p3;
-			ScreenSwitch();
-		}
-		else if(id==5){
-			CurrentScreen=ScreenStory1a4;
-			ScreenSwitch();
-		}
-		else if(id==6){
-			CurrentScreen=ScreenStory1r5;
-			ScreenSwitch();
-		}
-		else if(id==7){
-			CurrentScreen=ScreenStory1e5;
-			ScreenSwitch();
-		}
-		else if(id==8){
-			CurrentScreen=ScreenStoryBattle1;
-			ScreenSwitch();
-			Reset();
-			set=1;
-			level=1;
+
+int OnStoryLevel4(int id, int event, int x, int y) {
+	if(event == 3) {
+		switch(id) {
+			case 1:
+				CurrentScreen = ScreenDied;
+				ScreenSwitch();
+				break;
+			case 2:
+				CurrentScreen = ScreenStory4a2;
+				ScreenSwitch();
+				break;
+			case 3:
+				CurrentScreen = ScreenStory4a3;
+				ScreenSwitch();
+				break;
+			case 4:
+				CurrentScreen = ScreenStory4a4;
+				ScreenSwitch();
+				break;
+			case 5:
+				CurrentScreen = ScreenStory4b5;
+				ScreenSwitch();
+				break;
+			case 6:
+				CurrentScreen = ScreenStory4a6;
+				ScreenSwitch();
+				break;
+			case 7:
+				CurrentScreen = ScreenStory4a7;
+				ScreenSwitch();
+				break;
+			case 8:
+				CurrentScreen = ScreenStory4b7;
+				ScreenSwitch();
+				break;
+			case 9:
+				CurrentScreen = ScreenStory4a8;
+				ScreenSwitch();
+				break;
+			case 10:
+				CurrentScreen = ScreenStoryBattle4;
+				ScreenSwitch();
+				Reset();
+				set = 3;
+				level = 1;
+				break;
 		}
 	}
 	return 0;
 }
-int OnStoryMenuTouch(int id, int event, int x, int y){
+
+int OnStoryLevel3(int id, int event, int x, int y) {
+	if(event == 3){
+		switch(id) {
+			case 1:
+				CurrentScreen=ScreenStory3b2;
+				ScreenSwitch();
+				break;
+			case 2:
+				CurrentScreen=ScreenStory3a3;
+				ScreenSwitch();
+				break;
+			case 3:
+				CurrentScreen=ScreenStory3a4;
+				ScreenSwitch();
+				break;
+			case 4:
+				CurrentScreen=ScreenStory3a5;
+				ScreenSwitch();
+				break;
+			case 5:
+				CurrentScreen=ScreenStory3a6;
+				ScreenSwitch();
+				break;
+			case 6:
+				CurrentScreen=ScreenStory3a7;
+				ScreenSwitch();
+				break;
+			case 7:
+				CurrentScreen=ScreenStory3a8;
+				ScreenSwitch();
+				break;
+			case 8:
+				CurrentScreen=ScreenStoryTorture;
+				ScreenSwitch();
+				break;
+		}
+	}
+	return 0;
+}
+
+int OnStoryLevel2(int id, int event, int x, int y) {
 	if(event==3){
-		CurrentScreen=ScreenStory1a1;
+		switch(id) {
+			case 1:
+				CurrentScreen = ScreenStory2a2;
+				ScreenSwitch();
+				break;
+			case 3:
+				date = true;
+				CurrentScreen = ScreenStory2a3;
+				ScreenSwitch();
+				break;
+			case 4:
+				date = false;
+				CurrentScreen = ScreenStory2a3;
+				ScreenSwitch();
+				break;
+			case 5:
+				CurrentScreen = ScreenStory2a5;
+				ScreenSwitch();
+				break;
+			case 6:
+				CurrentScreen = ScreenStory2b4;
+				ScreenSwitch();
+				break;
+			case 7:
+				CurrentScreen = ScreenStory2a5;
+				ScreenSwitch();
+				break;
+			case 8:
+				CurrentScreen = ScreenStory2a6;
+				ScreenSwitch();
+				break;
+			case 9:
+				CurrentScreen = ScreenStory2e7;
+				ScreenSwitch();
+				break;
+			case 10:
+				CurrentScreen = ScreenStory2a7;
+				ScreenSwitch();
+				break;
+			case 11:
+				CurrentScreen=ScreenStoryBattle2;
+				ScreenSwitch();
+				Reset();
+				set = 2;
+				level = 1;
+				break;
+		}
+	}
+	return 0;
+}
+
+int OnStoryLevel1(int id, int event, int x, int y) {
+	if(event==3){
+		switch(id) {
+			case 1:
+				CurrentScreen = ScreenStory1a2;
+				ScreenSwitch();
+				break;
+			case 3:
+				CurrentScreen = ScreenStory1s3;
+				ScreenSwitch();
+				break;
+			case 4:
+				CurrentScreen = ScreenStory1p3;
+				ScreenSwitch();
+				break;
+			case 5:
+				CurrentScreen = ScreenStory1a4;
+				ScreenSwitch();
+				break;
+			case 6:
+				CurrentScreen = ScreenStory1r5;
+				ScreenSwitch();
+				break;
+			case 7:
+				CurrentScreen = ScreenStory1e5;
+				ScreenSwitch();
+				break;
+			case 8:
+				CurrentScreen = ScreenStoryBattle1;
+				ScreenSwitch();
+				Reset();
+				set = 1;
+				level = 1;
+				break;
+		}
+	}
+	return 0;
+}
+
+int OnStoryMenuTouch(int id, int event, int x, int y) {
+	if(event == 3){
+		CurrentScreen = ScreenStory1a1;
 		ScreenSwitch();
 	}
 	return 0;
 }
 
-void ShipType(){
-	int lift=10;
+void ShipType() {
+	int lift = 10;
 	switch(ship){
 		case 1:
 			ViewSetxy(ShipView, -200, -200);
