@@ -2,44 +2,20 @@
 //                   Valley Of Death                  //
 //====================================================//
 #include "DragonFireSDK.h"
-//essential save variables
-bool sound, UpdateHighscore;
-int xp, ship, highscore;
-int counter;
-//possible save variables
-bool pause, date, marry;
-int health, set, level;
-int counter2, counter3, counter4, counter5[10];
-int ShipView, mX, mY, newX, newY;
-int mBullet1[15], mBullet2[15], mBullet3[15];
-int HpCounterTorture;
-int e1Bullet1[50];
-int e2Bullet1[50];
-int e3Bullet1[50];
-int e4Bullet1[50];
-int e5Bullet1[25], e5Bullet3[25];
-int e6Bullet1[25], e6Bullet3[25];
-int e7Bullet2[25];
-int e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
-int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5];
-int e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
+
+bool sound, UpdateHighscore, pause, date, marry, BoolTempNum, IntTempNum, torture;
+char FileBuffer[5], font, FontTorture;
+int xp, ship, highscore, counter, health, set, level, counter2, counter3, counter4, counter5[10];
+int ShipView, mX, mY, newX, newY, mBullet1[15], mBullet2[15], mBullet3[15], HpCounterTorture;
+int e1Bullet1[50], e2Bullet1[50], e3Bullet1[50], e4Bullet1[50], e5Bullet1[25], e5Bullet3[25];
+int e6Bullet1[25], e6Bullet3[25], e7Bullet2[25], e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
+int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5], e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
 int eShip1[10], eShip2[10], eShip3[10], eShip4[10], eShip5[5], eShip6[5], eShip7[5], eShip8[5], eShip9, eShip10;
 int eShipX1[10], eShipX2[10], eShipX3[10], eShipX4[10], eShipX5[5], eShipX6[5], eShipX7[5], eShipX8[5], eShipX9, eShipX10;
 int eShipY1[10], eShipY2[10], eShipY3[10], eShipY4[10], eShipY5[5], eShipY6[5], eShipY7[5], eShipY8[5], eShipY9, eShipY10;
 int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5];
-int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Health;
-//don't save these variables
-int FileSound, FileUpdateHighscore;
-int FileXp, FileShip, FileHighscore;
-int FileCounter;
-char FileBuffer[5];
-bool BoolTempNum;
-int IntTempNum;
-//Screen CurrentScreen, PreviousScreen;
-int Mp3Handle;
-char font, FontTorture;
-int width1, width2, HP, text1, text2, text3;
-bool torture;
+int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Health, FileSound, FileUpdateHighscore;
+int FileXp, FileShip, FileHighscore, FileCounter, Mp3Handle, width1, width2, HP, text1, text2, text3;
 int CounterTorture, ImageTorture, HpTorture, TextTorture;
 int counter6, counter7, counter8, counter9, counter10, counter11, counter12;
 int r, s2, s3, s4, s5, s6, s7, s8, music;
