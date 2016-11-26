@@ -1,63 +1,36 @@
 //====================================================//
 //                   Valley Of Death                  //
 //====================================================//
+//Release 1.0.1
+//Bailey Thompson
+
+//including the header file used for many app functions
 #include "DragonFireSDK.h"
-//essential save variables
-bool sound, UpdateHighscore;
-int xp, ship, highscore;
-int counter;
-//possible save variables
-bool pause, date, marry;
-int health, set, level;
-int counter2, counter3, counter4, counter5[10];
-int ShipView, mX, mY, newX, newY;
+//global variables
+bool sound, UpdateHighscore, pause, date, marry, BoolTempNum, torture, HealthUpdate, GoRight;
+char FileBuffer[5], font, FontTorture;
+int xp, ship, highscore, health, set, level, ShipView, mX, mY, newX, newY;
+int counter, counter2, counter3, counter4, counter5[10], HpCounterTorture;
 int mBullet1[15], mBullet2[15], mBullet3[15];
-int HpCounterTorture;
-int e1Bullet1[50];
-int e2Bullet1[50];
-int e3Bullet1[50];
-int e4Bullet1[50];
-int e5Bullet1[25], e5Bullet3[25];
-int e6Bullet1[25], e6Bullet3[25];
-int e7Bullet2[25];
-int e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
-int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5];
-int e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
+int e1Bullet1[50], e2Bullet1[50], e3Bullet1[50], e4Bullet1[50], e5Bullet1[25], e5Bullet3[25];
+int e6Bullet1[25], e6Bullet3[25], e7Bullet2[25], e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
+int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5], e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
 int eShip1[10], eShip2[10], eShip3[10], eShip4[10], eShip5[5], eShip6[5], eShip7[5], eShip8[5], eShip9, eShip10;
 int eShipX1[10], eShipX2[10], eShipX3[10], eShipX4[10], eShipX5[5], eShipX6[5], eShipX7[5], eShipX8[5], eShipX9, eShipX10;
 int eShipY1[10], eShipY2[10], eShipY3[10], eShipY4[10], eShipY5[5], eShipY6[5], eShipY7[5], eShipY8[5], eShipY9, eShipY10;
-int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5];
-int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Health;
-//don't save these variables
-int FileSound, FileUpdateHighscore;
-int FileXp, FileShip, FileHighscore;
-int FileCounter;
-char FileBuffer[5];
-bool BoolTempNum;
-int IntTempNum;
-//Screen CurrentScreen, PreviousScreen;
-int Mp3Handle;
-char font, FontTorture;
-int width1, width2, HP, text1, text2, text3;
-bool torture;
-int CounterTorture, ImageTorture, HpTorture, TextTorture;
-int counter6, counter7, counter8, counter9, counter10, counter11, counter12;
-int r, s2, s3, s4, s5, s6, s7, s8, music;
-int PossibleHealth, ShipSpeed, SaveRon, rank;
-int BulletXOffset, BulletYOffset, BulletXOffset2, BulletYOffset2, BulletXOffset3, BulletYOffset3;
-int e1BulletXOffset=43, e1BulletYOffset=83;
-int e2BulletXOffset=43, e2BulletYOffset=94;
-int e3BulletXOffset=43, e3BulletYOffset=88;
-int e4BulletXOffset=43, e4BulletYOffset=94;
-int e5BulletXOffset=31, e5BulletYOffset=71, e5BulletXOffset3=54, e5BulletYOffset3=71;
-int e6BulletXOffset=15, e6BulletYOffset=53, e6BulletXOffset3=68, e6BulletYOffset3=53;
-int e7BulletXOffset2=42, e7BulletYOffset2=83;
-int e8BulletXOffset=12, e8BulletYOffset=54, e8BulletXOffset2=42, e8BulletYOffset2=92, e8BulletXOffset3=74, e8BulletYOffset3=54;
-int e9BulletXOffset=3, e9BulletYOffset=83, e9BulletXOffset2=66, e9BulletYOffset2=230, e9BulletXOffset3=130, e9BulletYOffset3=83;
-int e10BulletXOffset=13, e10BulletYOffset=83, e10BulletXOffset2=69, e10BulletYOffset2=233, e10BulletXOffset3=129, e10BulletYOffset3=83;
-int speed=15, time=15;
-int SpawnTime=100, EnemyBaseHealth=3, EnemyIncreaseHealth=1, EnemyShootCooldownSpeed=45, EnemyFlySpeed=3, EnemyBulletSpeed=8;
-bool HealthUpdate, GoRight;
+int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5], eShip6Health[5], eShip7Health[5];
+int eShip8Health[5], eShip9Health, eShip10Health, FileSound, FileUpdateHighscore, FileXp, FileShip, FileHighscore, FileCounter;
+int IntTempNum, Mp3Handle, width1, width2, HP, text1, text2, text3, CounterTorture, ImageTorture, HpTorture, TextTorture;
+int counter6, counter7, counter8, counter9, counter10, counter11, counter12, r, s2, s3, s4, s5, s6, s7, s8, music, PossibleHealth;
+int ShipSpeed, SaveRon, rank, BulletXOffset, BulletYOffset, BulletXOffset2, BulletYOffset2, BulletXOffset3, BulletYOffset3;
+//variables used to offset the images
+const int e1BulletXOffset = 43, e1BulletYOffset = 83, e2BulletXOffset = 43, e2BulletYOffset = 94, e3BulletXOffset = 43, e3BulletYOffset = 88;
+const int e4BulletXOffset = 43, e4BulletYOffset = 94, e5BulletXOffset = 31, e5BulletYOffset = 71, e5BulletXOffset3 = 54, e5BulletYOffset3 = 71;
+const int e6BulletXOffset = 15, e6BulletYOffset = 53, e6BulletXOffset3 = 68, e6BulletYOffset3 = 53, e7BulletXOffset2 = 42, e7BulletYOffset2 = 83;
+const int e8BulletXOffset = 12, e8BulletYOffset = 54, e8BulletXOffset2 = 42, e8BulletYOffset2 = 92, e8BulletXOffset3 = 74, e8BulletYOffset3 = 54;
+const int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9BulletYOffset2 = 230, e9BulletXOffset3 = 130, e9BulletYOffset3 = 83;
+const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
+const int speed = 15, time = 15, SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
 //end variables
 enum Screen{
 	ScreenMenu,
@@ -126,6 +99,7 @@ enum Screen{
 Screen CurrentScreen;
 Screen PreviousScreen;
 
+//container decleration
 int ContainerPause;
 int ContainerMenu;
 int ContainerHighscore;
