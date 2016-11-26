@@ -1,7 +1,7 @@
 //====================================================//
 //                   Valley Of Death                  //
 //====================================================//
-//Release 1.0.3
+//Release 1.0.4
 //26 November 2016
 //Bailey Thompson
 
@@ -934,166 +934,162 @@ void ShipType() {
 		case 1:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_1.png", -200, -200);
-			BulletXOffset=43;
-			BulletYOffset=11-lift;
-			ShipSpeed=7;
-			PossibleHealth=20;
-			width1=9;
-			width2=76;
+			BulletXOffset = 43;
+			BulletYOffset = 11 - lift;
+			ShipSpeed = 7;
+			PossibleHealth = 20;
+			width1 = 9;
+			width2 = 76;
 			break;
 		case 2:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_2.png", -200, -200);
-			BulletXOffset=43;
-			BulletYOffset=0-lift;
-			ShipSpeed=7;
-			PossibleHealth=22;
-			width1=15;
-			width2=69;
+			BulletXOffset = 43;
+			BulletYOffset = 0 - lift;
+			ShipSpeed = 7;
+			PossibleHealth = 22;
+			width1 = 15;
+			width2 = 69;
 			break;
 		case 3:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_3.png", -200, -200);
-			BulletXOffset=43;
-			BulletYOffset=6-lift;
-			ShipSpeed=7;
-			PossibleHealth=24;
-			width1=18;
-			width2=66;
+			BulletXOffset = 43;
+			BulletYOffset = 6 - lift;
+			ShipSpeed = 7;
+			PossibleHealth = 24;
+			width1 = 18;
+			width2 = 66;
 			break;
 		case 4:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_4.png", -200, -200);
-			BulletXOffset=43;
-			BulletYOffset=0-lift;
-			ShipSpeed=7;
-			PossibleHealth=26;
-			width1=-3;
-			width2=87;
+			BulletXOffset = 43;
+			BulletYOffset = 0 - lift;
+			ShipSpeed = 7;
+			PossibleHealth = 26;
+			width1 = -3;
+			width2 = 87;
 			break;
 		case 5:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_5.png", -200, -200);
-			BulletXOffset=31;
-			BulletYOffset=23-lift;
-			BulletXOffset3=54;
-			BulletYOffset3=23-lift;
-			ShipSpeed=6;
-			PossibleHealth=28;
-			width1=13;
-			width2=71;
+			BulletXOffset = 31;
+			BulletYOffset = 23 - lift;
+			BulletXOffset3 = 54;
+			BulletYOffset3 = 23 - lift;
+			ShipSpeed = 6;
+			PossibleHealth = 28;
+			width1 = 13;
+			width2 = 71;
 			break;
 		case 6:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_6.png", -200, -200);
-			BulletXOffset=15;
-			BulletYOffset=41-lift;
-			BulletXOffset3=68;
-			BulletYOffset3=41-lift;
-			ShipSpeed=6;
-			PossibleHealth=30;
-			width1=3;
-			width2=81;
+			BulletXOffset = 15;
+			BulletYOffset = 41 - lift;
+			BulletXOffset3 = 68;
+			BulletYOffset3 = 41 - lift;
+			ShipSpeed = 6;
+			PossibleHealth = 30;
+			width1 = 3;
+			width2 = 81;
 			break;
 		case 7:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_7.png", -200, -200);
-			BulletXOffset2=42;
-			BulletYOffset2=11-lift;
-			ShipSpeed=5;
-			PossibleHealth=32;
-			width1=-2;
-			width2=86;
+			BulletXOffset2 = 42;
+			BulletYOffset2 = 11 - lift;
+			ShipSpeed = 5;
+			PossibleHealth = 32;
+			width1 = -2;
+			width2 = 86;
 			break;
 		case 8:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_8.png", -200, -200);
-			BulletXOffset=12;
-			BulletYOffset=40-lift;
-			BulletXOffset2=42;
-			BulletYOffset2=2-lift;
-			BulletXOffset3=74;
-			BulletYOffset3=40-lift;
-			ShipSpeed=4;
-			PossibleHealth=34;
-			width1=-3;
-			width2=86;
+			BulletXOffset = 12;
+			BulletYOffset = 40 - lift;
+			BulletXOffset2 = 42;
+			BulletYOffset2 = 2 - lift;
+			BulletXOffset3 = 74;
+			BulletYOffset3 = 40 - lift;
+			ShipSpeed = 4;
+			PossibleHealth = 34;
+			width1 = -3;
+			width2 = 86;
 			break;
 	}
 }
-int OnBattleTouch(int id, int event, int x, int y){
-	if(event==1 || event==2){
-		newX=x-47;
-		newY=y-47;
-	}
-	return 0;
-}
-int OnEndlessMenuTouch(int id, int event, int x, int y){
-	if(event==3){
-	Reset();
-	health=PossibleHealth;
-	HealthUpdate=true;
-	level=1;
-	set=1;
-	CurrentScreen=ScreenEndless;
-	ScreenSwitch();
+
+int OnBattleTouch(int id, int event, int x, int y) {
+	if(event == 1 || event == 2){
+		newX = x - 47;
+		newY = y - 47;
 	}
 	return 0;
 }
 
-int Unlocks(int id, int event, int x, int y){
-	if(event==3){
-		if(id==1 && rank>=1){
-			ship=1;
+int OnEndlessMenuTouch(int id, int event, int x, int y) {
+	if(event == 3){
+		Reset();
+		health = PossibleHealth;
+		HealthUpdate = true;
+		level = 1;
+		set = 1;
+		CurrentScreen = ScreenEndless;
+		ScreenSwitch();
+	}
+	return 0;
+}
+
+int Unlocks(int id, int event, int x, int y) {
+	if(event == 3){
+		if(id == 1 && rank >= 1) {
+			ship = 1;
 			ShipType();
-			CurrentScreen=ScreenMenu;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
-		}
-		else if(id==2 && rank>=3){
-			ship=2;
+		} else if(id == 2 && rank >= 3) {
+			ship = 2;
 			ShipType();
-			CurrentScreen=ScreenMenu;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
-		}
-		else if(id==3 && rank>=5){
-			ship=3;
+		} else if(id == 3 && rank >= 5) {
+			ship = 3;
 			ShipType();
-			CurrentScreen=ScreenMenu;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
-		}
-		else if(id==4 && rank>=8){
-			ship=4;
+		} else if(id == 4 && rank >= 8) {
+			ship = 4;
 			ShipType();
-			CurrentScreen=ScreenMenu;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
-		}
-		else if(id==5 && rank>=11){
-			ship=5;
+		} else if(id == 5 && rank >= 11) {
+			ship = 5;
 			ShipType();
-			CurrentScreen=ScreenMenu;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
-		}
-		else if(id==6 && rank>=14){
-			ship=6;
+		} else if(id == 6 && rank >= 14) {
+			ship = 6;
 			ShipType();
-			CurrentScreen=ScreenMenu;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
-		}
-		else if(id==7 && rank>=17){
-			ship=7;
+		} else if(id == 7 && rank >= 17) {
+			ship = 7;
 			ShipType();
-			CurrentScreen=ScreenMenu;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
-		}
-		else if(id==8 && rank>=20){
-			ship=8;
+		} else if(id == 8 && rank >= 20) {
+			ship = 8;
 			ShipType();
-			CurrentScreen=ScreenMenu;
+			CurrentScreen = ScreenMenu;
 			ScreenSwitch();
 		}
 	}
 	return 0;
 }
+
 int OnUnlocksMenuTouch(int id, int event, int x, int y){
 	int ImageUnlocks;
 	if(event==3){
