@@ -1,7 +1,7 @@
 //====================================================//
 //                   Valley Of Death                  //
 //====================================================//
-//Release 1.0.4
+//Release 1.0.5
 //26 November 2016
 //Bailey Thompson
 
@@ -789,7 +789,7 @@ int OnStoryLevel4(int id, int event, int x, int y) {
 }
 
 int OnStoryLevel3(int id, int event, int x, int y) {
-	if(event == 3){
+	if(event == 3) {
 		switch(id) {
 			case 1:
 				CurrentScreen=ScreenStory3b2;
@@ -829,7 +829,7 @@ int OnStoryLevel3(int id, int event, int x, int y) {
 }
 
 int OnStoryLevel2(int id, int event, int x, int y) {
-	if(event==3){
+	if(event==3) {
 		switch(id) {
 			case 1:
 				CurrentScreen = ScreenStory2a2;
@@ -882,7 +882,7 @@ int OnStoryLevel2(int id, int event, int x, int y) {
 }
 
 int OnStoryLevel1(int id, int event, int x, int y) {
-	if(event==3){
+	if(event==3) {
 		switch(id) {
 			case 1:
 				CurrentScreen = ScreenStory1a2;
@@ -921,7 +921,7 @@ int OnStoryLevel1(int id, int event, int x, int y) {
 }
 
 int OnStoryMenuTouch(int id, int event, int x, int y) {
-	if(event == 3){
+	if(event == 3) {
 		CurrentScreen = ScreenStory1a1;
 		ScreenSwitch();
 	}
@@ -930,7 +930,7 @@ int OnStoryMenuTouch(int id, int event, int x, int y) {
 
 void ShipType() {
 	int lift = 10;
-	switch(ship){
+	switch(ship) {
 		case 1:
 			ViewSetxy(ShipView, -200, -200);
 			ShipView=ViewAdd(ContainerEndless, "Images/Ship_1.png", -200, -200);
@@ -1023,7 +1023,7 @@ void ShipType() {
 }
 
 int OnBattleTouch(int id, int event, int x, int y) {
-	if(event == 1 || event == 2){
+	if(event == 1 || event == 2) {
 		newX = x - 47;
 		newY = y - 47;
 	}
@@ -1031,7 +1031,7 @@ int OnBattleTouch(int id, int event, int x, int y) {
 }
 
 int OnEndlessMenuTouch(int id, int event, int x, int y) {
-	if(event == 3){
+	if(event == 3) {
 		Reset();
 		health = PossibleHealth;
 		HealthUpdate = true;
@@ -1044,7 +1044,7 @@ int OnEndlessMenuTouch(int id, int event, int x, int y) {
 }
 
 int Unlocks(int id, int event, int x, int y) {
-	if(event == 3){
+	if(event == 3) {
 		if(id == 1 && rank >= 1) {
 			ship = 1;
 			ShipType();
@@ -1090,277 +1090,256 @@ int Unlocks(int id, int event, int x, int y) {
 	return 0;
 }
 
-int OnUnlocksMenuTouch(int id, int event, int x, int y){
+int OnUnlocksMenuTouch(int id, int event, int x, int y) {
 	int ImageUnlocks;
-	if(event==3){
+	if(event == 3) {
 		//rank
-		if(rank==1){
-			TextSetText(r, "\n\nLevel 1: Ordinary Shipman");
-		}
-		else if(rank==2){
-			TextSetText(r, "\n\nLevel 2: Able Shipman");
-		}
-		else if(rank==3){
-			TextSetText(r, "\n\nLevel 3: Leading Shipman");
-		}
-		else if(rank==4){
-			TextSetText(r, "\n\nLevel 4: Master Shipman");
-		}
-		else if(rank==5){
-			TextSetText(r, "\n\nLevel 5: Petty Officer 2nd \n\tClass");
-		}
-		else if(rank==6){
-			TextSetText(r, "\n\nLevel 6: Petty Officer 1st \n\tClass");
-		}
-		else if(rank==7){
-			TextSetText(r, "\n\nLevel 7: Chief Petty Officer \n\t2nd Class");
-		}
-		else if(rank==8){
-			TextSetText(r, "\n\nLevel 8: Chief Petty Officer \n\t1st Class");
-		}
-		else if(rank==9){
-			TextSetText(r, "\n\nLevel 9: Cadet");
-		}
-		else if(rank==10){
-			TextSetText(r, "\n\nLevel 10: Ensign");
-		}
-		else if(rank==11){
-			TextSetText(r, "\n\nLevel 11: Acting \n\t Sub-Lieutenant");
-		}
-		else if(rank==12){
-			TextSetText(r, "\n\nLevel 12: Sub-Lieutenant");
-		}
-		else if(rank==13){
-			TextSetText(r, "\n\nLevel 13: Lieutenant");
-		}
-		else if(rank==14){
-			TextSetText(r, "\n\nLevel 14: Lieutenant \n\t  Commander");
-		}
-		else if(rank==15){
-			TextSetText(r, "\n\nLevel 15: Commander");
-		}
-		else if(rank==16){
-			TextSetText(r, "\n\nLevel 16: Captain");
-		}
-		else if(rank==17){
-			TextSetText(r, "\n\nLevel 17: Commodore");
-		}
-		else if(rank==18){
-			TextSetText(r, "\n\nLevel 18: Rear-Admiral");
-		}
-		else if(rank==19){
-			TextSetText(r, "\n\nLevel 19: Vice-Admiral");
-		}
-		else if(rank==20){
-			TextSetText(r, "\n\nLevel 20: Admiral");
+		switch(rank) {
+			case 1:
+				TextSetText(r, "\n\nLevel 1: Ordinary Shipman");
+				break;
+			case 2:
+				TextSetText(r, "\n\nLevel 2: Able Shipman");
+				break;
+			case 3:
+				TextSetText(r, "\n\nLevel 3: Leading Shipman");
+				break;
+			case 4:
+				TextSetText(r, "\n\nLevel 4: Master Shipman");
+				break;
+			case 5:
+				TextSetText(r, "\n\nLevel 5: Petty Officer 2nd \n\tClass");
+				break;
+			case 6:
+				TextSetText(r, "\n\nLevel 6: Petty Officer 1st \n\tClass");
+				break;
+			case 7:
+				TextSetText(r, "\n\nLevel 7: Chief Petty Officer \n\t2nd Class");
+				break;
+			case 8:
+				TextSetText(r, "\n\nLevel 8: Chief Petty Officer \n\t1st Class");
+				break;
+			case 9:
+				TextSetText(r, "\n\nLevel 9: Cadet");
+				break;
+			case 10:
+				TextSetText(r, "\n\nLevel 10: Ensign");
+				break;
+			case 11:
+				TextSetText(r, "\n\nLevel 11: Acting \n\t Sub-Lieutenant");
+				break;
+			case 12:
+				TextSetText(r, "\n\nLevel 12: Sub-Lieutenant");
+				break;
+			case 13:
+				TextSetText(r, "\n\nLevel 13: Lieutenant");
+				break;
+			case 14:
+				TextSetText(r, "\n\nLevel 14: Lieutenant \n\t  Commander");
+				break;
+			case 15:
+				TextSetText(r, "\n\nLevel 15: Commander");
+				break;
+			case 16:
+				TextSetText(r, "\n\nLevel 16: Captain");
+				break;
+			case 17:
+				TextSetText(r, "\n\nLevel 17: Commodore");
+				break;
+			case 18:
+				TextSetText(r, "\n\nLevel 18: Rear-Admiral");
+				break;
+			case 19:
+				TextSetText(r, "\n\nLevel 19: Vice-Admiral");
+				break;
+			case 20:
+				TextSetText(r, "\n\nLevel 20: Admiral");
+				break;
 		}
 		//ships
-		if(rank>=3){
-			ImageUnlocks=ImageAdd("Unlocks/UnShip_2.png");
+		if(rank >= 3) {
+			ImageUnlocks = ImageAdd("Unlocks/UnShip_2.png");
+			ViewSetImage(s2, ImageUnlocks);
+		} else {
+			ImageUnlocks = ImageAdd("Unlocks/LckShip_2.png");
 			ViewSetImage(s2, ImageUnlocks);
 		}
-		else{
-			ImageUnlocks=ImageAdd("Unlocks/LckShip_2.png");
-			ViewSetImage(s2, ImageUnlocks);
-		}
-		if(rank>=5){
-			ImageUnlocks=ImageAdd("Unlocks/UnShip_3.png");
+		if(rank >= 5) {
+			ImageUnlocks = ImageAdd("Unlocks/UnShip_3.png");
+			ViewSetImage(s3, ImageUnlocks);
+		} else {
+			ImageUnlocks = ImageAdd("Unlocks/LckShip_3.png");
 			ViewSetImage(s3, ImageUnlocks);
 		}
-		else{
-			ImageUnlocks=ImageAdd("Unlocks/LckShip_3.png");
-			ViewSetImage(s3, ImageUnlocks);
-		}
-		if(rank>=8){
-			ImageUnlocks=ImageAdd("Unlocks/UnShip_4.png");
+		if(rank >= 8) {
+			ImageUnlocks = ImageAdd("Unlocks/UnShip_4.png");
+			ViewSetImage(s4, ImageUnlocks);
+		} else {
+			ImageUnlocks = ImageAdd("Unlocks/LckShip_4.png");
 			ViewSetImage(s4, ImageUnlocks);
 		}
-		else{
-			ImageUnlocks=ImageAdd("Unlocks/LckShip_4.png");
-			ViewSetImage(s4, ImageUnlocks);
-		}
-		if(rank>=11){
-			ImageUnlocks=ImageAdd("Unlocks/UnShip_5.png");
+		if(rank >= 11) {
+			ImageUnlocks = ImageAdd("Unlocks/UnShip_5.png");
+			ViewSetImage(s5, ImageUnlocks);
+		} else {
+			ImageUnlocks = ImageAdd("Unlocks/LckShip_5.png");
 			ViewSetImage(s5, ImageUnlocks);
 		}
-		else{
-			ImageUnlocks=ImageAdd("Unlocks/LckShip_5.png");
-			ViewSetImage(s5, ImageUnlocks);
-		}
-		if(rank>=14){
-			ImageUnlocks=ImageAdd("Unlocks/UnShip_6.png");
+		if(rank >= 14) {
+			ImageUnlocks = ImageAdd("Unlocks/UnShip_6.png");
+			ViewSetImage(s6, ImageUnlocks);
+		} else {
+			ImageUnlocks = ImageAdd("Unlocks/LckShip_6.png");
 			ViewSetImage(s6, ImageUnlocks);
 		}
-		else{
-			ImageUnlocks=ImageAdd("Unlocks/LckShip_6.png");
-			ViewSetImage(s6, ImageUnlocks);
-		}
-		if(rank>=17){
+		if(rank >= 17) {
 			ImageUnlocks=ImageAdd("Unlocks/UnShip_7.png");
 			ViewSetImage(s7, ImageUnlocks);
-		}
-		else{
-			ImageUnlocks=ImageAdd("Unlocks/LckShip_7.png");
+		} else {
+			ImageUnlocks = ImageAdd("Unlocks/LckShip_7.png");
 			ViewSetImage(s7, ImageUnlocks);
 		}
-		if(rank>=20){
+		if(rank >= 20) {
 			ImageUnlocks=ImageAdd("Unlocks/UnShip_8.png");
 			ViewSetImage(s8, ImageUnlocks);
-		}
-		else{
-			ImageUnlocks=ImageAdd("Unlocks/LckShip_8.png");
+		} else {
+			ImageUnlocks = ImageAdd("Unlocks/LckShip_8.png");
 			ViewSetImage(s8, ImageUnlocks);
 		}
-		CurrentScreen=ScreenUnlocks;
+		CurrentScreen = ScreenUnlocks;
 		ScreenSwitch();
 	}
 	return 0;
 }
 
-int Options(int id, int event, int x, int y){
+int Options(int id, int event, int x, int y) {
 	int ImageMusic;
-	if(event==3 && id==1){
-		if(sound==true){
-			ImageMusic=ImageAdd("Unlocks/MusicOff.png");
+	if(event == 3 && id == 1) {
+		if(sound) {
+			ImageMusic = ImageAdd("Unlocks/MusicOff.png");
 			ViewSetImage(music, ImageMusic);
-			sound=false;
+			sound = false;
 			Mp3Stop();
-		}
-		else if(sound==false){
-			ImageMusic=ImageAdd("Unlocks/MusicOn.png");
+		} else {
+			ImageMusic = ImageAdd("Unlocks/MusicOn.png");
 			ViewSetImage(music, ImageMusic);
-			sound=true;
-			if(counter>=1 && counter<7000){
-				counter=7000;
-			}
-			else if(counter>=7000 && counter<13000){
-				counter=13000;
-			}
-			else if(counter>=13000 && counter<19000){
-				counter=19000;
-			}
-			else if(counter>=19000 && counter<27000){
-				counter=27000;
-			}
-			else if(counter>=27000 && counter<34000){
-				counter=34000;
-			}
-			else if(counter>=34000 && counter<42000){
-				counter=42000;
-			}
-			else if(counter>=42000 && counter<49000){
-				counter=49000;
-			}
-			else if(counter>=49000 && counter<55000){
-				counter=55000;
-			}
-			else if(counter>=55000 && counter<61000){
-				counter=61000;
-			}
-			else if(counter>=61000 && counter<67000){
-				counter=67000;
-			}
-			else if(counter>=67000 && counter<73000){
-				counter=73000;
-			}
-			else if(counter>=73000 && counter<79000){
-				counter=79000;
-			}
-			else if(counter>=79000){
-				counter=1;
+			sound = true;
+			if(counter >=1 && counter < 7000) {
+				counter = 7000;
+			} else if(counter >= 7000 && counter < 13000) {
+				counter = 13000;
+			} else if(counter >= 13000 && counter < 19000) {
+				counter = 19000;
+			} else if(counter >= 19000 && counter < 27000) {
+				counter = 27000;
+			} else if(counter >= 27000 && counter < 34000) {
+				counter = 34000;
+			} else if(counter >= 34000 && counter < 42000) {
+				counter = 42000;
+			} else if(counter >= 42000 && counter < 49000) {
+				counter = 49000;
+			} else if(counter >= 49000 && counter < 55000) {
+				counter = 55000;
+			} else if(counter >= 55000 && counter < 61000) {
+				counter = 61000;
+			} else if(counter >= 61000 && counter < 67000) {
+				counter = 67000;
+			} else if(counter >= 67000 && counter < 73000) {
+				counter = 73000;
+			} else if(counter >= 73000 && counter < 79000) {
+				counter = 79000;
+			} else if(counter >= 79000) {
+				counter = 1;
 			}
 		}
-	}
-	else if(event==3 && id==2){
-		CurrentScreen=ScreenDeleteCheckOne;
+	} else if(event == 3 && id == 2) {
+		CurrentScreen = ScreenDeleteCheckOne;
 		ScreenSwitch();
-	}
-	else if(event==3 && id==3){
-		CurrentScreen=ScreenDeleteCheckTwo;
+	} else if(event == 3 && id == 3) {
+		CurrentScreen = ScreenDeleteCheckTwo;
 		ScreenSwitch();
-	}
-	else if(event==3 && id==4){
-		xp=0;
-		ship=1;
-		highscore=0;
+	} else if(event == 3 && id == 4) {
+		xp = 0;
+		ship = 1;
+		highscore = 0;
 		ShipType();
-		CurrentScreen=ScreenMenu;
+		CurrentScreen = ScreenMenu;
 		ScreenSwitch();
-	}
-	else if(event==3 && id==5){
-		CurrentScreen=ScreenOptions;
-		ScreenSwitch();
-	}
-	return 0;
-}
-int OnOptionsMenuTouch(int id, int event, int x, int y){
-	if(event==3){
-		CurrentScreen=ScreenOptions;
+	} else if(event == 3 && id == 5) {
+		CurrentScreen = ScreenOptions;
 		ScreenSwitch();
 	}
 	return 0;
 }
 
-void DeclareContainers(){
-	//declare containers
-	ContainerPause=ContainerAdd(0, 0, 0);
-	ContainerMenu=ContainerAdd(0, 0, 0);
-	ContainerHighscore=ContainerAdd(0, 0, 0);
-	ContainerEndless=ContainerAdd(0, 0, 0);
-	ContainerDied=ContainerAdd(0, 0, 0);
-	ContainerStory1a1=ContainerAdd(0, 0, 0);
-	ContainerStory1a2=ContainerAdd(0, 0, 0);
-	ContainerStory1s3=ContainerAdd(0, 0, 0);
-	ContainerStory1p3=ContainerAdd(0, 0, 0);
-	ContainerStory1a4=ContainerAdd(0, 0, 0);
-	ContainerStory1r5=ContainerAdd(0, 0, 0);
-	ContainerStory1e5=ContainerAdd(0, 0, 0);
-	ContainerStory2a1=ContainerAdd(0, 0, 0);
-	ContainerStory2a2=ContainerAdd(0, 0, 0);
-	ContainerStory2a3=ContainerAdd(0, 0, 0);
-	ContainerStory2b4=ContainerAdd(0, 0, 0);
-	ContainerStory2a5=ContainerAdd(0, 0, 0);
-	ContainerStory2a6=ContainerAdd(0, 0, 0);
-	ContainerStory2e7=ContainerAdd(0, 0, 0);
-	ContainerStory2a7=ContainerAdd(0, 0, 0);
-	ContainerStory3a1=ContainerAdd(0, 0, 0);
-	ContainerStory3b2=ContainerAdd(0, 0, 0);
-	ContainerStory3a3=ContainerAdd(0, 0, 0);
-	ContainerStory3a4=ContainerAdd(0, 0, 0);
-	ContainerStory3a5=ContainerAdd(0, 0, 0);
-	ContainerStory3a6=ContainerAdd(0, 0, 0);
-	ContainerStory3a7=ContainerAdd(0, 0, 0);
-	ContainerStory3a8=ContainerAdd(0, 0, 0);
-	ContainerStoryTorture=ContainerAdd(0, 0, 0);
-	ContainerStory4a1=ContainerAdd(0, 0, 0);
-	ContainerStory4a2=ContainerAdd(0, 0, 0);
-	ContainerStory4a3=ContainerAdd(0, 0, 0);
-	ContainerStory4a4=ContainerAdd(0, 0, 0);
-	ContainerStory4b5=ContainerAdd(0, 0, 0);
-	ContainerStory4a6=ContainerAdd(0, 0, 0);
-	ContainerStory4a7=ContainerAdd(0, 0, 0);
-	ContainerStory4b7=ContainerAdd(0, 0, 0);
-	ContainerStory4a8=ContainerAdd(0, 0, 0);
-	ContainerStory5a1=ContainerAdd(0, 0, 0);
-	ContainerStory5a2=ContainerAdd(0, 0, 0);
-	ContainerStory5a3=ContainerAdd(0, 0, 0);
-	ContainerStory5b4=ContainerAdd(0, 0, 0);
-	ContainerStory5a5=ContainerAdd(0, 0, 0);
-	ContainerStory5a6=ContainerAdd(0, 0, 0);
-	ContainerStory5b6=ContainerAdd(0, 0, 0);
-	ContainerStory6a1=ContainerAdd(0, 0, 0);
-	ContainerStory6a2=ContainerAdd(0, 0, 0);
-	ContainerStory6a3=ContainerAdd(0, 0, 0);
-	ContainerStory6b3=ContainerAdd(0, 0, 0);
-	ContainerStory7w1=ContainerAdd(0, 0, 0);
-	ContainerStory7l1=ContainerAdd(0, 0, 0);
-	ContainerStory7a2=ContainerAdd(0, 0, 0);
-	ContainerStory7b2=ContainerAdd(0, 0, 0);
-	ContainerUnlocks=ContainerAdd(0, 0, 0);
-	ContainerOptions=ContainerAdd(0, 0, 0);
-	ContainerDeleteCheckOne=ContainerAdd(0, 0, 0);
-	ContainerDeleteCheckTwo=ContainerAdd(0, 0, 0);
+int OnOptionsMenuTouch(int id, int event, int x, int y) {
+	if(event == 3){
+		CurrentScreen = ScreenOptions;
+		ScreenSwitch();
+	}
+	return 0;
 }
+
+void DeclareContainers() {
+	ContainerPause = ContainerAdd(0, 0, 0);
+	ContainerMenu = ContainerAdd(0, 0, 0);
+	ContainerHighscore = ContainerAdd(0, 0, 0);
+	ContainerEndless = ContainerAdd(0, 0, 0);
+	ContainerDied = ContainerAdd(0, 0, 0);
+	ContainerStory1a1 = ContainerAdd(0, 0, 0);
+	ContainerStory1a2 = ContainerAdd(0, 0, 0);
+	ContainerStory1s3 = ContainerAdd(0, 0, 0);
+	ContainerStory1p3 = ContainerAdd(0, 0, 0);
+	ContainerStory1a4 = ContainerAdd(0, 0, 0);
+	ContainerStory1r5 = ContainerAdd(0, 0, 0);
+	ContainerStory1e5 = ContainerAdd(0, 0, 0);
+	ContainerStory2a1 = ContainerAdd(0, 0, 0);
+	ContainerStory2a2 = ContainerAdd(0, 0, 0);
+	ContainerStory2a3 = ContainerAdd(0, 0, 0);
+	ContainerStory2b4 = ContainerAdd(0, 0, 0);
+	ContainerStory2a5 = ContainerAdd(0, 0, 0);
+	ContainerStory2a6 = ContainerAdd(0, 0, 0);
+	ContainerStory2e7 = ContainerAdd(0, 0, 0);
+	ContainerStory2a7 = ContainerAdd(0, 0, 0);
+	ContainerStory3a1 = ContainerAdd(0, 0, 0);
+	ContainerStory3b2 = ContainerAdd(0, 0, 0);
+	ContainerStory3a3 = ContainerAdd(0, 0, 0);
+	ContainerStory3a4 = ContainerAdd(0, 0, 0);
+	ContainerStory3a5 = ContainerAdd(0, 0, 0);
+	ContainerStory3a6 = ContainerAdd(0, 0, 0);
+	ContainerStory3a7 = ContainerAdd(0, 0, 0);
+	ContainerStory3a8 = ContainerAdd(0, 0, 0);
+	ContainerStoryTorture = ContainerAdd(0, 0, 0);
+	ContainerStory4a1 = ContainerAdd(0, 0, 0);
+	ContainerStory4a2 = ContainerAdd(0, 0, 0);
+	ContainerStory4a3 = ContainerAdd(0, 0, 0);
+	ContainerStory4a4 = ContainerAdd(0, 0, 0);
+	ContainerStory4b5 = ContainerAdd(0, 0, 0);
+	ContainerStory4a6 = ContainerAdd(0, 0, 0);
+	ContainerStory4a7 = ContainerAdd(0, 0, 0);
+	ContainerStory4b7 = ContainerAdd(0, 0, 0);
+	ContainerStory4a8 = ContainerAdd(0, 0, 0);
+	ContainerStory5a1 = ContainerAdd(0, 0, 0);
+	ContainerStory5a2 = ContainerAdd(0, 0, 0);
+	ContainerStory5a3 = ContainerAdd(0, 0, 0);
+	ContainerStory5b4 = ContainerAdd(0, 0, 0);
+	ContainerStory5a5 = ContainerAdd(0, 0, 0);
+	ContainerStory5a6 = ContainerAdd(0, 0, 0);
+	ContainerStory5b6 = ContainerAdd(0, 0, 0);
+	ContainerStory6a1 = ContainerAdd(0, 0, 0);
+	ContainerStory6a2 = ContainerAdd(0, 0, 0);
+	ContainerStory6a3 = ContainerAdd(0, 0, 0);
+	ContainerStory6b3 = ContainerAdd(0, 0, 0);
+	ContainerStory7w1 = ContainerAdd(0, 0, 0);
+	ContainerStory7l1 = ContainerAdd(0, 0, 0);
+	ContainerStory7a2 = ContainerAdd(0, 0, 0);
+	ContainerStory7b2 = ContainerAdd(0, 0, 0);
+	ContainerUnlocks = ContainerAdd(0, 0, 0);
+	ContainerOptions = ContainerAdd(0, 0, 0);
+	ContainerDeleteCheckOne = ContainerAdd(0, 0, 0);
+	ContainerDeleteCheckTwo = ContainerAdd(0, 0, 0);
+}
+
 void ContainerSixSeven(){
 	//populate ContainerStory6a1
 	ViewAdd(ContainerStory6a1, "Images/Background.png", 0, 0);
