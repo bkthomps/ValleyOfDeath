@@ -4466,6 +4466,7 @@ void BulletTime() {
         }
     }
 }
+
 void DoHighscore() {
     switch (highscore) {
         case 0:
@@ -4770,8 +4771,9 @@ void DoHighscore() {
         TextSetText(text3, "\n\n\n\n\n\n\n\n\n\nHighest Level: 99+");
     }
 }
+
 void DoUpdateHighscore() {
-    if (UpdateHighscore == true) {
+    if (UpdateHighscore) {
         //populate ContainerHighscore to score
         switch (level) {
             case 0:
@@ -6279,6 +6281,7 @@ void DoUpdateHighscore() {
         UpdateHighscore = false;
     }
 }
+
 void TortureHealth() {
     int ImageTorturing, number = 100;
     if (HpCounterTorture > number * 20 && torture == true) {
@@ -6361,6 +6364,7 @@ void TortureHealth() {
         ScreenSwitch();
     }
 }
+
 void HealthBar() {
     int Image;
     if (HealthUpdate == true) {
@@ -7049,8 +7053,9 @@ void HealthBar() {
         counter12 = 0;
     }
 }
+
 void SetOne() {
-    if (counter3 == 1 * SpawnTime) {
+    if (counter3 == SpawnTime) {
         eShip1Health[0] = level + 2;
         ViewSetxy(eShip1[0], 113, -94);
     } else if (counter3 == 2 * SpawnTime) {
@@ -7228,8 +7233,9 @@ void SetOne() {
         ScreenSwitch();
     }
 }
+
 void SetTwo() {
-    if (counter3 == 1 * SpawnTime) {
+    if (counter3 == SpawnTime) {
         eShip1Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip1[0], 33, -94);
@@ -7398,8 +7404,9 @@ void SetTwo() {
         ScreenSwitch();
     }
 }
+
 void SetThree() {
-    if (counter3 == 1 * SpawnTime) {
+    if (counter3 == SpawnTime) {
         eShip6Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip6[0], 33, -94);
@@ -7571,8 +7578,9 @@ void SetThree() {
         ViewSetxy(eShip9, 89, -240);
     }
 }
+
 void SetFour() {
-    if (counter3 == 1 * SpawnTime) {
+    if (counter3 == SpawnTime) {
         eShip1Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip1[0], 33, -94);
@@ -7747,8 +7755,9 @@ void SetFour() {
         ScreenSwitch();
     }
 }
+
 void SetFive() {
-    if (counter3 == 1 * SpawnTime) {
+    if (counter3 == SpawnTime) {
         eShip6Health[0] = level + 2;
         ViewSetxy(eShip6[0], 113, -94);
     } else if (counter3 == 2 * SpawnTime) {
@@ -7918,6 +7927,7 @@ void SetFive() {
         ViewSetxy(eShip10, 85, -240);
     }
 }
+
 void EnemyShipMove() {
     for (counter6 = 0; counter6 < 10; counter6++) {
         //x cords
@@ -8010,6 +8020,7 @@ void EnemyShipMove() {
         GoRight = false;
     }
 }
+
 void DoEnemyShipMove() {
     EnemyShipMove();
     if (set == 1) {
@@ -8028,6 +8039,7 @@ void DoEnemyShipMove() {
         set = 1;
     }
 }
+
 void DoEnemyShipShoot() {
     int ex, ey, ex2, ey2, ex3, ey3;
     if (counter4 == 1 * EnemyShootCooldownSpeed) {
@@ -8714,6 +8726,7 @@ void DoEnemyShipShoot() {
         }
     }
 }
+
 void EnemyDied() {
     int explosion, image;
     for (counter10 = 0; counter10 < 10; counter10++) {
@@ -9381,6 +9394,7 @@ void EnemyDied() {
         }
     }
 }
+
 void ShipCollision() {
     for (counter11 = 0; counter11 < 10; counter11++) {
         //ship 1
@@ -9467,6 +9481,7 @@ void ShipCollision() {
         }
     }
 }
+
 void Rank() {
     if (xp >= 0 && xp < 50) {
         rank = 1;
@@ -9510,6 +9525,7 @@ void Rank() {
         rank = 20;
     }
 }
+
 void HealthRegen() {
     if (counter12 >= 150) {
         counter12 = 0;
@@ -9517,6 +9533,7 @@ void HealthRegen() {
         HealthUpdate = true;
     }
 }
+
 void OnTimer() {
     //called 30 times per second - 1800=1min - 10000=5min 36sec
     Rank();
