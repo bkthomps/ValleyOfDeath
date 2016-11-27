@@ -1,7 +1,7 @@
 //====================================================//
 //                   Valley Of Death                  //
 //====================================================//
-//Release 1.1
+//Release 1.1.1
 //26 November 2016
 //Bailey Thompson
 
@@ -25,14 +25,14 @@ int IntTempNum, Mp3Handle, width1, width2, HP, text1, text2, text3, CounterTortu
 int counter6, counter7, counter8, counter9, counter10, counter11, counter12, r, s2, s3, s4, s5, s6, s7, s8, music, PossibleHealth;
 int ShipSpeed, SaveRon, rank, BulletXOffset, BulletYOffset, BulletXOffset2, BulletYOffset2, BulletXOffset3, BulletYOffset3;
 //variables used to offset the images
-const int e1BulletXOffset = 43, e1BulletYOffset = 83, e2BulletXOffset = 43, e2BulletYOffset = 94, e3BulletXOffset = 43, e3BulletYOffset = 88;
-const int e4BulletXOffset = 43, e4BulletYOffset = 94, e5BulletXOffset = 31, e5BulletYOffset = 71, e5BulletXOffset3 = 54, e5BulletYOffset3 = 71;
-const int e6BulletXOffset = 15, e6BulletYOffset = 53, e6BulletXOffset3 = 68, e6BulletYOffset3 = 53, e7BulletXOffset2 = 42, e7BulletYOffset2 = 83;
-const int e8BulletXOffset = 12, e8BulletYOffset = 54, e8BulletXOffset2 = 42, e8BulletYOffset2 = 92, e8BulletXOffset3 = 74, e8BulletYOffset3 = 54;
-const int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9BulletYOffset2 = 230, e9BulletXOffset3 = 130, e9BulletYOffset3 = 83;
-const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
+static const int e1BulletXOffset = 43, e1BulletYOffset = 83, e2BulletXOffset = 43, e2BulletYOffset = 94, e3BulletXOffset = 43, e3BulletYOffset = 88;
+static const int e4BulletXOffset = 43, e4BulletYOffset = 94, e5BulletXOffset = 31, e5BulletYOffset = 71, e5BulletXOffset3 = 54, e5BulletYOffset3 = 71;
+static const int e6BulletXOffset = 15, e6BulletYOffset = 53, e6BulletXOffset3 = 68, e6BulletYOffset3 = 53, e7BulletXOffset2 = 42, e7BulletYOffset2 = 83;
+static const int e8BulletXOffset = 12, e8BulletYOffset = 54, e8BulletXOffset2 = 42, e8BulletYOffset2 = 92, e8BulletXOffset3 = 74, e8BulletYOffset3 = 54;
+static const int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9BulletYOffset2 = 230, e9BulletXOffset3 = 130, e9BulletYOffset3 = 83;
+static const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
 //variables that control the logic
-const int speed = 15, time = 15, SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
+static const int speed = 15, time = 15, SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
 //making screens
 enum Screen {
     ScreenMenu,
