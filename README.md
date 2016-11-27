@@ -1,2 +1,2 @@
 # ValleyOfDeath
-This was made in C++ using DragonFireSDK.
+This iPhone App was made in C++ using DragonFireSDK.
