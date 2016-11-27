@@ -1274,7 +1274,7 @@ int Options(int id, int event, int x, int y) {
 }
 
 int OnOptionsMenuTouch(int id, int event, int x, int y) {
-	if(event == 3){
+	if(event == 3) {
 		CurrentScreen = ScreenOptions;
 		ScreenSwitch();
 	}
@@ -1341,7 +1341,7 @@ void DeclareContainers() {
 	ContainerDeleteCheckTwo = ContainerAdd(0, 0, 0);
 }
 
-void ContainerSixSeven(){
+void ContainerSixSeven() {
 	//populate ContainerStory6a1
 	ViewAdd(ContainerStory6a1, "Images/Background.png", 0, 0);
 	ViewAdd(ContainerStory6a1, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1391,7 +1391,8 @@ void ContainerSixSeven(){
 	ViewAdd(ContainerStory7b2, "Images/btnOkBig.png", 20, 380, OnStoryLevel7, 3);
 	SaveRon=TextAdd(ContainerStory7b2, 0, 0, "", font);
 }
-void ContainerFive(){
+
+void ContainerFive() {
 	//populate ContainerStory5a1
 	ViewAdd(ContainerStory5a1, "Images/Background.png", 0, 0);
 	ViewAdd(ContainerStory5a1, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1436,7 +1437,8 @@ void ContainerFive(){
 	ViewAdd(ContainerStory5b6, "Images/btnOkBig.png", 20, 380, OnStoryLevel5, 7);
 	TextAdd(ContainerStory5b6, 0, 0, "\n\nRon: \nAttacking the ships.", font);
 }
-void ContainerFour(){
+
+void ContainerFour() {
 	//populate ContainerStory4a1
 	ViewAdd(ContainerStory4a1, "Images/Background.png", 0, 0);
 	ViewAdd(ContainerStory4a1, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1491,7 +1493,8 @@ void ContainerFour(){
 	ViewAdd(ContainerStory4a8, "Images/btnOkBig.png", 20, 380, OnStoryLevel4, 10);
 	TextAdd(ContainerStory4a8, 0, 0, "\n\nLieutenant Dan: \nThe ships followed you and \nattack.", font);
 }
-void ContainerThree(){
+
+void ContainerThree() {
 	//populate ContainerStory3a1
 	ViewAdd(ContainerStory3a1, "Images/Background.png", 0, 0);
 	ViewAdd(ContainerStory3a1, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1548,7 +1551,8 @@ void ContainerThree(){
 	//ViewAdd(ContainerStoryTorture, "Images/infToggle.png", 20, 380);
 	TextTorture=TextAdd(ContainerStoryTorture, 70, 0, "", FontTorture);
 }
-void ContainerTwo(){
+
+void ContainerTwo() {
 	//populate ContainerStory2a1
 	ViewAdd(ContainerStory2a1, "Images/Background.png", 0, 0);
 	ViewAdd(ContainerStory2a1, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1596,7 +1600,8 @@ void ContainerTwo(){
 	ViewAdd(ContainerStory2a7, "Images/btnOkBig.png", 20, 380, OnStoryLevel2, 11);
 	TextAdd(ContainerStory2a7, 0, 0, "\n\nCaptain: \nThe ships noticed us and are \nattacking!", font);
 }
-void ContainerOne(){
+
+void ContainerOne() {
 	//populate ContainerHighscore
 	ViewAdd(ContainerHighscore, "Images/MenuPause.png", 0, 0);
 	ViewAdd(ContainerHighscore, "Images/btnOkBig.png", 20, 380, OnHighscore, 1);
@@ -1611,88 +1616,59 @@ void ContainerOne(){
 	ViewAdd(ContainerEndless, "Images/Background.png", 0, 0, OnBattleTouch, 1);
 	ViewAdd(ContainerEndless, "Images/Pause.png", 270, 20, OnPause, 1);
 	HP=ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20);
-	for(counter9=0; counter9<15; counter9++){
-		mBullet1[counter9]=ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
+	///TODO: originally each mBullet was in its own for loop, is this important?
+	for(counter9 = 0; counter9 < 15; counter9++) {
+		mBullet1[counter9] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
+		mBullet2[counter9] = ViewAdd(ContainerEndless, "Images/Rocket.png", -20, -20);
+		mBullet3[counter9] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
 	}
-	for(counter9=0; counter9<15; counter9++){
-		mBullet2[counter9]=ViewAdd(ContainerEndless, "Images/Rocket.png", -20, -20);
-	}
-	for(counter9=0; counter9<15; counter9++){
-		mBullet3[counter9]=ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
-	}
-	mBullet1[0]=ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
+	///TODO: why is the next line needed?
+	mBullet1[0] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
 	//enemy bullets
-	for(counter9=0; counter9<50; counter9++){
-		e1Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+	for(counter9 = 0; counter9 < 50; counter9++) {
+		e1Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e2Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e3Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e4Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
 	}
-	for(counter9=0; counter9<50; counter9++){
-		e2Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+	for(counter9 = 0; counter9 < 25; counter9++) {
+		e5Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e5Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e6Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e6Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e7Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+		e8Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e8Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+		e8Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
 	}
-	for(counter9=0; counter9<50; counter9++){
-		e3Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-	}
-	for(counter9=0; counter9<50; counter9++){
-		e4Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-	}
-	for(counter9=0; counter9<25; counter9++){
-		e5Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-		e5Bullet3[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-	}
-	for(counter9=0; counter9<25; counter9++){
-		e6Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-		e6Bullet3[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-	}
-	for(counter9=0; counter9<25; counter9++){
-		e7Bullet2[counter9]=ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
-	}
-	for(counter9=0; counter9<25; counter9++){
-		e8Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-		e8Bullet2[counter9]=ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
-		e8Bullet3[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-	}
-	for(counter9=0; counter9<5; counter9++){
-		e9Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-		e9Bullet2[counter9]=ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
-		e9Bullet3[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-	}
-	for(counter9=0; counter9<5; counter9++){
-		e10Bullet1[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-		e10Bullet2[counter9]=ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
-		e10Bullet3[counter9]=ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+	for(counter9 = 0; counter9 < 5; counter9++) {
+		e9Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e9Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+		e9Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e10Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+		e10Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+		e10Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
 	}
 	//ships
-	for(counter9=0; counter9<10; counter9++){
-		eShip1[counter9]=ViewAdd(ContainerEndless, "Images/eShip_1.png", 600, 600);
+	for(counter9 = 0; counter9 < 10; counter9++) {
+		eShip1[counter9] = ViewAdd(ContainerEndless, "Images/eShip_1.png", 600, 600);
+		eShip2[counter9] = ViewAdd(ContainerEndless, "Images/eShip_2.png", 600, 600);
+		eShip3[counter9] = ViewAdd(ContainerEndless, "Images/eShip_3.png", 600, 600);
+		eShip4[counter9] = ViewAdd(ContainerEndless, "Images/eShip_4.png", 600, 600);
 	}
-	for(counter9=0; counter9<10; counter9++){
-		eShip2[counter9]=ViewAdd(ContainerEndless, "Images/eShip_2.png", 600, 600);
+	for(counter9 = 0; counter9 < 5; counter9++) {
+		eShip5[counter9] = ViewAdd(ContainerEndless, "Images/eShip_5.png", 600, 600);
+		eShip6[counter9] = ViewAdd(ContainerEndless, "Images/eShip_6.png", 600, 600);
+		eShip7[counter9] = ViewAdd(ContainerEndless, "Images/eShip_7.png", 600, 600);
+		eShip8[counter9] = ViewAdd(ContainerEndless, "Images/eShip_8.png", 600, 600);
 	}
-	for(counter9=0; counter9<10; counter9++){
-		eShip3[counter9]=ViewAdd(ContainerEndless, "Images/eShip_3.png", 600, 600);
-	}
-	for(counter9=0; counter9<10; counter9++){
-		eShip4[counter9]=ViewAdd(ContainerEndless, "Images/eShip_4.png", 600, 600);
-	}
-	for(counter9=0; counter9<5; counter9++){
-		eShip5[counter9]=ViewAdd(ContainerEndless, "Images/eShip_5.png", 600, 600);
-	}
-	for(counter9=0; counter9<5; counter9++){
-		eShip6[counter9]=ViewAdd(ContainerEndless, "Images/eShip_6.png", 600, 600);
-	}
-	for(counter9=0; counter9<5; counter9++){
-		eShip7[counter9]=ViewAdd(ContainerEndless, "Images/eShip_7.png", 600, 600);
-	}
-	for(counter9=0; counter9<5; counter9++){
-		eShip8[counter9]=ViewAdd(ContainerEndless, "Images/eShip_8.png", 600, 600);
-	}
-	eShip9=ViewAdd(ContainerEndless, "Images/eMini-Boss.png", 600, 600);
-	eShip10=ViewAdd(ContainerEndless, "Images/eBoss.png", 600, 600);
+	eShip9 = ViewAdd(ContainerEndless, "Images/eMini-Boss.png", 600, 600);
+	eShip10 = ViewAdd(ContainerEndless, "Images/eBoss.png", 600, 600);
 	//populate ContainerMenu
 	ViewAdd(ContainerMenu, "Images/Background.png", 0, 0);
 	ViewAdd(ContainerMenu, "Images/btnStory.png", 20, 40, OnStoryMenuTouch, 1);
 	ViewAdd(ContainerMenu, "Images/btnEndless.png", 20, 150, OnEndlessMenuTouch, 1);
 	ViewAdd(ContainerMenu, "Images/btnUnlocks.png", 20, 260, OnUnlocksMenuTouch, 1);
-	//ViewAdd(ContainerMenu, "Images/btnTrophies.png", 20, 290, OnTrophiesMenuTouch, 1);
 	ViewAdd(ContainerMenu, "Images/btnOptions.png", 20, 370, OnOptionsMenuTouch, 1);
 	//populate ContainerDied
 	ViewAdd(ContainerDied, "Images/Background.png", 0, 0);
@@ -1741,120 +1717,98 @@ void ContainerOne(){
 	ViewAdd(ContainerStory1e5, "Images/btnOkBig.png", 20, 380, OnStoryLevel1, 8);
 	TextAdd(ContainerStory1e5, 0, 0, "\n\nLieutenant: \nThey followed us and are \nattacking!", font);
 }
-void StartupMusic(){
-	if(sound==true){
-			if(counter>1 && counter<7000){
-				counter=7000;
-			}
-			else if(counter>7000 && counter<13000){
-				counter=13000;
-			}
-			else if(counter>13000 && counter<19000){
-				counter=19000;
-			}
-			else if(counter>19000 && counter<27000){
-				counter=27000;
-			}
-			else if(counter>27000 && counter<34000){
-				counter=34000;
-			}
-			else if(counter>34000 && counter<42000){
-				counter=42000;
-			}
-			else if(counter>42000 && counter<49000){
-				counter=49000;
-			}
-			else if(counter>49000 && counter<55000){
-				counter=55000;
-			}
-			else if(counter>55000 && counter<61000){
-				counter=61000;
-			}
-			else if(counter>61000 && counter<67000){
-				counter=67000;
-			}
-			else if(counter>67000 && counter<73000){
-				counter=73000;
-			}
-			else if(counter>73000 && counter<79000){
-				counter=79000;
-			}
-			else if(counter>79000){
-				counter=1;
-			}
-		if(counter>1 && counter<7000){
-			Mp3Stop();
-			Mp3Handle=Mp3Add("Sounds/1.mp3");
-			Mp3Loop(Mp3Handle);
+
+void StartupMusic() {
+	if(sound){
+		if(counter > 1 && counter < 7000) {
+			counter = 7000;
+		} else if(counter > 7000 && counter < 13000) {
+			counter = 13000;
+		} else if(counter > 13000 && counter < 19000) {
+			counter = 19000;
+		} else if(counter > 19000 && counter < 27000) {
+			counter = 27000;
+		} else if(counter > 27000 && counter < 34000) {
+			counter = 34000;
+		} else if(counter > 34000 && counter < 42000) {
+			counter = 42000;
+		} else if(counter > 42000 && counter < 49000) {
+			counter = 49000;
+		} else if(counter > 49000 && counter < 55000) {
+			counter = 55000;
+		} else if(counter > 55000 && counter < 61000) {
+			counter = 61000;
+		} else if(counter > 61000 && counter < 67000) {
+			counter=67000;
+		} else if(counter > 67000 && counter < 73000) {
+			counter=73000;
+		} else if(counter > 73000 && counter < 79000) {
+			counter = 79000;
+		} else if(counter > 79000) {
+			counter = 1;
 		}
-		else if(counter>7000 && counter<13000){
+		if(counter > 1 && counter < 7000){
 			Mp3Stop();
-			Mp3Handle=Mp3Add("Sounds/2.mp3");
+			Mp3Handle = Mp3Add("Sounds/1.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>13000 && counter<19000){
+		} else if(counter > 7000 && counter < 13000) {
 			Mp3Stop();
-			Mp3Handle=Mp3Add("Sounds/3.mp3");
+			Mp3Handle = Mp3Add("Sounds/2.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>19000 && counter<27000){
+		} else if(counter > 13000 && counter < 19000) {
+			Mp3Stop();
+			Mp3Handle = Mp3Add("Sounds/3.mp3");
+			Mp3Loop(Mp3Handle);
+		} else if(counter > 19000 && counter < 27000) {
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/5.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>27000 && counter<34000){
+		} else if(counter > 27000 && counter < 34000) {
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/7.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>34000 && counter<42000){
+		} else if(counter > 34000 && counter < 42000) {
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/8.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>42000 && counter<49000){
+		} else if(counter > 42000 && counter < 49000) {
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/9.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>49000 && counter<55000){
+		} else if(counter > 49000 && counter < 55000) {
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/11.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>55000 && counter<61000){
+		} else if(counter > 55000 && counter < 61000) {
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/12.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>61000 && counter<67000){
+		} else if(counter > 61000 && counter < 67000){
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/13.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>67000 && counter<73000){
+		} else if(counter > 67000 && counter < 73000){
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/14.mp3");
 			Mp3Loop(Mp3Handle);
-		}
-		else if(counter>73000 && counter<79000){
+		} else if(counter > 73000 && counter < 79000){
 			Mp3Stop();
 			Mp3Handle=Mp3Add("Sounds/15.mp3");
 			Mp3Loop(Mp3Handle);
 		}
-	}
-	else if(sound==false){
+	} else {
 		Mp3Stop();
 	}
 }
-void AppMain(){
+
+void AppMain() {
 	//load game
 	LoadGame();
 	//declare containers
 	DeclareContainers();
 	//declare font
-	font=FontAdd("Arial","Regular",24,0xA4A4A4);
-	FontTorture=FontAdd("Arial","Regular",24,0xDF0101);
+	font = FontAdd("Arial","Regular",24,0xA4A4A4);
+	FontTorture = FontAdd("Arial","Regular",24,0xDF0101);
 	//start screens
 	ScreenSwitch();
 	//containers for menu, death, highscore, and story level 1
@@ -1872,24 +1826,23 @@ void AppMain(){
 	//populate ContainerUnlocks
 	ViewAdd(ContainerUnlocks, "Images/Background.png", 0, 0);
 	ViewAdd(ContainerUnlocks, "Images/Pause.png", 270, 20, OnPause, 1);
-	r=TextAdd(ContainerUnlocks, 10, 10, "", font);
+	r = TextAdd(ContainerUnlocks, 10, 10, "", font);
 	TextAdd(ContainerUnlocks, 10, 10, "\n\n\n\n\n Pick Your Ship By Clicking", font);
 	ViewAdd(ContainerUnlocks, "Unlocks/UnShip_1.png", 20, 180, Unlocks, 1);
-	s2=ViewAdd(ContainerUnlocks, "Unlocks/LckShip_2.png", 120, 180, Unlocks, 2);
-	s3=ViewAdd(ContainerUnlocks, "Unlocks/LckShip_3.png", 220, 180, Unlocks, 3);
-	s4=ViewAdd(ContainerUnlocks, "Unlocks/LckShip_4.png", 20, 280, Unlocks, 4);
-	s5=ViewAdd(ContainerUnlocks, "Unlocks/LckShip_5.png", 120, 280, Unlocks, 5);
-	s6=ViewAdd(ContainerUnlocks, "Unlocks/LckShip_6.png", 220, 280, Unlocks, 6);
-	s7=ViewAdd(ContainerUnlocks, "Unlocks/LckShip_7.png", 60, 380, Unlocks, 7);
-	s8=ViewAdd(ContainerUnlocks, "Unlocks/LckShip_8.png", 180, 380, Unlocks, 8);
+	s2 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_2.png", 120, 180, Unlocks, 2);
+	s3 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_3.png", 220, 180, Unlocks, 3);
+	s4 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_4.png", 20, 280, Unlocks, 4);
+	s5 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_5.png", 120, 280, Unlocks, 5);
+	s6 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_6.png", 220, 280, Unlocks, 6);
+	s7 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_7.png", 60, 380, Unlocks, 7);
+	s8 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_8.png", 180, 380, Unlocks, 8);
 	//populate ContainerOptions
 	ViewAdd(ContainerOptions, "Images/Background.png", 0, 0);
 	ViewAdd(ContainerOptions, "Images/Pause.png", 270, 20, OnPause, 1);
-	if(sound==true){
-		music=ViewAdd(ContainerOptions, "Unlocks/MusicOn.png", 20, 80, Options, 1);
-	}
-	else if(sound==false){
-		music=ViewAdd(ContainerOptions, "Unlocks/MusicOff.png", 20, 80, Options, 1);
+	if(sound) {
+		music = ViewAdd(ContainerOptions, "Unlocks/MusicOn.png", 20, 80, Options, 1);
+	} else {
+		music = ViewAdd(ContainerOptions, "Unlocks/MusicOff.png", 20, 80, Options, 1);
 	}
 	TextAdd(ContainerOptions, 20, 320, "Credits: \nThis Game Was Created \nBy Bailey Thompson", font);
 	ViewAdd(ContainerOptions, "Images/btnDelete.png", 20, 200, Options, 2);
