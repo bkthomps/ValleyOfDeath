@@ -8042,95 +8042,25 @@ void DoEnemyShipMove() {
 
 void DoEnemyShipShoot() {
     int ex, ey, ex2, ey2, ex3, ey3;
-    if (counter4 == 1 * EnemyShootCooldownSpeed) {
-        //ship 1
-        ViewSetxy(e1Bullet1[0], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[1], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[2], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[3], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[4], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[5], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[6], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[7], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[8], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[9], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
-        //ship 2
-        ViewSetxy(e2Bullet1[0], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[1], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[2], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[3], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[4], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[5], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[6], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[7], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[8], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[9], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
-        //ship 3
-        ViewSetxy(e3Bullet1[0], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[1], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[2], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[3], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[4], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[5], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[6], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[7], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[8], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[9], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
-        //ship 4
-        ViewSetxy(e4Bullet1[0], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[1], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[2], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[3], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[4], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[5], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[6], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[7], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[8], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[9], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
-        //ship 5
-        ViewSetxy(e5Bullet1[0], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[0], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[1], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[1], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[2], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[2], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[3], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[3], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[4], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[4], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
-        //ship 6
-        ViewSetxy(e6Bullet1[0], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[0], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[1], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[1], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[2], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[2], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[3], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[3], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[4], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[4], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
-        //ship 7
-        ViewSetxy(e7Bullet2[0], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[1], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[2], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[3], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[4], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
-        //ship 8
-        ViewSetxy(e8Bullet1[0], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[0], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[0], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[1], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[1], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[1], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[2], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[2], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[2], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[3], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[3], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[3], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[4], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[4], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[4], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
+    if (counter4 == EnemyShootCooldownSpeed) {
+        //ship 1 to 4
+        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
+            ViewSetxy(e1Bullet1[counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
+            ViewSetxy(e2Bullet1[counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
+            ViewSetxy(e3Bullet1[counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
+            ViewSetxy(e4Bullet1[counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
+        }
+        //ship 5 to 8
+        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
+            ViewSetxy(e5Bullet1[counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
+            ViewSetxy(e5Bullet3[counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
+            ViewSetxy(e6Bullet1[counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
+            ViewSetxy(e6Bullet3[counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
+            ViewSetxy(e7Bullet2[counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
+            ViewSetxy(e8Bullet1[counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
+            ViewSetxy(e8Bullet2[counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
+            ViewSetxy(e8Bullet3[counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
+        }
         //ship 9
         ViewSetxy(e9Bullet1[0], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[0], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8140,94 +8070,24 @@ void DoEnemyShipShoot() {
         ViewSetxy(e10Bullet2[0], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
         ViewSetxy(e10Bullet3[0], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
     } else if (counter4 == 2 * EnemyShootCooldownSpeed) {
-        //ship 1
-        ViewSetxy(e1Bullet1[10], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[11], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[12], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[13], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[14], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[15], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[16], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[17], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[18], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[19], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
-        //ship 2
-        ViewSetxy(e2Bullet1[10], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[11], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[12], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[13], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[14], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[15], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[16], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[17], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[18], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[19], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
-        //ship 3
-        ViewSetxy(e3Bullet1[10], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[11], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[12], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[13], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[14], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[15], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[16], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[17], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[18], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[19], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
-        //ship 4
-        ViewSetxy(e4Bullet1[10], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[11], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[12], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[13], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[14], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[15], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[16], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[17], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[18], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[19], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
-        //ship 5
-        ViewSetxy(e5Bullet1[5], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[5], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[6], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[6], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[7], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[7], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[8], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[8], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[9], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[9], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
-        //ship 6
-        ViewSetxy(e6Bullet1[5], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[5], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[6], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[6], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[7], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[7], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[8], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[8], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[9], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[9], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
-        //ship 7
-        ViewSetxy(e7Bullet2[5], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[6], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[7], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[8], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[9], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
-        //ship 8
-        ViewSetxy(e8Bullet1[5], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[5], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[5], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[6], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[6], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[6], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[7], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[7], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[7], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[8], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[8], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[8], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[9], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[9], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[9], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
+        //ship 1 to 4
+        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
+            ViewSetxy(e1Bullet1[10 + counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
+            ViewSetxy(e2Bullet1[10 + counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
+            ViewSetxy(e3Bullet1[10 + counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
+            ViewSetxy(e4Bullet1[10 + counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
+        }
+        //ship 5 to 8
+        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
+            ViewSetxy(e5Bullet1[5 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
+            ViewSetxy(e5Bullet3[5 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
+            ViewSetxy(e6Bullet1[5 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
+            ViewSetxy(e6Bullet3[5 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
+            ViewSetxy(e7Bullet2[5 + counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
+            ViewSetxy(e8Bullet1[5 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
+            ViewSetxy(e8Bullet2[5 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
+            ViewSetxy(e8Bullet3[5 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
+        }
         //ship 9
         ViewSetxy(e9Bullet1[1], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[1], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8237,94 +8097,24 @@ void DoEnemyShipShoot() {
         ViewSetxy(e10Bullet2[1], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
         ViewSetxy(e10Bullet3[1], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
     } else if (counter4 == 3 * EnemyShootCooldownSpeed) {
-        //ship 1
-        ViewSetxy(e1Bullet1[20], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[21], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[22], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[23], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[24], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[25], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[26], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[27], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[28], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[29], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
-        //ship 2
-        ViewSetxy(e2Bullet1[20], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[21], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[22], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[23], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[24], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[25], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[26], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[27], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[28], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[29], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
-        //ship 3
-        ViewSetxy(e3Bullet1[20], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[21], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[22], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[23], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[24], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[25], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[26], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[27], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[28], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[29], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
-        //ship 4
-        ViewSetxy(e4Bullet1[20], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[21], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[22], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[23], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[24], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[25], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[26], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[27], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[28], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[29], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
-        //ship 5
-        ViewSetxy(e5Bullet1[10], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[10], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[11], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[11], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[12], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[12], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[13], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[13], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[14], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[14], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
-        //ship 6
-        ViewSetxy(e6Bullet1[10], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[10], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[11], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[11], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[12], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[12], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[13], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[13], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[14], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[14], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
-        //ship 7
-        ViewSetxy(e7Bullet2[10], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[11], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[12], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[13], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[14], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
-        //ship 8
-        ViewSetxy(e8Bullet1[10], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[10], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[10], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[11], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[11], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[11], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[12], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[12], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[12], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[13], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[13], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[13], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[14], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[14], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[14], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
+        //ship 1 to 4
+        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
+            ViewSetxy(e1Bullet1[20 + counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
+            ViewSetxy(e2Bullet1[20 + counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
+            ViewSetxy(e3Bullet1[20 + counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
+            ViewSetxy(e4Bullet1[20 + counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
+        }
+        //ship 5 to 8
+        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
+            ViewSetxy(e5Bullet1[10 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
+            ViewSetxy(e5Bullet3[10 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
+            ViewSetxy(e6Bullet1[10 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
+            ViewSetxy(e6Bullet3[10 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
+            ViewSetxy(e7Bullet2[10 + counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
+            ViewSetxy(e8Bullet1[10 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
+            ViewSetxy(e8Bullet2[10 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
+            ViewSetxy(e8Bullet3[10 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
+        }
         //ship 9
         ViewSetxy(e9Bullet1[2], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[2], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8334,94 +8124,24 @@ void DoEnemyShipShoot() {
         ViewSetxy(e10Bullet2[2], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
         ViewSetxy(e10Bullet3[2], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
     } else if (counter4 == 4 * EnemyShootCooldownSpeed) {
-        //ship 1
-        ViewSetxy(e1Bullet1[30], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[31], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[32], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[33], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[34], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[35], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[36], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[37], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[38], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[39], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
-        //ship 2
-        ViewSetxy(e2Bullet1[30], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[31], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[32], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[33], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[34], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[35], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[36], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[37], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[38], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[39], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
-        //ship 3
-        ViewSetxy(e3Bullet1[30], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[31], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[32], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[33], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[34], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[35], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[36], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[37], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[38], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[39], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
-        //ship 4
-        ViewSetxy(e4Bullet1[30], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[31], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[32], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[33], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[34], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[35], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[36], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[37], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[38], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[39], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
-        //ship 5
-        ViewSetxy(e5Bullet1[15], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[15], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[16], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[16], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[17], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[17], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[18], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[18], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[19], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[19], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
-        //ship 6
-        ViewSetxy(e6Bullet1[15], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[15], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[16], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[16], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[17], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[17], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[18], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[18], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[19], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[19], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
-        //ship 7
-        ViewSetxy(e7Bullet2[15], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[16], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[17], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[18], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[19], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
-        //ship 8
-        ViewSetxy(e8Bullet1[15], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[15], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[15], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[16], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[16], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[16], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[17], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[17], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[17], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[18], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[18], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[18], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[19], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[19], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[19], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
+        //ship 1 to 4
+        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
+            ViewSetxy(e1Bullet1[30 + counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
+            ViewSetxy(e2Bullet1[30 + counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
+            ViewSetxy(e3Bullet1[30 + counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
+            ViewSetxy(e4Bullet1[30 + counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
+        }
+        //ship 5 to 8
+        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
+            ViewSetxy(e5Bullet1[15 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
+            ViewSetxy(e5Bullet3[15 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
+            ViewSetxy(e6Bullet1[15 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
+            ViewSetxy(e6Bullet3[15 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
+            ViewSetxy(e7Bullet2[15 + counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
+            ViewSetxy(e8Bullet1[15 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
+            ViewSetxy(e8Bullet2[15 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
+            ViewSetxy(e8Bullet3[15 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
+        }
         //ship 9
         ViewSetxy(e9Bullet1[3], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[3], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8431,94 +8151,24 @@ void DoEnemyShipShoot() {
         ViewSetxy(e10Bullet2[3], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
         ViewSetxy(e10Bullet3[3], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
     } else if (counter4 == 5 * EnemyShootCooldownSpeed) {
-        //ship 1
-        ViewSetxy(e1Bullet1[40], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[41], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[42], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[43], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[44], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[45], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[46], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[47], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[48], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
-        ViewSetxy(e1Bullet1[49], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
-        //ship 2
-        ViewSetxy(e2Bullet1[40], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[41], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[42], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[43], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[44], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[45], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[46], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[47], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[48], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
-        ViewSetxy(e2Bullet1[49], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
-        //ship 3
-        ViewSetxy(e3Bullet1[40], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[41], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[42], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[43], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[44], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[45], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[46], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[47], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[48], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
-        ViewSetxy(e3Bullet1[49], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
-        //ship 4
-        ViewSetxy(e4Bullet1[40], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[41], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[42], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[43], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[44], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[45], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[46], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[47], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[48], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
-        ViewSetxy(e4Bullet1[49], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
-        //ship 5
-        ViewSetxy(e5Bullet1[20], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[20], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[21], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[21], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[22], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[22], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[23], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[23], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
-        ViewSetxy(e5Bullet1[24], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
-        ViewSetxy(e5Bullet3[24], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
-        //ship 6
-        ViewSetxy(e6Bullet1[20], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[20], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[21], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[21], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[22], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[22], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[23], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[23], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
-        ViewSetxy(e6Bullet1[24], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
-        ViewSetxy(e6Bullet3[24], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
-        //ship 7
-        ViewSetxy(e7Bullet2[20], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[21], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[22], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[23], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
-        ViewSetxy(e7Bullet2[24], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
-        //ship 8
-        ViewSetxy(e8Bullet1[20], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[20], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[20], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[21], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[21], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[21], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[22], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[22], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[22], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[23], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[23], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[23], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
-        ViewSetxy(e8Bullet1[24], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
-        ViewSetxy(e8Bullet2[24], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
-        ViewSetxy(e8Bullet3[24], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
+        //ship 1 to 4
+        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
+            ViewSetxy(e1Bullet1[40 + counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
+            ViewSetxy(e2Bullet1[40 + counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
+            ViewSetxy(e3Bullet1[40 + counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
+            ViewSetxy(e4Bullet1[40 + counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
+        }
+        //ship 5 to 8
+        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
+            ViewSetxy(e5Bullet1[20 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
+            ViewSetxy(e5Bullet3[20 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
+            ViewSetxy(e6Bullet1[20 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
+            ViewSetxy(e6Bullet3[20 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
+            ViewSetxy(e7Bullet2[20 + counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
+            ViewSetxy(e8Bullet1[20 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
+            ViewSetxy(e8Bullet2[20 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
+            ViewSetxy(e8Bullet3[20 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
+        }
         //ship 9
         ViewSetxy(e9Bullet1[4], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[4], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -9539,10 +9189,10 @@ void OnTimer() {
     Rank();
     SoundSwitch();
     DoUpdateHighscore();
-    if (sound == true) {
+    if (sound) {
         counter += 1;
     }
-    if (pause == false) {
+    if (!pause) {
         if (CurrentScreen == ScreenEndless || CurrentScreen == ScreenStoryBattle1 || CurrentScreen == ScreenStoryBattle2 || CurrentScreen == ScreenStoryBattle4 || CurrentScreen == ScreenStoryBattle5 || CurrentScreen == ScreenStoryBattle6) {
             counter2 += 1;
             counter3 += 1; //ship move counter
@@ -9560,7 +9210,7 @@ void OnTimer() {
             mShipMove();
             EnemyDied();
             ShipCollision();
-        } else if (CurrentScreen == ScreenStoryTorture && torture == true) {
+        } else if (CurrentScreen == ScreenStoryTorture && torture) {
             if (CounterTorture == 0) {
                 ViewSetxy(ImageTorture, -1, -1);
             } else if (CounterTorture == 1) {
@@ -9580,7 +9230,7 @@ void OnTimer() {
                 CounterTorture = 0;
             }
             TortureHealth();
-        } else if (CurrentScreen == ScreenStoryTorture && torture == false) {
+        } else if (CurrentScreen == ScreenStoryTorture && torture) {
             HpCounterTorture += 1;
             TortureHealth();
             TextSetText(TextTorture, "");
