@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.1.5)
+ * Valley Of Death (1.1.6)
  * 1 January 2017
  */
 #include "DragonFireSDK.h"
@@ -1681,11 +1681,8 @@ void AppMain() {
     //populate ContainerOptions
     ViewAdd(ContainerOptions, "Images/Background.png", 0, 0);
     ViewAdd(ContainerOptions, "Images/Pause.png", 270, 20, OnPause, 1);
-    if (sound == true) {
-        music = ViewAdd(ContainerOptions, "Unlocks/MusicOn.png", 20, 80, Options, 1);
-    } else if (sound == false) {
-        music = ViewAdd(ContainerOptions, "Unlocks/MusicOff.png", 20, 80, Options, 1);
-    }
+	char* musicString = (sound) ? ("Unlocks/MusicOn.png") : ("Unlocks/MusicOff.png");
+	music = ViewAdd(ContainerOptions, musicString, 20, 80, Options, 1);
     TextAdd(ContainerOptions, 20, 320, "Credits: \nThis Game Was Created \nBy Bailey Thompson", font);
     ViewAdd(ContainerOptions, "Images/btnDelete.png", 20, 200, Options, 2);
     //populate ContainerDeleteCheckOne
