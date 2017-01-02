@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.1.14)
+ * Valley Of Death (1.1.15)
  * 2 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -266,22 +266,22 @@ void Reset() {
     newY = 380;
     for (int i = 0; i < 15; i++) {
         ViewSetxy(mBullet1[i], -10, -10);
-		ViewSetxy(mBullet2[i], -20, -20);
-		ViewSetxy(mBullet3[i], -10, -10);
+        ViewSetxy(mBullet2[i], -20, -20);
+        ViewSetxy(mBullet3[i], -10, -10);
     }
     for (int i = 0; i < 50; i++) {
         ViewSetxy(e1Bullet1[i], 600, 600);
-		ViewSetxy(e2Bullet1[i], 600, 600);
-		ViewSetxy(e3Bullet1[i], 600, 600);
-		ViewSetxy(e4Bullet1[i], 600, 600);
+        ViewSetxy(e2Bullet1[i], 600, 600);
+        ViewSetxy(e3Bullet1[i], 600, 600);
+        ViewSetxy(e4Bullet1[i], 600, 600);
     }
     for (int i = 0; i < 25; i++) {
         ViewSetxy(e5Bullet1[i], 600, 600);
         ViewSetxy(e5Bullet3[i], 600, 600);
-		ViewSetxy(e6Bullet1[i], 600, 600);
+        ViewSetxy(e6Bullet1[i], 600, 600);
         ViewSetxy(e6Bullet3[i], 600, 600);
-		ViewSetxy(e7Bullet2[i], 600, 600);
-		ViewSetxy(e8Bullet1[i], 600, 600);
+        ViewSetxy(e7Bullet2[i], 600, 600);
+        ViewSetxy(e8Bullet1[i], 600, 600);
         ViewSetxy(e8Bullet2[i], 600, 600);
         ViewSetxy(e8Bullet3[i], 600, 600);
     }
@@ -289,7 +289,7 @@ void Reset() {
         ViewSetxy(e9Bullet1[i], 600, 600);
         ViewSetxy(e9Bullet2[i], 600, 600);
         ViewSetxy(e9Bullet3[i], 600, 600);
-		ViewSetxy(e10Bullet1[i], 600, 600);
+        ViewSetxy(e10Bullet1[i], 600, 600);
         ViewSetxy(e10Bullet2[i], 600, 600);
         ViewSetxy(e10Bullet3[i], 600, 600);
     }
@@ -298,15 +298,15 @@ void Reset() {
         ship = (eShip1[i]);
         picture = ImageAdd("Images/eShip_1.png");
         ViewSetImage(ship, picture);
-		ViewSetxy(eShip2[i], 600, 600);
+        ViewSetxy(eShip2[i], 600, 600);
         ship = (eShip2[i]);
         picture = ImageAdd("Images/eShip_2.png");
         ViewSetImage(ship, picture);
-		ViewSetxy(eShip3[i], 600, 600);
+        ViewSetxy(eShip3[i], 600, 600);
         ship = (eShip3[i]);
         picture = ImageAdd("Images/eShip_3.png");
         ViewSetImage(ship, picture);
-		ViewSetxy(eShip4[i], 600, 600);
+        ViewSetxy(eShip4[i], 600, 600);
         ship = (eShip4[i]);
         picture = ImageAdd("Images/eShip_4.png");
         ViewSetImage(ship, picture);
@@ -316,7 +316,7 @@ void Reset() {
         ship = (eShip5[i]);
         picture = ImageAdd("Images/eShip_5.png");
         ViewSetImage(ship, picture);
-		ViewSetxy(eShip6[i], 600, 600);
+        ViewSetxy(eShip6[i], 600, 600);
         ship = (eShip6[i]);
         picture = ImageAdd("Images/eShip_6.png");
         ViewSetImage(ship, picture);
@@ -596,7 +596,7 @@ void ScreenSwitch() {
 
 int OnTorture(int id, int event, int x, int y) {
     if (event == 1 || event == 3) {
-		torture = !torture;
+        torture = !torture;
     }
     return 0;
 }
@@ -624,7 +624,7 @@ int OnReturnToMenu(int id, int event, int x, int y) {
         } else {
             CurrentScreen = ScreenDied;
         }
-		ScreenSwitch();
+        ScreenSwitch();
     }
     return 0;
 }
@@ -663,7 +663,7 @@ int OnStoryLevel7(int id, int event, int x, int y) {
             xp += 10;
             CurrentScreen = ScreenMenu;
         }
-		ScreenSwitch();
+        ScreenSwitch();
     }
     return 0;
 }
@@ -676,15 +676,15 @@ int OnStoryLevel6(int id, int event, int x, int y) {
         } else if (id == 3) {
             CurrentScreen = ScreenStory6b3;
         }
-		if (id == 4) {
+        if (id == 4) {
             CurrentScreen = ScreenStoryBattle6;
             ScreenSwitch();
             Reset();
             set = 5;
             level = 1;
         } else {
-			ScreenSwitch();
-		}
+            ScreenSwitch();
+        }
     }
     return 0;
 }
@@ -709,15 +709,15 @@ int OnStoryLevel5(int id, int event, int x, int y) {
         } else if (id == 6) {
             CurrentScreen = ScreenStory5b6;
         }
-		if (id == 7) {
+        if (id == 7) {
             CurrentScreen = ScreenStoryBattle5;
             ScreenSwitch();
             Reset();
             set = 4;
             level = 1;
         } else {
-			ScreenSwitch();
-		}
+            ScreenSwitch();
+        }
     }
     return 0;
 }
@@ -742,15 +742,15 @@ int OnStoryLevel4(int id, int event, int x, int y) {
         } else if (id == 9) {
             CurrentScreen = ScreenStory4a8;
         }
-		if (id == 10) {
+        if (id == 10) {
             CurrentScreen = ScreenStoryBattle4;
             ScreenSwitch();
             Reset();
             set = 3;
             level = 1;
         } else {
-			ScreenSwitch();
-		}
+            ScreenSwitch();
+        }
     }
     return 0;
 }
@@ -773,7 +773,7 @@ int OnStoryLevel3(int id, int event, int x, int y) {
         } else if (id == 8) {
             CurrentScreen = ScreenStoryTorture;
         }
-		ScreenSwitch();
+        ScreenSwitch();
     }
     return 0;
 }
@@ -800,15 +800,15 @@ int OnStoryLevel2(int id, int event, int x, int y) {
         } else if (id == 10) {
             CurrentScreen = ScreenStory2a7;
         }
-		if (id == 11) {
+        if (id == 11) {
             CurrentScreen = ScreenStoryBattle2;
             ScreenSwitch();
             Reset();
             set = 2;
             level = 1;
         } else {
-			ScreenSwitch();
-		}
+            ScreenSwitch();
+        }
     }
     return 0;
 }
@@ -827,15 +827,15 @@ int OnStoryLevel1(int id, int event, int x, int y) {
         } else if (id == 7) {
             CurrentScreen = ScreenStory1e5;
         }
-		if (id == 8) {
+        if (id == 8) {
             CurrentScreen = ScreenStoryBattle1;
             ScreenSwitch();
             Reset();
             set = 1;
             level = 1;
         } else {
-			ScreenSwitch();
-		}
+            ScreenSwitch();
+        }
     }
     return 0;
 }
@@ -849,7 +849,7 @@ int OnStoryMenuTouch(int id, int event, int x, int y) {
 
 void ShipType() {
     static const int lift = 10;
-	ViewSetxy(ShipView, -200, -200);
+    ViewSetxy(ShipView, -200, -200);
     switch (ship) {
         case 1:
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_1.png", -200, -200);
@@ -1043,20 +1043,20 @@ int OnUnlocksMenuTouch(int id, int event, int x, int y) {
         } else if (rank == 20) {
             TextSetText(r, "\n\nLevel 20: Admiral");
         }
-		ImageUnlocks = (rank >= 3) ? (ImageAdd("Unlocks/UnShip_2.png")) : (ImageAdd("Unlocks/LckShip_2.png"));
-		ViewSetImage(s2, ImageUnlocks);
-		ImageUnlocks = (rank >= 5) ? (ImageAdd("Unlocks/UnShip_3.png")) : (ImageAdd("Unlocks/LckShip_3.png"));
-		ViewSetImage(s3, ImageUnlocks);
-		ImageUnlocks = (rank >= 8) ? (ImageAdd("Unlocks/UnShip_4.png")) : (ImageAdd("Unlocks/LckShip_4.png"));
-		ViewSetImage(s4, ImageUnlocks);
-		ImageUnlocks = (rank >= 11) ? (ImageAdd("Unlocks/UnShip_5.png")) : (ImageAdd("Unlocks/LckShip_5.png"));
-		ViewSetImage(s5, ImageUnlocks);
-		ImageUnlocks = (rank >= 14) ? (ImageAdd("Unlocks/UnShip_6.png")) : (ImageAdd("Unlocks/LckShip_6.png"));
-		ViewSetImage(s6, ImageUnlocks);
-		ImageUnlocks = (rank >= 17) ? (ImageAdd("Unlocks/UnShip_7.png")) : (ImageAdd("Unlocks/LckShip_7.png"));
-		ViewSetImage(s7, ImageUnlocks);
-		ImageUnlocks = (rank >= 20) ? (ImageAdd("Unlocks/UnShip_8.png")) : (ImageAdd("Unlocks/LckShip_8.png"));
-		ViewSetImage(s8, ImageUnlocks);
+        ImageUnlocks = (rank >= 3) ? (ImageAdd("Unlocks/UnShip_2.png")) : (ImageAdd("Unlocks/LckShip_2.png"));
+        ViewSetImage(s2, ImageUnlocks);
+        ImageUnlocks = (rank >= 5) ? (ImageAdd("Unlocks/UnShip_3.png")) : (ImageAdd("Unlocks/LckShip_3.png"));
+        ViewSetImage(s3, ImageUnlocks);
+        ImageUnlocks = (rank >= 8) ? (ImageAdd("Unlocks/UnShip_4.png")) : (ImageAdd("Unlocks/LckShip_4.png"));
+        ViewSetImage(s4, ImageUnlocks);
+        ImageUnlocks = (rank >= 11) ? (ImageAdd("Unlocks/UnShip_5.png")) : (ImageAdd("Unlocks/LckShip_5.png"));
+        ViewSetImage(s5, ImageUnlocks);
+        ImageUnlocks = (rank >= 14) ? (ImageAdd("Unlocks/UnShip_6.png")) : (ImageAdd("Unlocks/LckShip_6.png"));
+        ViewSetImage(s6, ImageUnlocks);
+        ImageUnlocks = (rank >= 17) ? (ImageAdd("Unlocks/UnShip_7.png")) : (ImageAdd("Unlocks/LckShip_7.png"));
+        ViewSetImage(s7, ImageUnlocks);
+        ImageUnlocks = (rank >= 20) ? (ImageAdd("Unlocks/UnShip_8.png")) : (ImageAdd("Unlocks/LckShip_8.png"));
+        ViewSetImage(s8, ImageUnlocks);
         CurrentScreen = ScreenUnlocks;
         ScreenSwitch();
     }
@@ -1459,10 +1459,10 @@ void ContainerOne() {
     ViewAdd(ContainerEndless, "Images/Background.png", 0, 0, OnBattleTouch, 1);
     ViewAdd(ContainerEndless, "Images/Pause.png", 270, 20, OnPause, 1);
     HP = ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20);
-	//player bullets
+    //player bullets
     for (int i = 0; i < 15; i++) {
         mBullet1[i] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
-		mBullet2[i] = ViewAdd(ContainerEndless, "Images/Rocket.png", -20, -20);
+        mBullet2[i] = ViewAdd(ContainerEndless, "Images/Rocket.png", -20, -20);
         mBullet3[i] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
     }
     //enemy bullets
@@ -1670,8 +1670,8 @@ void AppMain() {
     //populate ContainerOptions
     ViewAdd(ContainerOptions, "Images/Background.png", 0, 0);
     ViewAdd(ContainerOptions, "Images/Pause.png", 270, 20, OnPause, 1);
-	char* musicString = (sound) ? ("Unlocks/MusicOn.png") : ("Unlocks/MusicOff.png");
-	music = ViewAdd(ContainerOptions, musicString, 20, 80, Options, 1);
+    char* musicString = (sound) ? ("Unlocks/MusicOn.png") : ("Unlocks/MusicOff.png");
+    music = ViewAdd(ContainerOptions, musicString, 20, 80, Options, 1);
     TextAdd(ContainerOptions, 20, 320, "Credits: \nThis Game Was Created \nBy Bailey Thompson", font);
     ViewAdd(ContainerOptions, "Images/btnDelete.png", 20, 200, Options, 2);
     //populate ContainerDeleteCheckOne
@@ -1691,19 +1691,19 @@ void AppMain() {
 }
 
 void IntGameToFile() {
-	FileBuffer[0] = char(IntTempNum / 10000 + '0');
-	IntTempNum %= 10000;
-	FileBuffer[1] = char(IntTempNum / 1000 + '0');
-	IntTempNum %= 1000;
-	FileBuffer[2] = char(IntTempNum / 100 + '0');
-	IntTempNum %= 100;
-	FileBuffer[3] = char(IntTempNum / 10 + '0');
-	IntTempNum %= 10;
-	FileBuffer[4] = char(IntTempNum + '0');
-	IntTempNum = 0;
+    FileBuffer[0] = char(IntTempNum / 10000 + '0');
+    IntTempNum %= 10000;
+    FileBuffer[1] = char(IntTempNum / 1000 + '0');
+    IntTempNum %= 1000;
+    FileBuffer[2] = char(IntTempNum / 100 + '0');
+    IntTempNum %= 100;
+    FileBuffer[3] = char(IntTempNum / 10 + '0');
+    IntTempNum %= 10;
+    FileBuffer[4] = char(IntTempNum + '0');
+    IntTempNum = 0;
 }
 void BoolGameToFile() {
-	FileBuffer[0] = (BoolTempNum) ? ('t') : ('f');
+    FileBuffer[0] = (BoolTempNum) ? ('t') : ('f');
 }
 void AppExit() {
     Mp3Stop();
@@ -1746,11 +1746,11 @@ void AppExit() {
 }
 
 bool IsNotActive() {
-	bool ret = CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 
-		&& CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  
-		&& CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 
-		&& CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore;
-	return ret;
+    bool ret = CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1
+               && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4
+               && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6
+               && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore;
+    return ret;
 }
 void SoundSwitch() {
     if (sound) {
@@ -1887,28 +1887,28 @@ void mShipMove() {
 }
 void BulletTime() {
     int x, y, x2, y2, x3, y3;
-	bool used = false;
-	for (int i = 1; i <= 15; i++) {
-		if (counter2 == i * time) {
-			used = true;
-			if (ship == 8) {
-				ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
-				ViewSetxy(mBullet2[i - 1], mX + BulletXOffset2, mY + BulletYOffset2);
-				ViewSetxy(mBullet3[i - 1], mX + BulletXOffset3, mY + BulletYOffset3);
-			} else if (ship == 7) {
-				ViewSetxy(mBullet2[i - 1], mX + BulletXOffset2, mY + BulletYOffset2);
-			} else if (ship == 6 || ship == 5) {
-				ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
-				ViewSetxy(mBullet3[i - 1], mX + BulletXOffset3, mY + BulletYOffset3);
-			} else {
-				ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
-			}
-		}
-	}
-	if (counter2 >= 15 * time) {
-		counter2 = 0;
-	}
-	//TODO: make this block of code shorter
+    bool used = false;
+    for (int i = 1; i <= 15; i++) {
+        if (counter2 == i * time) {
+            used = true;
+            if (ship == 8) {
+                ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
+                ViewSetxy(mBullet2[i - 1], mX + BulletXOffset2, mY + BulletYOffset2);
+                ViewSetxy(mBullet3[i - 1], mX + BulletXOffset3, mY + BulletYOffset3);
+            } else if (ship == 7) {
+                ViewSetxy(mBullet2[i - 1], mX + BulletXOffset2, mY + BulletYOffset2);
+            } else if (ship == 6 || ship == 5) {
+                ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
+                ViewSetxy(mBullet3[i - 1], mX + BulletXOffset3, mY + BulletYOffset3);
+            } else {
+                ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
+            }
+        }
+    }
+    if (counter2 >= 15 * time) {
+        counter2 = 0;
+    }
+    //TODO: make this block of code shorter
     if (!used) {
         //0
         x = ViewGetx(mBullet1[0]);
@@ -4119,49 +4119,49 @@ void BulletTime() {
     }
 }
 void DoHighscore() {
-	char lvl[] = "\n\n\n\n\n\n\n\n\n\nHighest Level:   ";
-	if (highscore <= 9) {
-		lvl[25] = char(highscore + '0');
-		TextSetText(text3, lvl);
-	} else if (highscore >= 10 && highscore <= 99) {
-		int one = highscore / 10;
-		int two = highscore % 10;
-		lvl[25] = char(one + '0');
-		lvl[26] = char(two + '0');
-		TextSetText(text3, lvl);
-	} else {
-		TextSetText(text3, "\n\n\n\n\n\n\n\n\n\nHighest Level: 99+");
-	}
+    char lvl[] = "\n\n\n\n\n\n\n\n\n\nHighest Level:   ";
+    if (highscore <= 9) {
+        lvl[25] = char(highscore + '0');
+        TextSetText(text3, lvl);
+    } else if (highscore >= 10 && highscore <= 99) {
+        int one = highscore / 10;
+        int two = highscore % 10;
+        lvl[25] = char(one + '0');
+        lvl[26] = char(two + '0');
+        TextSetText(text3, lvl);
+    } else {
+        TextSetText(text3, "\n\n\n\n\n\n\n\n\n\nHighest Level: 99+");
+    }
 }
 void DoUpdateHighscore() {
     if (UpdateHighscore) {
-		if (level > highscore) {
-			highscore = level;
-		}
-		DoHighscore();
-		(health <= 0) ? (TextSetText(text1, "\n\nYou Died.")) : (TextSetText(text1, "\n\nYou Left."));
+        if (level > highscore) {
+            highscore = level;
+        }
+        DoHighscore();
+        (health <= 0) ? (TextSetText(text1, "\n\nYou Died.")) : (TextSetText(text1, "\n\nYou Left."));
 
-		char lvl[] = "\n\n\n\n\n\nYou Left At Level   ";
-		if (health <= 0) {
-			char temp[] = "\n\n\n\n\n\nSurvived To";
-			for (int i = 0; i < 17; i++) {
-				lvl[i] = temp[i];
-			}
-		}
+        char lvl[] = "\n\n\n\n\n\nYou Left At Level   ";
+        if (health <= 0) {
+            char temp[] = "\n\n\n\n\n\nSurvived To";
+            for (int i = 0; i < 17; i++) {
+                lvl[i] = temp[i];
+            }
+        }
 
-		if (level <= 9) {
-			lvl[25] = char(level + '0');
-			TextSetText(text2, lvl);
-		} else if (level >= 10 && level <= 99) {
-			int one = level / 10;
-			int two = level % 10;
-			lvl[25] = char(one + '0');
-			lvl[26] = char(two + '0');
-			TextSetText(text2, lvl);
-		} else {
-			(health <= 0) ? (TextSetText(text2, "\n\n\n\n\n\nSurvived To Level 99+")) :
-				(TextSetText(text2, "\n\n\n\n\n\nYou Left At Level 99+"));
-		}
+        if (level <= 9) {
+            lvl[25] = char(level + '0');
+            TextSetText(text2, lvl);
+        } else if (level >= 10 && level <= 99) {
+            int one = level / 10;
+            int two = level % 10;
+            lvl[25] = char(one + '0');
+            lvl[26] = char(two + '0');
+            TextSetText(text2, lvl);
+        } else {
+            (health <= 0) ? (TextSetText(text2, "\n\n\n\n\n\nSurvived To Level 99+")) :
+            (TextSetText(text2, "\n\n\n\n\n\nYou Left At Level 99+"));
+        }
 
         Reset();
         UpdateHighscore = false;
@@ -4311,12 +4311,12 @@ void HealthBar() {
                     ViewSetImage(HP, Image);
                     break;
             }
-			if (health <= 6) {
-				char one[] = "Images/0HP.png";
-				one[7] = char(health + '0');
-				Image = ImageAdd(one);
-				ViewSetImage(HP, Image);
-			}
+            if (health <= 6) {
+                char one[] = "Images/0HP.png";
+                one[7] = char(health + '0');
+                Image = ImageAdd(one);
+                ViewSetImage(HP, Image);
+            }
         } else if (ship == 7) {
             switch (health) {
                 case 32:
@@ -4368,12 +4368,12 @@ void HealthBar() {
                     ViewSetImage(HP, Image);
                     break;
             }
-			if (health <= 8) {
-				char one[] = "Images/0HP.png";
-				one[7] = char(health + '0');
-				Image = ImageAdd(one);
-				ViewSetImage(HP, Image);
-			}
+            if (health <= 8) {
+                char one[] = "Images/0HP.png";
+                one[7] = char(health + '0');
+                Image = ImageAdd(one);
+                ViewSetImage(HP, Image);
+            }
         } else if (ship == 6) {
             switch (health) {
                 case 30:
@@ -4417,21 +4417,21 @@ void HealthBar() {
                     ViewSetImage(HP, Image);
                     break;
             }
-			if (health <= 10) {
-				char one[] = "Images/0HP.png";
-				char two[] = "Images/00HP.png";
-				if (health >= 10) {
-					int tmpOne = health / 10;
-					int tmpTwo = health % 10;
-					two[7] = char(tmpOne + '0');
-					two[8] = char(tmpTwo + '0');
-					Image = ImageAdd(two);
-				} else {
-					one[7] = char(health + '0');
-					Image = ImageAdd(one);
-				}
-				ViewSetImage(HP, Image);
-			}
+            if (health <= 10) {
+                char one[] = "Images/0HP.png";
+                char two[] = "Images/00HP.png";
+                if (health >= 10) {
+                    int tmpOne = health / 10;
+                    int tmpTwo = health % 10;
+                    two[7] = char(tmpOne + '0');
+                    two[8] = char(tmpTwo + '0');
+                    Image = ImageAdd(two);
+                } else {
+                    one[7] = char(health + '0');
+                    Image = ImageAdd(one);
+                }
+                ViewSetImage(HP, Image);
+            }
         } else if (ship == 5) {
             switch (health) {
                 case 28:
@@ -4467,21 +4467,21 @@ void HealthBar() {
                     ViewSetImage(HP, Image);
                     break;
             }
-			if (health <= 12) {
-				char one[] = "Images/0HP.png";
-				char two[] = "Images/00HP.png";
-				if (health >= 10) {
-					int tmpOne = health / 10;
-					int tmpTwo = health % 10;
-					two[7] = char(tmpOne + '0');
-					two[8] = char(tmpTwo + '0');
-					Image = ImageAdd(two);
-				} else {
-					one[7] = char(health + '0');
-					Image = ImageAdd(one);
-				}
-				ViewSetImage(HP, Image);
-			}
+            if (health <= 12) {
+                char one[] = "Images/0HP.png";
+                char two[] = "Images/00HP.png";
+                if (health >= 10) {
+                    int tmpOne = health / 10;
+                    int tmpTwo = health % 10;
+                    two[7] = char(tmpOne + '0');
+                    two[8] = char(tmpTwo + '0');
+                    Image = ImageAdd(two);
+                } else {
+                    one[7] = char(health + '0');
+                    Image = ImageAdd(one);
+                }
+                ViewSetImage(HP, Image);
+            }
         } else if (ship == 4) {
             switch (health) {
                 case 26:
@@ -4509,21 +4509,21 @@ void HealthBar() {
                     ViewSetImage(HP, Image);
                     break;
             }
-			if (health <= 14) {
-				char one[] = "Images/0HP.png";
-				char two[] = "Images/00HP.png";
-				if (health >= 10) {
-					int tmpOne = health / 10;
-					int tmpTwo = health % 10;
-					two[7] = char(tmpOne + '0');
-					two[8] = char(tmpTwo + '0');
-					Image = ImageAdd(two);
-				} else {
-					one[7] = char(health + '0');
-					Image = ImageAdd(one);
-				}
-				ViewSetImage(HP, Image);
-			}
+            if (health <= 14) {
+                char one[] = "Images/0HP.png";
+                char two[] = "Images/00HP.png";
+                if (health >= 10) {
+                    int tmpOne = health / 10;
+                    int tmpTwo = health % 10;
+                    two[7] = char(tmpOne + '0');
+                    two[8] = char(tmpTwo + '0');
+                    Image = ImageAdd(two);
+                } else {
+                    one[7] = char(health + '0');
+                    Image = ImageAdd(one);
+                }
+                ViewSetImage(HP, Image);
+            }
         } else if (ship == 3) {
             switch (health) {
                 case 24:
@@ -4543,21 +4543,21 @@ void HealthBar() {
                     ViewSetImage(HP, Image);
                     break;
             }
-			if (health <= 16) {
-				char one[] = "Images/0HP.png";
-				char two[] = "Images/00HP.png";
-				if (health >= 10) {
-					int tmpOne = health / 10;
-					int tmpTwo = health % 10;
-					two[7] = char(tmpOne + '0');
-					two[8] = char(tmpTwo + '0');
-					Image = ImageAdd(two);
-				} else {
-					one[7] = char(health + '0');
-					Image = ImageAdd(one);
-				}
-				ViewSetImage(HP, Image);
-			}
+            if (health <= 16) {
+                char one[] = "Images/0HP.png";
+                char two[] = "Images/00HP.png";
+                if (health >= 10) {
+                    int tmpOne = health / 10;
+                    int tmpTwo = health % 10;
+                    two[7] = char(tmpOne + '0');
+                    two[8] = char(tmpTwo + '0');
+                    Image = ImageAdd(two);
+                } else {
+                    one[7] = char(health + '0');
+                    Image = ImageAdd(one);
+                }
+                ViewSetImage(HP, Image);
+            }
         } else if (ship == 2) {
             switch (health) {
                 case 22:
@@ -4569,35 +4569,35 @@ void HealthBar() {
                     ViewSetImage(HP, Image);
                     break;
             }
-			if (health <= 18) {
-				char one[] = "Images/0HP.png";
-				char two[] = "Images/00HP.png";
-				if (health >= 10) {
-					int tmpOne = health / 10;
-					int tmpTwo = health % 10;
-					two[7] = char(tmpOne + '0');
-					two[8] = char(tmpTwo + '0');
-					Image = ImageAdd(two);
-				} else {
-					one[7] = char(health + '0');
-					Image = ImageAdd(one);
-				}
-				ViewSetImage(HP, Image);
-			}
+            if (health <= 18) {
+                char one[] = "Images/0HP.png";
+                char two[] = "Images/00HP.png";
+                if (health >= 10) {
+                    int tmpOne = health / 10;
+                    int tmpTwo = health % 10;
+                    two[7] = char(tmpOne + '0');
+                    two[8] = char(tmpTwo + '0');
+                    Image = ImageAdd(two);
+                } else {
+                    one[7] = char(health + '0');
+                    Image = ImageAdd(one);
+                }
+                ViewSetImage(HP, Image);
+            }
         } else if (ship == 1) {
-			char one[] = "Images/0HP.png";
-			char two[] = "Images/00HP.png";
-			if (health >= 10) {
-				int tmpOne = health / 10;
-				int tmpTwo = health % 10;
-				two[7] = char(tmpOne + '0');
-				two[8] = char(tmpTwo + '0');
-				Image = ImageAdd(two);
-			} else {
-				one[7] = char(health + '0');
-				Image = ImageAdd(one);
-			}
-			ViewSetImage(HP, Image);
+            char one[] = "Images/0HP.png";
+            char two[] = "Images/00HP.png";
+            if (health >= 10) {
+                int tmpOne = health / 10;
+                int tmpTwo = health % 10;
+                two[7] = char(tmpOne + '0');
+                two[8] = char(tmpTwo + '0');
+                Image = ImageAdd(two);
+            } else {
+                one[7] = char(health + '0');
+                Image = ImageAdd(one);
+            }
+            ViewSetImage(HP, Image);
         }
         if (health <= 0) {
             if (CurrentScreen == ScreenEndless) {
@@ -5582,65 +5582,65 @@ void EnemyShipMove() {
 }
 void DoEnemyShipMove() {
     EnemyShipMove();
-	switch (set) {
-		case 1:
-			SetOne();
-			break;
-		case 2:
-			SetTwo();
-			break;
-		case 3:
-			SetThree();
-			break;
-		case 4:
-			SetFour();
-			break;
-		case 5:
-			SetFive();
-			break;
-		case 6:
-			counter3 = 0;
-			level += 1;
-			set = 1;
-			break;
-	}
+    switch (set) {
+        case 1:
+            SetOne();
+            break;
+        case 2:
+            SetTwo();
+            break;
+        case 3:
+            SetThree();
+            break;
+        case 4:
+            SetFour();
+            break;
+        case 5:
+            SetFive();
+            break;
+        case 6:
+            counter3 = 0;
+            level += 1;
+            set = 1;
+            break;
+    }
 }
 void DoEnemyShipShoot() {
     int ex, ey, ex2, ey2, ex3, ey3;
-	for (int i = 0; i < 5; i++) {
-		if (counter4 == (i + 1) * EnemyShootCooldownSpeed) {
-			//ship 1-4
-			for (int j = 0; j < 10; j++) {
-				ViewSetxy(e1Bullet1[10 * i + j], eShipX1[j] + e1BulletXOffset, eShipY1[j] + e1BulletYOffset);
-				ViewSetxy(e2Bullet1[10 * i + j], eShipX2[j] + e2BulletXOffset, eShipY2[j] + e2BulletYOffset);
-				ViewSetxy(e3Bullet1[10 * i + j], eShipX3[j] + e3BulletXOffset, eShipY3[j] + e3BulletYOffset);
-				ViewSetxy(e4Bullet1[10 * i + j], eShipX4[j] + e4BulletXOffset, eShipY4[j] + e4BulletYOffset);
-			}
-			//ship 5-8
-			for (int j = 0; j < 5; j++) {
-				ViewSetxy(e5Bullet1[5 * i + j], eShipX5[j] + e5BulletXOffset, eShipY5[j] + e5BulletYOffset);
-				ViewSetxy(e5Bullet3[5 * i + j], eShipX5[j] + e5BulletXOffset3, eShipY5[j] + e5BulletYOffset3);
-				ViewSetxy(e6Bullet1[5 * i + j], eShipX6[j] + e6BulletXOffset, eShipY6[j] + e6BulletYOffset);
-				ViewSetxy(e6Bullet3[5 * i + j], eShipX6[j] + e6BulletXOffset3, eShipY6[j] + e6BulletYOffset3);
-				ViewSetxy(e7Bullet2[5 * i + j], eShipX7[j] + e7BulletXOffset2, eShipY7[j] + e7BulletYOffset2);
-				ViewSetxy(e8Bullet1[5 * i + j], eShipX8[j] + e8BulletXOffset, eShipY8[j] + e8BulletYOffset);
-				ViewSetxy(e8Bullet2[5 * i + j], eShipX8[j] + e8BulletXOffset2, eShipY8[j] + e8BulletYOffset2);
-				ViewSetxy(e8Bullet3[5 * i + j], eShipX8[j] + e8BulletXOffset3, eShipY8[j] + e8BulletYOffset3);
-			}
-			//ship 9
-			ViewSetxy(e9Bullet1[i], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
-			ViewSetxy(e9Bullet2[i], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
-			ViewSetxy(e9Bullet3[i], eShipX9 + e9BulletXOffset3, eShipY9 + e9BulletYOffset3);
-			//ship 10
-			ViewSetxy(e10Bullet1[i], eShipX10 + e10BulletXOffset, eShipY10 + e10BulletYOffset);
-			ViewSetxy(e10Bullet2[i], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
-			ViewSetxy(e10Bullet3[i], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
-		}
-	}
+    for (int i = 0; i < 5; i++) {
+        if (counter4 == (i + 1) * EnemyShootCooldownSpeed) {
+            //ship 1-4
+            for (int j = 0; j < 10; j++) {
+                ViewSetxy(e1Bullet1[10 * i + j], eShipX1[j] + e1BulletXOffset, eShipY1[j] + e1BulletYOffset);
+                ViewSetxy(e2Bullet1[10 * i + j], eShipX2[j] + e2BulletXOffset, eShipY2[j] + e2BulletYOffset);
+                ViewSetxy(e3Bullet1[10 * i + j], eShipX3[j] + e3BulletXOffset, eShipY3[j] + e3BulletYOffset);
+                ViewSetxy(e4Bullet1[10 * i + j], eShipX4[j] + e4BulletXOffset, eShipY4[j] + e4BulletYOffset);
+            }
+            //ship 5-8
+            for (int j = 0; j < 5; j++) {
+                ViewSetxy(e5Bullet1[5 * i + j], eShipX5[j] + e5BulletXOffset, eShipY5[j] + e5BulletYOffset);
+                ViewSetxy(e5Bullet3[5 * i + j], eShipX5[j] + e5BulletXOffset3, eShipY5[j] + e5BulletYOffset3);
+                ViewSetxy(e6Bullet1[5 * i + j], eShipX6[j] + e6BulletXOffset, eShipY6[j] + e6BulletYOffset);
+                ViewSetxy(e6Bullet3[5 * i + j], eShipX6[j] + e6BulletXOffset3, eShipY6[j] + e6BulletYOffset3);
+                ViewSetxy(e7Bullet2[5 * i + j], eShipX7[j] + e7BulletXOffset2, eShipY7[j] + e7BulletYOffset2);
+                ViewSetxy(e8Bullet1[5 * i + j], eShipX8[j] + e8BulletXOffset, eShipY8[j] + e8BulletYOffset);
+                ViewSetxy(e8Bullet2[5 * i + j], eShipX8[j] + e8BulletXOffset2, eShipY8[j] + e8BulletYOffset2);
+                ViewSetxy(e8Bullet3[5 * i + j], eShipX8[j] + e8BulletXOffset3, eShipY8[j] + e8BulletYOffset3);
+            }
+            //ship 9
+            ViewSetxy(e9Bullet1[i], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
+            ViewSetxy(e9Bullet2[i], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
+            ViewSetxy(e9Bullet3[i], eShipX9 + e9BulletXOffset3, eShipY9 + e9BulletYOffset3);
+            //ship 10
+            ViewSetxy(e10Bullet1[i], eShipX10 + e10BulletXOffset, eShipY10 + e10BulletYOffset);
+            ViewSetxy(e10Bullet2[i], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
+            ViewSetxy(e10Bullet3[i], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
+        }
+    }
     if (counter4 >= 5 * EnemyShootCooldownSpeed) {
         counter4 = 0;
-    } 
-	if (counter4 % EnemyShootCooldownSpeed != 0) {
+    }
+    if (counter4 % EnemyShootCooldownSpeed != 0) {
         //1
         for (int i = 0; i < 50; i++) {
             ex = ViewGetx(e1Bullet1[i]);
@@ -5838,7 +5838,7 @@ void DoEnemyShipShoot() {
     }
 }
 void EnemyDied() {
-	//TODO: make this more concise
+    //TODO: make this more concise
     int explosion, image;
     for (counter10 = 0; counter10 < 10; counter10++) {
         if (eShip1Health[counter10] <= 0 && counter5[0] == 0 && eShipY1[counter10] >= 0 && eShipX1[counter10] < 600 && eShipY1[counter10] >= 0 && eShipX1[counter10] <= 320) {
@@ -6641,11 +6641,11 @@ void HealthRegen() {
         HealthUpdate = true;
     }
 }
-bool CreateMove () {
-	bool temp = CurrentScreen == ScreenEndless || CurrentScreen == ScreenStoryBattle1 
-		|| CurrentScreen == ScreenStoryBattle2 || CurrentScreen == ScreenStoryBattle4 
-		|| CurrentScreen == ScreenStoryBattle5 || CurrentScreen == ScreenStoryBattle6;
-	return temp;
+bool CreateMove() {
+    bool temp = CurrentScreen == ScreenEndless || CurrentScreen == ScreenStoryBattle1
+                || CurrentScreen == ScreenStoryBattle2 || CurrentScreen == ScreenStoryBattle4
+                || CurrentScreen == ScreenStoryBattle5 || CurrentScreen == ScreenStoryBattle6;
+    return temp;
 }
 void OnTimer() {
 //called 30 times per second - 1800=1min - 10000=5min 36sec
@@ -6656,7 +6656,7 @@ void OnTimer() {
         counter += 1;
     }
     if (!pause) {
-        if (CreateMove ()) {
+        if (CreateMove()) {
             counter2 += 1;
             counter3 += 1; //ship move counter
             DoEnemyShipMove();
