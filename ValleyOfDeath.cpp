@@ -1,39 +1,66 @@
-//====================================================//
-//                   Valley Of Death                  //
-//====================================================//
-//Release 1.1.1
-//26 November 2016
-//Bailey Thompson
-
-//including the header file used for many app functions
+/**
+ * Bailey Thompson
+ * Valley Of Death (1.1.3)
+ * 1 January 2017
+ */
 #include "DragonFireSDK.h"
-//global variables
-bool sound, UpdateHighscore, pause, date, marry, BoolTempNum, torture, HealthUpdate, GoRight;
-char FileBuffer[5], font, FontTorture;
-int xp, ship, highscore, health, set, level, ShipView, mX, mY, newX, newY;
-int counter, counter2, counter3, counter4, counter5[10], HpCounterTorture;
+//essential save variables
+bool sound, UpdateHighscore;
+int xp, ship, highscore;
+int counter;
+//possible save variables
+bool pause, date, marry;
+int health, set, level;
+int counter2, counter3, counter4, counter5[10];
+int ShipView, mX, mY, newX, newY;
 int mBullet1[15], mBullet2[15], mBullet3[15];
-int e1Bullet1[50], e2Bullet1[50], e3Bullet1[50], e4Bullet1[50], e5Bullet1[25], e5Bullet3[25];
-int e6Bullet1[25], e6Bullet3[25], e7Bullet2[25], e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
-int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5], e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
+int HpCounterTorture;
+int e1Bullet1[50];
+int e2Bullet1[50];
+int e3Bullet1[50];
+int e4Bullet1[50];
+int e5Bullet1[25], e5Bullet3[25];
+int e6Bullet1[25], e6Bullet3[25];
+int e7Bullet2[25];
+int e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
+int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5];
+int e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
 int eShip1[10], eShip2[10], eShip3[10], eShip4[10], eShip5[5], eShip6[5], eShip7[5], eShip8[5], eShip9, eShip10;
 int eShipX1[10], eShipX2[10], eShipX3[10], eShipX4[10], eShipX5[5], eShipX6[5], eShipX7[5], eShipX8[5], eShipX9, eShipX10;
 int eShipY1[10], eShipY2[10], eShipY3[10], eShipY4[10], eShipY5[5], eShipY6[5], eShipY7[5], eShipY8[5], eShipY9, eShipY10;
-int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5], eShip6Health[5], eShip7Health[5];
-int eShip8Health[5], eShip9Health, eShip10Health, FileSound, FileUpdateHighscore, FileXp, FileShip, FileHighscore, FileCounter;
-int IntTempNum, Mp3Handle, width1, width2, HP, text1, text2, text3, CounterTorture, ImageTorture, HpTorture, TextTorture;
-int counter6, counter7, counter8, counter9, counter10, counter11, counter12, r, s2, s3, s4, s5, s6, s7, s8, music, PossibleHealth;
-int ShipSpeed, SaveRon, rank, BulletXOffset, BulletYOffset, BulletXOffset2, BulletYOffset2, BulletXOffset3, BulletYOffset3;
-//variables used to offset the images
-static const int e1BulletXOffset = 43, e1BulletYOffset = 83, e2BulletXOffset = 43, e2BulletYOffset = 94, e3BulletXOffset = 43, e3BulletYOffset = 88;
-static const int e4BulletXOffset = 43, e4BulletYOffset = 94, e5BulletXOffset = 31, e5BulletYOffset = 71, e5BulletXOffset3 = 54, e5BulletYOffset3 = 71;
-static const int e6BulletXOffset = 15, e6BulletYOffset = 53, e6BulletXOffset3 = 68, e6BulletYOffset3 = 53, e7BulletXOffset2 = 42, e7BulletYOffset2 = 83;
-static const int e8BulletXOffset = 12, e8BulletYOffset = 54, e8BulletXOffset2 = 42, e8BulletYOffset2 = 92, e8BulletXOffset3 = 74, e8BulletYOffset3 = 54;
-static const int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9BulletYOffset2 = 230, e9BulletXOffset3 = 130, e9BulletYOffset3 = 83;
-static const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
-//variables that control the logic
-static const int speed = 15, time = 15, SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
-//making screens
+int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5];
+int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Health;
+//don't save these variables
+int FileSound, FileUpdateHighscore;
+int FileXp, FileShip, FileHighscore;
+int FileCounter;
+char FileBuffer[5];
+bool BoolTempNum;
+int IntTempNum;
+//Screen CurrentScreen, PreviousScreen;
+int Mp3Handle;
+char font, FontTorture;
+int width1, width2, HP, text1, text2, text3;
+bool torture;
+int CounterTorture, ImageTorture, HpTorture, TextTorture;
+int counter6, counter7, counter8, counter9, counter10, counter11, counter12;
+int r, s2, s3, s4, s5, s6, s7, s8, music;
+int PossibleHealth, ShipSpeed, SaveRon, rank;
+int BulletXOffset, BulletYOffset, BulletXOffset2, BulletYOffset2, BulletXOffset3, BulletYOffset3;
+int e1BulletXOffset = 43, e1BulletYOffset = 83;
+int e2BulletXOffset = 43, e2BulletYOffset = 94;
+int e3BulletXOffset = 43, e3BulletYOffset = 88;
+int e4BulletXOffset = 43, e4BulletYOffset = 94;
+int e5BulletXOffset = 31, e5BulletYOffset = 71, e5BulletXOffset3 = 54, e5BulletYOffset3 = 71;
+int e6BulletXOffset = 15, e6BulletYOffset = 53, e6BulletXOffset3 = 68, e6BulletYOffset3 = 53;
+int e7BulletXOffset2 = 42, e7BulletYOffset2 = 83;
+int e8BulletXOffset = 12, e8BulletYOffset = 54, e8BulletXOffset2 = 42, e8BulletYOffset2 = 92, e8BulletXOffset3 = 74, e8BulletYOffset3 = 54;
+int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9BulletYOffset2 = 230, e9BulletXOffset3 = 130, e9BulletYOffset3 = 83;
+int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
+int speed = 15, time = 15;
+int SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
+bool HealthUpdate, GoRight;
+//end variables
 enum Screen {
     ScreenMenu,
     ScreenPause,
@@ -101,7 +128,6 @@ enum Screen {
 Screen CurrentScreen;
 Screen PreviousScreen;
 
-//container decleration
 int ContainerPause;
 int ContainerMenu;
 int ContainerHighscore;
@@ -160,23 +186,21 @@ int ContainerOptions;
 int ContainerDeleteCheckOne;
 int ContainerDeleteCheckTwo;
 
+
+
+
+
 void IntFileToGame() {
     IntTempNum = 0;
-    IntTempNum += ((int) FileBuffer[0] - 48) * 10000;
-    IntTempNum += ((int) FileBuffer[1] - 48) * 1000;
-    IntTempNum += ((int) FileBuffer[2] - 48) * 100;
-    IntTempNum += ((int) FileBuffer[3] - 48) * 10;
-    IntTempNum += (int) FileBuffer[4] - 48;
+    IntTempNum += ((int) FileBuffer[0] - '0') * 10000;
+    IntTempNum += ((int) FileBuffer[1] - '0') * 1000;
+    IntTempNum += ((int) FileBuffer[2] - '0') * 100;
+    IntTempNum += ((int) FileBuffer[3] - '0') * 10;
+    IntTempNum += (int) FileBuffer[4] - '0';
 }
-
 void BoolFileToGame() {
-    if (FileBuffer[0] == 't') {
-        BoolTempNum = true;
-    } else if (FileBuffer[0] == 'f') {
-        BoolTempNum = false;
-    }
+    BoolTempNum = (FileBuffer[0] == 't') ? (true) : (false);
 }
-
 void LoadGame() {
     FileSound = FileOpen("Sound.txt");
     FileUpdateHighscore = FileOpen("UpdateHighscore.txt");
@@ -241,7 +265,6 @@ void LoadGame() {
     FileClose(FileHighscore);
     FileClose(FileCounter);
 }
-
 void Reset() {
     int picture, ship;
     HealthUpdate = true;
@@ -253,22 +276,22 @@ void Reset() {
     newY = 380;
     for (counter9 = 0; counter9 < 15; counter9++) {
         ViewSetxy(mBullet1[counter9], -10, -10);
-        ViewSetxy(mBullet2[counter9], -20, -20);
-        ViewSetxy(mBullet3[counter9], -10, -10);
+		ViewSetxy(mBullet2[counter9], -20, -20);
+		ViewSetxy(mBullet3[counter9], -10, -10);
     }
     for (counter9 = 0; counter9 < 50; counter9++) {
         ViewSetxy(e1Bullet1[counter9], 600, 600);
-        ViewSetxy(e2Bullet1[counter9], 600, 600);
-        ViewSetxy(e3Bullet1[counter9], 600, 600);
-        ViewSetxy(e4Bullet1[counter9], 600, 600);
+		ViewSetxy(e2Bullet1[counter9], 600, 600);
+		ViewSetxy(e3Bullet1[counter9], 600, 600);
+		ViewSetxy(e4Bullet1[counter9], 600, 600);
     }
     for (counter9 = 0; counter9 < 25; counter9++) {
         ViewSetxy(e5Bullet1[counter9], 600, 600);
         ViewSetxy(e5Bullet3[counter9], 600, 600);
-        ViewSetxy(e6Bullet1[counter9], 600, 600);
+		ViewSetxy(e6Bullet1[counter9], 600, 600);
         ViewSetxy(e6Bullet3[counter9], 600, 600);
-        ViewSetxy(e7Bullet2[counter9], 600, 600);
-        ViewSetxy(e8Bullet1[counter9], 600, 600);
+		ViewSetxy(e7Bullet2[counter9], 600, 600);
+		ViewSetxy(e8Bullet1[counter9], 600, 600);
         ViewSetxy(e8Bullet2[counter9], 600, 600);
         ViewSetxy(e8Bullet3[counter9], 600, 600);
     }
@@ -276,70 +299,58 @@ void Reset() {
         ViewSetxy(e9Bullet1[counter9], 600, 600);
         ViewSetxy(e9Bullet2[counter9], 600, 600);
         ViewSetxy(e9Bullet3[counter9], 600, 600);
-        ViewSetxy(e10Bullet1[counter9], 600, 600);
+		ViewSetxy(e10Bullet1[counter9], 600, 600);
         ViewSetxy(e10Bullet2[counter9], 600, 600);
         ViewSetxy(e10Bullet3[counter9], 600, 600);
     }
     for (counter9 = 0; counter9 < 10; counter9++) {
-        //throwing ship 1 off the screen
         ViewSetxy(eShip1[counter9], 600, 600);
         ship = (eShip1[counter9]);
         picture = ImageAdd("Images/eShip_1.png");
         ViewSetImage(ship, picture);
-        //throwing ship 2 off the screen
-        ViewSetxy(eShip2[counter9], 600, 600);
+		ViewSetxy(eShip2[counter9], 600, 600);
         ship = (eShip2[counter9]);
         picture = ImageAdd("Images/eShip_2.png");
         ViewSetImage(ship, picture);
-        //throwing ship 3 off the screen
-        ViewSetxy(eShip3[counter9], 600, 600);
+		ViewSetxy(eShip3[counter9], 600, 600);
         ship = (eShip3[counter9]);
         picture = ImageAdd("Images/eShip_3.png");
         ViewSetImage(ship, picture);
-        //throwing ship 4 off the screen
-        ViewSetxy(eShip4[counter9], 600, 600);
+		ViewSetxy(eShip4[counter9], 600, 600);
         ship = (eShip4[counter9]);
         picture = ImageAdd("Images/eShip_4.png");
         ViewSetImage(ship, picture);
     }
     for (counter9 = 0; counter9 < 5; counter9++) {
-        //throwing ship 5 off the screen
         ViewSetxy(eShip5[counter9], 600, 600);
         ship = (eShip5[counter9]);
         picture = ImageAdd("Images/eShip_5.png");
         ViewSetImage(ship, picture);
-        //throwing ship 6 off the screen
-        ViewSetxy(eShip6[counter9], 600, 600);
+		ViewSetxy(eShip6[counter9], 600, 600);
         ship = (eShip6[counter9]);
         picture = ImageAdd("Images/eShip_6.png");
         ViewSetImage(ship, picture);
-        //throwing ship 7 off the screen
         ViewSetxy(eShip7[counter9], 600, 600);
         ship = (eShip7[counter9]);
         picture = ImageAdd("Images/eShip_7.png");
         ViewSetImage(ship, picture);
-        //throwing ship 8 off the screen
         ViewSetxy(eShip8[counter9], 600, 600);
         ship = (eShip8[counter9]);
         picture = ImageAdd("Images/eShip_8.png");
         ViewSetImage(ship, picture);
     }
-    //throwing ship 9 off the screen
     ViewSetxy(eShip9, 600, 600);
     ship = (eShip9);
     picture = ImageAdd("Images/eMini-Boss.png");
     ViewSetImage(ship, picture);
-    //throwing ship 10 off the screen
     ViewSetxy(eShip10, 600, 600);
     ship = (eShip10);
     picture = ImageAdd("Images/eBoss.png");
     ViewSetImage(ship, picture);
-    //resetting variables
     health = PossibleHealth;
     HealthUpdate = true;
     pause = false;
 }
-
 void ScreenSwitch() {
     ContainerSetVisible(ContainerPause, 0);
     ContainerSetVisible(ContainerMenu, 0);
@@ -595,11 +606,10 @@ void ScreenSwitch() {
 
 int OnTorture(int id, int event, int x, int y) {
     if (event == 1 || event == 3) {
-        torture = !torture;
+		torture = !torture;
     }
     return 0;
 }
-
 int OnHighscore(int id, int event, int x, int y) {
     CurrentScreen = ScreenMenu;
     ScreenSwitch();
@@ -608,32 +618,26 @@ int OnHighscore(int id, int event, int x, int y) {
     TextSetText(text3, "");
     return 0;
 }
-
 int OnDied(int id, int event, int x, int y) {
     CurrentScreen = ScreenMenu;
     ScreenSwitch();
     return 0;
 }
-
 int OnReturnToMenu(int id, int event, int x, int y) {
     if (event == 3) {
         Reset();
         if (PreviousScreen == ScreenEndless) {
             UpdateHighscore = true;
-            //switch screen
             CurrentScreen = ScreenHighscore;
-            ScreenSwitch();
         } else if (PreviousScreen == ScreenUnlocks || PreviousScreen == ScreenOptions) {
             CurrentScreen = ScreenMenu;
-            ScreenSwitch();
         } else {
             CurrentScreen = ScreenDied;
-            ScreenSwitch();
         }
+		ScreenSwitch();
     }
     return 0;
 }
-
 int OnResume(int id, int event, int x, int y) {
     if (event == 3) {
         CurrentScreen = PreviousScreen;
@@ -642,7 +646,6 @@ int OnResume(int id, int event, int x, int y) {
     }
     return 0;
 }
-
 int OnPause(int id, int event, int x, int y) {
     if (event == 1) {
         PreviousScreen = CurrentScreen;
@@ -657,7 +660,6 @@ int OnStoryLevel7(int id, int event, int x, int y) {
     if (event == 3) {
         if (id == 1) {
             CurrentScreen = ScreenStory7a2;
-            ScreenSwitch();
         } else if (id == 2) {
             if (date && !marry) {
                 TextSetText(SaveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your girlfriend that you \nwere a great man.");
@@ -667,260 +669,186 @@ int OnStoryLevel7(int id, int event, int x, int y) {
                 TextSetText(SaveRon, "\n\nRon: \nThe world will know of your \ngreatness.");
             }
             CurrentScreen = ScreenStory7b2;
-            ScreenSwitch();
         } else if (id == 3) {
             xp += 10;
             CurrentScreen = ScreenMenu;
-            ScreenSwitch();
         }
+		ScreenSwitch();
     }
     return 0;
 }
-
 int OnStoryLevel6(int id, int event, int x, int y) {
     if (event == 3) {
         if (id == 1) {
             CurrentScreen = ScreenStory6a2;
-            ScreenSwitch();
         } else if (id == 2) {
             CurrentScreen = ScreenStory6a3;
-            ScreenSwitch();
         } else if (id == 3) {
             CurrentScreen = ScreenStory6b3;
-            ScreenSwitch();
-        } else if (id == 4) {
+        }
+		if (id == 4) {
             CurrentScreen = ScreenStoryBattle6;
             ScreenSwitch();
             Reset();
             set = 5;
             level = 1;
-        }
+        } else {
+			ScreenSwitch();
+		}
     }
     return 0;
 }
-
 int OnStoryLevel5(int id, int event, int x, int y) {
     if (event == 3) {
         if (id == 1 && !date) {
             CurrentScreen = ScreenStory5a3;
-            ScreenSwitch();
         } else if (id == 1 && date) {
             CurrentScreen = ScreenStory5a2;
-            ScreenSwitch();
         } else if (id == 2) {
             marry = true;
             CurrentScreen = ScreenStory5a3;
-            ScreenSwitch();
+        } else if (id == 8) {
+            marry = false;
+            CurrentScreen = ScreenStory5a3;
         } else if (id == 3) {
             CurrentScreen = ScreenStory5b4;
-            ScreenSwitch();
         } else if (id == 4) {
             CurrentScreen = ScreenStory5a5;
-            ScreenSwitch();
         } else if (id == 5) {
             CurrentScreen = ScreenStory5a6;
-            ScreenSwitch();
         } else if (id == 6) {
             CurrentScreen = ScreenStory5b6;
-            ScreenSwitch();
-        } else if (id == 7) {
+        }
+		if (id == 7) {
             CurrentScreen = ScreenStoryBattle5;
             ScreenSwitch();
             Reset();
             set = 4;
             level = 1;
-        } else if (id == 8) {
-            marry = false;
-            CurrentScreen = ScreenStory5a3;
-            ScreenSwitch();
-        }
+        } else {
+			ScreenSwitch();
+		}
     }
     return 0;
 }
-
 int OnStoryLevel4(int id, int event, int x, int y) {
     if (event == 3) {
-        switch (id) {
-            case 1:
-                CurrentScreen = ScreenDied;
-                ScreenSwitch();
-                break;
-            case 2:
-                CurrentScreen = ScreenStory4a2;
-                ScreenSwitch();
-                break;
-            case 3:
-                CurrentScreen = ScreenStory4a3;
-                ScreenSwitch();
-                break;
-            case 4:
-                CurrentScreen = ScreenStory4a4;
-                ScreenSwitch();
-                break;
-            case 5:
-                CurrentScreen = ScreenStory4b5;
-                ScreenSwitch();
-                break;
-            case 6:
-                CurrentScreen = ScreenStory4a6;
-                ScreenSwitch();
-                break;
-            case 7:
-                CurrentScreen = ScreenStory4a7;
-                ScreenSwitch();
-                break;
-            case 8:
-                CurrentScreen = ScreenStory4b7;
-                ScreenSwitch();
-                break;
-            case 9:
-                CurrentScreen = ScreenStory4a8;
-                ScreenSwitch();
-                break;
-            case 10:
-                CurrentScreen = ScreenStoryBattle4;
-                ScreenSwitch();
-                Reset();
-                set = 3;
-                level = 1;
-                break;
+        if (id == 1) {
+            CurrentScreen = ScreenDied;
+        } else if (id == 2) {
+            CurrentScreen = ScreenStory4a2;
+        } else if (id == 3) {
+            CurrentScreen = ScreenStory4a3;
+        } else if (id == 4) {
+            CurrentScreen = ScreenStory4a4;
+        } else if (id == 5) {
+            CurrentScreen = ScreenStory4b5;
+        } else if (id == 6) {
+            CurrentScreen = ScreenStory4a6;
+        } else if (id == 7) {
+            CurrentScreen = ScreenStory4a7;
+        } else if (id == 8) {
+            CurrentScreen = ScreenStory4b7;
+        } else if (id == 9) {
+            CurrentScreen = ScreenStory4a8;
         }
+		if (id == 10) {
+            CurrentScreen = ScreenStoryBattle4;
+            ScreenSwitch();
+            Reset();
+            set = 3;
+            level = 1;
+        } else {
+			ScreenSwitch();
+		}
     }
     return 0;
 }
-
 int OnStoryLevel3(int id, int event, int x, int y) {
     if (event == 3) {
-        switch (id) {
-            case 1:
-                CurrentScreen = ScreenStory3b2;
-                ScreenSwitch();
-                break;
-            case 2:
-                CurrentScreen = ScreenStory3a3;
-                ScreenSwitch();
-                break;
-            case 3:
-                CurrentScreen = ScreenStory3a4;
-                ScreenSwitch();
-                break;
-            case 4:
-                CurrentScreen = ScreenStory3a5;
-                ScreenSwitch();
-                break;
-            case 5:
-                CurrentScreen = ScreenStory3a6;
-                ScreenSwitch();
-                break;
-            case 6:
-                CurrentScreen = ScreenStory3a7;
-                ScreenSwitch();
-                break;
-            case 7:
-                CurrentScreen = ScreenStory3a8;
-                ScreenSwitch();
-                break;
-            case 8:
-                CurrentScreen = ScreenStoryTorture;
-                ScreenSwitch();
-                break;
+        if (id == 1) {
+            CurrentScreen = ScreenStory3b2;
+        } else if (id == 2) {
+            CurrentScreen = ScreenStory3a3;
+        } else if (id == 3) {
+            CurrentScreen = ScreenStory3a4;
+        } else if (id == 4) {
+            CurrentScreen = ScreenStory3a5;
+        } else if (id == 5) {
+            CurrentScreen = ScreenStory3a6;
+        } else if (id == 6) {
+            CurrentScreen = ScreenStory3a7;
+        } else if (id == 7) {
+            CurrentScreen = ScreenStory3a8;
+        } else if (id == 8) {
+            CurrentScreen = ScreenStoryTorture;
         }
+		ScreenSwitch();
     }
     return 0;
 }
-
 int OnStoryLevel2(int id, int event, int x, int y) {
     if (event == 3) {
-        switch (id) {
-            case 1:
-                CurrentScreen = ScreenStory2a2;
-                ScreenSwitch();
-                break;
-            case 3:
-                date = true;
-                CurrentScreen = ScreenStory2a3;
-                ScreenSwitch();
-                break;
-            case 4:
-                date = false;
-                CurrentScreen = ScreenStory2a3;
-                ScreenSwitch();
-                break;
-            case 5:
-                CurrentScreen = ScreenStory2a5;
-                ScreenSwitch();
-                break;
-            case 6:
-                CurrentScreen = ScreenStory2b4;
-                ScreenSwitch();
-                break;
-            case 7:
-                CurrentScreen = ScreenStory2a5;
-                ScreenSwitch();
-                break;
-            case 8:
-                CurrentScreen = ScreenStory2a6;
-                ScreenSwitch();
-                break;
-            case 9:
-                CurrentScreen = ScreenStory2e7;
-                ScreenSwitch();
-                break;
-            case 10:
-                CurrentScreen = ScreenStory2a7;
-                ScreenSwitch();
-                break;
-            case 11:
-                CurrentScreen = ScreenStoryBattle2;
-                ScreenSwitch();
-                Reset();
-                set = 2;
-                level = 1;
-                break;
+        if (id == 1) {
+            CurrentScreen = ScreenStory2a2;
+        } else if (id == 3) {
+            date = true;
+            CurrentScreen = ScreenStory2a3;
+        } else if (id == 4) {
+            date = false;
+            CurrentScreen = ScreenStory2a3;
+        } else if (id == 5) {
+            CurrentScreen = ScreenStory2a5;
+        } else if (id == 6) {
+            CurrentScreen = ScreenStory2b4;
+        } else if (id == 7) {
+            CurrentScreen = ScreenStory2a5;
+        } else if (id == 8) {
+            CurrentScreen = ScreenStory2a6;
+        } else if (id == 9) {
+            CurrentScreen = ScreenStory2e7;
+        } else if (id == 10) {
+            CurrentScreen = ScreenStory2a7;
         }
+		if (id == 11) {
+            CurrentScreen = ScreenStoryBattle2;
+            ScreenSwitch();
+            Reset();
+            set = 2;
+            level = 1;
+        } else {
+			ScreenSwitch();
+		}
     }
     return 0;
 }
-
 int OnStoryLevel1(int id, int event, int x, int y) {
     if (event == 3) {
-        switch (id) {
-            case 1:
-                CurrentScreen = ScreenStory1a2;
-                ScreenSwitch();
-                break;
-            case 3:
-                CurrentScreen = ScreenStory1s3;
-                ScreenSwitch();
-                break;
-            case 4:
-                CurrentScreen = ScreenStory1p3;
-                ScreenSwitch();
-                break;
-            case 5:
-                CurrentScreen = ScreenStory1a4;
-                ScreenSwitch();
-                break;
-            case 6:
-                CurrentScreen = ScreenStory1r5;
-                ScreenSwitch();
-                break;
-            case 7:
-                CurrentScreen = ScreenStory1e5;
-                ScreenSwitch();
-                break;
-            case 8:
-                CurrentScreen = ScreenStoryBattle1;
-                ScreenSwitch();
-                Reset();
-                set = 1;
-                level = 1;
-                break;
+        if (id == 1) {
+            CurrentScreen = ScreenStory1a2;
+        } else if (id == 3) {
+            CurrentScreen = ScreenStory1s3;
+        } else if (id == 4) {
+            CurrentScreen = ScreenStory1p3;
+        } else if (id == 5) {
+            CurrentScreen = ScreenStory1a4;
+        } else if (id == 6) {
+            CurrentScreen = ScreenStory1r5;
+        } else if (id == 7) {
+            CurrentScreen = ScreenStory1e5;
         }
+		if (id == 8) {
+            CurrentScreen = ScreenStoryBattle1;
+            ScreenSwitch();
+            Reset();
+            set = 1;
+            level = 1;
+        } else {
+			ScreenSwitch();
+		}
     }
     return 0;
 }
-
 int OnStoryMenuTouch(int id, int event, int x, int y) {
     if (event == 3) {
         CurrentScreen = ScreenStory1a1;
@@ -930,10 +858,10 @@ int OnStoryMenuTouch(int id, int event, int x, int y) {
 }
 
 void ShipType() {
-    int lift = 10;
+    static const int lift = 10;
+	ViewSetxy(ShipView, -200, -200);
     switch (ship) {
         case 1:
-            ViewSetxy(ShipView, -200, -200);
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_1.png", -200, -200);
             BulletXOffset = 43;
             BulletYOffset = 11 - lift;
@@ -943,7 +871,6 @@ void ShipType() {
             width2 = 76;
             break;
         case 2:
-            ViewSetxy(ShipView, -200, -200);
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_2.png", -200, -200);
             BulletXOffset = 43;
             BulletYOffset = 0 - lift;
@@ -953,7 +880,6 @@ void ShipType() {
             width2 = 69;
             break;
         case 3:
-            ViewSetxy(ShipView, -200, -200);
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_3.png", -200, -200);
             BulletXOffset = 43;
             BulletYOffset = 6 - lift;
@@ -963,7 +889,6 @@ void ShipType() {
             width2 = 66;
             break;
         case 4:
-            ViewSetxy(ShipView, -200, -200);
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_4.png", -200, -200);
             BulletXOffset = 43;
             BulletYOffset = 0 - lift;
@@ -973,7 +898,6 @@ void ShipType() {
             width2 = 87;
             break;
         case 5:
-            ViewSetxy(ShipView, -200, -200);
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_5.png", -200, -200);
             BulletXOffset = 31;
             BulletYOffset = 23 - lift;
@@ -985,7 +909,6 @@ void ShipType() {
             width2 = 71;
             break;
         case 6:
-            ViewSetxy(ShipView, -200, -200);
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_6.png", -200, -200);
             BulletXOffset = 15;
             BulletYOffset = 41 - lift;
@@ -997,7 +920,6 @@ void ShipType() {
             width2 = 81;
             break;
         case 7:
-            ViewSetxy(ShipView, -200, -200);
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_7.png", -200, -200);
             BulletXOffset2 = 42;
             BulletYOffset2 = 11 - lift;
@@ -1007,7 +929,6 @@ void ShipType() {
             width2 = 86;
             break;
         case 8:
-            ViewSetxy(ShipView, -200, -200);
             ShipView = ViewAdd(ContainerEndless, "Images/Ship_8.png", -200, -200);
             BulletXOffset = 12;
             BulletYOffset = 40 - lift;
@@ -1022,7 +943,6 @@ void ShipType() {
             break;
     }
 }
-
 int OnBattleTouch(int id, int event, int x, int y) {
     if (event == 1 || event == 2) {
         newX = x - 47;
@@ -1030,7 +950,6 @@ int OnBattleTouch(int id, int event, int x, int y) {
     }
     return 0;
 }
-
 int OnEndlessMenuTouch(int id, int event, int x, int y) {
     if (event == 3) {
         Reset();
@@ -1090,72 +1009,50 @@ int Unlocks(int id, int event, int x, int y) {
     }
     return 0;
 }
-
 int OnUnlocksMenuTouch(int id, int event, int x, int y) {
     int ImageUnlocks;
     if (event == 3) {
         //rank
-        switch (rank) {
-            case 1:
-                TextSetText(r, "\n\nLevel 1: Ordinary Shipman");
-                break;
-            case 2:
-                TextSetText(r, "\n\nLevel 2: Able Shipman");
-                break;
-            case 3:
-                TextSetText(r, "\n\nLevel 3: Leading Shipman");
-                break;
-            case 4:
-                TextSetText(r, "\n\nLevel 4: Master Shipman");
-                break;
-            case 5:
-                TextSetText(r, "\n\nLevel 5: Petty Officer 2nd \n\tClass");
-                break;
-            case 6:
-                TextSetText(r, "\n\nLevel 6: Petty Officer 1st \n\tClass");
-                break;
-            case 7:
-                TextSetText(r, "\n\nLevel 7: Chief Petty Officer \n\t2nd Class");
-                break;
-            case 8:
-                TextSetText(r, "\n\nLevel 8: Chief Petty Officer \n\t1st Class");
-                break;
-            case 9:
-                TextSetText(r, "\n\nLevel 9: Cadet");
-                break;
-            case 10:
-                TextSetText(r, "\n\nLevel 10: Ensign");
-                break;
-            case 11:
-                TextSetText(r, "\n\nLevel 11: Acting \n\t Sub-Lieutenant");
-                break;
-            case 12:
-                TextSetText(r, "\n\nLevel 12: Sub-Lieutenant");
-                break;
-            case 13:
-                TextSetText(r, "\n\nLevel 13: Lieutenant");
-                break;
-            case 14:
-                TextSetText(r, "\n\nLevel 14: Lieutenant \n\t  Commander");
-                break;
-            case 15:
-                TextSetText(r, "\n\nLevel 15: Commander");
-                break;
-            case 16:
-                TextSetText(r, "\n\nLevel 16: Captain");
-                break;
-            case 17:
-                TextSetText(r, "\n\nLevel 17: Commodore");
-                break;
-            case 18:
-                TextSetText(r, "\n\nLevel 18: Rear-Admiral");
-                break;
-            case 19:
-                TextSetText(r, "\n\nLevel 19: Vice-Admiral");
-                break;
-            case 20:
-                TextSetText(r, "\n\nLevel 20: Admiral");
-                break;
+        if (rank == 1) {
+            TextSetText(r, "\n\nLevel 1: Ordinary Shipman");
+        } else if (rank == 2) {
+            TextSetText(r, "\n\nLevel 2: Able Shipman");
+        } else if (rank == 3) {
+            TextSetText(r, "\n\nLevel 3: Leading Shipman");
+        } else if (rank == 4) {
+            TextSetText(r, "\n\nLevel 4: Master Shipman");
+        } else if (rank == 5) {
+            TextSetText(r, "\n\nLevel 5: Petty Officer 2nd \n\tClass");
+        } else if (rank == 6) {
+            TextSetText(r, "\n\nLevel 6: Petty Officer 1st \n\tClass");
+        } else if (rank == 7) {
+            TextSetText(r, "\n\nLevel 7: Chief Petty Officer \n\t2nd Class");
+        } else if (rank == 8) {
+            TextSetText(r, "\n\nLevel 8: Chief Petty Officer \n\t1st Class");
+        } else if (rank == 9) {
+            TextSetText(r, "\n\nLevel 9: Cadet");
+        } else if (rank == 10) {
+            TextSetText(r, "\n\nLevel 10: Ensign");
+        } else if (rank == 11) {
+            TextSetText(r, "\n\nLevel 11: Acting \n\t Sub-Lieutenant");
+        } else if (rank == 12) {
+            TextSetText(r, "\n\nLevel 12: Sub-Lieutenant");
+        } else if (rank == 13) {
+            TextSetText(r, "\n\nLevel 13: Lieutenant");
+        } else if (rank == 14) {
+            TextSetText(r, "\n\nLevel 14: Lieutenant \n\t  Commander");
+        } else if (rank == 15) {
+            TextSetText(r, "\n\nLevel 15: Commander");
+        } else if (rank == 16) {
+            TextSetText(r, "\n\nLevel 16: Captain");
+        } else if (rank == 17) {
+            TextSetText(r, "\n\nLevel 17: Commodore");
+        } else if (rank == 18) {
+            TextSetText(r, "\n\nLevel 18: Rear-Admiral");
+        } else if (rank == 19) {
+            TextSetText(r, "\n\nLevel 19: Vice-Admiral");
+        } else if (rank == 20) {
+            TextSetText(r, "\n\nLevel 20: Admiral");
         }
         //ships
         if (rank >= 3) {
@@ -1216,12 +1113,12 @@ int OnUnlocksMenuTouch(int id, int event, int x, int y) {
 int Options(int id, int event, int x, int y) {
     int ImageMusic;
     if (event == 3 && id == 1) {
-        if (sound) {
+        if (sound == true) {
             ImageMusic = ImageAdd("Unlocks/MusicOff.png");
             ViewSetImage(music, ImageMusic);
             sound = false;
             Mp3Stop();
-        } else {
+        } else if (sound == false) {
             ImageMusic = ImageAdd("Unlocks/MusicOn.png");
             ViewSetImage(music, ImageMusic);
             sound = true;
@@ -1272,7 +1169,6 @@ int Options(int id, int event, int x, int y) {
     }
     return 0;
 }
-
 int OnOptionsMenuTouch(int id, int event, int x, int y) {
     if (event == 3) {
         CurrentScreen = ScreenOptions;
@@ -1282,6 +1178,7 @@ int OnOptionsMenuTouch(int id, int event, int x, int y) {
 }
 
 void DeclareContainers() {
+    //declare containers
     ContainerPause = ContainerAdd(0, 0, 0);
     ContainerMenu = ContainerAdd(0, 0, 0);
     ContainerHighscore = ContainerAdd(0, 0, 0);
@@ -1340,7 +1237,6 @@ void DeclareContainers() {
     ContainerDeleteCheckOne = ContainerAdd(0, 0, 0);
     ContainerDeleteCheckTwo = ContainerAdd(0, 0, 0);
 }
-
 void ContainerSixSeven() {
     //populate ContainerStory6a1
     ViewAdd(ContainerStory6a1, "Images/Background.png", 0, 0);
@@ -1391,7 +1287,6 @@ void ContainerSixSeven() {
     ViewAdd(ContainerStory7b2, "Images/btnOkBig.png", 20, 380, OnStoryLevel7, 3);
     SaveRon = TextAdd(ContainerStory7b2, 0, 0, "", font);
 }
-
 void ContainerFive() {
     //populate ContainerStory5a1
     ViewAdd(ContainerStory5a1, "Images/Background.png", 0, 0);
@@ -1437,7 +1332,6 @@ void ContainerFive() {
     ViewAdd(ContainerStory5b6, "Images/btnOkBig.png", 20, 380, OnStoryLevel5, 7);
     TextAdd(ContainerStory5b6, 0, 0, "\n\nRon: \nAttacking the ships.", font);
 }
-
 void ContainerFour() {
     //populate ContainerStory4a1
     ViewAdd(ContainerStory4a1, "Images/Background.png", 0, 0);
@@ -1493,7 +1387,6 @@ void ContainerFour() {
     ViewAdd(ContainerStory4a8, "Images/btnOkBig.png", 20, 380, OnStoryLevel4, 10);
     TextAdd(ContainerStory4a8, 0, 0, "\n\nLieutenant Dan: \nThe ships followed you and \nattack.", font);
 }
-
 void ContainerThree() {
     //populate ContainerStory3a1
     ViewAdd(ContainerStory3a1, "Images/Background.png", 0, 0);
@@ -1551,7 +1444,6 @@ void ContainerThree() {
     //ViewAdd(ContainerStoryTorture, "Images/infToggle.png", 20, 380);
     TextTorture = TextAdd(ContainerStoryTorture, 70, 0, "", FontTorture);
 }
-
 void ContainerTwo() {
     //populate ContainerStory2a1
     ViewAdd(ContainerStory2a1, "Images/Background.png", 0, 0);
@@ -1600,7 +1492,6 @@ void ContainerTwo() {
     ViewAdd(ContainerStory2a7, "Images/btnOkBig.png", 20, 380, OnStoryLevel2, 11);
     TextAdd(ContainerStory2a7, 0, 0, "\n\nCaptain: \nThe ships noticed us and are \nattacking!", font);
 }
-
 void ContainerOne() {
     //populate ContainerHighscore
     ViewAdd(ContainerHighscore, "Images/MenuPause.png", 0, 0);
@@ -1616,27 +1507,41 @@ void ContainerOne() {
     ViewAdd(ContainerEndless, "Images/Background.png", 0, 0, OnBattleTouch, 1);
     ViewAdd(ContainerEndless, "Images/Pause.png", 270, 20, OnPause, 1);
     HP = ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20);
-    ///TODO: originally each mBullet was in its own for loop, is this important?
     for (counter9 = 0; counter9 < 15; counter9++) {
         mBullet1[counter9] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
+    }
+    for (counter9 = 0; counter9 < 15; counter9++) {
         mBullet2[counter9] = ViewAdd(ContainerEndless, "Images/Rocket.png", -20, -20);
+    }
+    for (counter9 = 0; counter9 < 15; counter9++) {
         mBullet3[counter9] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
     }
-    ///TODO: why is the next line needed?
     mBullet1[0] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
     //enemy bullets
     for (counter9 = 0; counter9 < 50; counter9++) {
         e1Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 50; counter9++) {
         e2Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 50; counter9++) {
         e3Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 50; counter9++) {
         e4Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
     }
     for (counter9 = 0; counter9 < 25; counter9++) {
         e5Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
         e5Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 25; counter9++) {
         e6Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
         e6Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 25; counter9++) {
         e7Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 25; counter9++) {
         e8Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
         e8Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
         e8Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
@@ -1645,6 +1550,8 @@ void ContainerOne() {
         e9Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
         e9Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
         e9Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 5; counter9++) {
         e10Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
         e10Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
         e10Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
@@ -1652,14 +1559,26 @@ void ContainerOne() {
     //ships
     for (counter9 = 0; counter9 < 10; counter9++) {
         eShip1[counter9] = ViewAdd(ContainerEndless, "Images/eShip_1.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 10; counter9++) {
         eShip2[counter9] = ViewAdd(ContainerEndless, "Images/eShip_2.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 10; counter9++) {
         eShip3[counter9] = ViewAdd(ContainerEndless, "Images/eShip_3.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 10; counter9++) {
         eShip4[counter9] = ViewAdd(ContainerEndless, "Images/eShip_4.png", 600, 600);
     }
     for (counter9 = 0; counter9 < 5; counter9++) {
         eShip5[counter9] = ViewAdd(ContainerEndless, "Images/eShip_5.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 5; counter9++) {
         eShip6[counter9] = ViewAdd(ContainerEndless, "Images/eShip_6.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 5; counter9++) {
         eShip7[counter9] = ViewAdd(ContainerEndless, "Images/eShip_7.png", 600, 600);
+    }
+    for (counter9 = 0; counter9 < 5; counter9++) {
         eShip8[counter9] = ViewAdd(ContainerEndless, "Images/eShip_8.png", 600, 600);
     }
     eShip9 = ViewAdd(ContainerEndless, "Images/eMini-Boss.png", 600, 600);
@@ -1669,6 +1588,7 @@ void ContainerOne() {
     ViewAdd(ContainerMenu, "Images/btnStory.png", 20, 40, OnStoryMenuTouch, 1);
     ViewAdd(ContainerMenu, "Images/btnEndless.png", 20, 150, OnEndlessMenuTouch, 1);
     ViewAdd(ContainerMenu, "Images/btnUnlocks.png", 20, 260, OnUnlocksMenuTouch, 1);
+    //ViewAdd(ContainerMenu, "Images/btnTrophies.png", 20, 290, OnTrophiesMenuTouch, 1);
     ViewAdd(ContainerMenu, "Images/btnOptions.png", 20, 370, OnOptionsMenuTouch, 1);
     //populate ContainerDied
     ViewAdd(ContainerDied, "Images/Background.png", 0, 0);
@@ -1717,9 +1637,8 @@ void ContainerOne() {
     ViewAdd(ContainerStory1e5, "Images/btnOkBig.png", 20, 380, OnStoryLevel1, 8);
     TextAdd(ContainerStory1e5, 0, 0, "\n\nLieutenant: \nThey followed us and are \nattacking!", font);
 }
-
 void StartupMusic() {
-    if (sound) {
+    if (sound == true) {
         if (counter > 1 && counter < 7000) {
             counter = 7000;
         } else if (counter > 7000 && counter < 13000) {
@@ -1796,11 +1715,10 @@ void StartupMusic() {
             Mp3Handle = Mp3Add("Sounds/15.mp3");
             Mp3Loop(Mp3Handle);
         }
-    } else {
+    } else if (sound == false) {
         Mp3Stop();
     }
 }
-
 void AppMain() {
     //load game
     LoadGame();
@@ -1839,9 +1757,9 @@ void AppMain() {
     //populate ContainerOptions
     ViewAdd(ContainerOptions, "Images/Background.png", 0, 0);
     ViewAdd(ContainerOptions, "Images/Pause.png", 270, 20, OnPause, 1);
-    if (sound) {
+    if (sound == true) {
         music = ViewAdd(ContainerOptions, "Unlocks/MusicOn.png", 20, 80, Options, 1);
-    } else {
+    } else if (sound == false) {
         music = ViewAdd(ContainerOptions, "Unlocks/MusicOff.png", 20, 80, Options, 1);
     }
     TextAdd(ContainerOptions, 20, 320, "Credits: \nThis Game Was Created \nBy Bailey Thompson", font);
@@ -1863,26 +1781,174 @@ void AppMain() {
 }
 
 void IntGameToFile() {
-    FileBuffer[0] = char(int(IntTempNum / 10000) + 48);
-    IntTempNum -= (int) FileBuffer[0] - 48;
-    FileBuffer[1] = char(int(IntTempNum / 1000) + 48);
-    IntTempNum -= (int) FileBuffer[1] - 48;
-    FileBuffer[2] = char(int(IntTempNum / 100) + 48);
-    IntTempNum -= (int) FileBuffer[2] - 48;
-    FileBuffer[3] = char(int(IntTempNum / 10) + 48);
-    IntTempNum -= (int) FileBuffer[3] - 48;
-    FileBuffer[4] = char(IntTempNum + 48);
-    IntTempNum -= (int) FileBuffer[4] - 48;
+    //for  10,000's
+    if (IntTempNum >= 90000) {
+        FileBuffer[0] = '9';
+        IntTempNum -= 90000;
+    } else if (IntTempNum >= 80000 && IntTempNum < 90000) {
+        FileBuffer[0] = '8';
+        IntTempNum -= 80000;
+    } else if (IntTempNum >= 70000 && IntTempNum < 80000) {
+        FileBuffer[0] = '7';
+        IntTempNum -= 70000;
+    } else if (IntTempNum >= 60000 && IntTempNum < 70000) {
+        FileBuffer[0] = '6';
+        IntTempNum -= 60000;
+    } else if (IntTempNum >= 50000 && IntTempNum < 60000) {
+        FileBuffer[0] = '5';
+        IntTempNum -= 50000;
+    } else if (IntTempNum >= 40000 && IntTempNum < 50000) {
+        FileBuffer[0] = '4';
+        IntTempNum -= 40000;
+    } else if (IntTempNum >= 30000 && IntTempNum < 40000) {
+        FileBuffer[0] = '3';
+        IntTempNum -= 30000;
+    } else if (IntTempNum >= 20000 && IntTempNum < 30000) {
+        FileBuffer[0] = '2';
+        IntTempNum -= 20000;
+    } else if (IntTempNum >= 10000 && IntTempNum < 20000) {
+        FileBuffer[0] = '1';
+        IntTempNum -= 10000;
+    } else if (IntTempNum < 10000) {
+        FileBuffer[0] = '0';
+        IntTempNum -= 0;
+    }
+    //for  1,000's
+    if (IntTempNum >= 9000) {
+        FileBuffer[1] = '9';
+        IntTempNum -= 9000;
+    } else if (IntTempNum >= 8000 && IntTempNum < 9000) {
+        FileBuffer[1] = '8';
+        IntTempNum -= 8000;
+    } else if (IntTempNum >= 7000 && IntTempNum < 8000) {
+        FileBuffer[1] = '7';
+        IntTempNum -= 7000;
+    } else if (IntTempNum >= 6000 && IntTempNum < 7000) {
+        FileBuffer[1] = '6';
+        IntTempNum -= 6000;
+    } else if (IntTempNum >= 5000 && IntTempNum < 6000) {
+        FileBuffer[1] = '5';
+        IntTempNum -= 5000;
+    } else if (IntTempNum >= 4000 && IntTempNum < 5000) {
+        FileBuffer[1] = '4';
+        IntTempNum -= 4000;
+    } else if (IntTempNum >= 3000 && IntTempNum < 4000) {
+        FileBuffer[1] = '3';
+        IntTempNum -= 3000;
+    } else if (IntTempNum >= 2000 && IntTempNum < 3000) {
+        FileBuffer[1] = '2';
+        IntTempNum -= 2000;
+    } else if (IntTempNum >= 1000 && IntTempNum < 2000) {
+        FileBuffer[1] = '1';
+        IntTempNum -= 1000;
+    } else if (IntTempNum < 1000) {
+        FileBuffer[1] = '0';
+        IntTempNum -= 0;
+    }
+    //for  100's
+    if (IntTempNum >= 900) {
+        FileBuffer[2] = '9';
+        IntTempNum -= 900;
+    } else if (IntTempNum >= 800 && IntTempNum < 900) {
+        FileBuffer[2] = '8';
+        IntTempNum -= 800;
+    } else if (IntTempNum >= 700 && IntTempNum < 800) {
+        FileBuffer[2] = '7';
+        IntTempNum -= 700;
+    } else if (IntTempNum >= 600 && IntTempNum < 700) {
+        FileBuffer[2] = '6';
+        IntTempNum -= 600;
+    } else if (IntTempNum >= 500 && IntTempNum < 600) {
+        FileBuffer[2] = '5';
+        IntTempNum -= 500;
+    } else if (IntTempNum >= 400 && IntTempNum < 500) {
+        FileBuffer[2] = '4';
+        IntTempNum -= 400;
+    } else if (IntTempNum >= 300 && IntTempNum < 400) {
+        FileBuffer[2] = '3';
+        IntTempNum -= 300;
+    } else if (IntTempNum >= 200 && IntTempNum < 300) {
+        FileBuffer[2] = '2';
+        IntTempNum -= 200;
+    } else if (IntTempNum >= 100 && IntTempNum < 200) {
+        FileBuffer[2] = '1';
+        IntTempNum -= 100;
+    } else if (IntTempNum < 100) {
+        FileBuffer[2] = '0';
+        IntTempNum -= 0;
+    }
+    //for  10's
+    if (IntTempNum >= 90) {
+        FileBuffer[3] = '9';
+        IntTempNum -= 90;
+    } else if (IntTempNum >= 80 && IntTempNum < 90) {
+        FileBuffer[3] = '8';
+        IntTempNum -= 80;
+    } else if (IntTempNum >= 70 && IntTempNum < 80) {
+        FileBuffer[3] = '7';
+        IntTempNum -= 70;
+    } else if (IntTempNum >= 60 && IntTempNum < 70) {
+        FileBuffer[3] = '6';
+        IntTempNum -= 60;
+    } else if (IntTempNum >= 50 && IntTempNum < 60) {
+        FileBuffer[3] = '5';
+        IntTempNum -= 50;
+    } else if (IntTempNum >= 40 && IntTempNum < 50) {
+        FileBuffer[3] = '4';
+        IntTempNum -= 40;
+    } else if (IntTempNum >= 30 && IntTempNum < 40) {
+        FileBuffer[3] = '3';
+        IntTempNum -= 30;
+    } else if (IntTempNum >= 20 && IntTempNum < 30) {
+        FileBuffer[3] = '2';
+        IntTempNum -= 20;
+    } else if (IntTempNum >= 10 && IntTempNum < 20) {
+        FileBuffer[3] = '1';
+        IntTempNum -= 10;
+    } else if (IntTempNum < 10) {
+        FileBuffer[3] = '0';
+        IntTempNum -= 0;
+    }
+    //for  1's
+    if (IntTempNum == 9) {
+        FileBuffer[4] = '9';
+        IntTempNum -= 9;
+    } else if (IntTempNum == 8) {
+        FileBuffer[4] = '8';
+        IntTempNum -= 8;
+    } else if (IntTempNum == 7) {
+        FileBuffer[4] = '7';
+        IntTempNum -= 7;
+    } else if (IntTempNum == 6) {
+        FileBuffer[4] = '6';
+        IntTempNum -= 6;
+    } else if (IntTempNum == 5) {
+        FileBuffer[4] = '5';
+        IntTempNum -= 5;
+    } else if (IntTempNum == 4) {
+        FileBuffer[4] = '4';
+        IntTempNum -= 4;
+    } else if (IntTempNum == 3) {
+        FileBuffer[4] = '3';
+        IntTempNum -= 3;
+    } else if (IntTempNum == 2) {
+        FileBuffer[4] = '2';
+        IntTempNum -= 2;
+    } else if (IntTempNum == 1) {
+        FileBuffer[4] = '1';
+        IntTempNum -= 1;
+    } else if (IntTempNum == 0) {
+        FileBuffer[4] = '0';
+        IntTempNum -= 0;
+    }
 }
-
 void BoolGameToFile() {
-    if (BoolTempNum) {
+    if (BoolTempNum == true) {
         FileBuffer[0] = 't';
-    } else {
+    } else if (BoolTempNum == false) {
         FileBuffer[0] = 'f';
     }
 }
-
 void AppExit() {
     Mp3Stop();
     //FileSound
@@ -1924,9 +1990,9 @@ void AppExit() {
 }
 
 void SoundSwitch() {
-    if (sound) {
+    if (sound == true) {
         if (counter == 1) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/1.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1934,7 +2000,7 @@ void SoundSwitch() {
                 counter = 0;
             }
         } else if (counter == 7000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/2.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1942,7 +2008,7 @@ void SoundSwitch() {
                 counter = 6999;
             }
         } else if (counter == 13000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/3.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1950,7 +2016,7 @@ void SoundSwitch() {
                 counter = 12999;
             }
         } else if (counter == 19000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/5.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1958,7 +2024,7 @@ void SoundSwitch() {
                 counter = 18999;
             }
         } else if (counter == 27000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/7.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1966,7 +2032,7 @@ void SoundSwitch() {
                 counter = 26999;
             }
         } else if (counter == 34000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/8.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1974,7 +2040,7 @@ void SoundSwitch() {
                 counter = 33999;
             }
         } else if (counter == 42000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/9.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1982,7 +2048,7 @@ void SoundSwitch() {
                 counter = 41999;
             }
         } else if (counter == 49000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/11.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1990,7 +2056,7 @@ void SoundSwitch() {
                 counter = 48999;
             }
         } else if (counter == 55000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/12.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1998,7 +2064,7 @@ void SoundSwitch() {
                 counter = 54999;
             }
         } else if (counter == 61000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/13.mp3");
                 Mp3Loop(Mp3Handle);
@@ -2006,7 +2072,7 @@ void SoundSwitch() {
                 counter = 60999;
             }
         } else if (counter == 67000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/14.mp3");
                 Mp3Loop(Mp3Handle);
@@ -2014,7 +2080,7 @@ void SoundSwitch() {
                 counter = 66999;
             }
         } else if (counter == 73000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4 && CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/15.mp3");
                 Mp3Loop(Mp3Handle);
@@ -2024,11 +2090,10 @@ void SoundSwitch() {
         } else if (counter >= 79000) {
             counter = 0;
         }
-    } else {
+    } else if (sound == false) {
         Mp3Stop();
     }
 }
-
 void mShipMove() {
     //move x
     if (newX > mX + ShipSpeed / 2) {
@@ -2057,7 +2122,6 @@ void mShipMove() {
     //set ship view
     ViewSetxy(ShipView, mX, mY);
 }
-
 void BulletTime() {
     int x, y, x2, y2, x3, y3;
     if (counter2 == 1 * time) {
@@ -2074,7 +2138,6 @@ void BulletTime() {
             ViewSetxy(mBullet1[0], mX + BulletXOffset, mY + BulletYOffset);
         }
     } else if (counter2 == 2 * time) {
-
         if (ship == 8) {
             ViewSetxy(mBullet1[1], mX + BulletXOffset, mY + BulletYOffset);
             ViewSetxy(mBullet2[1], mX + BulletXOffset2, mY + BulletYOffset2);
@@ -4466,7 +4529,6 @@ void BulletTime() {
         }
     }
 }
-
 void DoHighscore() {
     switch (highscore) {
         case 0:
@@ -4771,9 +4833,8 @@ void DoHighscore() {
         TextSetText(text3, "\n\n\n\n\n\n\n\n\n\nHighest Level: 99+");
     }
 }
-
 void DoUpdateHighscore() {
-    if (UpdateHighscore) {
+    if (UpdateHighscore == true) {
         //populate ContainerHighscore to score
         switch (level) {
             case 0:
@@ -6281,7 +6342,6 @@ void DoUpdateHighscore() {
         UpdateHighscore = false;
     }
 }
-
 void TortureHealth() {
     int ImageTorturing, number = 100;
     if (HpCounterTorture > number * 20 && torture == true) {
@@ -6364,7 +6424,6 @@ void TortureHealth() {
         ScreenSwitch();
     }
 }
-
 void HealthBar() {
     int Image;
     if (HealthUpdate == true) {
@@ -7053,9 +7112,8 @@ void HealthBar() {
         counter12 = 0;
     }
 }
-
 void SetOne() {
-    if (counter3 == SpawnTime) {
+    if (counter3 == 1 * SpawnTime) {
         eShip1Health[0] = level + 2;
         ViewSetxy(eShip1[0], 113, -94);
     } else if (counter3 == 2 * SpawnTime) {
@@ -7233,9 +7291,8 @@ void SetOne() {
         ScreenSwitch();
     }
 }
-
 void SetTwo() {
-    if (counter3 == SpawnTime) {
+    if (counter3 == 1 * SpawnTime) {
         eShip1Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip1[0], 33, -94);
@@ -7404,9 +7461,8 @@ void SetTwo() {
         ScreenSwitch();
     }
 }
-
 void SetThree() {
-    if (counter3 == SpawnTime) {
+    if (counter3 == 1 * SpawnTime) {
         eShip6Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip6[0], 33, -94);
@@ -7578,9 +7634,8 @@ void SetThree() {
         ViewSetxy(eShip9, 89, -240);
     }
 }
-
 void SetFour() {
-    if (counter3 == SpawnTime) {
+    if (counter3 == 1 * SpawnTime) {
         eShip1Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip1[0], 33, -94);
@@ -7755,9 +7810,8 @@ void SetFour() {
         ScreenSwitch();
     }
 }
-
 void SetFive() {
-    if (counter3 == SpawnTime) {
+    if (counter3 == 1 * SpawnTime) {
         eShip6Health[0] = level + 2;
         ViewSetxy(eShip6[0], 113, -94);
     } else if (counter3 == 2 * SpawnTime) {
@@ -7927,7 +7981,6 @@ void SetFive() {
         ViewSetxy(eShip10, 85, -240);
     }
 }
-
 void EnemyShipMove() {
     for (counter6 = 0; counter6 < 10; counter6++) {
         //x cords
@@ -8020,7 +8073,6 @@ void EnemyShipMove() {
         GoRight = false;
     }
 }
-
 void DoEnemyShipMove() {
     EnemyShipMove();
     if (set == 1) {
@@ -8039,28 +8091,97 @@ void DoEnemyShipMove() {
         set = 1;
     }
 }
-
 void DoEnemyShipShoot() {
     int ex, ey, ex2, ey2, ex3, ey3;
-    if (counter4 == EnemyShootCooldownSpeed) {
-        //ship 1 to 4
-        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
-            ViewSetxy(e1Bullet1[counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
-            ViewSetxy(e2Bullet1[counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
-            ViewSetxy(e3Bullet1[counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
-            ViewSetxy(e4Bullet1[counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
-        }
-        //ship 5 to 8
-        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
-            ViewSetxy(e5Bullet1[counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
-            ViewSetxy(e5Bullet3[counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
-            ViewSetxy(e6Bullet1[counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
-            ViewSetxy(e6Bullet3[counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
-            ViewSetxy(e7Bullet2[counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
-            ViewSetxy(e8Bullet1[counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
-            ViewSetxy(e8Bullet2[counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
-            ViewSetxy(e8Bullet3[counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
-        }
+    if (counter4 == 1 * EnemyShootCooldownSpeed) {
+        //ship 1
+        ViewSetxy(e1Bullet1[0], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[1], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[2], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[3], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[4], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[5], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[6], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[7], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[8], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[9], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
+        //ship 2
+        ViewSetxy(e2Bullet1[0], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[1], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[2], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[3], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[4], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[5], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[6], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[7], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[8], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[9], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
+        //ship 3
+        ViewSetxy(e3Bullet1[0], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[1], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[2], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[3], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[4], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[5], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[6], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[7], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[8], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[9], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
+        //ship 4
+        ViewSetxy(e4Bullet1[0], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[1], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[2], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[3], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[4], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[5], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[6], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[7], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[8], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[9], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
+        //ship 5
+        ViewSetxy(e5Bullet1[0], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[0], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[1], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[1], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[2], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[2], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[3], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[3], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[4], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[4], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
+        //ship 6
+        ViewSetxy(e6Bullet1[0], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[0], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[1], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[1], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[2], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[2], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[3], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[3], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[4], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[4], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
+        //ship 7
+        ViewSetxy(e7Bullet2[0], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[1], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[2], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[3], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[4], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
+        //ship 8
+        ViewSetxy(e8Bullet1[0], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[0], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[0], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[1], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[1], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[1], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[2], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[2], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[2], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[3], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[3], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[3], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[4], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[4], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[4], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
         //ship 9
         ViewSetxy(e9Bullet1[0], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[0], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8070,24 +8191,94 @@ void DoEnemyShipShoot() {
         ViewSetxy(e10Bullet2[0], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
         ViewSetxy(e10Bullet3[0], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
     } else if (counter4 == 2 * EnemyShootCooldownSpeed) {
-        //ship 1 to 4
-        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
-            ViewSetxy(e1Bullet1[10 + counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
-            ViewSetxy(e2Bullet1[10 + counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
-            ViewSetxy(e3Bullet1[10 + counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
-            ViewSetxy(e4Bullet1[10 + counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
-        }
-        //ship 5 to 8
-        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
-            ViewSetxy(e5Bullet1[5 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
-            ViewSetxy(e5Bullet3[5 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
-            ViewSetxy(e6Bullet1[5 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
-            ViewSetxy(e6Bullet3[5 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
-            ViewSetxy(e7Bullet2[5 + counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
-            ViewSetxy(e8Bullet1[5 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
-            ViewSetxy(e8Bullet2[5 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
-            ViewSetxy(e8Bullet3[5 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
-        }
+        //ship 1
+        ViewSetxy(e1Bullet1[10], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[11], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[12], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[13], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[14], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[15], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[16], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[17], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[18], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[19], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
+        //ship 2
+        ViewSetxy(e2Bullet1[10], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[11], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[12], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[13], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[14], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[15], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[16], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[17], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[18], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[19], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
+        //ship 3
+        ViewSetxy(e3Bullet1[10], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[11], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[12], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[13], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[14], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[15], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[16], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[17], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[18], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[19], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
+        //ship 4
+        ViewSetxy(e4Bullet1[10], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[11], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[12], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[13], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[14], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[15], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[16], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[17], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[18], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[19], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
+        //ship 5
+        ViewSetxy(e5Bullet1[5], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[5], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[6], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[6], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[7], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[7], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[8], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[8], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[9], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[9], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
+        //ship 6
+        ViewSetxy(e6Bullet1[5], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[5], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[6], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[6], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[7], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[7], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[8], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[8], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[9], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[9], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
+        //ship 7
+        ViewSetxy(e7Bullet2[5], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[6], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[7], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[8], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[9], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
+        //ship 8
+        ViewSetxy(e8Bullet1[5], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[5], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[5], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[6], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[6], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[6], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[7], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[7], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[7], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[8], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[8], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[8], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[9], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[9], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[9], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
         //ship 9
         ViewSetxy(e9Bullet1[1], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[1], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8097,24 +8288,94 @@ void DoEnemyShipShoot() {
         ViewSetxy(e10Bullet2[1], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
         ViewSetxy(e10Bullet3[1], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
     } else if (counter4 == 3 * EnemyShootCooldownSpeed) {
-        //ship 1 to 4
-        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
-            ViewSetxy(e1Bullet1[20 + counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
-            ViewSetxy(e2Bullet1[20 + counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
-            ViewSetxy(e3Bullet1[20 + counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
-            ViewSetxy(e4Bullet1[20 + counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
-        }
-        //ship 5 to 8
-        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
-            ViewSetxy(e5Bullet1[10 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
-            ViewSetxy(e5Bullet3[10 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
-            ViewSetxy(e6Bullet1[10 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
-            ViewSetxy(e6Bullet3[10 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
-            ViewSetxy(e7Bullet2[10 + counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
-            ViewSetxy(e8Bullet1[10 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
-            ViewSetxy(e8Bullet2[10 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
-            ViewSetxy(e8Bullet3[10 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
-        }
+        //ship 1
+        ViewSetxy(e1Bullet1[20], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[21], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[22], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[23], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[24], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[25], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[26], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[27], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[28], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[29], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
+        //ship 2
+        ViewSetxy(e2Bullet1[20], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[21], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[22], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[23], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[24], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[25], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[26], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[27], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[28], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[29], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
+        //ship 3
+        ViewSetxy(e3Bullet1[20], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[21], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[22], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[23], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[24], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[25], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[26], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[27], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[28], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[29], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
+        //ship 4
+        ViewSetxy(e4Bullet1[20], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[21], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[22], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[23], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[24], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[25], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[26], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[27], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[28], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[29], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
+        //ship 5
+        ViewSetxy(e5Bullet1[10], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[10], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[11], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[11], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[12], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[12], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[13], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[13], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[14], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[14], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
+        //ship 6
+        ViewSetxy(e6Bullet1[10], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[10], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[11], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[11], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[12], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[12], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[13], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[13], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[14], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[14], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
+        //ship 7
+        ViewSetxy(e7Bullet2[10], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[11], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[12], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[13], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[14], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
+        //ship 8
+        ViewSetxy(e8Bullet1[10], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[10], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[10], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[11], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[11], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[11], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[12], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[12], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[12], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[13], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[13], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[13], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[14], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[14], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[14], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
         //ship 9
         ViewSetxy(e9Bullet1[2], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[2], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8124,24 +8385,94 @@ void DoEnemyShipShoot() {
         ViewSetxy(e10Bullet2[2], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
         ViewSetxy(e10Bullet3[2], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
     } else if (counter4 == 4 * EnemyShootCooldownSpeed) {
-        //ship 1 to 4
-        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
-            ViewSetxy(e1Bullet1[30 + counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
-            ViewSetxy(e2Bullet1[30 + counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
-            ViewSetxy(e3Bullet1[30 + counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
-            ViewSetxy(e4Bullet1[30 + counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
-        }
-        //ship 5 to 8
-        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
-            ViewSetxy(e5Bullet1[15 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
-            ViewSetxy(e5Bullet3[15 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
-            ViewSetxy(e6Bullet1[15 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
-            ViewSetxy(e6Bullet3[15 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
-            ViewSetxy(e7Bullet2[15 + counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
-            ViewSetxy(e8Bullet1[15 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
-            ViewSetxy(e8Bullet2[15 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
-            ViewSetxy(e8Bullet3[15 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
-        }
+        //ship 1
+        ViewSetxy(e1Bullet1[30], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[31], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[32], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[33], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[34], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[35], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[36], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[37], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[38], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[39], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
+        //ship 2
+        ViewSetxy(e2Bullet1[30], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[31], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[32], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[33], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[34], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[35], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[36], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[37], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[38], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[39], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
+        //ship 3
+        ViewSetxy(e3Bullet1[30], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[31], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[32], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[33], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[34], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[35], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[36], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[37], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[38], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[39], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
+        //ship 4
+        ViewSetxy(e4Bullet1[30], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[31], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[32], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[33], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[34], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[35], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[36], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[37], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[38], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[39], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
+        //ship 5
+        ViewSetxy(e5Bullet1[15], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[15], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[16], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[16], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[17], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[17], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[18], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[18], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[19], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[19], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
+        //ship 6
+        ViewSetxy(e6Bullet1[15], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[15], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[16], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[16], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[17], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[17], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[18], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[18], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[19], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[19], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
+        //ship 7
+        ViewSetxy(e7Bullet2[15], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[16], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[17], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[18], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[19], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
+        //ship 8
+        ViewSetxy(e8Bullet1[15], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[15], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[15], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[16], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[16], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[16], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[17], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[17], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[17], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[18], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[18], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[18], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[19], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[19], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[19], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
         //ship 9
         ViewSetxy(e9Bullet1[3], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[3], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8151,24 +8482,94 @@ void DoEnemyShipShoot() {
         ViewSetxy(e10Bullet2[3], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
         ViewSetxy(e10Bullet3[3], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
     } else if (counter4 == 5 * EnemyShootCooldownSpeed) {
-        //ship 1 to 4
-        for(int counterForLoop = 0; counterForLoop < 10; counterForLoop++){
-            ViewSetxy(e1Bullet1[40 + counterForLoop], eShipX1[counterForLoop] + e1BulletXOffset, eShipY1[counterForLoop] + e1BulletYOffset);
-            ViewSetxy(e2Bullet1[40 + counterForLoop], eShipX2[counterForLoop] + e2BulletXOffset, eShipY2[counterForLoop] + e2BulletYOffset);
-            ViewSetxy(e3Bullet1[40 + counterForLoop], eShipX3[counterForLoop] + e3BulletXOffset, eShipY3[counterForLoop] + e3BulletYOffset);
-            ViewSetxy(e4Bullet1[40 + counterForLoop], eShipX4[counterForLoop] + e4BulletXOffset, eShipY4[counterForLoop] + e4BulletYOffset);
-        }
-        //ship 5 to 8
-        for(int counterForLoop = 0; counterForLoop < 5; counterForLoop++){
-            ViewSetxy(e5Bullet1[20 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset, eShipY5[counterForLoop] + e5BulletYOffset);
-            ViewSetxy(e5Bullet3[20 + counterForLoop], eShipX5[counterForLoop] + e5BulletXOffset3, eShipY5[counterForLoop] + e5BulletYOffset3);
-            ViewSetxy(e6Bullet1[20 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset, eShipY6[counterForLoop] + e6BulletYOffset);
-            ViewSetxy(e6Bullet3[20 + counterForLoop], eShipX6[counterForLoop] + e6BulletXOffset3, eShipY6[counterForLoop] + e6BulletYOffset3);
-            ViewSetxy(e7Bullet2[20 + counterForLoop], eShipX7[counterForLoop] + e7BulletXOffset2, eShipY7[counterForLoop] + e7BulletYOffset2);
-            ViewSetxy(e8Bullet1[20 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset, eShipY8[counterForLoop] + e8BulletYOffset);
-            ViewSetxy(e8Bullet2[20 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset2, eShipY8[counterForLoop] + e8BulletYOffset2);
-            ViewSetxy(e8Bullet3[20 + counterForLoop], eShipX8[counterForLoop] + e8BulletXOffset3, eShipY8[counterForLoop] + e8BulletYOffset3);
-        }
+        //ship 1
+        ViewSetxy(e1Bullet1[40], eShipX1[0] + e1BulletXOffset, eShipY1[0] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[41], eShipX1[1] + e1BulletXOffset, eShipY1[1] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[42], eShipX1[2] + e1BulletXOffset, eShipY1[2] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[43], eShipX1[3] + e1BulletXOffset, eShipY1[3] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[44], eShipX1[4] + e1BulletXOffset, eShipY1[4] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[45], eShipX1[5] + e1BulletXOffset, eShipY1[5] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[46], eShipX1[6] + e1BulletXOffset, eShipY1[6] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[47], eShipX1[7] + e1BulletXOffset, eShipY1[7] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[48], eShipX1[8] + e1BulletXOffset, eShipY1[8] + e1BulletYOffset);
+        ViewSetxy(e1Bullet1[49], eShipX1[9] + e1BulletXOffset, eShipY1[9] + e1BulletYOffset);
+        //ship 2
+        ViewSetxy(e2Bullet1[40], eShipX2[0] + e2BulletXOffset, eShipY2[0] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[41], eShipX2[1] + e2BulletXOffset, eShipY2[1] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[42], eShipX2[2] + e2BulletXOffset, eShipY2[2] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[43], eShipX2[3] + e2BulletXOffset, eShipY2[3] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[44], eShipX2[4] + e2BulletXOffset, eShipY2[4] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[45], eShipX2[5] + e2BulletXOffset, eShipY2[5] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[46], eShipX2[6] + e2BulletXOffset, eShipY2[6] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[47], eShipX2[7] + e2BulletXOffset, eShipY2[7] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[48], eShipX2[8] + e2BulletXOffset, eShipY2[8] + e2BulletYOffset);
+        ViewSetxy(e2Bullet1[49], eShipX2[9] + e2BulletXOffset, eShipY2[9] + e2BulletYOffset);
+        //ship 3
+        ViewSetxy(e3Bullet1[40], eShipX3[0] + e3BulletXOffset, eShipY3[0] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[41], eShipX3[1] + e3BulletXOffset, eShipY3[1] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[42], eShipX3[2] + e3BulletXOffset, eShipY3[2] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[43], eShipX3[3] + e3BulletXOffset, eShipY3[3] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[44], eShipX3[4] + e3BulletXOffset, eShipY3[4] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[45], eShipX3[5] + e3BulletXOffset, eShipY3[5] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[46], eShipX3[6] + e3BulletXOffset, eShipY3[6] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[47], eShipX3[7] + e3BulletXOffset, eShipY3[7] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[48], eShipX3[8] + e3BulletXOffset, eShipY3[8] + e3BulletYOffset);
+        ViewSetxy(e3Bullet1[49], eShipX3[9] + e3BulletXOffset, eShipY3[9] + e3BulletYOffset);
+        //ship 4
+        ViewSetxy(e4Bullet1[40], eShipX4[0] + e4BulletXOffset, eShipY4[0] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[41], eShipX4[1] + e4BulletXOffset, eShipY4[1] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[42], eShipX4[2] + e4BulletXOffset, eShipY4[2] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[43], eShipX4[3] + e4BulletXOffset, eShipY4[3] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[44], eShipX4[4] + e4BulletXOffset, eShipY4[4] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[45], eShipX4[5] + e4BulletXOffset, eShipY4[5] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[46], eShipX4[6] + e4BulletXOffset, eShipY4[6] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[47], eShipX4[7] + e4BulletXOffset, eShipY4[7] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[48], eShipX4[8] + e4BulletXOffset, eShipY4[8] + e4BulletYOffset);
+        ViewSetxy(e4Bullet1[49], eShipX4[9] + e4BulletXOffset, eShipY4[9] + e4BulletYOffset);
+        //ship 5
+        ViewSetxy(e5Bullet1[20], eShipX5[0] + e5BulletXOffset, eShipY5[0] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[20], eShipX5[0] + e5BulletXOffset3, eShipY5[0] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[21], eShipX5[1] + e5BulletXOffset, eShipY5[1] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[21], eShipX5[1] + e5BulletXOffset3, eShipY5[1] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[22], eShipX5[2] + e5BulletXOffset, eShipY5[2] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[22], eShipX5[2] + e5BulletXOffset3, eShipY5[2] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[23], eShipX5[3] + e5BulletXOffset, eShipY5[3] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[23], eShipX5[3] + e5BulletXOffset3, eShipY5[3] + e5BulletYOffset3);
+        ViewSetxy(e5Bullet1[24], eShipX5[4] + e5BulletXOffset, eShipY5[4] + e5BulletYOffset);
+        ViewSetxy(e5Bullet3[24], eShipX5[4] + e5BulletXOffset3, eShipY5[4] + e5BulletYOffset3);
+        //ship 6
+        ViewSetxy(e6Bullet1[20], eShipX6[0] + e6BulletXOffset, eShipY6[0] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[20], eShipX6[0] + e6BulletXOffset3, eShipY6[0] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[21], eShipX6[1] + e6BulletXOffset, eShipY6[1] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[21], eShipX6[1] + e6BulletXOffset3, eShipY6[1] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[22], eShipX6[2] + e6BulletXOffset, eShipY6[2] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[22], eShipX6[2] + e6BulletXOffset3, eShipY6[2] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[23], eShipX6[3] + e6BulletXOffset, eShipY6[3] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[23], eShipX6[3] + e6BulletXOffset3, eShipY6[3] + e6BulletYOffset3);
+        ViewSetxy(e6Bullet1[24], eShipX6[4] + e6BulletXOffset, eShipY6[4] + e6BulletYOffset);
+        ViewSetxy(e6Bullet3[24], eShipX6[4] + e6BulletXOffset3, eShipY6[4] + e6BulletYOffset3);
+        //ship 7
+        ViewSetxy(e7Bullet2[20], eShipX7[0] + e7BulletXOffset2, eShipY7[0] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[21], eShipX7[1] + e7BulletXOffset2, eShipY7[1] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[22], eShipX7[2] + e7BulletXOffset2, eShipY7[2] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[23], eShipX7[3] + e7BulletXOffset2, eShipY7[3] + e7BulletYOffset2);
+        ViewSetxy(e7Bullet2[24], eShipX7[4] + e7BulletXOffset2, eShipY7[4] + e7BulletYOffset2);
+        //ship 8
+        ViewSetxy(e8Bullet1[20], eShipX8[0] + e8BulletXOffset, eShipY8[0] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[20], eShipX8[0] + e8BulletXOffset2, eShipY8[0] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[20], eShipX8[0] + e8BulletXOffset3, eShipY8[0] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[21], eShipX8[1] + e8BulletXOffset, eShipY8[1] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[21], eShipX8[1] + e8BulletXOffset2, eShipY8[1] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[21], eShipX8[1] + e8BulletXOffset3, eShipY8[1] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[22], eShipX8[2] + e8BulletXOffset, eShipY8[2] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[22], eShipX8[2] + e8BulletXOffset2, eShipY8[2] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[22], eShipX8[2] + e8BulletXOffset3, eShipY8[2] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[23], eShipX8[3] + e8BulletXOffset, eShipY8[3] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[23], eShipX8[3] + e8BulletXOffset2, eShipY8[3] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[23], eShipX8[3] + e8BulletXOffset3, eShipY8[3] + e8BulletYOffset3);
+        ViewSetxy(e8Bullet1[24], eShipX8[4] + e8BulletXOffset, eShipY8[4] + e8BulletYOffset);
+        ViewSetxy(e8Bullet2[24], eShipX8[4] + e8BulletXOffset2, eShipY8[4] + e8BulletYOffset2);
+        ViewSetxy(e8Bullet3[24], eShipX8[4] + e8BulletXOffset3, eShipY8[4] + e8BulletYOffset3);
         //ship 9
         ViewSetxy(e9Bullet1[4], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
         ViewSetxy(e9Bullet2[4], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
@@ -8376,7 +8777,6 @@ void DoEnemyShipShoot() {
         }
     }
 }
-
 void EnemyDied() {
     int explosion, image;
     for (counter10 = 0; counter10 < 10; counter10++) {
@@ -9044,7 +9444,6 @@ void EnemyDied() {
         }
     }
 }
-
 void ShipCollision() {
     for (counter11 = 0; counter11 < 10; counter11++) {
         //ship 1
@@ -9131,7 +9530,6 @@ void ShipCollision() {
         }
     }
 }
-
 void Rank() {
     if (xp >= 0 && xp < 50) {
         rank = 1;
@@ -9175,7 +9573,6 @@ void Rank() {
         rank = 20;
     }
 }
-
 void HealthRegen() {
     if (counter12 >= 150) {
         counter12 = 0;
@@ -9183,16 +9580,15 @@ void HealthRegen() {
         HealthUpdate = true;
     }
 }
-
 void OnTimer() {
-    //called 30 times per second - 1800=1min - 10000=5min 36sec
+//called 30 times per second - 1800=1min - 10000=5min 36sec
     Rank();
     SoundSwitch();
     DoUpdateHighscore();
-    if (sound) {
+    if (sound == true) {
         counter += 1;
     }
-    if (!pause) {
+    if (pause == false) {
         if (CurrentScreen == ScreenEndless || CurrentScreen == ScreenStoryBattle1 || CurrentScreen == ScreenStoryBattle2 || CurrentScreen == ScreenStoryBattle4 || CurrentScreen == ScreenStoryBattle5 || CurrentScreen == ScreenStoryBattle6) {
             counter2 += 1;
             counter3 += 1; //ship move counter
@@ -9210,7 +9606,7 @@ void OnTimer() {
             mShipMove();
             EnemyDied();
             ShipCollision();
-        } else if (CurrentScreen == ScreenStoryTorture && torture) {
+        } else if (CurrentScreen == ScreenStoryTorture && torture == true) {
             if (CounterTorture == 0) {
                 ViewSetxy(ImageTorture, -1, -1);
             } else if (CounterTorture == 1) {
@@ -9230,7 +9626,7 @@ void OnTimer() {
                 CounterTorture = 0;
             }
             TortureHealth();
-        } else if (CurrentScreen == ScreenStoryTorture && torture) {
+        } else if (CurrentScreen == ScreenStoryTorture && torture == false) {
             HpCounterTorture += 1;
             TortureHealth();
             TextSetText(TextTorture, "");
