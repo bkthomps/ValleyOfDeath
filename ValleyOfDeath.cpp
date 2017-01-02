@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.1.7)
+ * Valley Of Death (1.1.8)
  * 1 January 2017
  */
 #include "DragonFireSDK.h"
@@ -1756,10 +1756,17 @@ void AppExit() {
     FileClose(FileCounter);
 }
 
+bool IsNotActive() {
+	bool ret = CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 
+		&& CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  
+		&& CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 
+		&& CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore;
+	return ret;
+}
 void SoundSwitch() {
-    if (sound == true) {
+    if (sound) {
         if (counter == 1) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/1.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1767,7 +1774,7 @@ void SoundSwitch() {
                 counter = 0;
             }
         } else if (counter == 7000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/2.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1775,7 +1782,7 @@ void SoundSwitch() {
                 counter = 6999;
             }
         } else if (counter == 13000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/3.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1783,7 +1790,7 @@ void SoundSwitch() {
                 counter = 12999;
             }
         } else if (counter == 19000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/5.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1791,7 +1798,7 @@ void SoundSwitch() {
                 counter = 18999;
             }
         } else if (counter == 27000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/7.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1799,7 +1806,7 @@ void SoundSwitch() {
                 counter = 26999;
             }
         } else if (counter == 34000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/8.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1807,7 +1814,7 @@ void SoundSwitch() {
                 counter = 33999;
             }
         } else if (counter == 42000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/9.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1815,7 +1822,7 @@ void SoundSwitch() {
                 counter = 41999;
             }
         } else if (counter == 49000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/11.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1823,7 +1830,7 @@ void SoundSwitch() {
                 counter = 48999;
             }
         } else if (counter == 55000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/12.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1831,7 +1838,7 @@ void SoundSwitch() {
                 counter = 54999;
             }
         } else if (counter == 61000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/13.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1839,7 +1846,7 @@ void SoundSwitch() {
                 counter = 60999;
             }
         } else if (counter == 67000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/14.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1847,7 +1854,7 @@ void SoundSwitch() {
                 counter = 66999;
             }
         } else if (counter == 73000) {
-            if (CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 && CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  && CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 && CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore) {
+            if (IsNotActive()) {
                 Mp3Stop();
                 Mp3Handle = Mp3Add("Sounds/15.mp3");
                 Mp3Loop(Mp3Handle);
@@ -1857,7 +1864,7 @@ void SoundSwitch() {
         } else if (counter >= 79000) {
             counter = 0;
         }
-    } else if (sound == false) {
+    } else {
         Mp3Stop();
     }
 }
