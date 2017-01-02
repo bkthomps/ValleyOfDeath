@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.1.3)
+ * Valley Of Death (1.1.4)
  * 1 January 2017
  */
 #include "DragonFireSDK.h"
@@ -1012,7 +1012,6 @@ int Unlocks(int id, int event, int x, int y) {
 int OnUnlocksMenuTouch(int id, int event, int x, int y) {
     int ImageUnlocks;
     if (event == 3) {
-        //rank
         if (rank == 1) {
             TextSetText(r, "\n\nLevel 1: Ordinary Shipman");
         } else if (rank == 2) {
@@ -1054,56 +1053,20 @@ int OnUnlocksMenuTouch(int id, int event, int x, int y) {
         } else if (rank == 20) {
             TextSetText(r, "\n\nLevel 20: Admiral");
         }
-        //ships
-        if (rank >= 3) {
-            ImageUnlocks = ImageAdd("Unlocks/UnShip_2.png");
-            ViewSetImage(s2, ImageUnlocks);
-        } else {
-            ImageUnlocks = ImageAdd("Unlocks/LckShip_2.png");
-            ViewSetImage(s2, ImageUnlocks);
-        }
-        if (rank >= 5) {
-            ImageUnlocks = ImageAdd("Unlocks/UnShip_3.png");
-            ViewSetImage(s3, ImageUnlocks);
-        } else {
-            ImageUnlocks = ImageAdd("Unlocks/LckShip_3.png");
-            ViewSetImage(s3, ImageUnlocks);
-        }
-        if (rank >= 8) {
-            ImageUnlocks = ImageAdd("Unlocks/UnShip_4.png");
-            ViewSetImage(s4, ImageUnlocks);
-        } else {
-            ImageUnlocks = ImageAdd("Unlocks/LckShip_4.png");
-            ViewSetImage(s4, ImageUnlocks);
-        }
-        if (rank >= 11) {
-            ImageUnlocks = ImageAdd("Unlocks/UnShip_5.png");
-            ViewSetImage(s5, ImageUnlocks);
-        } else {
-            ImageUnlocks = ImageAdd("Unlocks/LckShip_5.png");
-            ViewSetImage(s5, ImageUnlocks);
-        }
-        if (rank >= 14) {
-            ImageUnlocks = ImageAdd("Unlocks/UnShip_6.png");
-            ViewSetImage(s6, ImageUnlocks);
-        } else {
-            ImageUnlocks = ImageAdd("Unlocks/LckShip_6.png");
-            ViewSetImage(s6, ImageUnlocks);
-        }
-        if (rank >= 17) {
-            ImageUnlocks = ImageAdd("Unlocks/UnShip_7.png");
-            ViewSetImage(s7, ImageUnlocks);
-        } else {
-            ImageUnlocks = ImageAdd("Unlocks/LckShip_7.png");
-            ViewSetImage(s7, ImageUnlocks);
-        }
-        if (rank >= 20) {
-            ImageUnlocks = ImageAdd("Unlocks/UnShip_8.png");
-            ViewSetImage(s8, ImageUnlocks);
-        } else {
-            ImageUnlocks = ImageAdd("Unlocks/LckShip_8.png");
-            ViewSetImage(s8, ImageUnlocks);
-        }
+		ImageUnlocks = (rank >= 3) ? (ImageAdd("Unlocks/UnShip_2.png")) : (ImageAdd("Unlocks/LckShip_2.png"));
+		ViewSetImage(s2, ImageUnlocks);
+		ImageUnlocks = (rank >= 5) ? (ImageAdd("Unlocks/UnShip_3.png")) : (ImageAdd("Unlocks/LckShip_3.png"));
+		ViewSetImage(s3, ImageUnlocks);
+		ImageUnlocks = (rank >= 8) ? (ImageAdd("Unlocks/UnShip_4.png")) : (ImageAdd("Unlocks/LckShip_4.png"));
+		ViewSetImage(s4, ImageUnlocks);
+		ImageUnlocks = (rank >= 11) ? (ImageAdd("Unlocks/UnShip_5.png")) : (ImageAdd("Unlocks/LckShip_5.png"));
+		ViewSetImage(s5, ImageUnlocks);
+		ImageUnlocks = (rank >= 14) ? (ImageAdd("Unlocks/UnShip_6.png")) : (ImageAdd("Unlocks/LckShip_6.png"));
+		ViewSetImage(s6, ImageUnlocks);
+		ImageUnlocks = (rank >= 17) ? (ImageAdd("Unlocks/UnShip_7.png")) : (ImageAdd("Unlocks/LckShip_7.png"));
+		ViewSetImage(s7, ImageUnlocks);
+		ImageUnlocks = (rank >= 20) ? (ImageAdd("Unlocks/UnShip_8.png")) : (ImageAdd("Unlocks/LckShip_8.png"));
+		ViewSetImage(s8, ImageUnlocks);
         CurrentScreen = ScreenUnlocks;
         ScreenSwitch();
     }
