@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.1.13)
+ * Valley Of Death (1.1.14)
  * 2 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -179,6 +179,10 @@ int ContainerUnlocks;
 int ContainerOptions;
 int ContainerDeleteCheckOne;
 int ContainerDeleteCheckTwo;
+
+
+
+
 
 void IntFileToGame() {
     IntTempNum = 0;
@@ -1459,13 +1463,12 @@ void ContainerOne() {
     ViewAdd(ContainerEndless, "Images/Background.png", 0, 0, OnBattleTouch, 1);
     ViewAdd(ContainerEndless, "Images/Pause.png", 270, 20, OnPause, 1);
     HP = ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20);
+	//player bullets
     for (int i = 0; i < 15; i++) {
         mBullet1[i] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
 		mBullet2[i] = ViewAdd(ContainerEndless, "Images/Rocket.png", -20, -20);
         mBullet3[i] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
     }
-	//TODO: why is the following line needed?
-    mBullet1[0] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
     //enemy bullets
     for (int i = 0; i < 50; i++) {
         e1Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
@@ -1692,225 +1695,16 @@ void AppMain() {
 }
 
 void IntGameToFile() {
-	//this code is broken
-	/*FileBuffer[0] = char(IntTempNum / 10000 + '0');
-    IntTempNum -= (int) FileBuffer[0] - '0';
-    FileBuffer[1] = char(IntTempNum / 1000 + '0');
-    IntTempNum -= (int) FileBuffer[1] - '0';
-    FileBuffer[2] = char(IntTempNum / 100 + '0');
-    IntTempNum -= (int) FileBuffer[2] - '0';
-    FileBuffer[3] = char(IntTempNum / 10 + '0');
-    IntTempNum -= (int) FileBuffer[3] - '0';
-    FileBuffer[4] = char(IntTempNum + '0');
-    IntTempNum -= (int) FileBuffer[4] - '0';*/
-
-	//TODO: find a more concise way
-
-	//for  10,000's
-	if(IntTempNum>=90000){
- 		FileBuffer[0]='9';
- 		IntTempNum-=90000;
- 	}
- 	else if(IntTempNum>=80000 && IntTempNum<90000){
- 		FileBuffer[0]='8';
- 		IntTempNum-=80000;
- 	}
- 	else if(IntTempNum>=70000 && IntTempNum<80000){
- 		FileBuffer[0]='7';
- 		IntTempNum-=70000;
- 	}
- 	else if(IntTempNum>=60000 && IntTempNum<70000){
- 		FileBuffer[0]='6';
- 		IntTempNum-=60000;
-	}
- 	else if(IntTempNum>=50000 && IntTempNum<60000){
- 		FileBuffer[0]='5';
- 		IntTempNum-=50000;
- 	}
- 	else if(IntTempNum>=40000 && IntTempNum<50000){
- 		FileBuffer[0]='4';
- 		IntTempNum-=40000;
- 	}
-	else if(IntTempNum>=30000 && IntTempNum<40000){
- 		FileBuffer[0]='3';
- 		IntTempNum-=30000;
- 	}
- 	else if(IntTempNum>=20000 && IntTempNum<30000){
- 		FileBuffer[0]='2';
- 		IntTempNum-=20000;
-	}
- 	else if(IntTempNum>=10000 && IntTempNum<20000){
- 		FileBuffer[0]='1';
- 		IntTempNum-=10000;
- 	}
- 	else if(IntTempNum<10000){
- 		FileBuffer[0]='0';
- 		IntTempNum-=0;
- 	}
- 	//for  1,000's
- 	if(IntTempNum>=9000){
- 		FileBuffer[1]='9';
- 		IntTempNum-=9000;
- 	}
- 	else if(IntTempNum>=8000 && IntTempNum<9000){
- 		FileBuffer[1]='8';
- 		IntTempNum-=8000;
- 	}
- 	else if(IntTempNum>=7000 && IntTempNum<8000){
-		FileBuffer[1]='7';
-		IntTempNum-=7000;
- 	}
- 	else if(IntTempNum>=6000 && IntTempNum<7000){
- 		FileBuffer[1]='6';
- 		IntTempNum-=6000;
- 	}
- 	else if(IntTempNum>=5000 && IntTempNum<6000){
- 		FileBuffer[1]='5';
- 		IntTempNum-=5000;
- 	}
- 	else if(IntTempNum>=4000 && IntTempNum<5000){
- 		FileBuffer[1]='4';
- 		IntTempNum-=4000;
- 	}
- 	else if(IntTempNum>=3000 && IntTempNum<4000){
- 		FileBuffer[1]='3';
- 		IntTempNum-=3000;
- 	}
- 	else if(IntTempNum>=2000 && IntTempNum<3000){
- 		FileBuffer[1]='2';
- 		IntTempNum-=2000;
- 	}
- 	else if(IntTempNum>=1000 && IntTempNum<2000){
- 		FileBuffer[1]='1';
- 		IntTempNum-=1000;
- 	}
- 	else if(IntTempNum<1000){
- 		FileBuffer[1]='0';
- 		IntTempNum-=0;
- 	}
- 	//for  100's
- 	if(IntTempNum>=900){
- 		FileBuffer[2]='9';
- 		IntTempNum-=900;
- 	}
- 	else if(IntTempNum>=800 && IntTempNum<900){
-		FileBuffer[2]='8';
- 		IntTempNum-=800;
- 	}
- 	else if(IntTempNum>=700 && IntTempNum<800){
- 		FileBuffer[2]='7';
- 		IntTempNum-=700;
- 	}
- 	else if(IntTempNum>=600 && IntTempNum<700){
- 		FileBuffer[2]='6';
- 		IntTempNum-=600;
- 	}
- 	else if(IntTempNum>=500 && IntTempNum<600){
- 		FileBuffer[2]='5';
- 		IntTempNum-=500;
- 	}
- 	else if(IntTempNum>=400 && IntTempNum<500){
- 		FileBuffer[2]='4';
- 		IntTempNum-=400;
- 	}
- 	else if(IntTempNum>=300 && IntTempNum<400){
-		FileBuffer[2]='3';
- 		IntTempNum-=300;
- 	}
- 	else if(IntTempNum>=200 && IntTempNum<300){
- 		FileBuffer[2]='2';
- 		IntTempNum-=200;
-	}
-	else if(IntTempNum>=100 && IntTempNum<200){
- 		FileBuffer[2]='1';
- 		IntTempNum-=100;
- 	}
- 	else if(IntTempNum<100){
- 		FileBuffer[2]='0';
- 		IntTempNum-=0;
- 	}
- 	//for  10's
- 	if(IntTempNum>=90){
- 		FileBuffer[3]='9';
- 		IntTempNum-=90;
- 	}
- 	else if(IntTempNum>=80 && IntTempNum<90){
- 		FileBuffer[3]='8';
- 		IntTempNum-=80;
- 	}
- 	else if(IntTempNum>=70 && IntTempNum<80){
- 		FileBuffer[3]='7';
- 		IntTempNum-=70;
- 	}
- 	else if(IntTempNum>=60 && IntTempNum<70){
- 		FileBuffer[3]='6';
- 		IntTempNum-=60;
- 	}
- 	else if(IntTempNum>=50 && IntTempNum<60){
-		FileBuffer[3]='5';
- 		IntTempNum-=50;
- 	}
- 	else if(IntTempNum>=40 && IntTempNum<50){
- 		FileBuffer[3]='4';
- 		IntTempNum-=40;
- 	}
- 	else if(IntTempNum>=30 && IntTempNum<40){
- 		FileBuffer[3]='3';
- 		IntTempNum-=30;
- 	}
- 	else if(IntTempNum>=20 && IntTempNum<30){
- 		FileBuffer[3]='2';
- 		IntTempNum-=20;
- 	}
- 	else if(IntTempNum>=10 && IntTempNum<20){
- 		FileBuffer[3]='1';
-		IntTempNum-=10;
- 	}
- 	else if(IntTempNum<10){
- 		FileBuffer[3]='0';
- 		IntTempNum-=0;
- 	}
- 	//for  1's
- 	if(IntTempNum==9){
- 		FileBuffer[4]='9';
- 		IntTempNum-=9;
- 	}
- 	else if(IntTempNum==8){
- 		FileBuffer[4]='8';
- 		IntTempNum-=8;
- 	}
- 	else if(IntTempNum==7){
- 		FileBuffer[4]='7';
- 		IntTempNum-=7;
- 	}
- 	else if(IntTempNum==6){
- 		FileBuffer[4]='6';
- 		IntTempNum-=6;
-	}
- 	else if(IntTempNum==5){
- 		FileBuffer[4]='5';
- 		IntTempNum-=5;
- 	}
- 	else if(IntTempNum==4){
- 		FileBuffer[4]='4';
- 		IntTempNum-=4;
- 	}
- 	else if(IntTempNum==3){
- 		FileBuffer[4]='3';
- 		IntTempNum-=3;
- 	}
-	else if(IntTempNum==2){
- 		FileBuffer[4]='2';
- 		IntTempNum-=2;
- 	}
- 	else if(IntTempNum==1){
- 		FileBuffer[4]='1';
- 		IntTempNum-=1;
-	}
- 	else if(IntTempNum==0){
- 		FileBuffer[4]='0';
-		IntTempNum-=0;
- 	}
+	FileBuffer[0] = char(IntTempNum / 10000 + '0');
+	IntTempNum %= 10000;
+	FileBuffer[1] = char(IntTempNum / 1000 + '0');
+	IntTempNum %= 1000;
+	FileBuffer[2] = char(IntTempNum / 100 + '0');
+	IntTempNum %= 100;
+	FileBuffer[3] = char(IntTempNum / 10 + '0');
+	IntTempNum %= 10;
+	FileBuffer[4] = char(IntTempNum + '0');
+	IntTempNum = 0;
 }
 void BoolGameToFile() {
 	FileBuffer[0] = (BoolTempNum) ? ('t') : ('f');
