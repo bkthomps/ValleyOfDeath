@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.1.8)
+ * Valley Of Death (1.1.9)
  * 1 January 2017
  */
 #include "DragonFireSDK.h"
@@ -1759,7 +1759,7 @@ void AppExit() {
 bool IsNotActive() {
 	bool ret = CurrentScreen != ScreenEndless && CurrentScreen != ScreenStoryBattle1 
 		&& CurrentScreen != ScreenStoryBattle2 && CurrentScreen != ScreenStoryBattle4  
-		&& CurrentScreen != ScreenStoryBattle5  && CurrentScreen != ScreenStoryBattle6 
+		&& CurrentScreen != ScreenStoryBattle5 && CurrentScreen != ScreenStoryBattle6 
 		&& CurrentScreen != ScreenDied && CurrentScreen != ScreenHighscore;
 	return ret;
 }
@@ -1898,203 +1898,29 @@ void mShipMove() {
 }
 void BulletTime() {
     int x, y, x2, y2, x3, y3;
-    if (counter2 == 1 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[0], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[0], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[0], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[0], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[0], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[0], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[0], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 2 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[1], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[1], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[1], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[1], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[1], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[1], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[1], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 3 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[2], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[2], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[2], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[2], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[2], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[2], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[2], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 4 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[3], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[3], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[3], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[3], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[3], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[3], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[3], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 5 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[4], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[4], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[4], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[4], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[4], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[4], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[4], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 6 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[5], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[5], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[5], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[5], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[5], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[5], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[5], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 7 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[6], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[6], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[6], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[6], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[6], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[6], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[6], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 8 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[7], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[7], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[7], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[7], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[7], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[7], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[7], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 9 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[8], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[8], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[8], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[8], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[8], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[8], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[8], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 10 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[9], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[9], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[9], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[9], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[9], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[9], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[9], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 11 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[10], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[10], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[10], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[10], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[10], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[10], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[10], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 12 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[11], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[11], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[11], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[11], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[11], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[11], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[11], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 13 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[12], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[12], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[12], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[12], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[12], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[12], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[12], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 14 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[13], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[13], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[13], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[13], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[13], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[13], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[13], mX + BulletXOffset, mY + BulletYOffset);
-        }
-    } else if (counter2 == 15 * time) {
-        if (ship == 8) {
-            ViewSetxy(mBullet1[14], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet2[14], mX + BulletXOffset2, mY + BulletYOffset2);
-            ViewSetxy(mBullet3[14], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else if (ship == 7) {
-            ViewSetxy(mBullet2[14], mX + BulletXOffset2, mY + BulletYOffset2);
-        } else if (ship == 6 || ship == 5) {
-            ViewSetxy(mBullet1[14], mX + BulletXOffset, mY + BulletYOffset);
-            ViewSetxy(mBullet3[14], mX + BulletXOffset3, mY + BulletYOffset3);
-        } else {
-            ViewSetxy(mBullet1[14], mX + BulletXOffset, mY + BulletYOffset);
-        }
-        counter2 = 0;
-    } else {
+	bool used = false;
+	for (int i = 1; i <= 15; i++) {
+		if (counter2 == i * time) {
+			used = true;
+			if (ship == 8) {
+				ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
+				ViewSetxy(mBullet2[i - 1], mX + BulletXOffset2, mY + BulletYOffset2);
+				ViewSetxy(mBullet3[i - 1], mX + BulletXOffset3, mY + BulletYOffset3);
+			} else if (ship == 7) {
+				ViewSetxy(mBullet2[i - 1], mX + BulletXOffset2, mY + BulletYOffset2);
+			} else if (ship == 6 || ship == 5) {
+				ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
+				ViewSetxy(mBullet3[i - 1], mX + BulletXOffset3, mY + BulletYOffset3);
+			} else {
+				ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
+			}
+		}
+	}
+	if (counter2 >= 15 * time) {
+		counter2 = 0;
+	}
+	//TODO: make this block of code shorter
+    if (!used) {
         //0
         x = ViewGetx(mBullet1[0]);
         y = ViewGety(mBullet1[0]);
@@ -4304,6 +4130,7 @@ void BulletTime() {
     }
 }
 void DoHighscore() {
+	//const char one[35] = "\n\n\n\n\n\n\n\n\n\nHighest Level: ";
     switch (highscore) {
         case 0:
             TextSetText(text3, "\n\n\n\n\n\n\n\n\n\nHighest Level: 0");
