@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.1.18)
+ * Valley Of Death (1.2.0)
  * 2 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -814,18 +814,25 @@ int OnStoryLevel2(int id, int event, int x, int y) {
 }
 int OnStoryLevel1(int id, int event, int x, int y) {
     if (event == 3) {
-        if (id == 1) {
-            CurrentScreen = ScreenStory1a2;
-        } else if (id == 3) {
-            CurrentScreen = ScreenStory1s3;
-        } else if (id == 4) {
-            CurrentScreen = ScreenStory1p3;
-        } else if (id == 5) {
-            CurrentScreen = ScreenStory1a4;
-        } else if (id == 6) {
-            CurrentScreen = ScreenStory1r5;
-        } else if (id == 7) {
-            CurrentScreen = ScreenStory1e5;
+        switch (id) {
+            case 1:
+                CurrentScreen = ScreenStory1a2;
+                break;
+            case 3:
+                CurrentScreen = ScreenStory1s3;
+                break;
+            case 4:
+                CurrentScreen = ScreenStory1p3;
+                break;
+            case 5:
+                CurrentScreen = ScreenStory1a4;
+                break;
+            case 6:
+                CurrentScreen = ScreenStory1r5;
+                break;
+            case 7:
+                CurrentScreen = ScreenStory1e5;
+                break;
         }
         if (id == 8) {
             CurrentScreen = ScreenStoryBattle1;
@@ -833,7 +840,7 @@ int OnStoryLevel1(int id, int event, int x, int y) {
             Reset();
             set = 1;
             level = 1;
-        } else {
+        } else if (id != 2) {
             ScreenSwitch();
         }
     }
@@ -1910,153 +1917,153 @@ void BulletTime() {
     }
     if (!used) {
         for (int i = 0; i < 15; i++) {
-			x = ViewGetx(mBullet1[i]);
-			y = ViewGety(mBullet1[i]);
-			x2 = ViewGetx(mBullet2[i]);
-			y2 = ViewGety(mBullet2[i]);
-			x3 = ViewGetx(mBullet3[i]);
-			y3 = ViewGety(mBullet3[i]);
-			if (y > -20 || y2 > -20 || y3 > -20) {
-				ViewSetxy(mBullet1[i], x, y - speed);
-				ViewSetxy(mBullet2[i], x2, y2 - speed);
-				ViewSetxy(mBullet3[i], x3, y3 - speed);
-			}
-			for (int j = 0; j < 10; j++) {
-				//ship 1
-				if (y > eShipY1[j] && y < eShipY1[j] + 94 && x > eShipX1[j] + 9 && x < eShipX1[j] + 76) {
-					ViewSetxy(mBullet1[i], -10, -10);
-					eShip1Health[j] -= 1;
-				}
-				if (y2 > eShipY1[j] && y2 < eShipY1[j] + 94 && x2 > eShipX1[j] + 9 && x2 < eShipX1[j] + 76) {
-					ViewSetxy(mBullet2[i], -20, -20);
-					eShip1Health[j] -= 3;
-				}
-				if (y3 > eShipY1[j] && y3 < eShipY1[j] + 94 && x3 > eShipX1[j] + 9 && x3 < eShipX1[j] + 76) {
-					ViewSetxy(mBullet3[i], -10, -10);
-					eShip1Health[j] -= 1;
-				}
-				//ship 2
-				if (y > eShipY2[j] && y < eShipY2[j] + 94 && x > eShipX2[j] + 15 && x < eShipX2[j] + 69) {
-					ViewSetxy(mBullet1[i], -10, -10);
-					eShip2Health[j] -= 1;
-				}
-				if (y2 > eShipY2[j] && y2 < eShipY2[j] + 94 && x2 > eShipX2[j] + 15 && x2 < eShipX2[j] + 69) {
-					ViewSetxy(mBullet2[i], -20, -20);
-					eShip2Health[j] -= 3;
-				}
-				if (y3 > eShipY2[j] && y3 < eShipY2[j] + 94 && x3 > eShipX2[j] + 15 && x3 < eShipX2[j] + 69) {
-					ViewSetxy(mBullet3[i], -10, -10);
-					eShip2Health[j] -= 1;
-				}
-				//ship 3
-				if (y > eShipY3[j] && y < eShipY3[j] + 94 && x > eShipX3[j] + 18 && x < eShipX3[j] + 66) {
-					ViewSetxy(mBullet1[i], -10, -10);
-					eShip3Health[j] -= 1;
-				}
-				if (y2 > eShipY3[j] && y2 < eShipY3[j] + 94 && x2 > eShipX3[j] + 18 && x2 < eShipX3[j] + 66) {
-					ViewSetxy(mBullet2[i], -20, -20);
-					eShip3Health[j] -= 3;
-				}
-				if (y3 > eShipY3[j] && y3 < eShipY3[j] + 94 && x3 > eShipX3[j] + 18 && x3 < eShipX3[j] + 66) {
-					ViewSetxy(mBullet3[i], -10, -10);
-					eShip3Health[j] -= 1;
-				}
-				//ship 4
-				if (y > eShipY4[j] && y < eShipY4[j] + 94 && x > eShipX4[j] - 3 && x < eShipX4[j] + 87) {
-					ViewSetxy(mBullet1[i], -10, -10);
-					eShip4Health[j] -= 1;
-				}
-				if (y2 > eShipY4[j] && y2 < eShipY4[j] + 94 && x2 > eShipX4[j] - 3 && x2 < eShipX4[j] + 87) {
-					ViewSetxy(mBullet2[i], -20, -20);
-					eShip4Health[j] -= 3;
-				}
-				if (y3 > eShipY4[j] && y3 < eShipY4[j] + 94 && x3 > eShipX4[j] - 3 && x3 < eShipX4[j] + 87) {
-					ViewSetxy(mBullet3[i], -10, -10);
-					eShip4Health[j] -= 1;
-				}
-			}
-			for (int j = 0; j < 5; j++) {
-				//ship 5
-				if (y > eShipY5[j] && y < eShipY5[j] + 94 && x > eShipX5[j] + 13 && x < eShipX5[j] + 71) {
-					ViewSetxy(mBullet1[i], -10, -10);
-					eShip5Health[j] -= 1;
-				}
-				if (y2 > eShipY5[j] && y2 < eShipY5[j] + 94 && x2 > eShipX5[j] + 13 && x2 < eShipX5[j] + 71) {
-					ViewSetxy(mBullet2[i], -20, -20);
-					eShip5Health[j] -= 3;
-				}
-				if (y3 > eShipY5[j] && y3 < eShipY5[j] + 94 && x3 > eShipX5[j] + 13 && x3 < eShipX5[j] + 71) {
-					ViewSetxy(mBullet3[i], -10, -10);
-					eShip5Health[j] -= 1;
-				}
-				//ship 6
-				if (y > eShipY6[j] && y < eShipY6[j] + 94 && x > eShipX6[j] + 3 && x < eShipX6[j] + 81) {
-					ViewSetxy(mBullet1[i], -10, -10);
-					eShip6Health[j] -= 1;
-				}
-				if (y2 > eShipY2[j] && y2 < eShipY2[j] + 94 && x2 > eShipX2[j] + 3 && x2 < eShipX2[j] + 81) {
-					ViewSetxy(mBullet2[i], -20, -20);
-					eShip2Health[j] -= 3;
-				}
-				if (y3 > eShipY6[j] && y3 < eShipY6[j] + 94 && x3 > eShipX6[j] + 3 && x3 < eShipX6[j] + 81) {
-					ViewSetxy(mBullet3[i], -10, -10);
-					eShip6Health[j] -= 1;
-				}
-				//ship 7
-				if (y > eShipY7[j] && y < eShipY7[j] + 94 && x > eShipX7[j] - 2 && x < eShipX7[j] + 86) {
-					ViewSetxy(mBullet1[i], -10, -10);
-					eShip7Health[j] -= 1;
-				}
-				if (y2 > eShipY7[j] && y2 < eShipY7[j] + 94 && x2 > eShipX7[j] - 2 && x2 < eShipX7[j] + 86) {
-					ViewSetxy(mBullet2[i], -20, -20);
-					eShip7Health[j] -= 3;
-				}
-				if (y3 > eShipY7[j] && y3 < eShipY7[j] + 94 && x3 > eShipX7[j] - 2 && x3 < eShipX7[j] + 86) {
-					ViewSetxy(mBullet3[i], -10, -10);
-					eShip7Health[j] -= 1;
-				}
-				//ship 8
-				if (y > eShipY8[j] && y < eShipY8[j] + 94 && x > eShipX8[j] - 3 && x < eShipX8[j] + 86) {
-					ViewSetxy(mBullet1[i], -10, -10);
-					eShip8Health[j] -= 1;
-				}
-				if (y2 > eShipY8[j] && y2 < eShipY8[j] + 94 && x2 > eShipX8[j] - 3 && x2 < eShipX8[j] + 86) {
-					ViewSetxy(mBullet2[i], -20, -20);
-					eShip8Health[j] -= 3;
-				}
-				if (y3 > eShipY8[j] && y3 < eShipY8[j] + 94 && x3 > eShipX8[j] - 3 && x3 < eShipX8[j] + 86) {
-					ViewSetxy(mBullet3[i], -10, -10);
-					eShip8Health[j] -= 1;
-				}
-			}
-			//ship 9
-			if (y > eShipY9 && y < eShipY9 + 94 && x > eShipX9 && x < eShipX9 + 240) {
-				ViewSetxy(mBullet1[i], -10, -10);
-				eShip9Health -= 1;
-			}
-			if (y2 > eShipY9 && y2 < eShipY9 + 94 && x2 > eShipX9 && x2 < eShipX9 + 240) {
-				ViewSetxy(mBullet2[i], -20, -20);
-				eShip9Health -= 3;
-			}
-			if (y3 > eShipY9 && y3 < eShipY9 + 94 && x3 > eShipX9 && x3 < eShipX9 + 240) {
-				ViewSetxy(mBullet3[i], -10, -10);
-				eShip9Health -= 1;
-			}
-			//ship 10
-			if (y > eShipY10 && y < eShipY10 + 94 && x > eShipX10 && x < eShipX10 + 240) {
-				ViewSetxy(mBullet1[i], -10, -10);
-				eShip10Health -= 1;
-			}
-			if (y2 > eShipY10 && y2 < eShipY10 + 94 && x2 > eShipX10 && x2 < eShipX10 + 240) {
-				ViewSetxy(mBullet2[i], -20, -20);
-				eShip10Health -= 3;
-			}
-			if (y3 > eShipY10 && y3 < eShipY10 + 94 && x3 > eShipX10 && x3 < eShipX10 + 240) {
-				ViewSetxy(mBullet3[i], -10, -10);
-				eShip10Health -= 1;
-			}
+            x = ViewGetx(mBullet1[i]);
+            y = ViewGety(mBullet1[i]);
+            x2 = ViewGetx(mBullet2[i]);
+            y2 = ViewGety(mBullet2[i]);
+            x3 = ViewGetx(mBullet3[i]);
+            y3 = ViewGety(mBullet3[i]);
+            if (y > -20 || y2 > -20 || y3 > -20) {
+                ViewSetxy(mBullet1[i], x, y - speed);
+                ViewSetxy(mBullet2[i], x2, y2 - speed);
+                ViewSetxy(mBullet3[i], x3, y3 - speed);
+            }
+            for (int j = 0; j < 10; j++) {
+                //ship 1
+                if (y > eShipY1[j] && y < eShipY1[j] + 94 && x > eShipX1[j] + 9 && x < eShipX1[j] + 76) {
+                    ViewSetxy(mBullet1[i], -10, -10);
+                    eShip1Health[j] -= 1;
+                }
+                if (y2 > eShipY1[j] && y2 < eShipY1[j] + 94 && x2 > eShipX1[j] + 9 && x2 < eShipX1[j] + 76) {
+                    ViewSetxy(mBullet2[i], -20, -20);
+                    eShip1Health[j] -= 3;
+                }
+                if (y3 > eShipY1[j] && y3 < eShipY1[j] + 94 && x3 > eShipX1[j] + 9 && x3 < eShipX1[j] + 76) {
+                    ViewSetxy(mBullet3[i], -10, -10);
+                    eShip1Health[j] -= 1;
+                }
+                //ship 2
+                if (y > eShipY2[j] && y < eShipY2[j] + 94 && x > eShipX2[j] + 15 && x < eShipX2[j] + 69) {
+                    ViewSetxy(mBullet1[i], -10, -10);
+                    eShip2Health[j] -= 1;
+                }
+                if (y2 > eShipY2[j] && y2 < eShipY2[j] + 94 && x2 > eShipX2[j] + 15 && x2 < eShipX2[j] + 69) {
+                    ViewSetxy(mBullet2[i], -20, -20);
+                    eShip2Health[j] -= 3;
+                }
+                if (y3 > eShipY2[j] && y3 < eShipY2[j] + 94 && x3 > eShipX2[j] + 15 && x3 < eShipX2[j] + 69) {
+                    ViewSetxy(mBullet3[i], -10, -10);
+                    eShip2Health[j] -= 1;
+                }
+                //ship 3
+                if (y > eShipY3[j] && y < eShipY3[j] + 94 && x > eShipX3[j] + 18 && x < eShipX3[j] + 66) {
+                    ViewSetxy(mBullet1[i], -10, -10);
+                    eShip3Health[j] -= 1;
+                }
+                if (y2 > eShipY3[j] && y2 < eShipY3[j] + 94 && x2 > eShipX3[j] + 18 && x2 < eShipX3[j] + 66) {
+                    ViewSetxy(mBullet2[i], -20, -20);
+                    eShip3Health[j] -= 3;
+                }
+                if (y3 > eShipY3[j] && y3 < eShipY3[j] + 94 && x3 > eShipX3[j] + 18 && x3 < eShipX3[j] + 66) {
+                    ViewSetxy(mBullet3[i], -10, -10);
+                    eShip3Health[j] -= 1;
+                }
+                //ship 4
+                if (y > eShipY4[j] && y < eShipY4[j] + 94 && x > eShipX4[j] - 3 && x < eShipX4[j] + 87) {
+                    ViewSetxy(mBullet1[i], -10, -10);
+                    eShip4Health[j] -= 1;
+                }
+                if (y2 > eShipY4[j] && y2 < eShipY4[j] + 94 && x2 > eShipX4[j] - 3 && x2 < eShipX4[j] + 87) {
+                    ViewSetxy(mBullet2[i], -20, -20);
+                    eShip4Health[j] -= 3;
+                }
+                if (y3 > eShipY4[j] && y3 < eShipY4[j] + 94 && x3 > eShipX4[j] - 3 && x3 < eShipX4[j] + 87) {
+                    ViewSetxy(mBullet3[i], -10, -10);
+                    eShip4Health[j] -= 1;
+                }
+            }
+            for (int j = 0; j < 5; j++) {
+                //ship 5
+                if (y > eShipY5[j] && y < eShipY5[j] + 94 && x > eShipX5[j] + 13 && x < eShipX5[j] + 71) {
+                    ViewSetxy(mBullet1[i], -10, -10);
+                    eShip5Health[j] -= 1;
+                }
+                if (y2 > eShipY5[j] && y2 < eShipY5[j] + 94 && x2 > eShipX5[j] + 13 && x2 < eShipX5[j] + 71) {
+                    ViewSetxy(mBullet2[i], -20, -20);
+                    eShip5Health[j] -= 3;
+                }
+                if (y3 > eShipY5[j] && y3 < eShipY5[j] + 94 && x3 > eShipX5[j] + 13 && x3 < eShipX5[j] + 71) {
+                    ViewSetxy(mBullet3[i], -10, -10);
+                    eShip5Health[j] -= 1;
+                }
+                //ship 6
+                if (y > eShipY6[j] && y < eShipY6[j] + 94 && x > eShipX6[j] + 3 && x < eShipX6[j] + 81) {
+                    ViewSetxy(mBullet1[i], -10, -10);
+                    eShip6Health[j] -= 1;
+                }
+                if (y2 > eShipY2[j] && y2 < eShipY2[j] + 94 && x2 > eShipX2[j] + 3 && x2 < eShipX2[j] + 81) {
+                    ViewSetxy(mBullet2[i], -20, -20);
+                    eShip2Health[j] -= 3;
+                }
+                if (y3 > eShipY6[j] && y3 < eShipY6[j] + 94 && x3 > eShipX6[j] + 3 && x3 < eShipX6[j] + 81) {
+                    ViewSetxy(mBullet3[i], -10, -10);
+                    eShip6Health[j] -= 1;
+                }
+                //ship 7
+                if (y > eShipY7[j] && y < eShipY7[j] + 94 && x > eShipX7[j] - 2 && x < eShipX7[j] + 86) {
+                    ViewSetxy(mBullet1[i], -10, -10);
+                    eShip7Health[j] -= 1;
+                }
+                if (y2 > eShipY7[j] && y2 < eShipY7[j] + 94 && x2 > eShipX7[j] - 2 && x2 < eShipX7[j] + 86) {
+                    ViewSetxy(mBullet2[i], -20, -20);
+                    eShip7Health[j] -= 3;
+                }
+                if (y3 > eShipY7[j] && y3 < eShipY7[j] + 94 && x3 > eShipX7[j] - 2 && x3 < eShipX7[j] + 86) {
+                    ViewSetxy(mBullet3[i], -10, -10);
+                    eShip7Health[j] -= 1;
+                }
+                //ship 8
+                if (y > eShipY8[j] && y < eShipY8[j] + 94 && x > eShipX8[j] - 3 && x < eShipX8[j] + 86) {
+                    ViewSetxy(mBullet1[i], -10, -10);
+                    eShip8Health[j] -= 1;
+                }
+                if (y2 > eShipY8[j] && y2 < eShipY8[j] + 94 && x2 > eShipX8[j] - 3 && x2 < eShipX8[j] + 86) {
+                    ViewSetxy(mBullet2[i], -20, -20);
+                    eShip8Health[j] -= 3;
+                }
+                if (y3 > eShipY8[j] && y3 < eShipY8[j] + 94 && x3 > eShipX8[j] - 3 && x3 < eShipX8[j] + 86) {
+                    ViewSetxy(mBullet3[i], -10, -10);
+                    eShip8Health[j] -= 1;
+                }
+            }
+            //ship 9
+            if (y > eShipY9 && y < eShipY9 + 94 && x > eShipX9 && x < eShipX9 + 240) {
+                ViewSetxy(mBullet1[i], -10, -10);
+                eShip9Health -= 1;
+            }
+            if (y2 > eShipY9 && y2 < eShipY9 + 94 && x2 > eShipX9 && x2 < eShipX9 + 240) {
+                ViewSetxy(mBullet2[i], -20, -20);
+                eShip9Health -= 3;
+            }
+            if (y3 > eShipY9 && y3 < eShipY9 + 94 && x3 > eShipX9 && x3 < eShipX9 + 240) {
+                ViewSetxy(mBullet3[i], -10, -10);
+                eShip9Health -= 1;
+            }
+            //ship 10
+            if (y > eShipY10 && y < eShipY10 + 94 && x > eShipX10 && x < eShipX10 + 240) {
+                ViewSetxy(mBullet1[i], -10, -10);
+                eShip10Health -= 1;
+            }
+            if (y2 > eShipY10 && y2 < eShipY10 + 94 && x2 > eShipX10 && x2 < eShipX10 + 240) {
+                ViewSetxy(mBullet2[i], -20, -20);
+                eShip10Health -= 3;
+            }
+            if (y3 > eShipY10 && y3 < eShipY10 + 94 && x3 > eShipX10 && x3 < eShipX10 + 240) {
+                ViewSetxy(mBullet3[i], -10, -10);
+                eShip10Health -= 1;
+            }
         }
-	}
+    }
 }
 void DoHighscore() {
     char lvl[] = "\n\n\n\n\n\n\n\n\n\nHighest Level:   ";
@@ -3778,437 +3785,194 @@ void DoEnemyShipShoot() {
     }
 }
 bool ShipInAction(int ship) {
-	bool ret = false;
-	switch (ship) {
-		case 1:
-			ret = eShip1Health[counter10] <= 0 && eShipY1[counter10] >= 0 && eShipX1[counter10] < 600 
-				&& eShipY1[counter10] >= 0 && eShipX1[counter10] <= 320;
-			break;
-		case 2:
-			ret = eShip2Health[counter10] <= 0 && eShipY2[counter10] >= 0 && eShipX2[counter10] < 600 
-				&& eShipY2[counter10] >= 0 && eShipX2[counter10] <= 320;
-			break;
-		case 3:
-			ret = eShip3Health[counter10] <= 0 && eShipY3[counter10] >= 0 && eShipX3[counter10] < 600 
-				&& eShipY3[counter10] >= 0 && eShipX3[counter10] <= 320;
-			break;
-		case 4:
-			ret = eShip4Health[counter10] <= 0 && eShipY4[counter10] >= 0 && eShipX4[counter10] < 600 
-				&& eShipY4[counter10] >= 0 && eShipX4[counter10] <= 320;
-			break;
-		case 5:
-			ret = eShip5Health[counter10] <= 0 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 
-				&& eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320;
-			break;
-		case 6:
-			ret = eShip6Health[counter10] <= 0 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 
-				&& eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320;
-			break;
-		case 7:
-			ret = eShip7Health[counter10] <= 0 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 
-				&& eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320;
-			break;
-		case 8:
-			ret = eShip8Health[counter10] <= 0 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 
-				&& eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320;
-			break;
-	}
-	return ret;
+    bool ret = false;
+    switch (ship) {
+        case 1:
+            ret = eShip1Health[counter10] <= 0 && eShipY1[counter10] >= 0 && eShipX1[counter10] < 600
+                  && eShipY1[counter10] >= 0 && eShipX1[counter10] <= 320;
+            break;
+        case 2:
+            ret = eShip2Health[counter10] <= 0 && eShipY2[counter10] >= 0 && eShipX2[counter10] < 600
+                  && eShipY2[counter10] >= 0 && eShipX2[counter10] <= 320;
+            break;
+        case 3:
+            ret = eShip3Health[counter10] <= 0 && eShipY3[counter10] >= 0 && eShipX3[counter10] < 600
+                  && eShipY3[counter10] >= 0 && eShipX3[counter10] <= 320;
+            break;
+        case 4:
+            ret = eShip4Health[counter10] <= 0 && eShipY4[counter10] >= 0 && eShipX4[counter10] < 600
+                  && eShipY4[counter10] >= 0 && eShipX4[counter10] <= 320;
+            break;
+        case 5:
+            ret = eShip5Health[counter10] <= 0 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600
+                  && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320;
+            break;
+        case 6:
+            ret = eShip6Health[counter10] <= 0 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600
+                  && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320;
+            break;
+        case 7:
+            ret = eShip7Health[counter10] <= 0 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600
+                  && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320;
+            break;
+        case 8:
+            ret = eShip8Health[counter10] <= 0 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600
+                  && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320;
+            break;
+        case 9:
+            ret = eShip9Health <= 0 && eShipY9 >= 0 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320;
+            break;
+        case 10:
+            ret = eShip10Health <= 0 && eShipY10 >= 0 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320;
+            break;
+    }
+    return ret;
 }
-int SetEnemyExplosion (int ship) {
-	int explosion;;
-	switch (ship) {
-		case 1:
-			explosion = (eShip1[counter10]);
-			break;
-		case 2:
-			explosion = (eShip2[counter10]);
-			break;
-		case 3:
-			explosion = (eShip3[counter10]);
-			break;
-		case 4:
-			explosion = (eShip4[counter10]);
-			break;
-		case 5:
-			explosion = (eShip5[counter10]);
-			break;
-		case 6:
-			explosion = (eShip6[counter10]);
-			break;
-		case 7:
-			explosion = (eShip7[counter10]);
-			break;
-		case 8:
-			explosion = (eShip8[counter10]);
-			break;
-	}
-	return explosion;
+int SetEnemyExplosion(int ship) {
+    int explosion;;
+    switch (ship) {
+        case 1:
+            explosion = (eShip1[counter10]);
+            break;
+        case 2:
+            explosion = (eShip2[counter10]);
+            break;
+        case 3:
+            explosion = (eShip3[counter10]);
+            break;
+        case 4:
+            explosion = (eShip4[counter10]);
+            break;
+        case 5:
+            explosion = (eShip5[counter10]);
+            break;
+        case 6:
+            explosion = (eShip6[counter10]);
+            break;
+        case 7:
+            explosion = (eShip7[counter10]);
+            break;
+        case 8:
+            explosion = (eShip8[counter10]);
+            break;
+    }
+    return explosion;
 }
 void EnemyDied() {
-    //TODO: make this more concise
     int explosion, image;
-	for (int i = 1; i <= 4; i++) {
-		for (counter10 = 0; counter10 < 10; counter10++) {
-			bool used = false;
-			for (int j = 0; j <= 8; j++) {
-				if (counter5[i - 1] == j && ShipInAction(i) && !used) {
-					explosion = SetEnemyExplosion(i);
-					char temp[] = "Images/Explosion_1.png";
-					temp[17] = char(j + 1 + '0');
-					image = ImageAdd(temp);
-					ViewSetImage(explosion, image);
-					counter5[i - 1] += 1;
-					used = true;
-				}
-			}
-			if (counter5[i - 1] == 9 && ShipInAction(i)) {
-				explosion = SetEnemyExplosion(i);
-				image = ImageAdd("Images/Explosion_10.png");
-				ViewSetImage(explosion, image);
-				counter5[i - 1] += 1;
-			} else if (counter5[i - 1] == 10 && ShipInAction(i)) {
-				explosion = SetEnemyExplosion(i);
-				image = ImageAdd("Images/Explosion_11.png");
-				ViewSetImage(explosion, image);
-				counter5[i - 1] += 1;
-			} else if (counter5[i - 1] == 11 && ShipInAction(i)) {
-				explosion = SetEnemyExplosion(i);
-				char tempShip[] = "Images/eShip_1.png";
-				tempShip[13] = char(i + '0');
-				image = ImageAdd(tempShip);
-				ViewSetImage(explosion, image);
-				if (i == 1) {
-					ViewSetxy(eShip1[counter10], 600, 600);
-				} else if (i == 2) {
-					ViewSetxy(eShip2[counter10], 600, 600);
-				} else if (i == 3) {
-					ViewSetxy(eShip3[counter10], 600, 600);
-				} else if (i == 4) {
-					ViewSetxy(eShip4[counter10], 600, 600);
-				}
-				counter5[i - 1] = 0;
-				xp += 1 * level;
-			}
-		}
-	}
- 
-    for (counter10 = 0; counter10 < 5; counter10++) {
-        if (eShip5Health[counter10] <= 0 && counter5[4] == 0 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_1.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 1 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_2.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 2 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_3.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 3 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_4.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 4 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_5.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 5 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_6.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 6 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_7.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 7 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_8.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 8 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_9.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 9 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_10.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 10 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/Explosion_11.png");
-            ViewSetImage(explosion, image);
-            counter5[4] += 1;
-        } else if (eShip5Health[counter10] <= 0 && counter5[4] == 11 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600 && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320) {
-            explosion = (eShip5[counter10]);
-            image = ImageAdd("Images/eShip_5.png");
-            ViewSetImage(explosion, image);
-            ViewSetxy(eShip5[counter10], 600, 600);
-            counter5[4] = 0;
-            xp += level * 2;
+    for (int i = 1; i <= 4; i++) {
+        for (counter10 = 0; counter10 < 10; counter10++) {
+            bool used = false;
+            for (int j = 0; j <= 8; j++) {
+                if (counter5[i - 1] == j && ShipInAction(i) && !used) {
+                    explosion = SetEnemyExplosion(i);
+                    char temp[] = "Images/Explosion_1.png";
+                    temp[17] = char(j + 1 + '0');
+                    image = ImageAdd(temp);
+                    ViewSetImage(explosion, image);
+                    counter5[i - 1] += 1;
+                    used = true;
+                }
+            }
+            if (counter5[i - 1] == 9 && ShipInAction(i)) {
+                explosion = SetEnemyExplosion(i);
+                image = ImageAdd("Images/Explosion_10.png");
+                ViewSetImage(explosion, image);
+                counter5[i - 1] += 1;
+            } else if (counter5[i - 1] == 10 && ShipInAction(i)) {
+                explosion = SetEnemyExplosion(i);
+                image = ImageAdd("Images/Explosion_11.png");
+                ViewSetImage(explosion, image);
+                counter5[i - 1] += 1;
+            } else if (counter5[i - 1] == 11 && ShipInAction(i)) {
+                explosion = SetEnemyExplosion(i);
+                char tempShip[] = "Images/eShip_1.png";
+                tempShip[13] = char(i + '0');
+                image = ImageAdd(tempShip);
+                ViewSetImage(explosion, image);
+                if (i == 1) {
+                    ViewSetxy(eShip1[counter10], 600, 600);
+                } else if (i == 2) {
+                    ViewSetxy(eShip2[counter10], 600, 600);
+                } else if (i == 3) {
+                    ViewSetxy(eShip3[counter10], 600, 600);
+                } else if (i == 4) {
+                    ViewSetxy(eShip4[counter10], 600, 600);
+                }
+                counter5[i - 1] = 0;
+                xp += 1 * level;
+            }
         }
     }
-    for (counter10 = 0; counter10 < 5; counter10++) {
-        if (eShip6Health[counter10] <= 0 && counter5[5] == 0 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_1.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 1 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_2.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 2 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_3.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 3 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_4.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 4 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_5.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 5 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_6.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 6 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_7.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 7 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_8.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 8 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_9.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 9 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_10.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 10 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/Explosion_11.png");
-            ViewSetImage(explosion, image);
-            counter5[5] += 1;
-        } else if (eShip6Health[counter10] <= 0 && counter5[5] == 11 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600 && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320) {
-            explosion = (eShip6[counter10]);
-            image = ImageAdd("Images/eShip_6.png");
-            ViewSetImage(explosion, image);
-            ViewSetxy(eShip6[counter10], 600, 600);
-            counter5[5] = 0;
-            xp += level * 2;
+
+    for (int i = 5; i <= 8; i++) {
+        for (counter10 = 0; counter10 < 5; counter10++) {
+            bool used = false;
+            for (int j = 0; j <= 8; j++) {
+                if (counter5[i - 1] == j && ShipInAction(i) && !used) {
+                    explosion = SetEnemyExplosion(i);
+                    char temp[] = "Images/Explosion_1.png";
+                    temp[17] = char(j + 1 + '0');
+                    image = ImageAdd(temp);
+                    ViewSetImage(explosion, image);
+                    counter5[i - 1] += 1;
+                    used = true;
+                }
+            }
+            if (counter5[i - 1] == 9 && ShipInAction(i)) {
+                explosion = SetEnemyExplosion(i);
+                image = ImageAdd("Images/Explosion_10.png");
+                ViewSetImage(explosion, image);
+                counter5[i - 1] += 1;
+            } else if (counter5[i - 1] == 10 && ShipInAction(i)) {
+                explosion = SetEnemyExplosion(i);
+                image = ImageAdd("Images/Explosion_11.png");
+                ViewSetImage(explosion, image);
+                counter5[i - 1] += 1;
+            } else if (counter5[i - 1] == 11 && ShipInAction(i)) {
+                explosion = SetEnemyExplosion(i);
+                char tempShip[] = "Images/eShip_1.png";
+                tempShip[13] = char(i + '0');
+                image = ImageAdd(tempShip);
+                ViewSetImage(explosion, image);
+                if (i == 5) {
+                    ViewSetxy(eShip5[counter10], 600, 600);
+                } else if (i == 6) {
+                    ViewSetxy(eShip6[counter10], 600, 600);
+                } else if (i == 7) {
+                    ViewSetxy(eShip7[counter10], 600, 600);
+                } else if (i == 8) {
+                    ViewSetxy(eShip8[counter10], 600, 600);
+                }
+                counter5[i - 1] = 0;
+                xp += 2 * level;
+            }
         }
     }
-    for (counter10 = 0; counter10 < 5; counter10++) {
-        if (eShip7Health[counter10] <= 0 && counter5[6] == 0 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_1.png");
+
+    bool used = false;
+    for (int j = 0; j <= 8; j++) {
+        if (counter5[8] == j && ShipInAction(9) && !used) {
+            explosion = (eShip9);
+            char temp[] = "Images/BigExplosion_1.png";
+            temp[20] = char(j + 1 + '0');
+            image = ImageAdd(temp);
             ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 1 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_2.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 2 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_3.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 3 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_4.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 4 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_5.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 5 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_6.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 6 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_7.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 7 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_8.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 8 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_9.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 9 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_10.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 10 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/Explosion_11.png");
-            ViewSetImage(explosion, image);
-            counter5[6] += 1;
-        } else if (eShip7Health[counter10] <= 0 && counter5[6] == 11 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600 && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320) {
-            explosion = (eShip7[counter10]);
-            image = ImageAdd("Images/eShip_7.png");
-            ViewSetImage(explosion, image);
-            ViewSetxy(eShip7[counter10], 600, 600);
-            counter5[6] = 0;
-            xp += level * 2;
+            counter5[8] += 1;
+            used = true;
         }
     }
-    for (counter10 = 0; counter10 < 5; counter10++) {
-        if (eShip8Health[counter10] <= 0 && counter5[7] == 0 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_1.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 1 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_2.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 2 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_3.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 3 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_4.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 4 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_5.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 5 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_6.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 6 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_7.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 7 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_8.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 8 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_9.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 9 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_10.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 10 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/Explosion_11.png");
-            ViewSetImage(explosion, image);
-            counter5[7] += 1;
-        } else if (eShip8Health[counter10] <= 0 && counter5[7] == 11 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600 && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320) {
-            explosion = (eShip8[counter10]);
-            image = ImageAdd("Images/eShip_8.png");
-            ViewSetImage(explosion, image);
-            ViewSetxy(eShip8[counter10], 600, 600);
-            counter5[7] = 0;
-            xp += level * 3;
-        }
-    }
-    if (eShip9Health <= 0 && counter5[8] == 0 && eShipY9 >= 0 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_1.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 1 && eShipY9 >= 1 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_2.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 2 && eShipY9 >= 2 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_3.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 3 && eShipY9 >= 3 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_4.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 4 && eShipY9 >= 4 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_5.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 5 && eShipY9 >= 5 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_6.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 6 && eShipY9 >= 6 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_7.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 7 && eShipY9 >= 7 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_8.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 8 && eShipY9 >= 8 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
-        explosion = (eShip9);
-        image = ImageAdd("Images/BigExplosion_9.png");
-        ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 9 && eShipY9 >= 9 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
+    if (counter5[8] == 9 && ShipInAction(9)) {
         explosion = (eShip9);
         image = ImageAdd("Images/BigExplosion_10.png");
         ViewSetImage(explosion, image);
         counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 10 && eShipY9 >= 10 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
+    } else if (counter5[8] == 10 && ShipInAction(9)) {
         explosion = (eShip9);
         image = ImageAdd("Images/BigExplosion_11.png");
         ViewSetImage(explosion, image);
         counter5[8] += 1;
-    } else if (eShip9Health <= 0 && counter5[8] == 11 && eShipY9 >= 11 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320) {
+    } else if (counter5[8] == 11 && ShipInAction(9)) {
         explosion = (eShip9);
         image = ImageAdd("Images/eMini-Boss.png");
         ViewSetImage(explosion, image);
@@ -4225,62 +3989,30 @@ void EnemyDied() {
             ScreenSwitch();
         }
     }
-    if (eShip10Health <= 0 && counter5[9] == 0 && eShipY10 >= 0 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/BigExplosion_1.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 1 && eShipY10 >= 1 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/BigExplosion_2.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 2 && eShipY10 >= 2 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/BigExplosion_3.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 3 && eShipY10 >= 3 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/BigExplosion_4.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 4 && eShipY10 >= 4 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/BigExplosion_5.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 5 && eShipY10 >= 5 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/BigExplosion_6.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 6 && eShipY10 >= 6 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/BigExplosion_7.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 7 && eShipY10 >= 7 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/Explosion_8.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 8 && eShipY10 >= 8 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
-        explosion = (eShip10);
-        image = ImageAdd("Images/BigExplosion_9.png");
-        ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 9 && eShipY10 >= 9 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
+
+    used = false;
+    for (int j = 0; j <= 8; j++) {
+        if (counter5[9] == j && ShipInAction(10) && !used) {
+            explosion = (eShip10);
+            char temp[] = "Images/BigExplosion_1.png";
+            temp[20] = char(j + 1 + '0');
+            image = ImageAdd(temp);
+            ViewSetImage(explosion, image);
+            counter5[9] += 1;
+            used = true;
+        }
+    }
+    if (counter5[9] == 9 && ShipInAction(10)) {
         explosion = (eShip10);
         image = ImageAdd("Images/BigExplosion_10.png");
         ViewSetImage(explosion, image);
         counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 10 && eShipY10 >= 10 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
+    } else if (counter5[9] == 10 && ShipInAction(10)) {
         explosion = (eShip10);
         image = ImageAdd("Images/BigExplosion_11.png");
         ViewSetImage(explosion, image);
         counter5[9] += 1;
-    } else if (eShip10Health <= 0 && counter5[9] == 11 && eShipY10 >= 11 && eShipX10 < 600 && eShipY10 >= 0 && eShipX10 <= 320) {
+    } else if (counter5[9] == 11 && ShipInAction(10)) {
         explosion = (eShip10);
         image = ImageAdd("Images/eBoss.png");
         ViewSetImage(explosion, image);
