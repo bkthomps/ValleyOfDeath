@@ -180,10 +180,6 @@ int ContainerOptions;
 int ContainerDeleteCheckOne;
 int ContainerDeleteCheckTwo;
 
-
-
-
-
 void IntFileToGame() {
     IntTempNum = 0;
     IntTempNum += ((int) FileBuffer[0] - '0') * 10000;
