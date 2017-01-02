@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.1.12)
+ * Valley Of Death (1.1.13)
  * 2 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -40,7 +40,7 @@ char font, FontTorture;
 int width1, width2, HP, text1, text2, text3;
 bool torture;
 int CounterTorture, ImageTorture, HpTorture, TextTorture;
-int counter6, counter7, counter8, counter9, counter10, counter11, counter12;
+int counter8, counter10, counter12;
 int r, s2, s3, s4, s5, s6, s7, s8, music;
 int PossibleHealth, ShipSpeed, SaveRon, rank;
 int BulletXOffset, BulletYOffset, BulletXOffset2, BulletYOffset2, BulletXOffset3, BulletYOffset3;
@@ -180,6 +180,10 @@ int ContainerOptions;
 int ContainerDeleteCheckOne;
 int ContainerDeleteCheckTwo;
 
+
+
+
+
 void IntFileToGame() {
     IntTempNum = 0;
     IntTempNum += ((int) FileBuffer[0] - '0') * 10000;
@@ -264,68 +268,68 @@ void Reset() {
     mY = 380;
     newX = 113;
     newY = 380;
-    for (counter9 = 0; counter9 < 15; counter9++) {
-        ViewSetxy(mBullet1[counter9], -10, -10);
-		ViewSetxy(mBullet2[counter9], -20, -20);
-		ViewSetxy(mBullet3[counter9], -10, -10);
+    for (int i = 0; i < 15; i++) {
+        ViewSetxy(mBullet1[i], -10, -10);
+		ViewSetxy(mBullet2[i], -20, -20);
+		ViewSetxy(mBullet3[i], -10, -10);
     }
-    for (counter9 = 0; counter9 < 50; counter9++) {
-        ViewSetxy(e1Bullet1[counter9], 600, 600);
-		ViewSetxy(e2Bullet1[counter9], 600, 600);
-		ViewSetxy(e3Bullet1[counter9], 600, 600);
-		ViewSetxy(e4Bullet1[counter9], 600, 600);
+    for (int i = 0; i < 50; i++) {
+        ViewSetxy(e1Bullet1[i], 600, 600);
+		ViewSetxy(e2Bullet1[i], 600, 600);
+		ViewSetxy(e3Bullet1[i], 600, 600);
+		ViewSetxy(e4Bullet1[i], 600, 600);
     }
-    for (counter9 = 0; counter9 < 25; counter9++) {
-        ViewSetxy(e5Bullet1[counter9], 600, 600);
-        ViewSetxy(e5Bullet3[counter9], 600, 600);
-		ViewSetxy(e6Bullet1[counter9], 600, 600);
-        ViewSetxy(e6Bullet3[counter9], 600, 600);
-		ViewSetxy(e7Bullet2[counter9], 600, 600);
-		ViewSetxy(e8Bullet1[counter9], 600, 600);
-        ViewSetxy(e8Bullet2[counter9], 600, 600);
-        ViewSetxy(e8Bullet3[counter9], 600, 600);
+    for (int i = 0; i < 25; i++) {
+        ViewSetxy(e5Bullet1[i], 600, 600);
+        ViewSetxy(e5Bullet3[i], 600, 600);
+		ViewSetxy(e6Bullet1[i], 600, 600);
+        ViewSetxy(e6Bullet3[i], 600, 600);
+		ViewSetxy(e7Bullet2[i], 600, 600);
+		ViewSetxy(e8Bullet1[i], 600, 600);
+        ViewSetxy(e8Bullet2[i], 600, 600);
+        ViewSetxy(e8Bullet3[i], 600, 600);
     }
-    for (counter9 = 0; counter9 < 5; counter9++) {
-        ViewSetxy(e9Bullet1[counter9], 600, 600);
-        ViewSetxy(e9Bullet2[counter9], 600, 600);
-        ViewSetxy(e9Bullet3[counter9], 600, 600);
-		ViewSetxy(e10Bullet1[counter9], 600, 600);
-        ViewSetxy(e10Bullet2[counter9], 600, 600);
-        ViewSetxy(e10Bullet3[counter9], 600, 600);
+    for (int i = 0; i < 5; i++) {
+        ViewSetxy(e9Bullet1[i], 600, 600);
+        ViewSetxy(e9Bullet2[i], 600, 600);
+        ViewSetxy(e9Bullet3[i], 600, 600);
+		ViewSetxy(e10Bullet1[i], 600, 600);
+        ViewSetxy(e10Bullet2[i], 600, 600);
+        ViewSetxy(e10Bullet3[i], 600, 600);
     }
-    for (counter9 = 0; counter9 < 10; counter9++) {
-        ViewSetxy(eShip1[counter9], 600, 600);
-        ship = (eShip1[counter9]);
+    for (int i = 0; i < 10; i++) {
+        ViewSetxy(eShip1[i], 600, 600);
+        ship = (eShip1[i]);
         picture = ImageAdd("Images/eShip_1.png");
         ViewSetImage(ship, picture);
-		ViewSetxy(eShip2[counter9], 600, 600);
-        ship = (eShip2[counter9]);
+		ViewSetxy(eShip2[i], 600, 600);
+        ship = (eShip2[i]);
         picture = ImageAdd("Images/eShip_2.png");
         ViewSetImage(ship, picture);
-		ViewSetxy(eShip3[counter9], 600, 600);
-        ship = (eShip3[counter9]);
+		ViewSetxy(eShip3[i], 600, 600);
+        ship = (eShip3[i]);
         picture = ImageAdd("Images/eShip_3.png");
         ViewSetImage(ship, picture);
-		ViewSetxy(eShip4[counter9], 600, 600);
-        ship = (eShip4[counter9]);
+		ViewSetxy(eShip4[i], 600, 600);
+        ship = (eShip4[i]);
         picture = ImageAdd("Images/eShip_4.png");
         ViewSetImage(ship, picture);
     }
-    for (counter9 = 0; counter9 < 5; counter9++) {
-        ViewSetxy(eShip5[counter9], 600, 600);
-        ship = (eShip5[counter9]);
+    for (int i = 0; i < 5; i++) {
+        ViewSetxy(eShip5[i], 600, 600);
+        ship = (eShip5[i]);
         picture = ImageAdd("Images/eShip_5.png");
         ViewSetImage(ship, picture);
-		ViewSetxy(eShip6[counter9], 600, 600);
-        ship = (eShip6[counter9]);
+		ViewSetxy(eShip6[i], 600, 600);
+        ship = (eShip6[i]);
         picture = ImageAdd("Images/eShip_6.png");
         ViewSetImage(ship, picture);
-        ViewSetxy(eShip7[counter9], 600, 600);
-        ship = (eShip7[counter9]);
+        ViewSetxy(eShip7[i], 600, 600);
+        ship = (eShip7[i]);
         picture = ImageAdd("Images/eShip_7.png");
         ViewSetImage(ship, picture);
-        ViewSetxy(eShip8[counter9], 600, 600);
-        ship = (eShip8[counter9]);
+        ViewSetxy(eShip8[i], 600, 600);
+        ship = (eShip8[i]);
         picture = ImageAdd("Images/eShip_8.png");
         ViewSetImage(ship, picture);
     }
@@ -1459,50 +1463,50 @@ void ContainerOne() {
     ViewAdd(ContainerEndless, "Images/Background.png", 0, 0, OnBattleTouch, 1);
     ViewAdd(ContainerEndless, "Images/Pause.png", 270, 20, OnPause, 1);
     HP = ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20);
-    for (counter9 = 0; counter9 < 15; counter9++) {
-        mBullet1[counter9] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
-		mBullet2[counter9] = ViewAdd(ContainerEndless, "Images/Rocket.png", -20, -20);
-        mBullet3[counter9] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
+    for (int i = 0; i < 15; i++) {
+        mBullet1[i] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
+		mBullet2[i] = ViewAdd(ContainerEndless, "Images/Rocket.png", -20, -20);
+        mBullet3[i] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
     }
 	//TODO: why is the following line needed?
     mBullet1[0] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
     //enemy bullets
-    for (counter9 = 0; counter9 < 50; counter9++) {
-        e1Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e2Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e3Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e4Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    for (int i = 0; i < 50; i++) {
+        e1Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e2Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e3Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e4Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
     }
-    for (counter9 = 0; counter9 < 25; counter9++) {
-        e5Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e5Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e6Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e6Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e7Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
-        e8Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e8Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
-        e8Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    for (int i = 0; i < 25; i++) {
+        e5Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e5Bullet3[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e6Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e6Bullet3[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e7Bullet2[i] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+        e8Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e8Bullet2[i] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+        e8Bullet3[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
     }
-    for (counter9 = 0; counter9 < 5; counter9++) {
-        e9Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e9Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
-        e9Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e10Bullet1[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
-        e10Bullet2[counter9] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
-        e10Bullet3[counter9] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+    for (int i = 0; i < 5; i++) {
+        e9Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e9Bullet2[i] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+        e9Bullet3[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e10Bullet1[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
+        e10Bullet2[i] = ViewAdd(ContainerEndless, "Images/eRocket.png", 600, 600);
+        e10Bullet3[i] = ViewAdd(ContainerEndless, "Images/eBullet.png", 600, 600);
     }
     //ships
-    for (counter9 = 0; counter9 < 10; counter9++) {
-        eShip1[counter9] = ViewAdd(ContainerEndless, "Images/eShip_1.png", 600, 600);
-        eShip2[counter9] = ViewAdd(ContainerEndless, "Images/eShip_2.png", 600, 600);
-        eShip3[counter9] = ViewAdd(ContainerEndless, "Images/eShip_3.png", 600, 600);
-        eShip4[counter9] = ViewAdd(ContainerEndless, "Images/eShip_4.png", 600, 600);
+    for (int i = 0; i < 10; i++) {
+        eShip1[i] = ViewAdd(ContainerEndless, "Images/eShip_1.png", 600, 600);
+        eShip2[i] = ViewAdd(ContainerEndless, "Images/eShip_2.png", 600, 600);
+        eShip3[i] = ViewAdd(ContainerEndless, "Images/eShip_3.png", 600, 600);
+        eShip4[i] = ViewAdd(ContainerEndless, "Images/eShip_4.png", 600, 600);
     }
-    for (counter9 = 0; counter9 < 5; counter9++) {
-        eShip5[counter9] = ViewAdd(ContainerEndless, "Images/eShip_5.png", 600, 600);
-        eShip6[counter9] = ViewAdd(ContainerEndless, "Images/eShip_6.png", 600, 600);
-        eShip7[counter9] = ViewAdd(ContainerEndless, "Images/eShip_7.png", 600, 600);
-        eShip8[counter9] = ViewAdd(ContainerEndless, "Images/eShip_8.png", 600, 600);
+    for (int i = 0; i < 5; i++) {
+        eShip5[i] = ViewAdd(ContainerEndless, "Images/eShip_5.png", 600, 600);
+        eShip6[i] = ViewAdd(ContainerEndless, "Images/eShip_6.png", 600, 600);
+        eShip7[i] = ViewAdd(ContainerEndless, "Images/eShip_7.png", 600, 600);
+        eShip8[i] = ViewAdd(ContainerEndless, "Images/eShip_8.png", 600, 600);
     }
     eShip9 = ViewAdd(ContainerEndless, "Images/eMini-Boss.png", 600, 600);
     eShip10 = ViewAdd(ContainerEndless, "Images/eBoss.png", 600, 600);
@@ -5699,29 +5703,29 @@ void SetFive() {
     }
 }
 void EnemyShipMove() {
-    for (counter6 = 0; counter6 < 10; counter6++) {
+    for (int i = 0; i < 10; i++) {
         //x cords
-        eShipY1[counter6] = ViewGety(eShip1[counter6]);
-        eShipY2[counter6] = ViewGety(eShip2[counter6]);
-        eShipY3[counter6] = ViewGety(eShip3[counter6]);
-        eShipY4[counter6] = ViewGety(eShip4[counter6]);
+        eShipY1[i] = ViewGety(eShip1[i]);
+        eShipY2[i] = ViewGety(eShip2[i]);
+        eShipY3[i] = ViewGety(eShip3[i]);
+        eShipY4[i] = ViewGety(eShip4[i]);
         //y cords
-        eShipX1[counter6] = ViewGetx(eShip1[counter6]);
-        eShipX2[counter6] = ViewGetx(eShip2[counter6]);
-        eShipX3[counter6] = ViewGetx(eShip3[counter6]);
-        eShipX4[counter6] = ViewGetx(eShip4[counter6]);
+        eShipX1[i] = ViewGetx(eShip1[i]);
+        eShipX2[i] = ViewGetx(eShip2[i]);
+        eShipX3[i] = ViewGetx(eShip3[i]);
+        eShipX4[i] = ViewGetx(eShip4[i]);
     }
-    for (counter6 = 0; counter6 < 5; counter6++) {
+    for (int i = 0; i < 5; i++) {
         //x cords
-        eShipY5[counter6] = ViewGety(eShip5[counter6]);
-        eShipY6[counter6] = ViewGety(eShip6[counter6]);
-        eShipY7[counter6] = ViewGety(eShip7[counter6]);
-        eShipY8[counter6] = ViewGety(eShip8[counter6]);
+        eShipY5[i] = ViewGety(eShip5[i]);
+        eShipY6[i] = ViewGety(eShip6[i]);
+        eShipY7[i] = ViewGety(eShip7[i]);
+        eShipY8[i] = ViewGety(eShip8[i]);
         //y cords
-        eShipX5[counter6] = ViewGetx(eShip5[counter6]);
-        eShipX6[counter6] = ViewGetx(eShip6[counter6]);
-        eShipX7[counter6] = ViewGetx(eShip7[counter6]);
-        eShipX8[counter6] = ViewGetx(eShip8[counter6]);
+        eShipX5[i] = ViewGetx(eShip5[i]);
+        eShipX6[i] = ViewGetx(eShip6[i]);
+        eShipX7[i] = ViewGetx(eShip7[i]);
+        eShipX8[i] = ViewGetx(eShip8[i]);
     }
     //x cords
     eShipX9 = ViewGetx(eShip9);
@@ -5731,32 +5735,32 @@ void EnemyShipMove() {
     eShipX10 = ViewGetx(eShip10);
     //y cords
     eShipY10 = ViewGety(eShip10);
-    for (counter6 = 0; counter6 < 10; counter6++) {
-        if (eShipY1[counter6] < 600) {
-            ViewSetxy(eShip1[counter6], eShipX1[counter6], eShipY1[counter6] + EnemyFlySpeed);
+    for (int i = 0; i < 10; i++) {
+        if (eShipY1[i] < 600) {
+            ViewSetxy(eShip1[i], eShipX1[i], eShipY1[i] + EnemyFlySpeed);
         }
-        if (eShipY2[counter6] < 600) {
-            ViewSetxy(eShip2[counter6], eShipX2[counter6], eShipY2[counter6] + EnemyFlySpeed);
+        if (eShipY2[i] < 600) {
+            ViewSetxy(eShip2[i], eShipX2[i], eShipY2[i] + EnemyFlySpeed);
         }
-        if (eShipY3[counter6] < 600) {
-            ViewSetxy(eShip3[counter6], eShipX3[counter6], eShipY3[counter6] + EnemyFlySpeed);
+        if (eShipY3[i] < 600) {
+            ViewSetxy(eShip3[i], eShipX3[i], eShipY3[i] + EnemyFlySpeed);
         }
-        if (eShipY4[counter6] < 600) {
-            ViewSetxy(eShip4[counter6], eShipX4[counter6], eShipY4[counter6] + EnemyFlySpeed);
+        if (eShipY4[i] < 600) {
+            ViewSetxy(eShip4[i], eShipX4[i], eShipY4[i] + EnemyFlySpeed);
         }
     }
-    for (counter6 = 0; counter6 < 5; counter6++) {
-        if (eShipY5[counter6] < 600) {
-            ViewSetxy(eShip5[counter6], eShipX5[counter6], eShipY5[counter6] + EnemyFlySpeed);
+    for (int i = 0; i < 5; i++) {
+        if (eShipY5[i] < 600) {
+            ViewSetxy(eShip5[i], eShipX5[i], eShipY5[i] + EnemyFlySpeed);
         }
-        if (eShipY6[counter6] < 600) {
-            ViewSetxy(eShip6[counter6], eShipX6[counter6], eShipY6[counter6] + EnemyFlySpeed);
+        if (eShipY6[i] < 600) {
+            ViewSetxy(eShip6[i], eShipX6[i], eShipY6[i] + EnemyFlySpeed);
         }
-        if (eShipY7[counter6] < 600) {
-            ViewSetxy(eShip7[counter6], eShipX7[counter6], eShipY7[counter6] + EnemyFlySpeed);
+        if (eShipY7[i] < 600) {
+            ViewSetxy(eShip7[i], eShipX7[i], eShipY7[i] + EnemyFlySpeed);
         }
-        if (eShipY8[counter6] < 600) {
-            ViewSetxy(eShip8[counter6], eShipX8[counter6], eShipY8[counter6] + EnemyFlySpeed);
+        if (eShipY8[i] < 600) {
+            ViewSetxy(eShip8[i], eShipX8[i], eShipY8[i] + EnemyFlySpeed);
         }
     }
     //ship 9
@@ -5852,202 +5856,203 @@ void DoEnemyShipShoot() {
     } 
 	if (counter4 % EnemyShootCooldownSpeed != 0) {
         //1
-        for (counter7 = 0; counter7 < 50; counter7++) {
-            ex = ViewGetx(e1Bullet1[counter7]);
-            ey = ViewGety(e1Bullet1[counter7]);
+        for (int i = 0; i < 50; i++) {
+            ex = ViewGetx(e1Bullet1[i]);
+            ey = ViewGety(e1Bullet1[i]);
             if (ey < 600) {
-                ViewSetxy(e1Bullet1[counter7], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e1Bullet1[i], ex, ey + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e1Bullet1[counter7], 600, 600);
+                ViewSetxy(e1Bullet1[i], 600, 600);
             }
         }
         //2
-        for (counter7 = 0; counter7 < 50; counter7++) {
-            ex = ViewGetx(e2Bullet1[counter7]);
-            ey = ViewGety(e2Bullet1[counter7]);
+        for (int i = 0; i < 50; i++) {
+            ex = ViewGetx(e2Bullet1[i]);
+            ey = ViewGety(e2Bullet1[i]);
             if (ey < 600) {
-                ViewSetxy(e2Bullet1[counter7], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e2Bullet1[i], ex, ey + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e2Bullet1[counter7], 600, 600);
+                ViewSetxy(e2Bullet1[i], 600, 600);
             }
         }
         //3
-        for (counter7 = 0; counter7 < 50; counter7++) {
-            ex = ViewGetx(e3Bullet1[counter7]);
-            ey = ViewGety(e3Bullet1[counter7]);
+        for (int i = 0; i < 50; i++) {
+            ex = ViewGetx(e3Bullet1[i]);
+            ey = ViewGety(e3Bullet1[i]);
             if (ey < 600) {
-                ViewSetxy(e3Bullet1[counter7], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e3Bullet1[i], ex, ey + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e3Bullet1[counter7], 600, 600);
+                ViewSetxy(e3Bullet1[i], 600, 600);
             }
         }
         //4
-        for (counter7 = 0; counter7 < 50; counter7++) {
-            ex = ViewGetx(e4Bullet1[counter7]);
-            ey = ViewGety(e4Bullet1[counter7]);
+        for (int i = 0; i < 50; i++) {
+            ex = ViewGetx(e4Bullet1[i]);
+            ey = ViewGety(e4Bullet1[i]);
             if (ey < 600) {
-                ViewSetxy(e4Bullet1[counter7], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e4Bullet1[i], ex, ey + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e4Bullet1[counter7], 600, 600);
+                ViewSetxy(e4Bullet1[i], 600, 600);
             }
         }
         //5
-        for (counter7 = 0; counter7 < 25; counter7++) {
-            ex = ViewGetx(e5Bullet1[counter7]);
-            ey = ViewGety(e5Bullet1[counter7]);
-            ex3 = ViewGetx(e5Bullet3[counter7]);
-            ey3 = ViewGety(e5Bullet3[counter7]);
+        for (int i = 0; i < 25; i++) {
+            ex = ViewGetx(e5Bullet1[i]);
+            ey = ViewGety(e5Bullet1[i]);
+            ex3 = ViewGetx(e5Bullet3[i]);
+            ey3 = ViewGety(e5Bullet3[i]);
             if (ey < 600 || ey3 < 600) {
-                ViewSetxy(e5Bullet1[counter7], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e5Bullet3[counter7], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e5Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e5Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e5Bullet1[counter7], 600, 600);
+                ViewSetxy(e5Bullet1[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e5Bullet3[counter7], 600, 600);
+                ViewSetxy(e5Bullet3[i], 600, 600);
             }
         }
         //6
-        for (counter7 = 0; counter7 < 25; counter7++) {
-            ex = ViewGetx(e6Bullet1[counter7]);
-            ey = ViewGety(e6Bullet1[counter7]);
-            ex3 = ViewGetx(e6Bullet3[counter7]);
-            ey3 = ViewGety(e6Bullet3[counter7]);
+        for (int i = 0; i < 25; i++) {
+            ex = ViewGetx(e6Bullet1[i]);
+            ey = ViewGety(e6Bullet1[i]);
+            ex3 = ViewGetx(e6Bullet3[i]);
+            ey3 = ViewGety(e6Bullet3[i]);
             if (ey < 600 || ey3 < 600) {
-                ViewSetxy(e6Bullet1[counter7], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e6Bullet3[counter7], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e6Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e6Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e6Bullet1[counter7], 600, 600);
+                ViewSetxy(e6Bullet1[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e6Bullet3[counter7], 600, 600);
+                ViewSetxy(e6Bullet3[i], 600, 600);
             }
         }
         //7
-        for (counter7 = 0; counter7 < 25; counter7++) {
-            ex2 = ViewGetx(e7Bullet2[counter7]);
-            ey2 = ViewGety(e7Bullet2[counter7]);
+        for (int i = 0; i < 25; i++) {
+            ex2 = ViewGetx(e7Bullet2[i]);
+            ey2 = ViewGety(e7Bullet2[i]);
             if (ey2 < 600) {
-                ViewSetxy(e7Bullet2[counter7], ex2, ey2 + EnemyBulletSpeed);
+                ViewSetxy(e7Bullet2[i], ex2, ey2 + EnemyBulletSpeed);
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
                 HealthUpdate = true;
-                ViewSetxy(e7Bullet2[counter7], 600, 600);
+                ViewSetxy(e7Bullet2[i], 600, 600);
             }
         }
         //8
-        for (counter7 = 0; counter7 < 25; counter7++) {
-            ex = ViewGetx(e8Bullet1[counter7]);
-            ey = ViewGety(e8Bullet1[counter7]);
-            ex2 = ViewGetx(e8Bullet2[counter7]);
-            ey2 = ViewGety(e8Bullet2[counter7]);
-            ex3 = ViewGetx(e8Bullet3[counter7]);
-            ey3 = ViewGety(e8Bullet3[counter7]);
+        for (int i = 0; i < 25; i++) {
+            ex = ViewGetx(e8Bullet1[i]);
+            ey = ViewGety(e8Bullet1[i]);
+            ex2 = ViewGetx(e8Bullet2[i]);
+            ey2 = ViewGety(e8Bullet2[i]);
+            ex3 = ViewGetx(e8Bullet3[i]);
+            ey3 = ViewGety(e8Bullet3[i]);
             if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(e8Bullet1[counter7], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e8Bullet2[counter7], ex2, ey2 + EnemyBulletSpeed);
-                ViewSetxy(e8Bullet3[counter7], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e8Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e8Bullet2[i], ex2, ey2 + EnemyBulletSpeed);
+                ViewSetxy(e8Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e8Bullet1[counter7], 600, 600);
+                ViewSetxy(e8Bullet1[i], 600, 600);
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
                 HealthUpdate = true;
-                ViewSetxy(e8Bullet2[counter7], 600, 600);
+                ViewSetxy(e8Bullet2[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e8Bullet3[counter7], 600, 600);
+                ViewSetxy(e8Bullet3[i], 600, 600);
             }
         }
         //9
-        for (counter7 = 0; counter7 < 5; counter7++) {
-            ex = ViewGetx(e9Bullet1[counter7]);
-            ey = ViewGety(e9Bullet1[counter7]);
-            ex2 = ViewGetx(e9Bullet2[counter7]);
-            ey2 = ViewGety(e9Bullet2[counter7]);
-            ex3 = ViewGetx(e9Bullet3[counter7]);
-            ey3 = ViewGety(e9Bullet3[counter7]);
+        for (int i = 0; i < 5; i++) {
+            ex = ViewGetx(e9Bullet1[i]);
+            ey = ViewGety(e9Bullet1[i]);
+            ex2 = ViewGetx(e9Bullet2[i]);
+            ey2 = ViewGety(e9Bullet2[i]);
+            ex3 = ViewGetx(e9Bullet3[i]);
+            ey3 = ViewGety(e9Bullet3[i]);
             if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(e9Bullet1[counter7], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e9Bullet2[counter7], ex2, ey2 + EnemyBulletSpeed);
-                ViewSetxy(e9Bullet3[counter7], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e9Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e9Bullet2[i], ex2, ey2 + EnemyBulletSpeed);
+                ViewSetxy(e9Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e9Bullet1[counter7], 600, 600);
+                ViewSetxy(e9Bullet1[i], 600, 600);
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
                 HealthUpdate = true;
-                ViewSetxy(e9Bullet2[counter7], 600, 600);
+                ViewSetxy(e9Bullet2[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e9Bullet3[counter7], 600, 600);
+                ViewSetxy(e9Bullet3[i], 600, 600);
             }
         }
         //10
-        for (counter7 = 0; counter7 < 5; counter7++) {
-            ex = ViewGetx(e10Bullet1[counter7]);
-            ey = ViewGety(e10Bullet1[counter7]);
-            ex2 = ViewGetx(e10Bullet2[counter7]);
-            ey2 = ViewGety(e10Bullet2[counter7]);
-            ex3 = ViewGetx(e10Bullet3[counter7]);
-            ey3 = ViewGety(e10Bullet3[counter7]);
+        for (int i = 0; i < 5; i++) {
+            ex = ViewGetx(e10Bullet1[i]);
+            ey = ViewGety(e10Bullet1[i]);
+            ex2 = ViewGetx(e10Bullet2[i]);
+            ey2 = ViewGety(e10Bullet2[i]);
+            ex3 = ViewGetx(e10Bullet3[i]);
+            ey3 = ViewGety(e10Bullet3[i]);
             if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(e10Bullet1[counter7], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e10Bullet2[counter7], ex2, ey2 + EnemyBulletSpeed);
-                ViewSetxy(e10Bullet3[counter7], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e10Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e10Bullet2[i], ex2, ey2 + EnemyBulletSpeed);
+                ViewSetxy(e10Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e10Bullet1[counter7], 600, 600);
+                ViewSetxy(e10Bullet1[i], 600, 600);
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
                 HealthUpdate = true;
-                ViewSetxy(e10Bullet2[counter7], 600, 600);
+                ViewSetxy(e10Bullet2[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
                 HealthUpdate = true;
-                ViewSetxy(e10Bullet3[counter7], 600, 600);
+                ViewSetxy(e10Bullet3[i], 600, 600);
             }
         }
     }
 }
 void EnemyDied() {
+	//TODO: make this more concise
     int explosion, image;
     for (counter10 = 0; counter10 < 10; counter10++) {
         if (eShip1Health[counter10] <= 0 && counter5[0] == 0 && eShipY1[counter10] >= 0 && eShipX1[counter10] < 600 && eShipY1[counter10] >= 0 && eShipX1[counter10] <= 320) {
@@ -6715,69 +6720,69 @@ void EnemyDied() {
     }
 }
 void ShipCollision() {
-    for (counter11 = 0; counter11 < 10; counter11++) {
+    for (int i = 0; i < 10; i++) {
         //ship 1
-        if (mX + width1 < eShipX1[counter11] + 76 && mX + width2 > eShipX1[counter11] + 18 && mY < eShipY1[counter11] + 94 && mY + 94 > eShipY1[counter11]) {
-            if (eShip1Health[counter11] > 0) {
-                eShip1Health[counter11] -= 2 + level;
+        if (mX + width1 < eShipX1[i] + 76 && mX + width2 > eShipX1[i] + 18 && mY < eShipY1[i] + 94 && mY + 94 > eShipY1[i]) {
+            if (eShip1Health[i] > 0) {
+                eShip1Health[i] -= 2 + level;
                 health -= 2 + level;
                 HealthUpdate = true;
             }
         }
         //ship 2
-        if (mX + width1 < eShipX2[counter11] + 69 && mX + width2 > eShipX2[counter11] + 24 && mY < eShipY2[counter11] + 94 && mY + 94 > eShipY2[counter11]) {
-            if (eShip2Health[counter11] > 0) {
-                eShip2Health[counter11] -= 2 + level;
+        if (mX + width1 < eShipX2[i] + 69 && mX + width2 > eShipX2[i] + 24 && mY < eShipY2[i] + 94 && mY + 94 > eShipY2[i]) {
+            if (eShip2Health[i] > 0) {
+                eShip2Health[i] -= 2 + level;
                 health -= 2 + level;
                 HealthUpdate = true;
             }
         }
         //ship 3
-        if (mX + width1 < eShipX3[counter11] + 66 && mX + width2 > eShipX3[counter11] + 27 && mY < eShipY3[counter11] + 94 && mY + 94 > eShipY3[counter11]) {
-            if (eShip3Health[counter11] > 0) {
-                eShip3Health[counter11] -= 2 + level;
+        if (mX + width1 < eShipX3[i] + 66 && mX + width2 > eShipX3[i] + 27 && mY < eShipY3[i] + 94 && mY + 94 > eShipY3[i]) {
+            if (eShip3Health[i] > 0) {
+                eShip3Health[i] -= 2 + level;
                 health -= 2 + level;
                 HealthUpdate = true;
             }
         }
         //ship 4
-        if (mX + width1 < eShipX4[counter11] + 87 && mX + width2 > eShipX4[counter11] + 6 && mY < eShipY4[counter11] + 94 && mY + 94 > eShipY4[counter11]) {
-            if (eShip4Health[counter11] > 0) {
-                eShip4Health[counter11] -= 2 + level;
+        if (mX + width1 < eShipX4[i] + 87 && mX + width2 > eShipX4[i] + 6 && mY < eShipY4[i] + 94 && mY + 94 > eShipY4[i]) {
+            if (eShip4Health[i] > 0) {
+                eShip4Health[i] -= 2 + level;
                 health -= 2 + level;
                 HealthUpdate = true;
             }
         }
     }
-    for (counter11 = 0; counter11 < 5; counter11++) {
+    for (int i = 0; i < 5; i++) {
         //ship 5
-        if (mX + width1 < eShipX5[counter11] + 71 && mX + width2 > eShipX5[counter11] + 22 && mY < eShipY5[counter11] + 94 && mY + 94 > eShipY5[counter11]) {
-            if (eShip5Health[counter11] > 0) {
-                eShip5Health[counter11] -= 2 + level;
+        if (mX + width1 < eShipX5[i] + 71 && mX + width2 > eShipX5[i] + 22 && mY < eShipY5[i] + 94 && mY + 94 > eShipY5[i]) {
+            if (eShip5Health[i] > 0) {
+                eShip5Health[i] -= 2 + level;
                 health -= 2 + level;
                 HealthUpdate = true;
             }
         }
         //ship 6
-        if (mX + width1 < eShipX6[counter11] + 81 && mX + width2 > eShipX6[counter11] + 12 && mY < eShipY6[counter11] + 94 && mY + 94 > eShipY6[counter11]) {
-            if (eShip6Health[counter11] > 0) {
-                eShip6Health[counter11] -= 2 + level;
+        if (mX + width1 < eShipX6[i] + 81 && mX + width2 > eShipX6[i] + 12 && mY < eShipY6[i] + 94 && mY + 94 > eShipY6[i]) {
+            if (eShip6Health[i] > 0) {
+                eShip6Health[i] -= 2 + level;
                 health -= 2 + level;
                 HealthUpdate = true;
             }
         }
         //ship 7
-        if (mX + width1 < eShipX7[counter11] + 86 && mX + width2 > eShipX7[counter11] + 7 && mY < eShipY7[counter11] + 94 && mY + 94 > eShipY7[counter11]) {
-            if (eShip7Health[counter11] > 0) {
-                eShip7Health[counter11] -= 2 + level;
+        if (mX + width1 < eShipX7[i] + 86 && mX + width2 > eShipX7[i] + 7 && mY < eShipY7[i] + 94 && mY + 94 > eShipY7[i]) {
+            if (eShip7Health[i] > 0) {
+                eShip7Health[i] -= 2 + level;
                 health -= 2 + level;
                 HealthUpdate = true;
             }
         }
         //ship 8
-        if (mX + width1 < eShipX8[counter11] + 86 && mX + width2 > eShipX8[counter11] + 6 && mY < eShipY8[counter11] + 94 && mY + 94 > eShipY8[counter11]) {
-            if (eShip8Health[counter11] > 0) {
-                eShip8Health[counter11] -= 2 + level;
+        if (mX + width1 < eShipX8[i] + 86 && mX + width2 > eShipX8[i] + 6 && mY < eShipY8[i] + 94 && mY + 94 > eShipY8[i]) {
+            if (eShip8Health[i] > 0) {
+                eShip8Health[i] -= 2 + level;
                 health -= 2 + level;
                 HealthUpdate = true;
             }
@@ -6850,16 +6855,22 @@ void HealthRegen() {
         HealthUpdate = true;
     }
 }
+bool CreateMove () {
+	bool temp = CurrentScreen == ScreenEndless || CurrentScreen == ScreenStoryBattle1 
+		|| CurrentScreen == ScreenStoryBattle2 || CurrentScreen == ScreenStoryBattle4 
+		|| CurrentScreen == ScreenStoryBattle5 || CurrentScreen == ScreenStoryBattle6;
+	return temp;
+}
 void OnTimer() {
 //called 30 times per second - 1800=1min - 10000=5min 36sec
     Rank();
     SoundSwitch();
     DoUpdateHighscore();
-    if (sound == true) {
+    if (sound) {
         counter += 1;
     }
-    if (pause == false) {
-        if (CurrentScreen == ScreenEndless || CurrentScreen == ScreenStoryBattle1 || CurrentScreen == ScreenStoryBattle2 || CurrentScreen == ScreenStoryBattle4 || CurrentScreen == ScreenStoryBattle5 || CurrentScreen == ScreenStoryBattle6) {
+    if (!pause) {
+        if (CreateMove ()) {
             counter2 += 1;
             counter3 += 1; //ship move counter
             DoEnemyShipMove();
@@ -6876,7 +6887,7 @@ void OnTimer() {
             mShipMove();
             EnemyDied();
             ShipCollision();
-        } else if (CurrentScreen == ScreenStoryTorture && torture == true) {
+        } else if (CurrentScreen == ScreenStoryTorture && torture) {
             if (CounterTorture == 0) {
                 ViewSetxy(ImageTorture, -1, -1);
             } else if (CounterTorture == 1) {
@@ -6896,7 +6907,7 @@ void OnTimer() {
                 CounterTorture = 0;
             }
             TortureHealth();
-        } else if (CurrentScreen == ScreenStoryTorture && torture == false) {
+        } else if (CurrentScreen == ScreenStoryTorture && !torture) {
             HpCounterTorture += 1;
             TortureHealth();
             TextSetText(TextTorture, "");
