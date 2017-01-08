@@ -1,2 +1,2 @@
 # ValleyOfDeath
-This iPhone App was made in C++ using DragonFireSDK.
+This is a scrolling-shooter iPhone app which was made using DragonFireSDK.
