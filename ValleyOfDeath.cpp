@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.9)
+ * Valley Of Death (1.2.10)
  * 22 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -14,7 +14,7 @@ const int SPEED = 15, TIME = 15, ENEMY_FLY_SPEED = 3, ENEMY_BULLET_SPEED = 8;
 bool sound, updateHighscore, pause, date, marry, boolTempNum, torture, healthUpdate, goRight;
 char font, fontTorture, fileBuffer[5];
 int xp, ship, highscore, soundCounter, health, set, level, bulletTimeCounter, shipMoveCounter, bulletMoveCounter;
-int enemyExplosionCounter[10], shipView, mX, mY, newX, newY, mBullet1[15], mBullet2[15], mBullet3[15];
+int intTempNum, enemyExplosionCounter[10], shipView, mX, mY, newX, newY, mBullet1[15], mBullet2[15], mBullet3[15];
 int hpCounterTorture, e1Bullet1[50], e2Bullet1[50], e3Bullet1[50], e4Bullet1[50], e5Bullet1[25], e5Bullet3[25];
 int e6Bullet1[25], e6Bullet3[25], e7Bullet2[25], e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
 int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5], e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
@@ -25,8 +25,7 @@ int eShipY1[10], eShipY2[10], eShipY3[10], eShipY4[10];
 int eShipY5[5], eShipY6[5], eShipY7[5], eShipY8[5], eShipY9, eShipY10;
 int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5];
 int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Health;
-int fileSound, fileUpdateHighscore, fileXp, fileShip, fileHighscore, fileCounter, intTempNum, mp3Handle;
-int width1, width2, HP, text1, text2, text3, counterTorture, imageTorture, hpTorture, textTorture, shipActionCounter;
+int width1, width2, hp, text1, text2, text3, counterTorture, imageTorture, hpTorture, textTorture, shipActionCounter;
 int healthRegenCounter, r, s2, s3, s4, s5, s6, s7, s8, music, possibleHealth, shipSpeed, saveRon, rank;
 int bulletXOffset, bulletYOffset, bulletXOffset2, bulletYOffset2, bulletXOffset3, bulletYOffset3;
 
@@ -167,12 +166,12 @@ void BoolFileToGame() {
     boolTempNum = fileBuffer[0] == 't';
 }
 void LoadGame() {
-    fileSound = FileOpen("Sound.txt");
-    fileUpdateHighscore = FileOpen("updateHighscore.txt");
-    fileXp = FileOpen("Xp.txt");
-    fileShip = FileOpen("Ship.txt");
-    fileHighscore = FileOpen("Highscore.txt");
-    fileCounter = FileOpen("Counter.txt");
+    int fileSound = FileOpen("Sound.txt");
+    int fileUpdateHighscore = FileOpen("updateHighscore.txt");
+    int fileXp = FileOpen("Xp.txt");
+    int fileShip = FileOpen("Ship.txt");
+    int fileHighscore = FileOpen("Highscore.txt");
+    int fileCounter = FileOpen("Counter.txt");
     if (!fileSound) {
         fileSound = FileCreate("Sound.txt");
         sound = true;
@@ -832,7 +831,7 @@ int OnStoryMenuTouch(int id, int event, int x, int y) {
 }
 
 void ShipType() {
-    static const int lift = 10;
+    const int lift = 10;
     ViewSetxy(shipView, -200, -200);
     switch (ship) {
         case 1:
@@ -1460,7 +1459,7 @@ void ContainerOne() {
     //populate ContainerEndless
     ViewAdd(ContainerEndless, "Images/Background.png", 0, 0, OnBattleTouch, 1);
     ViewAdd(ContainerEndless, "Images/Pause.png", 270, 20, OnPause, 1);
-    HP = ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20);
+    hp = ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20);
     //player bullets
     for (int i = 0; i < 15; i++) {
         mBullet1[i] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
@@ -1597,52 +1596,40 @@ void StartupMusic() {
         }
         if (soundCounter > 1 && soundCounter < 7000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/1.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/1.mp3"));
         } else if (soundCounter > 7000 && soundCounter < 13000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/2.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/2.mp3"));
         } else if (soundCounter > 13000 && soundCounter < 19000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/3.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/3.mp3"));
         } else if (soundCounter > 19000 && soundCounter < 27000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/5.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/5.mp3"));
         } else if (soundCounter > 27000 && soundCounter < 34000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/7.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/7.mp3"));
         } else if (soundCounter > 34000 && soundCounter < 42000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/8.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/8.mp3"));
         } else if (soundCounter > 42000 && soundCounter < 49000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/9.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/9.mp3"));
         } else if (soundCounter > 49000 && soundCounter < 55000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/11.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/11.mp3"));
         } else if (soundCounter > 55000 && soundCounter < 61000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/12.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/12.mp3"));
         } else if (soundCounter > 61000 && soundCounter < 67000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/13.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/13.mp3"));
         } else if (soundCounter > 67000 && soundCounter < 73000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/14.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/14.mp3"));
         } else if (soundCounter > 73000 && soundCounter < 79000) {
             Mp3Stop();
-            mp3Handle = Mp3Add("Sounds/15.mp3");
-            Mp3Loop(mp3Handle);
+            Mp3Loop(Mp3Add("Sounds/15.mp3"));
         }
     } else {
         Mp3Stop();
@@ -1716,37 +1703,37 @@ void BoolGameToFile() {
 void AppExit() {
     Mp3Stop();
     //fileSound
-    fileSound = FileOpen("Sound.txt");
+    int fileSound = FileOpen("Sound.txt");
     boolTempNum = sound;
     BoolGameToFile();
     FileWrite(fileSound, fileBuffer, 1);
     FileClose(fileSound);
     //fileUpdateHighscore
-    fileUpdateHighscore = FileOpen("updateHighscore.txt");
+    int fileUpdateHighscore = FileOpen("updateHighscore.txt");
     boolTempNum = updateHighscore;
     BoolGameToFile();
     FileWrite(fileUpdateHighscore, fileBuffer, 1);
     FileClose(fileUpdateHighscore);
     //fileXp
-    fileXp = FileOpen("Xp.txt");
+    int fileXp = FileOpen("Xp.txt");
     intTempNum = xp;
     IntGameToFile();
     FileWrite(fileXp, fileBuffer, 5);
     FileClose(fileXp);
     //fileShip
-    fileShip = FileOpen("Ship.txt");
+    int fileShip = FileOpen("Ship.txt");
     intTempNum = ship;
     IntGameToFile();
     FileWrite(fileShip, fileBuffer, 5);
     FileClose(fileShip);
     //fileHighscore
-    fileHighscore = FileOpen("Highscore.txt");
+    int fileHighscore = FileOpen("Highscore.txt");
     intTempNum = highscore;
     IntGameToFile();
     FileWrite(fileHighscore, fileBuffer, 5);
     FileClose(fileHighscore);
     //fileCounter
-    fileCounter = FileOpen("Counter.txt");
+    int fileCounter = FileOpen("Counter.txt");
     intTempNum = soundCounter;
     IntGameToFile();
     FileWrite(fileCounter, fileBuffer, 5);
@@ -1764,96 +1751,84 @@ void SoundSwitch() {
         if (soundCounter == 1) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/1.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/1.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 7000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/2.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/2.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 13000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/3.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/3.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 19000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/5.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/5.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 27000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/7.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/7.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 34000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/8.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/8.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 42000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/9.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/9.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 49000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/11.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/11.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 55000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/12.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/12.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 61000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/13.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/13.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 67000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/14.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/14.mp3"));
             } else {
                 soundCounter--;
             }
         } else if (soundCounter == 73000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                mp3Handle = Mp3Add("Sounds/15.mp3");
-                Mp3Loop(mp3Handle);
+                Mp3Loop(Mp3Add("Sounds/15.mp3"));
             } else {
                 soundCounter--;
             }
@@ -2236,7 +2211,7 @@ void HealthBar() {
         const int shipMaxHealth = 18 + 2 * ship;
         const int fracHealth = round(20 * health / shipMaxHealth);
         Image = ImageAdd(concatHealth(fracHealth));
-        ViewSetImage(HP, Image);
+        ViewSetImage(hp, Image);
         assert(health >= 0);
         if (health == 0) {
             if (CurrentScreen == ScreenEndless) {
