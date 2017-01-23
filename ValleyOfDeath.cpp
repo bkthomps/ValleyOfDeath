@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.8)
+ * Valley Of Death (1.2.9)
  * 22 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -8,51 +8,26 @@
 #include <assert.h>
 #include <math.h>
 
-const int e1BulletXOffset = 43, e1BulletYOffset = 83, e2BulletXOffset = 43, e2BulletYOffset = 94;
-const int e3BulletXOffset = 43, e3BulletYOffset = 88, e4BulletXOffset = 43, e4BulletYOffset = 94;
-const int e5BulletXOffset = 31, e5BulletYOffset = 71, e5BulletXOffset3 = 54, e5BulletYOffset3 = 71;
-const int e6BulletXOffset = 15, e6BulletYOffset = 53, e6BulletXOffset3 = 68, e6BulletYOffset3 = 53;
-const int e7BulletXOffset2 = 42, e7BulletYOffset2 = 83;
-const int e8BulletXOffset = 12, e8BulletYOffset = 54, e8BulletXOffset2 = 42, e8BulletYOffset2 = 92, e8BulletXOffset3 = 74, e8BulletYOffset3 = 54;
-const int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9BulletYOffset2 = 230, e9BulletXOffset3 = 130, e9BulletYOffset3 = 83;
-const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
-const int speed = 15, time = 15;
-const int SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
+const int SPAWN_TIME = 100, ENEMY_BASE_HEALTH = 3, ENEMY_INCREASE_HEALTH = 1, ENEMY_SHOOT_COOLDOWN_SPEED = 45;
+const int SPEED = 15, TIME = 15, ENEMY_FLY_SPEED = 3, ENEMY_BULLET_SPEED = 8;
 
 bool sound, updateHighscore, pause, date, marry, boolTempNum, torture, healthUpdate, goRight;
 char font, fontTorture, fileBuffer[5];
-int xp, ship, highscore;
-int soundCounter;
-int health, set, level;
-int bulletTimeCounter, shipMoveCounter, bulletMoveCounter, enemyExplosionCounter[10];
-int shipView, mX, mY, newX, newY;
-int mBullet1[15], mBullet2[15], mBullet3[15];
-int hpCounterTorture;
-int e1Bullet1[50];
-int e2Bullet1[50];
-int e3Bullet1[50];
-int e4Bullet1[50];
-int e5Bullet1[25], e5Bullet3[25];
-int e6Bullet1[25], e6Bullet3[25];
-int e7Bullet2[25];
-int e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
-int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5];
-int e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
+int xp, ship, highscore, soundCounter, health, set, level, bulletTimeCounter, shipMoveCounter, bulletMoveCounter;
+int enemyExplosionCounter[10], shipView, mX, mY, newX, newY, mBullet1[15], mBullet2[15], mBullet3[15];
+int hpCounterTorture, e1Bullet1[50], e2Bullet1[50], e3Bullet1[50], e4Bullet1[50], e5Bullet1[25], e5Bullet3[25];
+int e6Bullet1[25], e6Bullet3[25], e7Bullet2[25], e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
+int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5], e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
 int eShip1[10], eShip2[10], eShip3[10], eShip4[10], eShip5[5], eShip6[5], eShip7[5], eShip8[5], eShip9, eShip10;
-int eShipX1[10], eShipX2[10], eShipX3[10], eShipX4[10], eShipX5[5], eShipX6[5], eShipX7[5], eShipX8[5], eShipX9, eShipX10;
-int eShipY1[10], eShipY2[10], eShipY3[10], eShipY4[10], eShipY5[5], eShipY6[5], eShipY7[5], eShipY8[5], eShipY9, eShipY10;
+int eShipX1[10], eShipX2[10], eShipX3[10], eShipX4[10];
+int eShipX5[5], eShipX6[5], eShipX7[5], eShipX8[5], eShipX9, eShipX10;
+int eShipY1[10], eShipY2[10], eShipY3[10], eShipY4[10];
+int eShipY5[5], eShipY6[5], eShipY7[5], eShipY8[5], eShipY9, eShipY10;
 int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5];
 int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Health;
-int fileSound, fileUpdateHighscore;
-int fileXp, fileShip, fileHighscore;
-int fileCounter;
-int intTempNum;
-int mp3Handle;
-int width1, width2, HP, text1, text2, text3;
-int counterTorture, imageTorture, hpTorture, textTorture;
-int shipActionCounter, healthRegenCounter;
-int r, s2, s3, s4, s5, s6, s7, s8, music;
-int possibleHealth, shipSpeed, saveRon, rank;
+int fileSound, fileUpdateHighscore, fileXp, fileShip, fileHighscore, fileCounter, intTempNum, mp3Handle;
+int width1, width2, HP, text1, text2, text3, counterTorture, imageTorture, hpTorture, textTorture, shipActionCounter;
+int healthRegenCounter, r, s2, s3, s4, s5, s6, s7, s8, music, possibleHealth, shipSpeed, saveRon, rank;
 int bulletXOffset, bulletYOffset, bulletXOffset2, bulletYOffset2, bulletXOffset3, bulletYOffset3;
 
 enum Screen {
@@ -652,9 +627,11 @@ int OnStoryLevel7(int id, int event, int x, int y) {
             CurrentScreen = ScreenStory7a2;
         } else if (id == 2) {
             if (date && !marry) {
-                TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your girlfriend that you \nwere a great man.");
+                TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell "
+					"your girlfriend that you \nwere a great man.");
             } else if (date && marry) {
-                TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your wife that you were a \ngreat man.");
+                TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell "
+					"your wife that you were a \ngreat man.");
             } else if (!date && !marry) {
                 TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness.");
             }
@@ -1197,39 +1174,46 @@ void ContainerSixSeven() {
     ViewAdd(ContainerStory6a2, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory6a2, "Images/btnLaugh.png", 20, 380, OnStoryLevel6, 2);
     ViewAdd(ContainerStory6a2, "Images/btnSo.png", 170, 380, OnStoryLevel6, 3);
-    TextAdd(ContainerStory6a2, 0, 0, "\n\nAdmiral Skerbowh: \nYou will never be able to \ndefeat me. I am simply", font);
+    TextAdd(ContainerStory6a2, 0, 0, "\n\nAdmiral Skerbowh: \nYou will never be able to \ndefeat me. I am simply", 
+		font);
     TextAdd(ContainerStory6a2, 0, 0, "\n\n\n\n\nsmarter, stronger, faster, and \nmore powerful than you.", font);
     //populate ContainerStory6a3
     ViewAdd(ContainerStory6a3, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory6a3, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory6a3, "Images/btnOkSmall.png", 20, 380, OnStoryLevel6, 4);
     ViewAdd(ContainerStory6a3, "Images/btnLaugh.png", 170, 380, OnStoryLevel6, 4);
-    TextAdd(ContainerStory6a3, 0, 0, "\n\nAdmiral Skerbowh: \nYou laugh in the face of \ndeath? I laugh at your", font);
-    TextAdd(ContainerStory6a3, 0, 0, "\n\n\n\n\nconfidence; however, you \ntruly cannot believe that you \nmay emerge victorious.", font);
+    TextAdd(ContainerStory6a3, 0, 0, "\n\nAdmiral Skerbowh: \nYou laugh in the face of \ndeath? I laugh at your", 
+		font);
+    TextAdd(ContainerStory6a3, 0, 0, "\n\n\n\n\nconfidence; however, you \ntruly cannot believe that you \nmay "
+		"emerge victorious.", font);
     //populate ContainerStory6b3
     ViewAdd(ContainerStory6b3, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory6b3, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory6b3, "Images/btnOkSmall.png", 20, 380, OnStoryLevel6, 4);
     ViewAdd(ContainerStory6b3, "Images/btnLaugh.png", 170, 380, OnStoryLevel6, 4);
-    TextAdd(ContainerStory6b3, 0, 0, "\n\nAdmiral Skerbowh: \nSo... You aren't intelligent \nenough to comprehend your", font);
+    TextAdd(ContainerStory6b3, 0, 0, "\n\nAdmiral Skerbowh: \nSo... You aren't intelligent \nenough to comprehend "
+		"your", font);
     TextAdd(ContainerStory6b3, 0, 0, "\n\n\n\n\ncertain and eventual death.", font);
     //populate ContainerStory7w1
     ViewAdd(ContainerStory7w1, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7w1, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory7w1, "Images/btnOkBig.png", 20, 380, OnStoryLevel7, 3);
-    TextAdd(ContainerStory7w1, 0, 0, "\n\nRon: \nYou defeated the enemy \nadmiral. The world will know \nof your greatness.", font);
+    TextAdd(ContainerStory7w1, 0, 0, "\n\nRon: \nYou defeated the enemy \nadmiral. The world will know \nof your "
+		"greatness.", font);
     //populate ContainerStory7l1
     ViewAdd(ContainerStory7l1, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7l1, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory7l1, "Images/btnMyself.png", 20, 380, OnStoryLevel7, 1);
     ViewAdd(ContainerStory7l1, "Images/btnRon.png", 170, 380, OnStoryLevel7, 2);
-    TextAdd(ContainerStory7l1, 0, 0, "\n\nAlex: \nMy ship has sustained critical \ndamage. Every single escape \npod other than one has been", font);
+    TextAdd(ContainerStory7l1, 0, 0, "\n\nAlex: \nMy ship has sustained critical \ndamage. Every single escape \npod "
+		"other than one has been", font);
     TextAdd(ContainerStory7l1, 0, 0, "\n\n\n\n\n\ntaken or destroyed. Should I \nsave myself or Ron?", font);
     //populate ContainerStory7a2
     ViewAdd(ContainerStory7a2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7a2, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory7a2, "Images/btnOkBig.png", 20, 380, OnStoryLevel7, 3);
-    TextAdd(ContainerStory7a2, 0, 0, "\n\nExecutioner: \nYou are being executed for \ntreason since you abandoned \nyour ship and crew to die.", font);
+    TextAdd(ContainerStory7a2, 0, 0, "\n\nExecutioner: \nYou are being executed for \ntreason since you abandoned "
+		"\nyour ship and crew to die.", font);
     //populate ContainerStory7b2
     ViewAdd(ContainerStory7b2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7b2, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1242,8 +1226,10 @@ void ContainerFive() {
     ViewAdd(ContainerStory5a1, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory5a1, "Images/btnOkSmall.png", 20, 380, OnStoryLevel5, 1);
     ViewAdd(ContainerStory5a1, "Images/btnThanks.png", 170, 380, OnStoryLevel5, 1);
-    TextAdd(ContainerStory5a1, 0, 0, "\n\nCommodore Bailey: \nCongratulations on your way \nback. For your great action", font);
-    TextAdd(ContainerStory5a1, 0, 0, "\n\n\n\n\nout there, you have become \npilot of your own ship named \nICC Kepler.", font);
+    TextAdd(ContainerStory5a1, 0, 0, "\n\nCommodore Bailey: \nCongratulations on your way \nback. For your great "
+		"action", font);
+    TextAdd(ContainerStory5a1, 0, 0, "\n\n\n\n\nout there, you have become \npilot of your own ship named \nICC "
+		"Kepler.", font);
     //populate ContainerStory5a2
     ViewAdd(ContainerStory5a2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory5a2, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1255,8 +1241,10 @@ void ContainerFive() {
     ViewAdd(ContainerStory5a3, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory5a3, "Images/btnNo.png", 20, 380, OnStoryLevel5, 3);
     ViewAdd(ContainerStory5a3, "Images/btnOkSmall.png", 170, 380, OnStoryLevel5, 4);
-    TextAdd(ContainerStory5a3, 0, 0, "\n\nRon: \nWe located the escaped \nenemy. He is an admiral so \nhe is well guarded, killing him", font);
-    TextAdd(ContainerStory5a3, 0, 0, "\n\n\n\n\n\nwill be no easy feat. I will \ncome with you since I myself \nknow where the enemy \nadmiral is.", font);
+    TextAdd(ContainerStory5a3, 0, 0, "\n\nRon: \nWe located the escaped \nenemy. He is an admiral so \nhe is well "
+		"guarded, killing him", font);
+    TextAdd(ContainerStory5a3, 0, 0, "\n\n\n\n\n\nwill be no easy feat. I will \ncome with you since I myself \nknow "
+		"where the enemy \nadmiral is.", font);
     //populate ContainerStory5b4
     ViewAdd(ContainerStory5b4, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory5b4, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1268,13 +1256,15 @@ void ContainerFive() {
     ViewAdd(ContainerStory5a5, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory5a5, "Images/btnAround.png", 20, 380, OnStoryLevel5, 5);
     ViewAdd(ContainerStory5a5, "Images/btnAttack.png", 170, 380, OnStoryLevel5, 6);
-    TextAdd(ContainerStory5a5, 0, 0, "\n\nRon: \nThere's a whole platoon of \nships. Do you go around and \ntry to avoid them, or do you", font);
+    TextAdd(ContainerStory5a5, 0, 0, "\n\nRon: \nThere's a whole platoon of \nships. Do you go around and \ntry to "
+		"avoid them, or do you", font);
     TextAdd(ContainerStory5a5, 0, 0, "\n\n\n\n\n\nattack?", font);
     //populate ContainerStory5a6
     ViewAdd(ContainerStory5a6, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory5a6, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory5a6, "Images/btnOkBig.png", 20, 380, OnStoryLevel5, 7);
-    TextAdd(ContainerStory5a6, 0, 0, "\n\nRon: \nThe ships see you before you \nare even able to go around \nand attack.", font);
+    TextAdd(ContainerStory5a6, 0, 0, "\n\nRon: \nThe ships see you before you \nare even able to go around \nand "
+		"attack.", font);
     //populate ContainerStory5b6
     ViewAdd(ContainerStory5b6, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory5b6, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1304,27 +1294,33 @@ void ContainerFour() {
     ViewAdd(ContainerStory4a4, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory4a4, "Images/btnEnemy.png", 20, 380, OnStoryLevel4, 5);
     ViewAdd(ContainerStory4a4, "Images/btnMine.png", 170, 380, OnStoryLevel4, 6);
-    TextAdd(ContainerStory4a4, 0, 0, "\n\nAlly: \nYou need to get back. Luckily, \nmy radio signal reaches you. \nYou can either take the", font);
-    TextAdd(ContainerStory4a4, 0, 0, "\n\n\n\n\n\nenemy ship or try to get back to yours. Also, if you make it back", font);
+    TextAdd(ContainerStory4a4, 0, 0, "\n\nAlly: \nYou need to get back. Luckily, \nmy radio signal reaches you. \nYou "
+		"can either take the", font);
+    TextAdd(ContainerStory4a4, 0, 0, "\n\n\n\n\n\nenemy ship or try to get back to yours. Also, if you make it back", 
+		font);
     TextAdd(ContainerStory4a4, 0, 0, "\n\n\n\n\n\n\nto your ship, you'll be in \ntemporary command.", font);
     //populate ContainerStory4b5
     ViewAdd(ContainerStory4b5, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory4b5, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory4b5, "Images/btnOkBig.png", 20, 380, OnStoryLevel4, 6);
-    TextAdd(ContainerStory4b5, 0, 0, "\n\nLieutenant Dan: \nThe enemy ship you were \nflying broke down. Luckily,", font);
+    TextAdd(ContainerStory4b5, 0, 0, "\n\nLieutenant Dan: \nThe enemy ship you were \nflying broke down. Luckily,", 
+		font);
     TextAdd(ContainerStory4b5, 0, 0, "\n\n\n\n\nthe crew and I came to save \nyou.", font);
     //populate ContainerStory4a6
     ViewAdd(ContainerStory4a6, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory4a6, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory4a6, "Images/btnContact.png", 20, 380, OnStoryLevel4, 7);
     ViewAdd(ContainerStory4a6, "Images/btnShoot.png", 170, 380, OnStoryLevel4, 8);
-    TextAdd(ContainerStory4a6, 0, 0, "\n\nLieutenant Dan: \nYou are in temporary \ncommand. There's ships up \nahead; do you contact it to", font);
-    TextAdd(ContainerStory4a6, 0, 0, "\n\n\n\n\n\nsee if it's friendly or do you \nshoot at it? There's no way \naround.", font);
+    TextAdd(ContainerStory4a6, 0, 0, "\n\nLieutenant Dan: \nYou are in temporary \ncommand. There's ships up "
+		"\nahead; do you contact it to", font);
+    TextAdd(ContainerStory4a6, 0, 0, "\n\n\n\n\n\nsee if it's friendly or do you \nshoot at it? There's no way "
+		"\naround.", font);
     //populate ContainerStory4a7
     ViewAdd(ContainerStory4a7, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory4a7, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory4a7, "Images/btnOkBig.png", 20, 380, OnStoryLevel4, 9);
-    TextAdd(ContainerStory4a7, 0, 0, "\n\nLieutenant Dan: \nThe ships say they are \nfriendly, so we went around \nthem.", font);
+    TextAdd(ContainerStory4a7, 0, 0, "\n\nLieutenant Dan: \nThe ships say they are \nfriendly, so we went around "
+		"\nthem.", font);
     //populate ContainerStory4b7
     ViewAdd(ContainerStory4b7, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory4b7, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1360,7 +1356,8 @@ void ContainerThree() {
     ViewAdd(ContainerStory3a4, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory3a4, "Images/btnWhereAreWe.png", 20, 380, OnStoryLevel3, 4);
     ViewAdd(ContainerStory3a4, "Images/btnWhereCaptain.png", 170, 380, OnStoryLevel3, 4);
-    TextAdd(ContainerStory3a4, 0, 0, "\n\nEnemy: \nSorry for knocking you out, it \nwas the only way to bring \nyou here.", font);
+    TextAdd(ContainerStory3a4, 0, 0, "\n\nEnemy: \nSorry for knocking you out, it \nwas the only way to bring \nyou "
+		"here.", font);
     //populate ContainerStory3a5
     ViewAdd(ContainerStory3a5, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory3a5, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1372,19 +1369,22 @@ void ContainerThree() {
     ViewAdd(ContainerStory3a6, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory3a6, "Images/btnOkSmall.png", 20, 380, OnStoryLevel3, 6);
     ViewAdd(ContainerStory3a6, "Images/btnSo.png", 170, 380, OnStoryLevel3, 6);
-    TextAdd(ContainerStory3a6, 0, 0, "\n\nEnemy: \nTorture is what caused world \nwar 3 on your home planet: \nEarth.", font);
+    TextAdd(ContainerStory3a6, 0, 0, "\n\nEnemy: \nTorture is what caused world \nwar 3 on your home planet: "
+		"\nEarth.", font);
     //populate ContainerStory3a7
     ViewAdd(ContainerStory3a7, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory3a7, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory3a7, "Images/btnNo!.png", 20, 380, OnStoryLevel3, 7);
     ViewAdd(ContainerStory3a7, "Images/btnOkSmall.png", 170, 380, OnStoryLevel3, 7);
-    TextAdd(ContainerStory3a7, 0, 0, "\n\nEnemy: \nI will force you to torture your \ncaptain, hopefully causing a \nwar in the process.", font);
+    TextAdd(ContainerStory3a7, 0, 0, "\n\nEnemy: \nI will force you to torture your \ncaptain, hopefully causing a "
+		"\nwar in the process.", font);
     //populate ContainerStory3a8
     ViewAdd(ContainerStory3a8, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory3a8, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory3a8, "Images/btnNo!.png", 20, 380, OnStoryLevel3, 8);
     ViewAdd(ContainerStory3a8, "Images/btnOkSmall.png", 170, 380, OnStoryLevel3, 8);
-    TextAdd(ContainerStory3a8, 0, 0, "\n\nEnemy: \nI will wait for you to torture \nhim until you do. There's \nnothing you can do about it.", font);
+    TextAdd(ContainerStory3a8, 0, 0, "\n\nEnemy: \nI will wait for you to torture \nhim until you do. There's "
+		"\nnothing you can do about it.", font);
     //populate ContainerStoryTorture
     TouchAdd(ContainerStoryTorture, 0, 0, 320, 568, OnTorture, 1);
     imageTorture = ViewAdd(ContainerStoryTorture, "Images/TortureModeOne.png", -2, -2);
@@ -1399,20 +1399,24 @@ void ContainerTwo() {
     ViewAdd(ContainerStory2a1, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory2a1, "Images/btnOkSmall.png", 20, 380, OnStoryLevel2, 1);
     ViewAdd(ContainerStory2a1, "Images/btnThanks.png", 170, 380, OnStoryLevel2, 1);
-    TextAdd(ContainerStory2a1, 0, 0, "\n\nTeacher: \nThis test was designed to \ndetermine how well cadets \nwould respond to stressful", font);
-    TextAdd(ContainerStory2a1, 0, 0, "\n\n\n\n\n\nsituations. You passed and \nhave been deemed fit for \nduty.", font);
+    TextAdd(ContainerStory2a1, 0, 0, "\n\nTeacher: \nThis test was designed to \ndetermine how well cadets \nwould "
+		"respond to stressful", font);
+    TextAdd(ContainerStory2a1, 0, 0, "\n\n\n\n\n\nsituations. You passed and \nhave been deemed fit for \nduty.", 
+		font);
     //populate ContainerStory2a2
     ViewAdd(ContainerStory2a2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory2a2, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory2a2, "Images/btnSure.png", 20, 380, OnStoryLevel2, 3);
     ViewAdd(ContainerStory2a2, "Images/btnNo.png", 170, 380, OnStoryLevel2, 4);
-    TextAdd(ContainerStory2a2, 0, 0, "\n\nBecca: \nI heard you're the new soldier \nin town. Do you want to go \nout to town with me?", font);
+    TextAdd(ContainerStory2a2, 0, 0, "\n\nBecca: \nI heard you're the new soldier \nin town. Do you want to go \nout "
+		"to town with me?", font);
     //populate ContainerStory2a3
     ViewAdd(ContainerStory2a3, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory2a3, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory2a3, "Images/btnYes.png", 20, 380, OnStoryLevel2, 5);
     ViewAdd(ContainerStory2a3, "Images/btnNo.png", 170, 380, OnStoryLevel2, 6);
-    TextAdd(ContainerStory2a3, 0, 0, "\n\nCaptain: \nSon, you have a bright future. \nWould you like to join me on \nmy voyages?", font);
+    TextAdd(ContainerStory2a3, 0, 0, "\n\nCaptain: \nSon, you have a bright future. \nWould you like to join me on "
+		"\nmy voyages?", font);
     //populate ContainerStory2b4
     ViewAdd(ContainerStory2b4, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory2b4, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1429,7 +1433,8 @@ void ContainerTwo() {
     ViewAdd(ContainerStory2a6, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory2a6, "Images/btnEngage.png", 20, 380, OnStoryLevel2, 9);
     ViewAdd(ContainerStory2a6, "Images/btnAround.png", 170, 380, OnStoryLevel2, 10);
-    TextAdd(ContainerStory2a6, 0, 0, "\n\nCaptain: \nThere's ships up ahead. \nShould we engage or go \naround?", font);
+    TextAdd(ContainerStory2a6, 0, 0, "\n\nCaptain: \nThere's ships up ahead. \nShould we engage or go \naround?", 
+		font);
     //populate ContainerStory2e7
     ViewAdd(ContainerStory2e7, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory2e7, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1511,27 +1516,32 @@ void ContainerOne() {
     //populate ContainerDied
     ViewAdd(ContainerDied, "Images/Background.png", 0, 0);
     ViewAdd(ContainerDied, "Images/btnOkBig.png", 20, 380, OnDied, 1);
-    TextAdd(ContainerDied, 0, 0, "\n\nYou died without completing \nyour journey or leaving \nyourself a legacy. You left no", font);
+    TextAdd(ContainerDied, 0, 0, "\n\nYou died without completing \nyour journey or leaving \nyourself a legacy. "
+		"You left no", font);
     TextAdd(ContainerDied, 0, 0, "\n\n\n\n\nimprint on the world and \nnobody will ever remember \nyou.", font);
     //populate CointainerStory1a1
     ViewAdd(ContainerStory1a1, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory1a1, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory1a1, "Images/btnOkBig.png", 20, 380, OnStoryLevel1, 1);
-    TextAdd(ContainerStory1a1, 0, 0, "\n\nRon: \nAlex, are you ready for the \nbig test? Remember: We \nadopted the new cycle", font);
-    TextAdd(ContainerStory1a1, 0, 0, "\n\n\n\n\n\nsystem 93 cycles ago. If we \nstill used the old Earth \nmethod, it would currently be", font);
+    TextAdd(ContainerStory1a1, 0, 0, "\n\nRon: \nAlex, are you ready for the \nbig test? Remember: We \nadopted the "
+		"new cycle", font);
+    TextAdd(ContainerStory1a1, 0, 0, "\n\n\n\n\n\nsystem 93 cycles ago. If we \nstill used the old Earth \nmethod, "
+		"it would currently be", font);
     TextAdd(ContainerStory1a1, 0, 0, "\n\n\n\n\n\n\n\n\nyear 2433.", font);
     //populate ContainerStory1a2
     ViewAdd(ContainerStory1a2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory1a2, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory1a2, "Images/btnStudy.png", 20, 380, OnStoryLevel1, 3);
     ViewAdd(ContainerStory1a2, "Images/btnParty.png", 170, 380, OnStoryLevel1, 4);
-    TextAdd(ContainerStory1a2, 0, 0, "\n\nRon: \nAlso, you can either \nstudy for the big test \ntomorrow, or go to a party", font);
+    TextAdd(ContainerStory1a2, 0, 0, "\n\nRon: \nAlso, you can either \nstudy for the big test \ntomorrow, or go to "
+		"a party", font);
     TextAdd(ContainerStory1a2, 0, 0, "\n\n\n\n\n\nwith the cool guys and I. Just \ntell them Ron invited you.", font);
     //populate ContainerStory1s3
     ViewAdd(ContainerStory1s3, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory1s3, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory1s3, "Images/btnSleep.png", 20, 380, OnStoryLevel1, 5);
-    TextAdd(ContainerStory1s3, 0, 0, "\n\nBook: \nEverybody must listen to \nhigher command at all times. \nAlso, ship pilots must never", font);
+    TextAdd(ContainerStory1s3, 0, 0, "\n\nBook: \nEverybody must listen to \nhigher command at all times. \nAlso, "
+		"ship pilots must never", font);
     TextAdd(ContainerStory1s3, 0, 0, "\n\n\n\n\n\nabandon their ship.", font);
     //populate ContainerStory1p3
     ViewAdd(ContainerStory1p3, "Images/Background.png", 0, 0);
@@ -1543,7 +1553,8 @@ void ContainerOne() {
     ViewAdd(ContainerStory1a4, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory1a4, "Images/btnRescue.png", 20, 380, OnStoryLevel1, 6);
     ViewAdd(ContainerStory1a4, "Images/btnEscape.png", 170, 380, OnStoryLevel1, 7);
-    TextAdd(ContainerStory1a4, 0, 0, "\n\nTeacher: \nThe Kobayashi ship is \ntrapped behind enemy \nlines. What do you do?", font);
+    TextAdd(ContainerStory1a4, 0, 0, "\n\nTeacher: \nThe Kobayashi ship is \ntrapped behind enemy \nlines. What do "
+		"you do?", font);
     //populate ContainerStory1r5
     ViewAdd(ContainerStory1r5, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory1r5, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1673,8 +1684,8 @@ void AppMain() {
     ViewAdd(ContainerOptions, "Images/btnDelete.png", 20, 200, Options, 2);
     //populate ContainerDeleteCheckOne
     ViewAdd(ContainerDeleteCheckOne, "Images/Background.png", 0, 0);
-    TextAdd(ContainerDeleteCheckOne, 20, 20, "Are you sure you want to \nDELETE ALL PLAYER \nDATA including xp, rank, \
-        \nhighscore, and ships?", font);
+    TextAdd(ContainerDeleteCheckOne, 20, 20, "Are you sure you want to \nDELETE ALL PLAYER \nDATA including xp, rank, "
+		"\nhighscore, and ships?", font);
     ViewAdd(ContainerDeleteCheckOne, "Images/btnNoDelete.png", 20, 180, Options, 5);
     ViewAdd(ContainerDeleteCheckOne, "Images/btnYesDelete.png", 20, 300, Options, 3);
     //populate ContainerDeleteCheckTwo
@@ -1885,7 +1896,7 @@ void BulletTime() {
     int x, y, x2, y2, x3, y3;
     bool used = false;
     for (int i = 1; i <= 15; i++) {
-        if (bulletTimeCounter == i * time) {
+        if (bulletTimeCounter == i * TIME) {
             used = true;
             if (ship == 8) {
                 ViewSetxy(mBullet1[i - 1], mX + bulletXOffset, mY + bulletYOffset);
@@ -1901,7 +1912,7 @@ void BulletTime() {
             }
         }
     }
-    if (bulletTimeCounter >= 15 * time) {
+    if (bulletTimeCounter >= 15 * TIME) {
         bulletTimeCounter = 0;
     }
     if (!used) {
@@ -1913,9 +1924,9 @@ void BulletTime() {
             x3 = ViewGetx(mBullet3[i]);
             y3 = ViewGety(mBullet3[i]);
             if (y > -20 || y2 > -20 || y3 > -20) {
-                ViewSetxy(mBullet1[i], x, y - speed);
-                ViewSetxy(mBullet2[i], x2, y2 - speed);
-                ViewSetxy(mBullet3[i], x3, y3 - speed);
+                ViewSetxy(mBullet1[i], x, y - SPEED);
+                ViewSetxy(mBullet2[i], x2, y2 - SPEED);
+                ViewSetxy(mBullet3[i], x3, y3 - SPEED);
             }
             for (int j = 0; j < 10; j++) {
                 //ship 1
@@ -2248,870 +2259,870 @@ void HealthBar() {
     }
 }
 void SetOne() {
-    if (shipMoveCounter == 1 * SpawnTime) {
+    if (shipMoveCounter == 1 * SPAWN_TIME) {
         eShip1Health[0] = level + 2;
         ViewSetxy(eShip1[0], 113, -94);
-    } else if (shipMoveCounter == 2 * SpawnTime) {
+    } else if (shipMoveCounter == 2 * SPAWN_TIME) {
         eShip1Health[1] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip1[1], 33, -94);
         ViewSetxy(eShip2[0], 193, -94);
-    } else if (shipMoveCounter == 3 * SpawnTime) {
+    } else if (shipMoveCounter == 3 * SPAWN_TIME) {
         eShip2Health[1] = level + 2;
         ViewSetxy(eShip2[1], 113, -94);
-    } else if (shipMoveCounter == 4 * SpawnTime) {
+    } else if (shipMoveCounter == 4 * SPAWN_TIME) {
         eShip2Health[2] = level + 2;
         eShip1Health[2] = level + 2;
         ViewSetxy(eShip2[2], 33, -94);
         ViewSetxy(eShip1[2], 193, -94);
-    } else if (shipMoveCounter == 5 * SpawnTime) {
+    } else if (shipMoveCounter == 5 * SPAWN_TIME) {
         eShip1Health[3] = level + 2;
         eShip3Health[0] = level + 2;
         eShip2Health[3] = level + 2;
         ViewSetxy(eShip1[3], 0, -94);
         ViewSetxy(eShip3[0], 113, -94);
         ViewSetxy(eShip2[3], 226, -94);
-    } else if (shipMoveCounter == 6 * SpawnTime) {
+    } else if (shipMoveCounter == 6 * SPAWN_TIME) {
         eShip3Health[1] = level + 2;
         eShip2Health[4] = level + 2;
         eShip3Health[2] = level + 2;
         ViewSetxy(eShip3[1], 0, -94);
         ViewSetxy(eShip2[4], 113, -94);
         ViewSetxy(eShip3[2], 226, -94);
-    } else if (shipMoveCounter == 7 * SpawnTime) {
+    } else if (shipMoveCounter == 7 * SPAWN_TIME) {
         eShip1Health[4] = level + 2;
         eShip1Health[5] = level + 2;
         eShip2Health[5] = level + 2;
         ViewSetxy(eShip1[4], 0, -94);
         ViewSetxy(eShip1[5], 113, -94);
         ViewSetxy(eShip2[5], 226, -94);
-    } else if (shipMoveCounter == 8 * SpawnTime) {
+    } else if (shipMoveCounter == 8 * SPAWN_TIME) {
         eShip3Health[3] = level + 2;
         eShip1Health[6] = level + 2;
         eShip1Health[7] = level + 2;
         ViewSetxy(eShip3[3], 0, -94);
         ViewSetxy(eShip1[6], 113, -94);
         ViewSetxy(eShip1[7], 226, -94);
-    } else if (shipMoveCounter == 9 * SpawnTime) {
+    } else if (shipMoveCounter == 9 * SPAWN_TIME) {
         eShip2Health[6] = level + 2;
         eShip3Health[4] = level + 2;
         ViewSetxy(eShip2[6], 33, -94);
         ViewSetxy(eShip3[4], 193, -94);
-    } else if (shipMoveCounter == 10 * SpawnTime) {
+    } else if (shipMoveCounter == 10 * SPAWN_TIME) {
         eShip4Health[0] = level + 2;
         ViewSetxy(eShip4[0], 113, -94);
-    } else if (shipMoveCounter == 11 * SpawnTime) {
+    } else if (shipMoveCounter == 11 * SPAWN_TIME) {
         eShip3Health[5] = level + 2;
         eShip4Health[1] = level + 2;
         ViewSetxy(eShip3[5], 33, -94);
         ViewSetxy(eShip4[1], 193, -94);
-    } else if (shipMoveCounter == 12 * SpawnTime) {
+    } else if (shipMoveCounter == 12 * SPAWN_TIME) {
         eShip1Health[8] = level + 2;
         eShip2Health[7] = level + 2;
         eShip1Health[9] = level + 2;
         ViewSetxy(eShip1[8], 0, -94);
         ViewSetxy(eShip2[7], 113, -94);
         ViewSetxy(eShip1[9], 226, -94);
-    } else if (shipMoveCounter == 13 * SpawnTime) {
+    } else if (shipMoveCounter == 13 * SPAWN_TIME) {
         eShip4Health[2] = level + 2;
         eShip1Health[0] = level + 2;
         eShip3Health[6] = level + 2;
         ViewSetxy(eShip4[2], 0, -94);
         ViewSetxy(eShip1[0], 113, -94);
         ViewSetxy(eShip3[6], 226, -94);
-    } else if (shipMoveCounter == 14 * SpawnTime) {
+    } else if (shipMoveCounter == 14 * SPAWN_TIME) {
         eShip2Health[8] = level + 2;
         eShip4Health[3] = level + 2;
         eShip3Health[7] = level + 2;
         ViewSetxy(eShip2[8], 0, -94);
         ViewSetxy(eShip4[3], 113, -94);
         ViewSetxy(eShip3[7], 226, -94);
-    } else if (shipMoveCounter == 15 * SpawnTime) {
+    } else if (shipMoveCounter == 15 * SPAWN_TIME) {
         eShip4Health[4] = level + 2;
         eShip4Health[5] = level + 2;
         ViewSetxy(eShip4[4], 33, -94);
         ViewSetxy(eShip4[5], 193, -94);
-    } else if (shipMoveCounter == 16 * SpawnTime) {
+    } else if (shipMoveCounter == 16 * SPAWN_TIME) {
         eShip2Health[9] = level + 2;
         eShip2Health[0] = level + 2;
         eShip3Health[8] = level + 2;
         ViewSetxy(eShip2[9], 0, -94);
         ViewSetxy(eShip2[0], 113, -94);
         ViewSetxy(eShip3[8], 226, -94);
-    } else if (shipMoveCounter == 17 * SpawnTime) {
+    } else if (shipMoveCounter == 17 * SPAWN_TIME) {
         eShip3Health[9] = level + 2;
         eShip1Health[2] = level + 2;
         eShip2Health[1] = level + 2;
         ViewSetxy(eShip3[9], 0, -94);
         ViewSetxy(eShip1[2], 113, -94);
         ViewSetxy(eShip2[1], 226, -94);
-    } else if (shipMoveCounter == 18 * SpawnTime) {
+    } else if (shipMoveCounter == 18 * SPAWN_TIME) {
         eShip4Health[6] = level + 2;
         eShip2Health[2] = level + 2;
         ViewSetxy(eShip4[6], 33, -94);
         ViewSetxy(eShip2[2], 193, -94);
-    } else if (shipMoveCounter == 19 * SpawnTime) {
+    } else if (shipMoveCounter == 19 * SPAWN_TIME) {
         eShip5Health[0] = level + 2;
         ViewSetxy(eShip5[0], 113, -94);
-    } else if (shipMoveCounter == 20 * SpawnTime) {
+    } else if (shipMoveCounter == 20 * SPAWN_TIME) {
         eShip2Health[3] = level + 2;
         eShip4Health[7] = level + 2;
         ViewSetxy(eShip2[3], 33, -94);
         ViewSetxy(eShip4[7], 193, -94);
-    } else if (shipMoveCounter == 21 * SpawnTime) {
+    } else if (shipMoveCounter == 21 * SPAWN_TIME) {
         eShip1Health[1] = level + 2;
         eShip5Health[1] = level + 2;
         eShip1Health[2] = level + 2;
         ViewSetxy(eShip1[1], 0, -94);
         ViewSetxy(eShip5[1], 113, -94);
         ViewSetxy(eShip1[2], 226, -94);
-    } else if (shipMoveCounter == 22 * SpawnTime) {
+    } else if (shipMoveCounter == 22 * SPAWN_TIME) {
         eShip4Health[8] = level + 2;
         eShip2Health[4] = level + 2;
         eShip4Health[9] = level + 2;
         ViewSetxy(eShip4[8], 0, -94);
         ViewSetxy(eShip2[4], 113, -94);
         ViewSetxy(eShip4[9], 226, -94);
-    } else if (shipMoveCounter == 23 * SpawnTime) {
+    } else if (shipMoveCounter == 23 * SPAWN_TIME) {
         eShip5Health[2] = level + 2;
         eShip5Health[3] = level + 2;
         ViewSetxy(eShip5[2], 33, -94);
         ViewSetxy(eShip5[3], 193, -94);
-    } else if (shipMoveCounter == 24 * SpawnTime) {
+    } else if (shipMoveCounter == 24 * SPAWN_TIME) {
         eShip4Health[0] = level + 2;
         eShip5Health[4] = level + 2;
         eShip4Health[1] = level + 2;
         ViewSetxy(eShip4[0], 0, -94);
         ViewSetxy(eShip5[4], 113, -94);
         ViewSetxy(eShip4[1], 226, -94);
-    } else if (shipMoveCounter == 25 * SpawnTime) {
+    } else if (shipMoveCounter == 25 * SPAWN_TIME) {
         eShip5Health[0] = level + 2;
         eShip1Health[3] = level + 2;
         eShip3Health[0] = level + 2;
         ViewSetxy(eShip5[0], 0, -94);
         ViewSetxy(eShip1[3], 113, -94);
         ViewSetxy(eShip3[0], 226, -94);
-    } else if (shipMoveCounter == 26 * SpawnTime) {
+    } else if (shipMoveCounter == 26 * SPAWN_TIME) {
         eShip5Health[1] = level + 2;
         eShip5Health[2] = level + 2;
         ViewSetxy(eShip5[1], 33, -94);
         ViewSetxy(eShip5[2], 193, -94);
-    } else if (shipMoveCounter == 27 * SpawnTime) {
+    } else if (shipMoveCounter == 27 * SPAWN_TIME) {
         eShip1Health[4] = level + 2;
         eShip3Health[1] = level + 2;
         eShip1Health[1] = level + 2;
         ViewSetxy(eShip1[4], 0, -94);
         ViewSetxy(eShip3[1], 113, -94);
         ViewSetxy(eShip1[1], 226, -94);
-    } else if (shipMoveCounter == 28 * SpawnTime) {
+    } else if (shipMoveCounter == 28 * SPAWN_TIME) {
         eShip4Health[2] = level + 2;
         eShip5Health[3] = level + 2;
         eShip2Health[5] = level + 2;
         ViewSetxy(eShip4[2], 0, -94);
         ViewSetxy(eShip5[3], 113, -94);
         ViewSetxy(eShip2[5], 226, -94);
-    } else if (shipMoveCounter == 29 * SpawnTime) {
+    } else if (shipMoveCounter == 29 * SPAWN_TIME) {
         eShip1Health[2] = level + 2;
         eShip1Health[3] = level + 2;
         ViewSetxy(eShip1[2], 33, -94);
         ViewSetxy(eShip1[3], 193, -94);
     }
-    if (shipMoveCounter == 30 * SpawnTime) {
+    if (shipMoveCounter == 30 * SPAWN_TIME) {
         if (CurrentScreen != ScreenStoryBattle1) {
             eShip9Health = level + 24;
             ViewSetxy(eShip9, 89, -240);
         }
-    } else if (shipMoveCounter == 31 * SpawnTime && CurrentScreen == ScreenStoryBattle1) {
+    } else if (shipMoveCounter == 31 * SPAWN_TIME && CurrentScreen == ScreenStoryBattle1) {
         CurrentScreen = ScreenStory2a1;
         ScreenSwitch();
     }
 }
 void SetTwo() {
-    if (shipMoveCounter == 1 * SpawnTime) {
+    if (shipMoveCounter == 1 * SPAWN_TIME) {
         eShip1Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip1[0], 33, -94);
         ViewSetxy(eShip2[0], 193, -94);
-    } else if (shipMoveCounter == 2 * SpawnTime) {
+    } else if (shipMoveCounter == 2 * SPAWN_TIME) {
         eShip4Health[0] = level + 2;
         eShip3Health[0] = level + 2;
         ViewSetxy(eShip4[0], 33, -94);
         ViewSetxy(eShip3[0], 193, -94);
-    } else if (shipMoveCounter == 3 * SpawnTime) {
+    } else if (shipMoveCounter == 3 * SPAWN_TIME) {
         eShip5Health[0] = level + 2;
         ViewSetxy(eShip5[0], 113, -94);
-    } else if (shipMoveCounter == 4 * SpawnTime) {
+    } else if (shipMoveCounter == 4 * SPAWN_TIME) {
         eShip3Health[1] = level + 2;
         eShip2Health[1] = level + 2;
         ViewSetxy(eShip3[1], 33, -94);
         ViewSetxy(eShip2[1], 193, -94);
-    } else if (shipMoveCounter == 5 * SpawnTime) {
+    } else if (shipMoveCounter == 5 * SPAWN_TIME) {
         eShip3Health[2] = level + 2;
         eShip4Health[1] = level + 2;
         eShip3Health[3] = level + 2;
         ViewSetxy(eShip3[2], 0, -94);
         ViewSetxy(eShip4[1], 113, -94);
         ViewSetxy(eShip3[3], 226, -94);
-    } else if (shipMoveCounter == 6 * SpawnTime) {
+    } else if (shipMoveCounter == 6 * SPAWN_TIME) {
         eShip1Health[1] = level + 2;
         eShip2Health[2] = level + 2;
         eShip2Health[3] = level + 2;
         ViewSetxy(eShip1[1], 0, -94);
         ViewSetxy(eShip2[2], 113, -94);
         ViewSetxy(eShip2[3], 226, -94);
-    } else if (shipMoveCounter == 7 * SpawnTime) {
+    } else if (shipMoveCounter == 7 * SPAWN_TIME) {
         eShip4Health[2] = level + 2;
         eShip2Health[4] = level + 2;
         eShip3Health[4] = level + 2;
         ViewSetxy(eShip4[2], 0, -94);
         ViewSetxy(eShip2[4], 113, -94);
         ViewSetxy(eShip3[4], 226, -94);
-    } else if (shipMoveCounter == 8 * SpawnTime) {
+    } else if (shipMoveCounter == 8 * SPAWN_TIME) {
         eShip2Health[5] = level + 2;
         eShip1Health[2] = level + 2;
         eShip1Health[3] = level + 2;
         ViewSetxy(eShip2[5], 0, -94);
         ViewSetxy(eShip1[2], 113, -94);
         ViewSetxy(eShip1[3], 226, -94);
-    } else if (shipMoveCounter == 9 * SpawnTime) {
+    } else if (shipMoveCounter == 9 * SPAWN_TIME) {
         eShip4Health[3] = level + 2;
         eShip3Health[5] = level + 2;
         ViewSetxy(eShip4[3], 33, -94);
         ViewSetxy(eShip3[5], 193, -94);
-    } else if (shipMoveCounter == 10 * SpawnTime) {
+    } else if (shipMoveCounter == 10 * SPAWN_TIME) {
         eShip5Health[1] = level + 2;
         eShip5Health[2] = level + 2;
         ViewSetxy(eShip5[1], 33, -94);
         ViewSetxy(eShip5[2], 193, -94);
-    } else if (shipMoveCounter == 11 * SpawnTime) {
+    } else if (shipMoveCounter == 11 * SPAWN_TIME) {
         eShip4Health[4] = level + 2;
         ViewSetxy(eShip4[4], 113, -94);
-    } else if (shipMoveCounter == 12 * SpawnTime) {
+    } else if (shipMoveCounter == 12 * SPAWN_TIME) {
         eShip5Health[3] = level + 2;
         eShip2Health[6] = level + 2;
         ViewSetxy(eShip5[3], 33, -94);
         ViewSetxy(eShip2[6], 193, -94);
-    } else if (shipMoveCounter == 13 * SpawnTime) {
+    } else if (shipMoveCounter == 13 * SPAWN_TIME) {
         eShip3Health[6] = level + 2;
         eShip2Health[7] = level + 2;
         eShip2Health[8] = level + 2;
         ViewSetxy(eShip3[6], 0, -94);
         ViewSetxy(eShip2[7], 113, -94);
         ViewSetxy(eShip2[8], 226, -94);
-    } else if (shipMoveCounter == 14 * SpawnTime) {
+    } else if (shipMoveCounter == 14 * SPAWN_TIME) {
         eShip2Health[9] = level + 2;
         eShip5Health[4] = level + 2;
         eShip1Health[4] = level + 2;
         ViewSetxy(eShip2[9], 0, -94);
         ViewSetxy(eShip5[4], 113, -94);
         ViewSetxy(eShip1[4], 226, -94);
-    } else if (shipMoveCounter == 15 * SpawnTime) {
+    } else if (shipMoveCounter == 15 * SPAWN_TIME) {
         eShip5Health[0] = level + 2;
         eShip1Health[5] = level + 2;
         eShip4Health[5] = level + 2;
         ViewSetxy(eShip5[0], 0, -94);
         ViewSetxy(eShip1[5], 113, -94);
         ViewSetxy(eShip4[5], 226, -94);
-    } else if (shipMoveCounter == 16 * SpawnTime) {
+    } else if (shipMoveCounter == 16 * SPAWN_TIME) {
         eShip1Health[6] = level + 2;
         eShip3Health[7] = level + 2;
         ViewSetxy(eShip1[6], 33, -94);
         ViewSetxy(eShip3[7], 193, -94);
-    } else if (shipMoveCounter == 17 * SpawnTime) {
+    } else if (shipMoveCounter == 17 * SPAWN_TIME) {
         eShip4Health[6] = level + 2;
         eShip5Health[1] = level + 2;
         ViewSetxy(eShip4[6], 33, -94);
         ViewSetxy(eShip5[1], 193, -94);
-    } else if (shipMoveCounter == 18 * SpawnTime) {
+    } else if (shipMoveCounter == 18 * SPAWN_TIME) {
         eShip1Health[7] = level + 2;
         eShip5Health[2] = level + 2;
         eShip1Health[8] = level + 2;
         ViewSetxy(eShip1[7], 0, -94);
         ViewSetxy(eShip5[2], 113, -94);
         ViewSetxy(eShip1[8], 226, -94);
-    } else if (shipMoveCounter == 19 * SpawnTime) {
+    } else if (shipMoveCounter == 19 * SPAWN_TIME) {
         eShip1Health[9] = level + 2;
         eShip3Health[8] = level + 2;
         ViewSetxy(eShip1[9], 33, -94);
         ViewSetxy(eShip3[8], 193, -94);
-    } else if (shipMoveCounter == 20 * SpawnTime) {
+    } else if (shipMoveCounter == 20 * SPAWN_TIME) {
         eShip6Health[0] = level + 2;
         ViewSetxy(eShip6[0], 113, -94);
-    } else if (shipMoveCounter == 21 * SpawnTime) {
+    } else if (shipMoveCounter == 21 * SPAWN_TIME) {
         eShip3Health[9] = level + 2;
         ViewSetxy(eShip3[9], 113, -94);
-    } else if (shipMoveCounter == 22 * SpawnTime) {
+    } else if (shipMoveCounter == 22 * SPAWN_TIME) {
         eShip2Health[0] = level + 2;
         eShip1Health[0] = level + 2;
         ViewSetxy(eShip2[0], 33, -94);
         ViewSetxy(eShip1[0], 193, -94);
-    } else if (shipMoveCounter == 23 * SpawnTime) {
+    } else if (shipMoveCounter == 23 * SPAWN_TIME) {
         eShip3Health[0] = level + 2;
         eShip5Health[3] = level + 2;
         ViewSetxy(eShip3[0], 33, -94);
         ViewSetxy(eShip5[3], 193, -94);
-    } else if (shipMoveCounter == 24 * SpawnTime) {
+    } else if (shipMoveCounter == 24 * SPAWN_TIME) {
         eShip6Health[1] = level + 2;
         eShip4Health[7] = level + 2;
         eShip6Health[2] = level + 2;
         ViewSetxy(eShip6[1], 0, -94);
         ViewSetxy(eShip4[7], 113, -94);
         ViewSetxy(eShip6[2], 226, -94);
-    } else if (shipMoveCounter == 25 * SpawnTime) {
+    } else if (shipMoveCounter == 25 * SPAWN_TIME) {
         eShip4Health[8] = level + 2;
         eShip5Health[4] = level + 2;
         eShip1Health[2] = level + 2;
         ViewSetxy(eShip4[8], 0, -94);
         ViewSetxy(eShip5[4], 113, -94);
         ViewSetxy(eShip1[2], 226, -94);
-    } else if (shipMoveCounter == 26 * SpawnTime) {
+    } else if (shipMoveCounter == 26 * SPAWN_TIME) {
         eShip6Health[3] = level + 2;
         eShip4Health[9] = level + 2;
         eShip6Health[4] = level + 2;
         ViewSetxy(eShip6[3], 0, -94);
         ViewSetxy(eShip4[9], 113, -94);
         ViewSetxy(eShip6[4], 226, -94);
-    } else if (shipMoveCounter == 27 * SpawnTime) {
+    } else if (shipMoveCounter == 27 * SPAWN_TIME) {
         eShip4Health[0] = level + 2;
         eShip5Health[0] = level + 2;
         ViewSetxy(eShip4[0], 33, -94);
         ViewSetxy(eShip5[0], 193, -94);
-    } else if (shipMoveCounter == 28 * SpawnTime) {
+    } else if (shipMoveCounter == 28 * SPAWN_TIME) {
         eShip1Health[2] = level + 2;
         eShip6Health[0] = level + 2;
         ViewSetxy(eShip1[2], 33, -94);
         ViewSetxy(eShip6[0], 193, -94);
-    } else if (shipMoveCounter == 29 * SpawnTime) {
+    } else if (shipMoveCounter == 29 * SPAWN_TIME) {
         eShip5Health[1] = level + 2;
         eShip3Health[1] = level + 2;
         ViewSetxy(eShip5[1], 33, -94);
         ViewSetxy(eShip3[1], 193, -94);
-    } else if (shipMoveCounter == 30 * SpawnTime) {
+    } else if (shipMoveCounter == 30 * SPAWN_TIME) {
         if (CurrentScreen != ScreenStoryBattle2) {
             eShip9Health = level + 24;
             ViewSetxy(eShip9, 89, -240);
         }
-    } else if (shipMoveCounter == 31 * SpawnTime && CurrentScreen == ScreenStoryBattle2) {
+    } else if (shipMoveCounter == 31 * SPAWN_TIME && CurrentScreen == ScreenStoryBattle2) {
         CurrentScreen = ScreenStory3a1;
         ScreenSwitch();
     }
 }
 void SetThree() {
-    if (shipMoveCounter == 1 * SpawnTime) {
+    if (shipMoveCounter == 1 * SPAWN_TIME) {
         eShip6Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip6[0], 33, -94);
         ViewSetxy(eShip2[0], 193, -94);
-    } else if (shipMoveCounter == 2 * SpawnTime) {
+    } else if (shipMoveCounter == 2 * SPAWN_TIME) {
         eShip3Health[0] = level + 2;
         eShip5Health[0] = level + 2;
         ViewSetxy(eShip3[0], 33, -94);
         ViewSetxy(eShip5[0], 193, -94);
-    } else if (shipMoveCounter == 3 * SpawnTime) {
+    } else if (shipMoveCounter == 3 * SPAWN_TIME) {
         eShip1Health[0] = level + 2;
         eShip4Health[0] = level + 2;
         eShip4Health[1] = level + 2;
         ViewSetxy(eShip1[0], 0, -94);
         ViewSetxy(eShip4[0], 113, -94);
         ViewSetxy(eShip4[1], 226, -94);
-    } else if (shipMoveCounter == 4 * SpawnTime) {
+    } else if (shipMoveCounter == 4 * SPAWN_TIME) {
         eShip1Health[1] = level + 2;
         eShip3Health[1] = level + 2;
         eShip4Health[2] = level + 2;
         ViewSetxy(eShip1[1], 0, -94);
         ViewSetxy(eShip3[1], 113, -94);
         ViewSetxy(eShip4[2], 226, -94);
-    } else if (shipMoveCounter == 5 * SpawnTime) {
+    } else if (shipMoveCounter == 5 * SPAWN_TIME) {
         eShip6Health[1] = level + 2;
         ViewSetxy(eShip6[1], 113, -94);
-    } else if (shipMoveCounter == 6 * SpawnTime) {
+    } else if (shipMoveCounter == 6 * SPAWN_TIME) {
         eShip3Health[2] = level + 2;
         eShip1Health[2] = level + 2;
         ViewSetxy(eShip3[2], 33, -94);
         ViewSetxy(eShip1[2], 193, -94);
-    } else if (shipMoveCounter == 7 * SpawnTime) {
+    } else if (shipMoveCounter == 7 * SPAWN_TIME) {
         eShip2Health[1] = level + 2;
         eShip5Health[1] = level + 2;
         ViewSetxy(eShip2[1], 33, -94);
         ViewSetxy(eShip5[1], 193, -94);
-    } else if (shipMoveCounter == 8 * SpawnTime) {
+    } else if (shipMoveCounter == 8 * SPAWN_TIME) {
         eShip6Health[2] = level + 2;
         eShip2Health[2] = level + 2;
         eShip5Health[2] = level + 2;
         ViewSetxy(eShip6[2], 0, -94);
         ViewSetxy(eShip2[2], 113, -94);
         ViewSetxy(eShip5[2], 226, -94);
-    } else if (shipMoveCounter == 9 * SpawnTime) {
+    } else if (shipMoveCounter == 9 * SPAWN_TIME) {
         eShip1Health[3] = level + 2;
         eShip4Health[3] = level + 2;
         eShip2Health[3] = level + 2;
         ViewSetxy(eShip1[3], 0, -94);
         ViewSetxy(eShip4[3], 113, -94);
         ViewSetxy(eShip2[3], 226, -94);
-    } else if (shipMoveCounter == 10 * SpawnTime) {
+    } else if (shipMoveCounter == 10 * SPAWN_TIME) {
         eShip3Health[3] = level + 2;
         eShip1Health[4] = level + 2;
         eShip5Health[3] = level + 2;
         ViewSetxy(eShip3[3], 0, -94);
         ViewSetxy(eShip1[4], 113, -94);
         ViewSetxy(eShip5[3], 226, -94);
-    } else if (shipMoveCounter == 11 * SpawnTime) {
+    } else if (shipMoveCounter == 11 * SPAWN_TIME) {
         eShip5Health[4] = level + 2;
         eShip2Health[4] = level + 2;
         eShip4Health[4] = level + 2;
         ViewSetxy(eShip5[4], 0, -94);
         ViewSetxy(eShip2[4], 113, -94);
         ViewSetxy(eShip4[4], 226, -94);
-    } else if (shipMoveCounter == 12 * SpawnTime) {
+    } else if (shipMoveCounter == 12 * SPAWN_TIME) {
         eShip6Health[3] = level + 2;
         eShip3Health[4] = level + 2;
         ViewSetxy(eShip6[3], 33, -94);
         ViewSetxy(eShip3[4], 193, -94);
-    } else if (shipMoveCounter == 13 * SpawnTime) {
+    } else if (shipMoveCounter == 13 * SPAWN_TIME) {
         eShip1Health[5] = level + 2;
         eShip3Health[5] = level + 2;
         ViewSetxy(eShip1[5], 33, -94);
         ViewSetxy(eShip3[5], 193, -94);
-    } else if (shipMoveCounter == 14 * SpawnTime) {
+    } else if (shipMoveCounter == 14 * SPAWN_TIME) {
         eShip5Health[0] = level + 2;
         eShip6Health[4] = level + 2;
         eShip5Health[1] = level + 2;
         ViewSetxy(eShip5[0], 0, -94);
         ViewSetxy(eShip6[4], 113, -94);
         ViewSetxy(eShip5[1], 226, -94);
-    } else if (shipMoveCounter == 15 * SpawnTime) {
+    } else if (shipMoveCounter == 15 * SPAWN_TIME) {
         eShip3Health[6] = level + 2;
         eShip4Health[5] = level + 2;
         eShip2Health[5] = level + 2;
         ViewSetxy(eShip3[6], 0, -94);
         ViewSetxy(eShip4[5], 113, -94);
         ViewSetxy(eShip2[5], 226, -94);
-    } else if (shipMoveCounter == 16 * SpawnTime) {
+    } else if (shipMoveCounter == 16 * SPAWN_TIME) {
         eShip6Health[0] = level + 2;
         eShip4Health[6] = level + 2;
         eShip6Health[1] = level + 2;
         ViewSetxy(eShip6[0], 0, -94);
         ViewSetxy(eShip4[6], 113, -94);
         ViewSetxy(eShip6[1], 226, -94);
-    } else if (shipMoveCounter == 17 * SpawnTime) {
+    } else if (shipMoveCounter == 17 * SPAWN_TIME) {
         eShip7Health[0] = level + 2;
         ViewSetxy(eShip7[0], 113, -94);
-    } else if (shipMoveCounter == 18 * SpawnTime) {
+    } else if (shipMoveCounter == 18 * SPAWN_TIME) {
         eShip7Health[1] = level + 2;
         eShip7Health[2] = level + 2;
         ViewSetxy(eShip7[1], 33, -94);
         ViewSetxy(eShip7[2], 193, -94);
-    } else if (shipMoveCounter == 19 * SpawnTime) {
+    } else if (shipMoveCounter == 19 * SPAWN_TIME) {
         eShip5Health[2] = level + 2;
         eShip7Health[3] = level + 2;
         eShip4Health[7] = level + 2;
         ViewSetxy(eShip5[2], 0, -94);
         ViewSetxy(eShip7[3], 113, -94);
         ViewSetxy(eShip4[7], 226, -94);
-    } else if (shipMoveCounter == 20 * SpawnTime) {
+    } else if (shipMoveCounter == 20 * SPAWN_TIME) {
         eShip3Health[7] = level + 2;
         eShip5Health[3] = level + 2;
         eShip2Health[6] = level + 2;
         ViewSetxy(eShip3[7], 0, -94);
         ViewSetxy(eShip5[3], 113, -94);
         ViewSetxy(eShip2[6], 226, -94);
-    } else if (shipMoveCounter == 21 * SpawnTime) {
+    } else if (shipMoveCounter == 21 * SPAWN_TIME) {
         eShip5Health[4] = level + 2;
         eShip7Health[4] = level + 2;
         eShip4Health[8] = level + 2;
         ViewSetxy(eShip5[4], 0, -94);
         ViewSetxy(eShip7[4], 113, -94);
         ViewSetxy(eShip4[8], 226, -94);
-    } else if (shipMoveCounter == 22 * SpawnTime) {
+    } else if (shipMoveCounter == 22 * SPAWN_TIME) {
         eShip6Health[3] = level + 2;
         eShip1Health[6] = level + 2;
         eShip3Health[8] = level + 2;
         ViewSetxy(eShip6[3], 0, -94);
         ViewSetxy(eShip1[6], 113, -94);
         ViewSetxy(eShip3[8], 226, -94);
-    } else if (shipMoveCounter == 23 * SpawnTime) {
+    } else if (shipMoveCounter == 23 * SPAWN_TIME) {
         eShip3Health[9] = level + 2;
         eShip4Health[9] = level + 2;
         ViewSetxy(eShip3[9], 33, -94);
         ViewSetxy(eShip4[9], 193, -94);
-    } else if (shipMoveCounter == 24 * SpawnTime) {
+    } else if (shipMoveCounter == 24 * SPAWN_TIME) {
         eShip7Health[0] = level + 2;
         eShip6Health[4] = level + 2;
         ViewSetxy(eShip7[0], 33, -94);
         ViewSetxy(eShip6[4], 193, -94);
-    } else if (shipMoveCounter == 25 * SpawnTime) {
+    } else if (shipMoveCounter == 25 * SPAWN_TIME) {
         eShip6Health[0] = level + 2;
         ViewSetxy(eShip6[0], 113, -94);
-    } else if (shipMoveCounter == 26 * SpawnTime) {
+    } else if (shipMoveCounter == 26 * SPAWN_TIME) {
         eShip2Health[7] = level + 2;
         eShip1Health[7] = level + 2;
         ViewSetxy(eShip2[7], 33, -94);
         ViewSetxy(eShip1[7], 193, -94);
-    } else if (shipMoveCounter == 27 * SpawnTime) {
+    } else if (shipMoveCounter == 27 * SPAWN_TIME) {
         eShip6Health[1] = level + 2;
         eShip7Health[1] = level + 2;
         ViewSetxy(eShip6[1], 33, -94);
         ViewSetxy(eShip7[1], 193, -94);
-    } else if (shipMoveCounter == 28 * SpawnTime) {
+    } else if (shipMoveCounter == 28 * SPAWN_TIME) {
         eShip3Health[1] = level + 2;
         eShip1Health[8] = level + 2;
         eShip2Health[8] = level + 2;
         ViewSetxy(eShip3[1], 0, -94);
         ViewSetxy(eShip1[8], 113, -94);
         ViewSetxy(eShip2[8], 226, -94);
-    } else if (shipMoveCounter == 29 * SpawnTime) {
+    } else if (shipMoveCounter == 29 * SPAWN_TIME) {
         eShip5Health[0] = level + 2;
         eShip7Health[2] = level + 2;
         ViewSetxy(eShip5[0], 33, -94);
         ViewSetxy(eShip7[2], 193, -94);
-    } else if (shipMoveCounter == 30 * SpawnTime) {
+    } else if (shipMoveCounter == 30 * SPAWN_TIME) {
         eShip9Health = level + 24;
         ViewSetxy(eShip9, 89, -240);
     }
 }
 void SetFour() {
-    if (shipMoveCounter == 1 * SpawnTime) {
+    if (shipMoveCounter == 1 * SPAWN_TIME) {
         eShip1Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip1[0], 33, -94);
         ViewSetxy(eShip2[0], 193, -94);
-    } else if (shipMoveCounter == 2 * SpawnTime) {
+    } else if (shipMoveCounter == 2 * SPAWN_TIME) {
         eShip6Health[0] = level + 2;
         eShip3Health[0] = level + 2;
         ViewSetxy(eShip6[0], 33, -94);
         ViewSetxy(eShip3[0], 193, -94);
-    } else if (shipMoveCounter == 3 * SpawnTime) {
+    } else if (shipMoveCounter == 3 * SPAWN_TIME) {
         eShip4Health[0] = level + 2;
         eShip5Health[0] = level + 2;
         eShip4Health[1] = level + 2;
         ViewSetxy(eShip4[0], 0, -94);
         ViewSetxy(eShip5[0], 113, -94);
         ViewSetxy(eShip4[1], 226, -94);
-    } else if (shipMoveCounter == 4 * SpawnTime) {
+    } else if (shipMoveCounter == 4 * SPAWN_TIME) {
         eShip1Health[1] = level + 2;
         eShip7Health[0] = level + 2;
         eShip2Health[1] = level + 2;
         ViewSetxy(eShip1[1], 0, -94);
         ViewSetxy(eShip7[0], 113, -94);
         ViewSetxy(eShip2[1], 226, -94);
-    } else if (shipMoveCounter == 5 * SpawnTime) {
+    } else if (shipMoveCounter == 5 * SPAWN_TIME) {
         eShip5Health[1] = level + 2;
         eShip3Health[1] = level + 2;
         eShip4Health[2] = level + 2;
         ViewSetxy(eShip5[1], 0, -94);
         ViewSetxy(eShip3[1], 113, -94);
         ViewSetxy(eShip4[2], 226, -94);
-    } else if (shipMoveCounter == 6 * SpawnTime) {
+    } else if (shipMoveCounter == 6 * SPAWN_TIME) {
         eShip6Health[1] = level + 2;
         eShip7Health[1] = level + 2;
         ViewSetxy(eShip6[1], 33, -94);
         ViewSetxy(eShip7[1], 193, -94);
-    } else if (shipMoveCounter == 7 * SpawnTime) {
+    } else if (shipMoveCounter == 7 * SPAWN_TIME) {
         eShip6Health[2] = level + 2;
         ViewSetxy(eShip6[2], 113, -94);
-    } else if (shipMoveCounter == 8 * SpawnTime) {
+    } else if (shipMoveCounter == 8 * SPAWN_TIME) {
         eShip7Health[2] = level + 2;
         ViewSetxy(eShip7[2], 113, -94);
-    } else if (shipMoveCounter == 9 * SpawnTime) {
+    } else if (shipMoveCounter == 9 * SPAWN_TIME) {
         eShip2Health[2] = level + 2;
         eShip1Health[2] = level + 2;
         ViewSetxy(eShip2[2], 33, -94);
         ViewSetxy(eShip1[2], 193, -94);
-    } else if (shipMoveCounter == 10 * SpawnTime) {
+    } else if (shipMoveCounter == 10 * SPAWN_TIME) {
         eShip3Health[2] = level + 2;
         eShip5Health[2] = level + 2;
         ViewSetxy(eShip3[2], 33, -94);
         ViewSetxy(eShip5[2], 193, -94);
-    } else if (shipMoveCounter == 11 * SpawnTime) {
+    } else if (shipMoveCounter == 11 * SPAWN_TIME) {
         eShip6Health[3] = level + 2;
         eShip1Health[3] = level + 2;
         eShip7Health[3] = level + 2;
         ViewSetxy(eShip6[3], 0, -94);
         ViewSetxy(eShip1[3], 113, -94);
         ViewSetxy(eShip7[3], 226, -94);
-    } else if (shipMoveCounter == 12 * SpawnTime) {
+    } else if (shipMoveCounter == 12 * SPAWN_TIME) {
         eShip4Health[3] = level + 2;
         eShip7Health[4] = level + 2;
         eShip3Health[3] = level + 2;
         ViewSetxy(eShip4[3], 0, -94);
         ViewSetxy(eShip7[4], 113, -94);
         ViewSetxy(eShip3[3], 226, -94);
-    } else if (shipMoveCounter == 13 * SpawnTime) {
+    } else if (shipMoveCounter == 13 * SPAWN_TIME) {
         eShip1Health[4] = level + 2;
         eShip6Health[4] = level + 2;
         eShip2Health[3] = level + 2;
         ViewSetxy(eShip1[4], 0, -94);
         ViewSetxy(eShip6[4], 113, -94);
         ViewSetxy(eShip2[3], 226, -94);
-    } else if (shipMoveCounter == 14 * SpawnTime) {
+    } else if (shipMoveCounter == 14 * SPAWN_TIME) {
         eShip7Health[0] = level + 2;
         ViewSetxy(eShip7[0], 113, -94);
-    } else if (shipMoveCounter == 15 * SpawnTime) {
+    } else if (shipMoveCounter == 15 * SPAWN_TIME) {
         eShip4Health[4] = level + 2;
         eShip3Health[4] = level + 2;
         ViewSetxy(eShip4[4], 33, -94);
         ViewSetxy(eShip3[4], 193, -94);
-    } else if (shipMoveCounter == 16 * SpawnTime) {
+    } else if (shipMoveCounter == 16 * SPAWN_TIME) {
         eShip1Health[5] = level + 2;
         eShip2Health[4] = level + 2;
         ViewSetxy(eShip1[5], 33, -94);
         ViewSetxy(eShip2[4], 193, -94);
-    } else if (shipMoveCounter == 17 * SpawnTime) {
+    } else if (shipMoveCounter == 17 * SPAWN_TIME) {
         eShip5Health[3] = level + 2;
         eShip6Health[0] = level + 2;
         eShip5Health[4] = level + 2;
         ViewSetxy(eShip5[3], 0, -94);
         ViewSetxy(eShip6[0], 113, -94);
         ViewSetxy(eShip5[4], 226, -94);
-    } else if (shipMoveCounter == 18 * SpawnTime) {
+    } else if (shipMoveCounter == 18 * SPAWN_TIME) {
         eShip6Health[1] = level + 2;
         eShip7Health[1] = level + 2;
         eShip3Health[5] = level + 2;
         ViewSetxy(eShip6[1], 0, -94);
         ViewSetxy(eShip7[1], 113, -94);
         ViewSetxy(eShip3[5], 226, -94);
-    } else if (shipMoveCounter == 19 * SpawnTime) {
+    } else if (shipMoveCounter == 19 * SPAWN_TIME) {
         eShip1Health[6] = level + 2;
         eShip5Health[0] = level + 2;
         eShip2Health[5] = level + 2;
         ViewSetxy(eShip1[6], 0, -94);
         ViewSetxy(eShip5[0], 113, -94);
         ViewSetxy(eShip2[5], 226, -94);
-    } else if (shipMoveCounter == 20 * SpawnTime) {
+    } else if (shipMoveCounter == 20 * SPAWN_TIME) {
         eShip7Health[2] = level + 2;
         eShip4Health[5] = level + 2;
         eShip5Health[1] = level + 2;
         ViewSetxy(eShip7[2], 0, -94);
         ViewSetxy(eShip4[5], 113, -94);
         ViewSetxy(eShip5[6], 226, -94);
-    } else if (shipMoveCounter == 21 * SpawnTime) {
+    } else if (shipMoveCounter == 21 * SPAWN_TIME) {
         eShip8Health[0] = level + 2;
         ViewSetxy(eShip1[0], 113, -94);
-    } else if (shipMoveCounter == 22 * SpawnTime) {
+    } else if (shipMoveCounter == 22 * SPAWN_TIME) {
         eShip7Health[3] = level + 2;
         eShip8Health[1] = level + 2;
         ViewSetxy(eShip7[3], 33, -94);
         ViewSetxy(eShip8[1], 193, -94);
-    } else if (shipMoveCounter == 23 * SpawnTime) {
+    } else if (shipMoveCounter == 23 * SPAWN_TIME) {
         eShip1Health[7] = level + 2;
         eShip2Health[6] = level + 2;
         ViewSetxy(eShip1[7], 33, -94);
         ViewSetxy(eShip2[6], 193, -94);
-    } else if (shipMoveCounter == 24 * SpawnTime) {
+    } else if (shipMoveCounter == 24 * SPAWN_TIME) {
         eShip4Health[6] = level + 2;
         eShip3Health[6] = level + 2;
         ViewSetxy(eShip4[6], 33, -94);
         ViewSetxy(eShip3[6], 193, -94);
-    } else if (shipMoveCounter == 25 * SpawnTime) {
+    } else if (shipMoveCounter == 25 * SPAWN_TIME) {
         eShip7Health[4] = level + 2;
         eShip8Health[2] = level + 2;
         eShip4Health[7] = level + 2;
         ViewSetxy(eShip7[4], 0, -94);
         ViewSetxy(eShip8[2], 113, -94);
         ViewSetxy(eShip4[7], 226, -94);
-    } else if (shipMoveCounter == 26 * SpawnTime) {
+    } else if (shipMoveCounter == 26 * SPAWN_TIME) {
         eShip6Health[2] = level + 2;
         eShip2Health[7] = level + 2;
         eShip6Health[3] = level + 2;
         ViewSetxy(eShip6[2], 0, -94);
         ViewSetxy(eShip2[7], 113, -94);
         ViewSetxy(eShip6[3], 226, -94);
-    } else if (shipMoveCounter == 27 * SpawnTime) {
+    } else if (shipMoveCounter == 27 * SPAWN_TIME) {
         eShip1Health[8] = level + 2;
         eShip5Health[2] = level + 2;
         eShip1Health[9] = level + 2;
         ViewSetxy(eShip1[8], 0, -94);
         ViewSetxy(eShip5[2], 113, -94);
         ViewSetxy(eShip1[9], 226, -94);
-    } else if (shipMoveCounter == 28 * SpawnTime) {
+    } else if (shipMoveCounter == 28 * SPAWN_TIME) {
         eShip8Health[3] = level + 2;
         eShip3Health[7] = level + 2;
         eShip8Health[4] = level + 2;
         ViewSetxy(eShip8[3], 0, -94);
         ViewSetxy(eShip3[7], 113, -94);
         ViewSetxy(eShip8[4], 226, -94);
-    } else if (shipMoveCounter == 29 * SpawnTime) {
+    } else if (shipMoveCounter == 29 * SPAWN_TIME) {
         eShip5Health[3] = level + 2;
         eShip2Health[8] = level + 2;
         ViewSetxy(eShip5[3], 33, -94);
         ViewSetxy(eShip2[8], 193, -94);
-    } else if (shipMoveCounter == 30 * SpawnTime) {
+    } else if (shipMoveCounter == 30 * SPAWN_TIME) {
         if (CurrentScreen != ScreenStoryBattle5) {
             eShip9Health = level + 24;
             ViewSetxy(eShip9, 89, -240);
         }
-    } else if (shipMoveCounter == 31 * SpawnTime && CurrentScreen == ScreenStoryBattle5) {
+    } else if (shipMoveCounter == 31 * SPAWN_TIME && CurrentScreen == ScreenStoryBattle5) {
         CurrentScreen = ScreenStory6a1;
         ScreenSwitch();
     }
 }
 void SetFive() {
-    if (shipMoveCounter == 1 * SpawnTime) {
+    if (shipMoveCounter == 1 * SPAWN_TIME) {
         eShip6Health[0] = level + 2;
         ViewSetxy(eShip6[0], 113, -94);
-    } else if (shipMoveCounter == 2 * SpawnTime) {
+    } else if (shipMoveCounter == 2 * SPAWN_TIME) {
         eShip7Health[0] = level + 2;
         eShip2Health[0] = level + 2;
         ViewSetxy(eShip7[0], 33, -94);
         ViewSetxy(eShip2[0], 193, -94);
-    } else if (shipMoveCounter == 3 * SpawnTime) {
+    } else if (shipMoveCounter == 3 * SPAWN_TIME) {
         eShip1Health[0] = level + 2;
         eShip8Health[0] = level + 2;
         ViewSetxy(eShip1[0], 33, -94);
         ViewSetxy(eShip8[0], 193, -94);
-    } else if (shipMoveCounter == 4 * SpawnTime) {
+    } else if (shipMoveCounter == 4 * SPAWN_TIME) {
         eShip5Health[0] = level + 2;
         eShip6Health[1] = level + 2;
         eShip4Health[0] = level + 2;
         ViewSetxy(eShip5[0], 0, -94);
         ViewSetxy(eShip6[1], 113, -94);
         ViewSetxy(eShip4[0], 226, -94);
-    } else if (shipMoveCounter == 5 * SpawnTime) {
+    } else if (shipMoveCounter == 5 * SPAWN_TIME) {
         eShip3Health[0] = level + 2;
         eShip1Health[1] = level + 2;
         eShip7Health[1] = level + 2;
         ViewSetxy(eShip3[0], 0, -94);
         ViewSetxy(eShip1[1], 113, -94);
         ViewSetxy(eShip7[1], 226, -94);
-    } else if (shipMoveCounter == 6 * SpawnTime) {
+    } else if (shipMoveCounter == 6 * SPAWN_TIME) {
         eShip7Health[2] = level + 2;
         eShip8Health[1] = level + 2;
         eShip6Health[2] = level + 2;
         ViewSetxy(eShip7[2], 0, -94);
         ViewSetxy(eShip8[1], 113, -94);
         ViewSetxy(eShip6[2], 226, -94);
-    } else if (shipMoveCounter == 7 * SpawnTime) {
+    } else if (shipMoveCounter == 7 * SPAWN_TIME) {
         eShip3Health[1] = level + 2;
         eShip1Health[2] = level + 2;
         eShip4Health[1] = level + 2;
         ViewSetxy(eShip3[1], 0, -94);
         ViewSetxy(eShip1[2], 113, -94);
         ViewSetxy(eShip4[1], 226, -94);
-    } else if (shipMoveCounter == 8 * SpawnTime) {
+    } else if (shipMoveCounter == 8 * SPAWN_TIME) {
         eShip2Health[1] = level + 2;
         eShip7Health[3] = level + 2;
         ViewSetxy(eShip2[1], 33, -94);
         ViewSetxy(eShip7[3], 193, -94);
-    } else if (shipMoveCounter == 9 * SpawnTime) {
+    } else if (shipMoveCounter == 9 * SPAWN_TIME) {
         eShip6Health[3] = level + 2;
         eShip3Health[2] = level + 2;
         ViewSetxy(eShip6[3], 33, -94);
         ViewSetxy(eShip3[2], 193, -94);
-    } else if (shipMoveCounter == 10 * SpawnTime) {
+    } else if (shipMoveCounter == 10 * SPAWN_TIME) {
         eShip6Health[4] = level + 2;
         ViewSetxy(eShip6[4], 113, -94);
-    } else if (shipMoveCounter == 11 * SpawnTime) {
+    } else if (shipMoveCounter == 11 * SPAWN_TIME) {
         eShip8Health[2] = level + 2;
         ViewSetxy(eShip8[2], 113, -94);
-    } else if (shipMoveCounter == 12 * SpawnTime) {
+    } else if (shipMoveCounter == 12 * SPAWN_TIME) {
         eShip5Health[1] = level + 2;
         eShip1Health[3] = level + 2;
         eShip6Health[0] = level + 2;
         ViewSetxy(eShip5[1], 0, -94);
         ViewSetxy(eShip1[3], 113, -94);
         ViewSetxy(eShip6[0], 226, -94);
-    } else if (shipMoveCounter == 13 * SpawnTime) {
+    } else if (shipMoveCounter == 13 * SPAWN_TIME) {
         eShip4Health[2] = level + 2;
         eShip3Health[3] = level + 2;
         eShip5Health[2] = level + 2;
         ViewSetxy(eShip4[2], 0, -94);
         ViewSetxy(eShip3[3], 113, -94);
         ViewSetxy(eShip5[2], 226, -94);
-    } else if (shipMoveCounter == 14 * SpawnTime) {
+    } else if (shipMoveCounter == 14 * SPAWN_TIME) {
         eShip2Health[2] = level + 2;
         eShip6Health[1] = level + 2;
         eShip3Health[4] = level + 2;
         ViewSetxy(eShip2[2], 0, -94);
         ViewSetxy(eShip6[1], 113, -94);
         ViewSetxy(eShip3[4], 226, -94);
-    } else if (shipMoveCounter == 15 * SpawnTime) {
+    } else if (shipMoveCounter == 15 * SPAWN_TIME) {
         eShip8Health[3] = level + 2;
         eShip4Health[3] = level + 2;
         ViewSetxy(eShip8[3], 33, -94);
         ViewSetxy(eShip4[3], 193, -94);
-    } else if (shipMoveCounter == 16 * SpawnTime) {
+    } else if (shipMoveCounter == 16 * SPAWN_TIME) {
         eShip3Health[5] = level + 2;
         eShip6Health[2] = level + 2;
         ViewSetxy(eShip3[5], 33, -94);
         ViewSetxy(eShip6[2], 193, -94);
-    } else if (shipMoveCounter == 17 * SpawnTime) {
+    } else if (shipMoveCounter == 17 * SPAWN_TIME) {
         eShip8Health[4] = level + 2;
         eShip5Health[3] = level + 2;
         eShip6Health[3] = level + 2;
         ViewSetxy(eShip8[4], 0, -94);
         ViewSetxy(eShip5[3], 113, -94);
         ViewSetxy(eShip6[3], 226, -94);
-    } else if (shipMoveCounter == 18 * SpawnTime) {
+    } else if (shipMoveCounter == 18 * SPAWN_TIME) {
         eShip7Health[4] = level + 2;
         ViewSetxy(eShip7[4], 113, -94);
-    } else if (shipMoveCounter == 19 * SpawnTime) {
+    } else if (shipMoveCounter == 19 * SPAWN_TIME) {
         eShip8Health[0] = level + 2;
         ViewSetxy(eShip8[0], 113, -94);
-    } else if (shipMoveCounter == 20 * SpawnTime) {
+    } else if (shipMoveCounter == 20 * SPAWN_TIME) {
         eShip5Health[4] = level + 2;
         eShip6Health[4] = level + 2;
         ViewSetxy(eShip5[4], 33, -94);
         ViewSetxy(eShip6[4], 193, -94);
-    } else if (shipMoveCounter == 21 * SpawnTime) {
+    } else if (shipMoveCounter == 21 * SPAWN_TIME) {
         eShip8Health[1] = level + 2;
         eShip6Health[0] = level + 2;
         eShip7Health[0] = level + 2;
         ViewSetxy(eShip8[1], 0, -94);
         ViewSetxy(eShip6[0], 113, -94);
         ViewSetxy(eShip7[0], 226, -94);
-    } else if (shipMoveCounter == 22 * SpawnTime) {
+    } else if (shipMoveCounter == 22 * SPAWN_TIME) {
         eShip2Health[3] = level + 2;
         eShip4Health[4] = level + 2;
         eShip3Health[6] = level + 2;
         ViewSetxy(eShip2[3], 0, -94);
         ViewSetxy(eShip4[4], 113, -94);
         ViewSetxy(eShip3[6], 226, -94);
-    } else if (shipMoveCounter == 23 * SpawnTime) {
+    } else if (shipMoveCounter == 23 * SPAWN_TIME) {
         eShip6Health[1] = level + 2;
         eShip2Health[4] = level + 2;
         eShip5Health[0] = level + 2;
         ViewSetxy(eShip6[1], 0, -94);
         ViewSetxy(eShip2[4], 113, -94);
         ViewSetxy(eShip5[0], 226, -94);
-    } else if (shipMoveCounter == 24 * SpawnTime) {
+    } else if (shipMoveCounter == 24 * SPAWN_TIME) {
         eShip8Health[2] = level + 2;
         eShip7Health[1] = level + 2;
         eShip6Health[2] = level + 2;
         ViewSetxy(eShip8[2], 0, -94);
         ViewSetxy(eShip7[1], 113, -94);
         ViewSetxy(eShip6[2], 226, -94);
-    } else if (shipMoveCounter == 25 * SpawnTime) {
+    } else if (shipMoveCounter == 25 * SPAWN_TIME) {
         eShip2Health[5] = level + 2;
         eShip7Health[2] = level + 2;
         eShip3Health[7] = level + 2;
         ViewSetxy(eShip2[5], 0, -94);
         ViewSetxy(eShip7[2], 113, -94);
         ViewSetxy(eShip3[7], 226, -94);
-    } else if (shipMoveCounter == 26 * SpawnTime) {
+    } else if (shipMoveCounter == 26 * SPAWN_TIME) {
         eShip8Health[3] = level + 2;
         eShip1Health[4] = level + 2;
         ViewSetxy(eShip8[3], 33, -94);
         ViewSetxy(eShip1[4], 193, -94);
-    } else if (shipMoveCounter == 27 * SpawnTime) {
+    } else if (shipMoveCounter == 27 * SPAWN_TIME) {
         eShip2Health[6] = level + 2;
         eShip5Health[1] = level + 2;
         eShip3Health[8] = level + 2;
         ViewSetxy(eShip2[6], 0, -94);
         ViewSetxy(eShip5[1], 113, -94);
         ViewSetxy(eShip3[8], 226, -94);
-    } else if (shipMoveCounter == 28 * SpawnTime) {
+    } else if (shipMoveCounter == 28 * SPAWN_TIME) {
         eShip7Health[3] = level + 2;
         eShip5Health[2] = level + 2;
         eShip6Health[3] = level + 2;
         ViewSetxy(eShip7[3], 0, -94);
         ViewSetxy(eShip5[2], 113, -94);
         ViewSetxy(eShip6[3], 226, -94);
-    } else if (shipMoveCounter == 29 * SpawnTime) {
+    } else if (shipMoveCounter == 29 * SPAWN_TIME) {
         eShip6Health[3] = level + 2;
         eShip8Health[4] = level + 2;
         ViewSetxy(eShip6[3], 33, -94);
         ViewSetxy(eShip8[4], 193, -94);
-    } else if (shipMoveCounter == 30 * SpawnTime) {
+    } else if (shipMoveCounter == 30 * SPAWN_TIME) {
         eShip10Health = level + 49;
         ViewSetxy(eShip10, 85, -240);
     }
@@ -3151,35 +3162,35 @@ void EnemyShipMove() {
     eShipY10 = ViewGety(eShip10);
     for (int i = 0; i < 10; i++) {
         if (eShipY1[i] < 600) {
-            ViewSetxy(eShip1[i], eShipX1[i], eShipY1[i] + EnemyFlySpeed);
+            ViewSetxy(eShip1[i], eShipX1[i], eShipY1[i] + ENEMY_FLY_SPEED);
         }
         if (eShipY2[i] < 600) {
-            ViewSetxy(eShip2[i], eShipX2[i], eShipY2[i] + EnemyFlySpeed);
+            ViewSetxy(eShip2[i], eShipX2[i], eShipY2[i] + ENEMY_FLY_SPEED);
         }
         if (eShipY3[i] < 600) {
-            ViewSetxy(eShip3[i], eShipX3[i], eShipY3[i] + EnemyFlySpeed);
+            ViewSetxy(eShip3[i], eShipX3[i], eShipY3[i] + ENEMY_FLY_SPEED);
         }
         if (eShipY4[i] < 600) {
-            ViewSetxy(eShip4[i], eShipX4[i], eShipY4[i] + EnemyFlySpeed);
+            ViewSetxy(eShip4[i], eShipX4[i], eShipY4[i] + ENEMY_FLY_SPEED);
         }
     }
     for (int i = 0; i < 5; i++) {
         if (eShipY5[i] < 600) {
-            ViewSetxy(eShip5[i], eShipX5[i], eShipY5[i] + EnemyFlySpeed);
+            ViewSetxy(eShip5[i], eShipX5[i], eShipY5[i] + ENEMY_FLY_SPEED);
         }
         if (eShipY6[i] < 600) {
-            ViewSetxy(eShip6[i], eShipX6[i], eShipY6[i] + EnemyFlySpeed);
+            ViewSetxy(eShip6[i], eShipX6[i], eShipY6[i] + ENEMY_FLY_SPEED);
         }
         if (eShipY7[i] < 600) {
-            ViewSetxy(eShip7[i], eShipX7[i], eShipY7[i] + EnemyFlySpeed);
+            ViewSetxy(eShip7[i], eShipX7[i], eShipY7[i] + ENEMY_FLY_SPEED);
         }
         if (eShipY8[i] < 600) {
-            ViewSetxy(eShip8[i], eShipX8[i], eShipY8[i] + EnemyFlySpeed);
+            ViewSetxy(eShip8[i], eShipX8[i], eShipY8[i] + ENEMY_FLY_SPEED);
         }
     }
     //ship 9
     if (eShipY9 < 40) {
-        ViewSetxy(eShip9, eShipX9, eShipY9 + EnemyFlySpeed);
+        ViewSetxy(eShip9, eShipX9, eShipY9 + ENEMY_FLY_SPEED);
     } else if (eShipY9 >= 40 && eShipY9 < 600) {
         const int factor = (goRight) ? (1) : (-1);
         ViewSetxy(eShip9, eShipX9 + factor, eShipY9);
@@ -3191,7 +3202,7 @@ void EnemyShipMove() {
     }
     //ship 10
     if (eShipY10 < 40) {
-        ViewSetxy(eShip10, eShipX10, eShipY10 + EnemyFlySpeed);
+        ViewSetxy(eShip10, eShipX10, eShipY10 + ENEMY_FLY_SPEED);
     } else if (eShipY10 >= 40 && eShipY10 < 600) {
         const int factor = (goRight) ? (1) : (-1);
         ViewSetxy(eShip10, eShipX10 + factor, eShipY10);
@@ -3230,45 +3241,45 @@ void DoEnemyShipMove() {
 void DoEnemyShipShoot() {
     int ex, ey, ex2, ey2, ex3, ey3;
     for (int i = 0; i < 5; i++) {
-        if (bulletMoveCounter == (i + 1) * EnemyShootCooldownSpeed) {
+        if (bulletMoveCounter == (i + 1) * ENEMY_SHOOT_COOLDOWN_SPEED) {
             //ship 1-4
             for (int j = 0; j < 10; j++) {
-                ViewSetxy(e1Bullet1[10 * i + j], eShipX1[j] + e1BulletXOffset, eShipY1[j] + e1BulletYOffset);
-                ViewSetxy(e2Bullet1[10 * i + j], eShipX2[j] + e2BulletXOffset, eShipY2[j] + e2BulletYOffset);
-                ViewSetxy(e3Bullet1[10 * i + j], eShipX3[j] + e3BulletXOffset, eShipY3[j] + e3BulletYOffset);
-                ViewSetxy(e4Bullet1[10 * i + j], eShipX4[j] + e4BulletXOffset, eShipY4[j] + e4BulletYOffset);
+                ViewSetxy(e1Bullet1[10 * i + j], eShipX1[j] + 43, eShipY1[j] + 83);
+                ViewSetxy(e2Bullet1[10 * i + j], eShipX2[j] + 43, eShipY2[j] + 94);
+                ViewSetxy(e3Bullet1[10 * i + j], eShipX3[j] + 43, eShipY3[j] + 88);
+                ViewSetxy(e4Bullet1[10 * i + j], eShipX4[j] + 43, eShipY4[j] + 94);
             }
             //ship 5-8
             for (int j = 0; j < 5; j++) {
-                ViewSetxy(e5Bullet1[5 * i + j], eShipX5[j] + e5BulletXOffset, eShipY5[j] + e5BulletYOffset);
-                ViewSetxy(e5Bullet3[5 * i + j], eShipX5[j] + e5BulletXOffset3, eShipY5[j] + e5BulletYOffset3);
-                ViewSetxy(e6Bullet1[5 * i + j], eShipX6[j] + e6BulletXOffset, eShipY6[j] + e6BulletYOffset);
-                ViewSetxy(e6Bullet3[5 * i + j], eShipX6[j] + e6BulletXOffset3, eShipY6[j] + e6BulletYOffset3);
-                ViewSetxy(e7Bullet2[5 * i + j], eShipX7[j] + e7BulletXOffset2, eShipY7[j] + e7BulletYOffset2);
-                ViewSetxy(e8Bullet1[5 * i + j], eShipX8[j] + e8BulletXOffset, eShipY8[j] + e8BulletYOffset);
-                ViewSetxy(e8Bullet2[5 * i + j], eShipX8[j] + e8BulletXOffset2, eShipY8[j] + e8BulletYOffset2);
-                ViewSetxy(e8Bullet3[5 * i + j], eShipX8[j] + e8BulletXOffset3, eShipY8[j] + e8BulletYOffset3);
+                ViewSetxy(e5Bullet1[5 * i + j], eShipX5[j] + 31, eShipY5[j] + 71);
+                ViewSetxy(e5Bullet3[5 * i + j], eShipX5[j] + 54, eShipY5[j] + 71);
+                ViewSetxy(e6Bullet1[5 * i + j], eShipX6[j] + 15, eShipY6[j] + 53);
+                ViewSetxy(e6Bullet3[5 * i + j], eShipX6[j] + 68, eShipY6[j] + 53);
+                ViewSetxy(e7Bullet2[5 * i + j], eShipX7[j] + 42, eShipY7[j] + 83);
+                ViewSetxy(e8Bullet1[5 * i + j], eShipX8[j] + 12, eShipY8[j] + 54);
+                ViewSetxy(e8Bullet2[5 * i + j], eShipX8[j] + 42, eShipY8[j] + 92);
+                ViewSetxy(e8Bullet3[5 * i + j], eShipX8[j] + 74, eShipY8[j] + 54);
             }
             //ship 9
-            ViewSetxy(e9Bullet1[i], eShipX9 + e9BulletXOffset, eShipY9 + e9BulletYOffset);
-            ViewSetxy(e9Bullet2[i], eShipX9 + e9BulletXOffset2, eShipY9 + e9BulletYOffset2);
-            ViewSetxy(e9Bullet3[i], eShipX9 + e9BulletXOffset3, eShipY9 + e9BulletYOffset3);
+            ViewSetxy(e9Bullet1[i], eShipX9 + 3, eShipY9 + 83);
+            ViewSetxy(e9Bullet2[i], eShipX9 + 66, eShipY9 + 230);
+            ViewSetxy(e9Bullet3[i], eShipX9 + 130, eShipY9 + 83);
             //ship 10
-            ViewSetxy(e10Bullet1[i], eShipX10 + e10BulletXOffset, eShipY10 + e10BulletYOffset);
-            ViewSetxy(e10Bullet2[i], eShipX10 + e10BulletXOffset2, eShipY10 + e10BulletYOffset2);
-            ViewSetxy(e10Bullet3[i], eShipX10 + e10BulletXOffset3, eShipY10 + e10BulletYOffset3);
+            ViewSetxy(e10Bullet1[i], eShipX10 + 13, eShipY10 + 83);
+            ViewSetxy(e10Bullet2[i], eShipX10 + 69, eShipY10 + 233);
+            ViewSetxy(e10Bullet3[i], eShipX10 + 129, eShipY10 + 83);
         }
     }
-    if (bulletMoveCounter >= 5 * EnemyShootCooldownSpeed) {
+    if (bulletMoveCounter >= 5 * ENEMY_SHOOT_COOLDOWN_SPEED) {
         bulletMoveCounter = 0;
     }
-    if (bulletMoveCounter % EnemyShootCooldownSpeed != 0) {
+    if (bulletMoveCounter % ENEMY_SHOOT_COOLDOWN_SPEED != 0) {
         //1
         for (int i = 0; i < 50; i++) {
             ex = ViewGetx(e1Bullet1[i]);
             ey = ViewGety(e1Bullet1[i]);
             if (ey < 600) {
-                ViewSetxy(e1Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e1Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3281,7 +3292,7 @@ void DoEnemyShipShoot() {
             ex = ViewGetx(e2Bullet1[i]);
             ey = ViewGety(e2Bullet1[i]);
             if (ey < 600) {
-                ViewSetxy(e2Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e2Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3294,7 +3305,7 @@ void DoEnemyShipShoot() {
             ex = ViewGetx(e3Bullet1[i]);
             ey = ViewGety(e3Bullet1[i]);
             if (ey < 600) {
-                ViewSetxy(e3Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e3Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3307,7 +3318,7 @@ void DoEnemyShipShoot() {
             ex = ViewGetx(e4Bullet1[i]);
             ey = ViewGety(e4Bullet1[i]);
             if (ey < 600) {
-                ViewSetxy(e4Bullet1[i], ex, ey + EnemyBulletSpeed);
+                ViewSetxy(e4Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3322,8 +3333,8 @@ void DoEnemyShipShoot() {
             ex3 = ViewGetx(e5Bullet3[i]);
             ey3 = ViewGety(e5Bullet3[i]);
             if (ey < 600 || ey3 < 600) {
-                ViewSetxy(e5Bullet1[i], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e5Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e5Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
+                ViewSetxy(e5Bullet3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3343,8 +3354,8 @@ void DoEnemyShipShoot() {
             ex3 = ViewGetx(e6Bullet3[i]);
             ey3 = ViewGety(e6Bullet3[i]);
             if (ey < 600 || ey3 < 600) {
-                ViewSetxy(e6Bullet1[i], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e6Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e6Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
+                ViewSetxy(e6Bullet3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3362,7 +3373,7 @@ void DoEnemyShipShoot() {
             ex2 = ViewGetx(e7Bullet2[i]);
             ey2 = ViewGety(e7Bullet2[i]);
             if (ey2 < 600) {
-                ViewSetxy(e7Bullet2[i], ex2, ey2 + EnemyBulletSpeed);
+                ViewSetxy(e7Bullet2[i], ex2, ey2 + ENEMY_BULLET_SPEED);
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
@@ -3379,9 +3390,9 @@ void DoEnemyShipShoot() {
             ex3 = ViewGetx(e8Bullet3[i]);
             ey3 = ViewGety(e8Bullet3[i]);
             if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(e8Bullet1[i], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e8Bullet2[i], ex2, ey2 + EnemyBulletSpeed);
-                ViewSetxy(e8Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e8Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
+                ViewSetxy(e8Bullet2[i], ex2, ey2 + ENEMY_BULLET_SPEED);
+                ViewSetxy(e8Bullet3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3408,9 +3419,9 @@ void DoEnemyShipShoot() {
             ex3 = ViewGetx(e9Bullet3[i]);
             ey3 = ViewGety(e9Bullet3[i]);
             if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(e9Bullet1[i], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e9Bullet2[i], ex2, ey2 + EnemyBulletSpeed);
-                ViewSetxy(e9Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e9Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
+                ViewSetxy(e9Bullet2[i], ex2, ey2 + ENEMY_BULLET_SPEED);
+                ViewSetxy(e9Bullet3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3437,9 +3448,9 @@ void DoEnemyShipShoot() {
             ex3 = ViewGetx(e10Bullet3[i]);
             ey3 = ViewGety(e10Bullet3[i]);
             if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(e10Bullet1[i], ex, ey + EnemyBulletSpeed);
-                ViewSetxy(e10Bullet2[i], ex2, ey2 + EnemyBulletSpeed);
-                ViewSetxy(e10Bullet3[i], ex3, ey3 + EnemyBulletSpeed);
+                ViewSetxy(e10Bullet1[i], ex, ey + ENEMY_BULLET_SPEED);
+                ViewSetxy(e10Bullet2[i], ex2, ey2 + ENEMY_BULLET_SPEED);
+                ViewSetxy(e10Bullet3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
@@ -3463,36 +3474,44 @@ bool ShipInAction(int ship) {
     bool ret = false;
     switch (ship) {
         case 1:
-            ret = eShip1Health[shipActionCounter] <= 0 && eShipY1[shipActionCounter] >= 0 && eShipX1[shipActionCounter] < 600
-                  && eShipY1[shipActionCounter] >= 0 && eShipX1[shipActionCounter] <= 320;
+            ret = eShip1Health[shipActionCounter] <= 0 && eShipY1[shipActionCounter] >= 0 
+				&& eShipX1[shipActionCounter] < 600 && eShipY1[shipActionCounter] >= 0 
+				&& eShipX1[shipActionCounter] <= 320;
             break;
         case 2:
-            ret = eShip2Health[shipActionCounter] <= 0 && eShipY2[shipActionCounter] >= 0 && eShipX2[shipActionCounter] < 600
-                  && eShipY2[shipActionCounter] >= 0 && eShipX2[shipActionCounter] <= 320;
+            ret = eShip2Health[shipActionCounter] <= 0 && eShipY2[shipActionCounter] >= 0 
+				&& eShipX2[shipActionCounter] < 600 && eShipY2[shipActionCounter] >= 0 
+				&& eShipX2[shipActionCounter] <= 320;
             break;
         case 3:
-            ret = eShip3Health[shipActionCounter] <= 0 && eShipY3[shipActionCounter] >= 0 && eShipX3[shipActionCounter] < 600
-                  && eShipY3[shipActionCounter] >= 0 && eShipX3[shipActionCounter] <= 320;
+            ret = eShip3Health[shipActionCounter] <= 0 && eShipY3[shipActionCounter] >= 0 
+				&& eShipX3[shipActionCounter] < 600 && eShipY3[shipActionCounter] >= 0 
+				&& eShipX3[shipActionCounter] <= 320;
             break;
         case 4:
-            ret = eShip4Health[shipActionCounter] <= 0 && eShipY4[shipActionCounter] >= 0 && eShipX4[shipActionCounter] < 600
-                  && eShipY4[shipActionCounter] >= 0 && eShipX4[shipActionCounter] <= 320;
+            ret = eShip4Health[shipActionCounter] <= 0 && eShipY4[shipActionCounter] >= 0 
+				&& eShipX4[shipActionCounter] < 600 && eShipY4[shipActionCounter] >= 0 
+				&& eShipX4[shipActionCounter] <= 320;
             break;
         case 5:
-            ret = eShip5Health[shipActionCounter] <= 0 && eShipY5[shipActionCounter] >= 0 && eShipX5[shipActionCounter] < 600
-                  && eShipY5[shipActionCounter] >= 0 && eShipX5[shipActionCounter] <= 320;
+            ret = eShip5Health[shipActionCounter] <= 0 && eShipY5[shipActionCounter] >= 0 
+				&& eShipX5[shipActionCounter] < 600 && eShipY5[shipActionCounter] >= 0 
+				&& eShipX5[shipActionCounter] <= 320;
             break;
         case 6:
-            ret = eShip6Health[shipActionCounter] <= 0 && eShipY6[shipActionCounter] >= 0 && eShipX6[shipActionCounter] < 600
-                  && eShipY6[shipActionCounter] >= 0 && eShipX6[shipActionCounter] <= 320;
+            ret = eShip6Health[shipActionCounter] <= 0 && eShipY6[shipActionCounter] >= 0 
+				&& eShipX6[shipActionCounter] < 600 && eShipY6[shipActionCounter] >= 0 
+				&& eShipX6[shipActionCounter] <= 320;
             break;
         case 7:
-            ret = eShip7Health[shipActionCounter] <= 0 && eShipY7[shipActionCounter] >= 0 && eShipX7[shipActionCounter] < 600
-                  && eShipY7[shipActionCounter] >= 0 && eShipX7[shipActionCounter] <= 320;
+            ret = eShip7Health[shipActionCounter] <= 0 && eShipY7[shipActionCounter] >= 0 
+				&& eShipX7[shipActionCounter] < 600 && eShipY7[shipActionCounter] >= 0 
+				&& eShipX7[shipActionCounter] <= 320;
             break;
         case 8:
-            ret = eShip8Health[shipActionCounter] <= 0 && eShipY8[shipActionCounter] >= 0 && eShipX8[shipActionCounter] < 600
-                  && eShipY8[shipActionCounter] >= 0 && eShipX8[shipActionCounter] <= 320;
+            ret = eShip8Health[shipActionCounter] <= 0 && eShipY8[shipActionCounter] >= 0 
+				&& eShipX8[shipActionCounter] < 600 && eShipY8[shipActionCounter] >= 0 
+				&& eShipX8[shipActionCounter] <= 320;
             break;
         case 9:
             ret = eShip9Health <= 0 && eShipY9 >= 0 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320;
@@ -3708,7 +3727,8 @@ void EnemyDied() {
 void ShipCollision() {
     for (int i = 0; i < 10; i++) {
         //ship 1
-        if (mX + width1 < eShipX1[i] + 76 && mX + width2 > eShipX1[i] + 18 && mY < eShipY1[i] + 94 && mY + 94 > eShipY1[i]) {
+        if (mX + width1 < eShipX1[i] + 76 && mX + width2 > eShipX1[i] + 18 && mY < eShipY1[i] + 94 
+			&& mY + 94 > eShipY1[i]) {
             if (eShip1Health[i] > 0) {
                 eShip1Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3716,7 +3736,8 @@ void ShipCollision() {
             }
         }
         //ship 2
-        if (mX + width1 < eShipX2[i] + 69 && mX + width2 > eShipX2[i] + 24 && mY < eShipY2[i] + 94 && mY + 94 > eShipY2[i]) {
+        if (mX + width1 < eShipX2[i] + 69 && mX + width2 > eShipX2[i] + 24 && mY < eShipY2[i] + 94 
+			&& mY + 94 > eShipY2[i]) {
             if (eShip2Health[i] > 0) {
                 eShip2Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3724,7 +3745,8 @@ void ShipCollision() {
             }
         }
         //ship 3
-        if (mX + width1 < eShipX3[i] + 66 && mX + width2 > eShipX3[i] + 27 && mY < eShipY3[i] + 94 && mY + 94 > eShipY3[i]) {
+        if (mX + width1 < eShipX3[i] + 66 && mX + width2 > eShipX3[i] + 27 && mY < eShipY3[i] + 94 
+			&& mY + 94 > eShipY3[i]) {
             if (eShip3Health[i] > 0) {
                 eShip3Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3732,7 +3754,8 @@ void ShipCollision() {
             }
         }
         //ship 4
-        if (mX + width1 < eShipX4[i] + 87 && mX + width2 > eShipX4[i] + 6 && mY < eShipY4[i] + 94 && mY + 94 > eShipY4[i]) {
+        if (mX + width1 < eShipX4[i] + 87 && mX + width2 > eShipX4[i] + 6 && mY < eShipY4[i] + 94 
+			&& mY + 94 > eShipY4[i]) {
             if (eShip4Health[i] > 0) {
                 eShip4Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3742,7 +3765,8 @@ void ShipCollision() {
     }
     for (int i = 0; i < 5; i++) {
         //ship 5
-        if (mX + width1 < eShipX5[i] + 71 && mX + width2 > eShipX5[i] + 22 && mY < eShipY5[i] + 94 && mY + 94 > eShipY5[i]) {
+        if (mX + width1 < eShipX5[i] + 71 && mX + width2 > eShipX5[i] + 22 && mY < eShipY5[i] + 94 
+			&& mY + 94 > eShipY5[i]) {
             if (eShip5Health[i] > 0) {
                 eShip5Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3750,7 +3774,8 @@ void ShipCollision() {
             }
         }
         //ship 6
-        if (mX + width1 < eShipX6[i] + 81 && mX + width2 > eShipX6[i] + 12 && mY < eShipY6[i] + 94 && mY + 94 > eShipY6[i]) {
+        if (mX + width1 < eShipX6[i] + 81 && mX + width2 > eShipX6[i] + 12 && mY < eShipY6[i] + 94 
+			&& mY + 94 > eShipY6[i]) {
             if (eShip6Health[i] > 0) {
                 eShip6Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3758,7 +3783,8 @@ void ShipCollision() {
             }
         }
         //ship 7
-        if (mX + width1 < eShipX7[i] + 86 && mX + width2 > eShipX7[i] + 7 && mY < eShipY7[i] + 94 && mY + 94 > eShipY7[i]) {
+        if (mX + width1 < eShipX7[i] + 86 && mX + width2 > eShipX7[i] + 7 && mY < eShipY7[i] + 94 
+			&& mY + 94 > eShipY7[i]) {
             if (eShip7Health[i] > 0) {
                 eShip7Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3766,7 +3792,8 @@ void ShipCollision() {
             }
         }
         //ship 8
-        if (mX + width1 < eShipX8[i] + 86 && mX + width2 > eShipX8[i] + 6 && mY < eShipY8[i] + 94 && mY + 94 > eShipY8[i]) {
+        if (mX + width1 < eShipX8[i] + 86 && mX + width2 > eShipX8[i] + 6 && mY < eShipY8[i] + 94 
+			&& mY + 94 > eShipY8[i]) {
             if (eShip8Health[i] > 0) {
                 eShip8Health[i] -= 2 + level;
                 health -= 2 + level;
