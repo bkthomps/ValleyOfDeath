@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.7)
+ * Valley Of Death (1.2.8)
  * 22 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -19,15 +19,15 @@ const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, 
 const int speed = 15, time = 15;
 const int SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
 
-bool sound, UpdateHighscore, pause, date, marry, BoolTempNum, torture, HealthUpdate, GoRight;
-char font, FontTorture, FileBuffer[5];
+bool sound, updateHighscore, pause, date, marry, boolTempNum, torture, healthUpdate, goRight;
+char font, fontTorture, fileBuffer[5];
 int xp, ship, highscore;
-int counter;
+int soundCounter;
 int health, set, level;
 int bulletTimeCounter, shipMoveCounter, bulletMoveCounter, enemyExplosionCounter[10];
-int ShipView, mX, mY, newX, newY;
+int shipView, mX, mY, newX, newY;
 int mBullet1[15], mBullet2[15], mBullet3[15];
-int HpCounterTorture;
+int hpCounterTorture;
 int e1Bullet1[50];
 int e2Bullet1[50];
 int e3Bullet1[50];
@@ -43,17 +43,17 @@ int eShipX1[10], eShipX2[10], eShipX3[10], eShipX4[10], eShipX5[5], eShipX6[5], 
 int eShipY1[10], eShipY2[10], eShipY3[10], eShipY4[10], eShipY5[5], eShipY6[5], eShipY7[5], eShipY8[5], eShipY9, eShipY10;
 int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5];
 int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Health;
-int FileSound, FileUpdateHighscore;
-int FileXp, FileShip, FileHighscore;
-int FileCounter;
-int IntTempNum;
-int Mp3Handle;
+int fileSound, fileUpdateHighscore;
+int fileXp, fileShip, fileHighscore;
+int fileCounter;
+int intTempNum;
+int mp3Handle;
 int width1, width2, HP, text1, text2, text3;
-int CounterTorture, ImageTorture, HpTorture, TextTorture;
+int counterTorture, imageTorture, hpTorture, textTorture;
 int shipActionCounter, healthRegenCounter;
 int r, s2, s3, s4, s5, s6, s7, s8, music;
-int PossibleHealth, ShipSpeed, SaveRon, rank;
-int BulletXOffset, BulletYOffset, BulletXOffset2, BulletYOffset2, BulletXOffset3, BulletYOffset3;
+int possibleHealth, shipSpeed, saveRon, rank;
+int bulletXOffset, bulletYOffset, bulletXOffset2, bulletYOffset2, bulletXOffset3, bulletYOffset3;
 
 enum Screen {
     ScreenMenu,
@@ -181,83 +181,83 @@ int ContainerDeleteCheckOne;
 int ContainerDeleteCheckTwo;
 
 void IntFileToGame() {
-    IntTempNum = 0;
-    IntTempNum += ((int) FileBuffer[0] - '0') * 10000;
-    IntTempNum += ((int) FileBuffer[1] - '0') * 1000;
-    IntTempNum += ((int) FileBuffer[2] - '0') * 100;
-    IntTempNum += ((int) FileBuffer[3] - '0') * 10;
-    IntTempNum += (int) FileBuffer[4] - '0';
+    intTempNum = 0;
+    intTempNum += ((int) fileBuffer[0] - '0') * 10000;
+    intTempNum += ((int) fileBuffer[1] - '0') * 1000;
+    intTempNum += ((int) fileBuffer[2] - '0') * 100;
+    intTempNum += ((int) fileBuffer[3] - '0') * 10;
+    intTempNum += (int) fileBuffer[4] - '0';
 }
 void BoolFileToGame() {
-    BoolTempNum = FileBuffer[0] == 't';
+    boolTempNum = fileBuffer[0] == 't';
 }
 void LoadGame() {
-    FileSound = FileOpen("Sound.txt");
-    FileUpdateHighscore = FileOpen("UpdateHighscore.txt");
-    FileXp = FileOpen("Xp.txt");
-    FileShip = FileOpen("Ship.txt");
-    FileHighscore = FileOpen("Highscore.txt");
-    FileCounter = FileOpen("Counter.txt");
-    if (!FileSound) {
-        FileSound = FileCreate("Sound.txt");
+    fileSound = FileOpen("Sound.txt");
+    fileUpdateHighscore = FileOpen("updateHighscore.txt");
+    fileXp = FileOpen("Xp.txt");
+    fileShip = FileOpen("Ship.txt");
+    fileHighscore = FileOpen("Highscore.txt");
+    fileCounter = FileOpen("Counter.txt");
+    if (!fileSound) {
+        fileSound = FileCreate("Sound.txt");
         sound = true;
     } else {
-        FileSound = FileOpen("Sound.txt");
-        FileRead(FileSound, FileBuffer, 1);
+        fileSound = FileOpen("Sound.txt");
+        FileRead(fileSound, fileBuffer, 1);
         BoolFileToGame();
-        sound = BoolTempNum;
+        sound = boolTempNum;
     }
-    if (!FileUpdateHighscore) {
-        FileUpdateHighscore = FileCreate("UpdateHighscore.txt");
+    if (!fileUpdateHighscore) {
+        fileUpdateHighscore = FileCreate("updateHighscore.txt");
     } else {
-        FileUpdateHighscore = FileOpen("UpdateHighscore.txt");
-        FileRead(FileUpdateHighscore, FileBuffer, 1);
+        fileUpdateHighscore = FileOpen("updateHighscore.txt");
+        FileRead(fileUpdateHighscore, fileBuffer, 1);
         BoolFileToGame();
-        UpdateHighscore = BoolTempNum;
+        updateHighscore = boolTempNum;
     }
-    if (!FileXp) {
-        FileXp = FileCreate("Xp.txt");
+    if (!fileXp) {
+        fileXp = FileCreate("Xp.txt");
     } else {
-        FileXp = FileOpen("Xp.txt");
-        FileRead(FileXp, FileBuffer, 5);
+        fileXp = FileOpen("Xp.txt");
+        FileRead(fileXp, fileBuffer, 5);
         IntFileToGame();
-        xp = IntTempNum;
+        xp = intTempNum;
     }
-    if (!FileShip) {
-        FileShip = FileCreate("Ship.txt");
+    if (!fileShip) {
+        fileShip = FileCreate("Ship.txt");
         ship = 1;
     } else {
-        FileShip = FileOpen("Ship.txt");
-        FileRead(FileShip, FileBuffer, 5);
+        fileShip = FileOpen("Ship.txt");
+        FileRead(fileShip, fileBuffer, 5);
         IntFileToGame();
-        ship = IntTempNum;
+        ship = intTempNum;
     }
-    if (!FileHighscore) {
-        FileHighscore = FileCreate("Highscore.txt");
+    if (!fileHighscore) {
+        fileHighscore = FileCreate("Highscore.txt");
     } else {
-        FileHighscore = FileOpen("Highscore.txt");
-        FileRead(FileHighscore, FileBuffer, 5);
+        fileHighscore = FileOpen("Highscore.txt");
+        FileRead(fileHighscore, fileBuffer, 5);
         IntFileToGame();
-        highscore = IntTempNum;
+        highscore = intTempNum;
     }
-    if (!FileCounter) {
-        FileCounter = FileCreate("Counter.txt");
+    if (!fileCounter) {
+        fileCounter = FileCreate("Counter.txt");
     } else {
-        FileCounter = FileOpen("Counter.txt");
-        FileRead(FileCounter, FileBuffer, 5);
+        fileCounter = FileOpen("Counter.txt");
+        FileRead(fileCounter, fileBuffer, 5);
         IntFileToGame();
-        counter = IntTempNum;
+        soundCounter = intTempNum;
     }
-    FileClose(FileSound);
-    FileClose(FileUpdateHighscore);
-    FileClose(FileXp);
-    FileClose(FileShip);
-    FileClose(FileHighscore);
-    FileClose(FileCounter);
+    FileClose(fileSound);
+    FileClose(fileUpdateHighscore);
+    FileClose(fileXp);
+    FileClose(fileShip);
+    FileClose(fileHighscore);
+    FileClose(fileCounter);
 }
 void Reset() {
     int picture, ship;
-    HealthUpdate = true;
+    healthUpdate = true;
     bulletTimeCounter = 0;
     shipMoveCounter = 0;
     mX = 113;
@@ -337,8 +337,8 @@ void Reset() {
     ship = (eShip10);
     picture = ImageAdd("Images/eBoss.png");
     ViewSetImage(ship, picture);
-    health = PossibleHealth;
-    HealthUpdate = true;
+    health = possibleHealth;
+    healthUpdate = true;
     pause = false;
 }
 void ScreenSwitch() {
@@ -493,9 +493,9 @@ void ScreenSwitch() {
         case ScreenStoryTorture:
             int ImageTorturing;
             ImageTorturing = ImageAdd("Images/20HP.png");
-            ViewSetImage(HpTorture, ImageTorturing);
-            HpCounterTorture = 2000;
-            CounterTorture = 0;
+            ViewSetImage(hpTorture, ImageTorturing);
+            hpCounterTorture = 2000;
+            counterTorture = 0;
             ContainerSetVisible(ContainerStoryTorture, 1);
             break;
         case ScreenStory4a1:
@@ -617,7 +617,7 @@ int OnReturnToMenu(int id, int event, int x, int y) {
     if (event == 3) {
         Reset();
         if (PreviousScreen == ScreenEndless) {
-            UpdateHighscore = true;
+            updateHighscore = true;
             CurrentScreen = ScreenHighscore;
         } else if (PreviousScreen == ScreenUnlocks || PreviousScreen == ScreenOptions) {
             CurrentScreen = ScreenMenu;
@@ -652,11 +652,11 @@ int OnStoryLevel7(int id, int event, int x, int y) {
             CurrentScreen = ScreenStory7a2;
         } else if (id == 2) {
             if (date && !marry) {
-                TextSetText(SaveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your girlfriend that you \nwere a great man.");
+                TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your girlfriend that you \nwere a great man.");
             } else if (date && marry) {
-                TextSetText(SaveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your wife that you were a \ngreat man.");
+                TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell your wife that you were a \ngreat man.");
             } else if (!date && !marry) {
-                TextSetText(SaveRon, "\n\nRon: \nThe world will know of your \ngreatness.");
+                TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness.");
             }
             CurrentScreen = ScreenStory7b2;
         } else if (id == 3) {
@@ -856,85 +856,85 @@ int OnStoryMenuTouch(int id, int event, int x, int y) {
 
 void ShipType() {
     static const int lift = 10;
-    ViewSetxy(ShipView, -200, -200);
+    ViewSetxy(shipView, -200, -200);
     switch (ship) {
         case 1:
-            ShipView = ViewAdd(ContainerEndless, "Images/Ship_1.png", -200, -200);
-            BulletXOffset = 43;
-            BulletYOffset = 11 - lift;
-            ShipSpeed = 7;
-            PossibleHealth = 20;
+            shipView = ViewAdd(ContainerEndless, "Images/Ship_1.png", -200, -200);
+            bulletXOffset = 43;
+            bulletYOffset = 11 - lift;
+            shipSpeed = 7;
+            possibleHealth = 20;
             width1 = 9;
             width2 = 76;
             break;
         case 2:
-            ShipView = ViewAdd(ContainerEndless, "Images/Ship_2.png", -200, -200);
-            BulletXOffset = 43;
-            BulletYOffset = 0 - lift;
-            ShipSpeed = 7;
-            PossibleHealth = 22;
+            shipView = ViewAdd(ContainerEndless, "Images/Ship_2.png", -200, -200);
+            bulletXOffset = 43;
+            bulletYOffset = 0 - lift;
+            shipSpeed = 7;
+            possibleHealth = 22;
             width1 = 15;
             width2 = 69;
             break;
         case 3:
-            ShipView = ViewAdd(ContainerEndless, "Images/Ship_3.png", -200, -200);
-            BulletXOffset = 43;
-            BulletYOffset = 6 - lift;
-            ShipSpeed = 7;
-            PossibleHealth = 24;
+            shipView = ViewAdd(ContainerEndless, "Images/Ship_3.png", -200, -200);
+            bulletXOffset = 43;
+            bulletYOffset = 6 - lift;
+            shipSpeed = 7;
+            possibleHealth = 24;
             width1 = 18;
             width2 = 66;
             break;
         case 4:
-            ShipView = ViewAdd(ContainerEndless, "Images/Ship_4.png", -200, -200);
-            BulletXOffset = 43;
-            BulletYOffset = 0 - lift;
-            ShipSpeed = 7;
-            PossibleHealth = 26;
+            shipView = ViewAdd(ContainerEndless, "Images/Ship_4.png", -200, -200);
+            bulletXOffset = 43;
+            bulletYOffset = 0 - lift;
+            shipSpeed = 7;
+            possibleHealth = 26;
             width1 = -3;
             width2 = 87;
             break;
         case 5:
-            ShipView = ViewAdd(ContainerEndless, "Images/Ship_5.png", -200, -200);
-            BulletXOffset = 31;
-            BulletYOffset = 23 - lift;
-            BulletXOffset3 = 54;
-            BulletYOffset3 = 23 - lift;
-            ShipSpeed = 6;
-            PossibleHealth = 28;
+            shipView = ViewAdd(ContainerEndless, "Images/Ship_5.png", -200, -200);
+            bulletXOffset = 31;
+            bulletYOffset = 23 - lift;
+            bulletXOffset3 = 54;
+            bulletYOffset3 = 23 - lift;
+            shipSpeed = 6;
+            possibleHealth = 28;
             width1 = 13;
             width2 = 71;
             break;
         case 6:
-            ShipView = ViewAdd(ContainerEndless, "Images/Ship_6.png", -200, -200);
-            BulletXOffset = 15;
-            BulletYOffset = 41 - lift;
-            BulletXOffset3 = 68;
-            BulletYOffset3 = 41 - lift;
-            ShipSpeed = 6;
-            PossibleHealth = 30;
+            shipView = ViewAdd(ContainerEndless, "Images/Ship_6.png", -200, -200);
+            bulletXOffset = 15;
+            bulletYOffset = 41 - lift;
+            bulletXOffset3 = 68;
+            bulletYOffset3 = 41 - lift;
+            shipSpeed = 6;
+            possibleHealth = 30;
             width1 = 3;
             width2 = 81;
             break;
         case 7:
-            ShipView = ViewAdd(ContainerEndless, "Images/Ship_7.png", -200, -200);
-            BulletXOffset2 = 42;
-            BulletYOffset2 = 11 - lift;
-            ShipSpeed = 5;
-            PossibleHealth = 32;
+            shipView = ViewAdd(ContainerEndless, "Images/Ship_7.png", -200, -200);
+            bulletXOffset2 = 42;
+            bulletYOffset2 = 11 - lift;
+            shipSpeed = 5;
+            possibleHealth = 32;
             width1 = -2;
             width2 = 86;
             break;
         case 8:
-            ShipView = ViewAdd(ContainerEndless, "Images/Ship_8.png", -200, -200);
-            BulletXOffset = 12;
-            BulletYOffset = 40 - lift;
-            BulletXOffset2 = 42;
-            BulletYOffset2 = 2 - lift;
-            BulletXOffset3 = 74;
-            BulletYOffset3 = 40 - lift;
-            ShipSpeed = 4;
-            PossibleHealth = 34;
+            shipView = ViewAdd(ContainerEndless, "Images/Ship_8.png", -200, -200);
+            bulletXOffset = 12;
+            bulletYOffset = 40 - lift;
+            bulletXOffset2 = 42;
+            bulletYOffset2 = 2 - lift;
+            bulletXOffset3 = 74;
+            bulletYOffset3 = 40 - lift;
+            shipSpeed = 4;
+            possibleHealth = 34;
             width1 = -3;
             width2 = 86;
             break;
@@ -950,8 +950,8 @@ int OnBattleTouch(int id, int event, int x, int y) {
 int OnEndlessMenuTouch(int id, int event, int x, int y) {
     if (event == 3) {
         Reset();
-        health = PossibleHealth;
-        HealthUpdate = true;
+        health = possibleHealth;
+        healthUpdate = true;
         level = 1;
         set = 1;
         CurrentScreen = ScreenEndless;
@@ -1072,32 +1072,32 @@ int Options(int id, int event, int x, int y) {
             ImageMusic = ImageAdd("Unlocks/MusicOn.png");
             ViewSetImage(music, ImageMusic);
             sound = true;
-            if (counter >= 1 && counter < 7000) {
-                counter = 7000;
-            } else if (counter >= 7000 && counter < 13000) {
-                counter = 13000;
-            } else if (counter >= 13000 && counter < 19000) {
-                counter = 19000;
-            } else if (counter >= 19000 && counter < 27000) {
-                counter = 27000;
-            } else if (counter >= 27000 && counter < 34000) {
-                counter = 34000;
-            } else if (counter >= 34000 && counter < 42000) {
-                counter = 42000;
-            } else if (counter >= 42000 && counter < 49000) {
-                counter = 49000;
-            } else if (counter >= 49000 && counter < 55000) {
-                counter = 55000;
-            } else if (counter >= 55000 && counter < 61000) {
-                counter = 61000;
-            } else if (counter >= 61000 && counter < 67000) {
-                counter = 67000;
-            } else if (counter >= 67000 && counter < 73000) {
-                counter = 73000;
-            } else if (counter >= 73000 && counter < 79000) {
-                counter = 79000;
-            } else if (counter >= 79000) {
-                counter = 1;
+            if (soundCounter >= 1 && soundCounter < 7000) {
+                soundCounter = 7000;
+            } else if (soundCounter >= 7000 && soundCounter < 13000) {
+                soundCounter = 13000;
+            } else if (soundCounter >= 13000 && soundCounter < 19000) {
+                soundCounter = 19000;
+            } else if (soundCounter >= 19000 && soundCounter < 27000) {
+                soundCounter = 27000;
+            } else if (soundCounter >= 27000 && soundCounter < 34000) {
+                soundCounter = 34000;
+            } else if (soundCounter >= 34000 && soundCounter < 42000) {
+                soundCounter = 42000;
+            } else if (soundCounter >= 42000 && soundCounter < 49000) {
+                soundCounter = 49000;
+            } else if (soundCounter >= 49000 && soundCounter < 55000) {
+                soundCounter = 55000;
+            } else if (soundCounter >= 55000 && soundCounter < 61000) {
+                soundCounter = 61000;
+            } else if (soundCounter >= 61000 && soundCounter < 67000) {
+                soundCounter = 67000;
+            } else if (soundCounter >= 67000 && soundCounter < 73000) {
+                soundCounter = 73000;
+            } else if (soundCounter >= 73000 && soundCounter < 79000) {
+                soundCounter = 79000;
+            } else if (soundCounter >= 79000) {
+                soundCounter = 1;
             }
         }
     } else if (id == 2 && event == 3) {
@@ -1234,7 +1234,7 @@ void ContainerSixSeven() {
     ViewAdd(ContainerStory7b2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7b2, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory7b2, "Images/btnOkBig.png", 20, 380, OnStoryLevel7, 3);
-    SaveRon = TextAdd(ContainerStory7b2, 0, 0, "", font);
+    saveRon = TextAdd(ContainerStory7b2, 0, 0, "", font);
 }
 void ContainerFive() {
     //populate ContainerStory5a1
@@ -1387,11 +1387,11 @@ void ContainerThree() {
     TextAdd(ContainerStory3a8, 0, 0, "\n\nEnemy: \nI will wait for you to torture \nhim until you do. There's \nnothing you can do about it.", font);
     //populate ContainerStoryTorture
     TouchAdd(ContainerStoryTorture, 0, 0, 320, 568, OnTorture, 1);
-    ImageTorture = ViewAdd(ContainerStoryTorture, "Images/TortureModeOne.png", -2, -2);
+    imageTorture = ViewAdd(ContainerStoryTorture, "Images/TortureModeOne.png", -2, -2);
     ViewAdd(ContainerStoryTorture, "Images/Pause.png", 270, 20, OnPause, 1);
-    HpTorture = ViewAdd(ContainerStoryTorture, "Images/20HP.png", 20, 20);
+    hpTorture = ViewAdd(ContainerStoryTorture, "Images/20HP.png", 20, 20);
     //ViewAdd(ContainerStoryTorture, "Images/infToggle.png", 20, 380);
-    TextTorture = TextAdd(ContainerStoryTorture, 70, 0, "", FontTorture);
+    textTorture = TextAdd(ContainerStoryTorture, 70, 0, "", fontTorture);
 }
 void ContainerTwo() {
     //populate ContainerStory2a1
@@ -1557,81 +1557,81 @@ void ContainerOne() {
 }
 void StartupMusic() {
     if (sound) {
-        if (counter > 1 && counter < 7000) {
-            counter = 7000;
-        } else if (counter > 7000 && counter < 13000) {
-            counter = 13000;
-        } else if (counter > 13000 && counter < 19000) {
-            counter = 19000;
-        } else if (counter > 19000 && counter < 27000) {
-            counter = 27000;
-        } else if (counter > 27000 && counter < 34000) {
-            counter = 34000;
-        } else if (counter > 34000 && counter < 42000) {
-            counter = 42000;
-        } else if (counter > 42000 && counter < 49000) {
-            counter = 49000;
-        } else if (counter > 49000 && counter < 55000) {
-            counter = 55000;
-        } else if (counter > 55000 && counter < 61000) {
-            counter = 61000;
-        } else if (counter > 61000 && counter < 67000) {
-            counter = 67000;
-        } else if (counter > 67000 && counter < 73000) {
-            counter = 73000;
-        } else if (counter > 73000 && counter < 79000) {
-            counter = 79000;
-        } else if (counter > 79000) {
-            counter = 1;
+        if (soundCounter > 1 && soundCounter < 7000) {
+            soundCounter = 7000;
+        } else if (soundCounter > 7000 && soundCounter < 13000) {
+            soundCounter = 13000;
+        } else if (soundCounter > 13000 && soundCounter < 19000) {
+            soundCounter = 19000;
+        } else if (soundCounter > 19000 && soundCounter < 27000) {
+            soundCounter = 27000;
+        } else if (soundCounter > 27000 && soundCounter < 34000) {
+            soundCounter = 34000;
+        } else if (soundCounter > 34000 && soundCounter < 42000) {
+            soundCounter = 42000;
+        } else if (soundCounter > 42000 && soundCounter < 49000) {
+            soundCounter = 49000;
+        } else if (soundCounter > 49000 && soundCounter < 55000) {
+            soundCounter = 55000;
+        } else if (soundCounter > 55000 && soundCounter < 61000) {
+            soundCounter = 61000;
+        } else if (soundCounter > 61000 && soundCounter < 67000) {
+            soundCounter = 67000;
+        } else if (soundCounter > 67000 && soundCounter < 73000) {
+            soundCounter = 73000;
+        } else if (soundCounter > 73000 && soundCounter < 79000) {
+            soundCounter = 79000;
+        } else if (soundCounter > 79000) {
+            soundCounter = 1;
         }
-        if (counter > 1 && counter < 7000) {
+        if (soundCounter > 1 && soundCounter < 7000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/1.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 7000 && counter < 13000) {
+            mp3Handle = Mp3Add("Sounds/1.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 7000 && soundCounter < 13000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/2.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 13000 && counter < 19000) {
+            mp3Handle = Mp3Add("Sounds/2.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 13000 && soundCounter < 19000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/3.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 19000 && counter < 27000) {
+            mp3Handle = Mp3Add("Sounds/3.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 19000 && soundCounter < 27000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/5.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 27000 && counter < 34000) {
+            mp3Handle = Mp3Add("Sounds/5.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 27000 && soundCounter < 34000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/7.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 34000 && counter < 42000) {
+            mp3Handle = Mp3Add("Sounds/7.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 34000 && soundCounter < 42000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/8.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 42000 && counter < 49000) {
+            mp3Handle = Mp3Add("Sounds/8.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 42000 && soundCounter < 49000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/9.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 49000 && counter < 55000) {
+            mp3Handle = Mp3Add("Sounds/9.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 49000 && soundCounter < 55000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/11.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 55000 && counter < 61000) {
+            mp3Handle = Mp3Add("Sounds/11.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 55000 && soundCounter < 61000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/12.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 61000 && counter < 67000) {
+            mp3Handle = Mp3Add("Sounds/12.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 61000 && soundCounter < 67000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/13.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 67000 && counter < 73000) {
+            mp3Handle = Mp3Add("Sounds/13.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 67000 && soundCounter < 73000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/14.mp3");
-            Mp3Loop(Mp3Handle);
-        } else if (counter > 73000 && counter < 79000) {
+            mp3Handle = Mp3Add("Sounds/14.mp3");
+            Mp3Loop(mp3Handle);
+        } else if (soundCounter > 73000 && soundCounter < 79000) {
             Mp3Stop();
-            Mp3Handle = Mp3Add("Sounds/15.mp3");
-            Mp3Loop(Mp3Handle);
+            mp3Handle = Mp3Add("Sounds/15.mp3");
+            Mp3Loop(mp3Handle);
         }
     } else {
         Mp3Stop();
@@ -1641,7 +1641,7 @@ void AppMain() {
     LoadGame();
     DeclareContainers();
     font = FontAdd("Arial", "Regular", 24, 0xA4A4A4);
-    FontTorture = FontAdd("Arial", "Regular", 24, 0xDF0101);
+    fontTorture = FontAdd("Arial", "Regular", 24, 0xDF0101);
 
     ScreenSwitch();
     ContainerOne();
@@ -1688,58 +1688,58 @@ void AppMain() {
 }
 
 void IntGameToFile() {
-    FileBuffer[0] = char(IntTempNum / 10000 + '0');
-    IntTempNum %= 10000;
-    FileBuffer[1] = char(IntTempNum / 1000 + '0');
-    IntTempNum %= 1000;
-    FileBuffer[2] = char(IntTempNum / 100 + '0');
-    IntTempNum %= 100;
-    FileBuffer[3] = char(IntTempNum / 10 + '0');
-    IntTempNum %= 10;
-    FileBuffer[4] = char(IntTempNum + '0');
-    IntTempNum = 0;
+    fileBuffer[0] = char(intTempNum / 10000 + '0');
+    intTempNum %= 10000;
+    fileBuffer[1] = char(intTempNum / 1000 + '0');
+    intTempNum %= 1000;
+    fileBuffer[2] = char(intTempNum / 100 + '0');
+    intTempNum %= 100;
+    fileBuffer[3] = char(intTempNum / 10 + '0');
+    intTempNum %= 10;
+    fileBuffer[4] = char(intTempNum + '0');
+    intTempNum = 0;
 }
 void BoolGameToFile() {
-    FileBuffer[0] = (BoolTempNum) ? ('t') : ('f');
+    fileBuffer[0] = (boolTempNum) ? ('t') : ('f');
 }
 void AppExit() {
     Mp3Stop();
-    //FileSound
-    FileSound = FileOpen("Sound.txt");
-    BoolTempNum = sound;
+    //fileSound
+    fileSound = FileOpen("Sound.txt");
+    boolTempNum = sound;
     BoolGameToFile();
-    FileWrite(FileSound, FileBuffer, 1);
-    FileClose(FileSound);
-    //FileUpdateHighscore
-    FileUpdateHighscore = FileOpen("UpdateHighscore.txt");
-    BoolTempNum = UpdateHighscore;
+    FileWrite(fileSound, fileBuffer, 1);
+    FileClose(fileSound);
+    //fileUpdateHighscore
+    fileUpdateHighscore = FileOpen("updateHighscore.txt");
+    boolTempNum = updateHighscore;
     BoolGameToFile();
-    FileWrite(FileUpdateHighscore, FileBuffer, 1);
-    FileClose(FileUpdateHighscore);
-    //FileXp
-    FileXp = FileOpen("Xp.txt");
-    IntTempNum = xp;
+    FileWrite(fileUpdateHighscore, fileBuffer, 1);
+    FileClose(fileUpdateHighscore);
+    //fileXp
+    fileXp = FileOpen("Xp.txt");
+    intTempNum = xp;
     IntGameToFile();
-    FileWrite(FileXp, FileBuffer, 5);
-    FileClose(FileXp);
-    //FileShip
-    FileShip = FileOpen("Ship.txt");
-    IntTempNum = ship;
+    FileWrite(fileXp, fileBuffer, 5);
+    FileClose(fileXp);
+    //fileShip
+    fileShip = FileOpen("Ship.txt");
+    intTempNum = ship;
     IntGameToFile();
-    FileWrite(FileShip, FileBuffer, 5);
-    FileClose(FileShip);
-    //FileHighscore
-    FileHighscore = FileOpen("Highscore.txt");
-    IntTempNum = highscore;
+    FileWrite(fileShip, fileBuffer, 5);
+    FileClose(fileShip);
+    //fileHighscore
+    fileHighscore = FileOpen("Highscore.txt");
+    intTempNum = highscore;
     IntGameToFile();
-    FileWrite(FileHighscore, FileBuffer, 5);
-    FileClose(FileHighscore);
-    //FileCounter
-    FileCounter = FileOpen("Counter.txt");
-    IntTempNum = counter;
+    FileWrite(fileHighscore, fileBuffer, 5);
+    FileClose(fileHighscore);
+    //fileCounter
+    fileCounter = FileOpen("Counter.txt");
+    intTempNum = soundCounter;
     IntGameToFile();
-    FileWrite(FileCounter, FileBuffer, 5);
-    FileClose(FileCounter);
+    FileWrite(fileCounter, fileBuffer, 5);
+    FileClose(fileCounter);
 }
 
 bool IsNotActive() {
@@ -1750,104 +1750,104 @@ bool IsNotActive() {
 }
 void SoundSwitch() {
     if (sound) {
-        if (counter == 1) {
+        if (soundCounter == 1) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/1.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/1.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 7000) {
+        } else if (soundCounter == 7000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/2.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/2.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 13000) {
+        } else if (soundCounter == 13000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/3.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/3.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 19000) {
+        } else if (soundCounter == 19000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/5.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/5.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 27000) {
+        } else if (soundCounter == 27000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/7.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/7.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 34000) {
+        } else if (soundCounter == 34000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/8.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/8.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 42000) {
+        } else if (soundCounter == 42000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/9.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/9.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 49000) {
+        } else if (soundCounter == 49000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/11.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/11.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 55000) {
+        } else if (soundCounter == 55000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/12.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/12.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 61000) {
+        } else if (soundCounter == 61000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/13.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/13.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 67000) {
+        } else if (soundCounter == 67000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/14.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/14.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter == 73000) {
+        } else if (soundCounter == 73000) {
             if (IsNotActive()) {
                 Mp3Stop();
-                Mp3Handle = Mp3Add("Sounds/15.mp3");
-                Mp3Loop(Mp3Handle);
+                mp3Handle = Mp3Add("Sounds/15.mp3");
+                Mp3Loop(mp3Handle);
             } else {
-                counter--;
+                soundCounter--;
             }
-        } else if (counter >= 79000) {
-            counter = 0;
+        } else if (soundCounter >= 79000) {
+            soundCounter = 0;
         }
     } else {
         Mp3Stop();
@@ -1855,16 +1855,16 @@ void SoundSwitch() {
 }
 void mShipMove() {
     //move x
-    if (newX > mX + ShipSpeed / 2) {
-        mX += ShipSpeed;
-    } else if (newX + ShipSpeed / 2 < mX) {
-        mX -= ShipSpeed;
+    if (newX > mX + shipSpeed / 2) {
+        mX += shipSpeed;
+    } else if (newX + shipSpeed / 2 < mX) {
+        mX -= shipSpeed;
     }
     //move y
-    if (newY > mY + ShipSpeed / 2) {
-        mY += ShipSpeed;
-    } else if (newY + ShipSpeed / 2 < mY) {
-        mY -= ShipSpeed;
+    if (newY > mY + shipSpeed / 2) {
+        mY += shipSpeed;
+    } else if (newY + shipSpeed / 2 < mY) {
+        mY -= shipSpeed;
     }
     //stop x
     if (mX < 0) {
@@ -1879,7 +1879,7 @@ void mShipMove() {
         mY = 386;
     }
     //set ship view
-    ViewSetxy(ShipView, mX, mY);
+    ViewSetxy(shipView, mX, mY);
 }
 void BulletTime() {
     int x, y, x2, y2, x3, y3;
@@ -1888,16 +1888,16 @@ void BulletTime() {
         if (bulletTimeCounter == i * time) {
             used = true;
             if (ship == 8) {
-                ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
-                ViewSetxy(mBullet2[i - 1], mX + BulletXOffset2, mY + BulletYOffset2);
-                ViewSetxy(mBullet3[i - 1], mX + BulletXOffset3, mY + BulletYOffset3);
+                ViewSetxy(mBullet1[i - 1], mX + bulletXOffset, mY + bulletYOffset);
+                ViewSetxy(mBullet2[i - 1], mX + bulletXOffset2, mY + bulletYOffset2);
+                ViewSetxy(mBullet3[i - 1], mX + bulletXOffset3, mY + bulletYOffset3);
             } else if (ship == 7) {
-                ViewSetxy(mBullet2[i - 1], mX + BulletXOffset2, mY + BulletYOffset2);
+                ViewSetxy(mBullet2[i - 1], mX + bulletXOffset2, mY + bulletYOffset2);
             } else if (ship == 6 || ship == 5) {
-                ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
-                ViewSetxy(mBullet3[i - 1], mX + BulletXOffset3, mY + BulletYOffset3);
+                ViewSetxy(mBullet1[i - 1], mX + bulletXOffset, mY + bulletYOffset);
+                ViewSetxy(mBullet3[i - 1], mX + bulletXOffset3, mY + bulletYOffset3);
             } else {
-                ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
+                ViewSetxy(mBullet1[i - 1], mX + bulletXOffset, mY + bulletYOffset);
             }
         }
     }
@@ -2070,7 +2070,7 @@ void DoHighscore() {
     }
 }
 void DoUpdateHighscore() {
-    if (UpdateHighscore) {
+    if (updateHighscore) {
         if (level > highscore) {
             highscore = level;
         }
@@ -2101,86 +2101,86 @@ void DoUpdateHighscore() {
         }
 
         Reset();
-        UpdateHighscore = false;
+        updateHighscore = false;
     }
 }
 void TortureHealth() {
     int ImageTorturing, number = 100;
-    if (HpCounterTorture > number * 20 && torture) {
-        HpCounterTorture = number * 20;
-    } else if (HpCounterTorture > number * 40 && !torture) {
+    if (hpCounterTorture > number * 20 && torture) {
+        hpCounterTorture = number * 20;
+    } else if (hpCounterTorture > number * 40 && !torture) {
         CurrentScreen = ScreenDied;
         ScreenSwitch();
-    } else if (HpCounterTorture <= number * 20 && HpCounterTorture > number * 19) {
+    } else if (hpCounterTorture <= number * 20 && hpCounterTorture > number * 19) {
         ImageTorturing = ImageAdd("Images/20HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 19 && HpCounterTorture > number * 18) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 19 && hpCounterTorture > number * 18) {
         ImageTorturing = ImageAdd("Images/19HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nStop This Madness!");
-    } else if (HpCounterTorture <= number * 18 && HpCounterTorture > number * 17) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nStop This Madness!");
+    } else if (hpCounterTorture <= number * 18 && hpCounterTorture > number * 17) {
         ImageTorturing = ImageAdd("Images/18HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 17 && HpCounterTorture > number * 16) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 17 && hpCounterTorture > number * 16) {
         ImageTorturing = ImageAdd("Images/17HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nDon't Do It!");
-    } else if (HpCounterTorture <= number * 16 && HpCounterTorture > number * 15) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nDon't Do It!");
+    } else if (hpCounterTorture <= number * 16 && hpCounterTorture > number * 15) {
         ImageTorturing = ImageAdd("Images/16HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 15 && HpCounterTorture > number * 14) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 15 && hpCounterTorture > number * 14) {
         ImageTorturing = ImageAdd("Images/15HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nI Beg Of You!");
-    } else if (HpCounterTorture <= number * 14 && HpCounterTorture > number * 13) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nI Beg Of You!");
+    } else if (hpCounterTorture <= number * 14 && hpCounterTorture > number * 13) {
         ImageTorturing = ImageAdd("Images/14HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 13 && HpCounterTorture > number * 12) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 13 && hpCounterTorture > number * 12) {
         ImageTorturing = ImageAdd("Images/13HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nPlease Don't!");
-    } else if (HpCounterTorture <= number * 12 && HpCounterTorture > number * 11) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nPlease Don't!");
+    } else if (hpCounterTorture <= number * 12 && hpCounterTorture > number * 11) {
         ImageTorturing = ImageAdd("Images/12HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 11 && HpCounterTorture > number * 10) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 11 && hpCounterTorture > number * 10) {
         ImageTorturing = ImageAdd("Images/11HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nI Order You To Stop!");
-    } else if (HpCounterTorture <= number * 10 && HpCounterTorture > number * 9) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nI Order You To Stop!");
+    } else if (hpCounterTorture <= number * 10 && hpCounterTorture > number * 9) {
         ImageTorturing = ImageAdd("Images/10HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 9 && HpCounterTorture > number * 8) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 9 && hpCounterTorture > number * 8) {
         ImageTorturing = ImageAdd("Images/9HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nI Have A Family!");
-    } else if (HpCounterTorture <= number * 8 && HpCounterTorture > number * 7) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nI Have A Family!");
+    } else if (hpCounterTorture <= number * 8 && hpCounterTorture > number * 7) {
         ImageTorturing = ImageAdd("Images/8HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 7 && HpCounterTorture > number * 6) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 7 && hpCounterTorture > number * 6) {
         ImageTorturing = ImageAdd("Images/7HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nDon't Do This!");
-    } else if (HpCounterTorture <= number * 6 && HpCounterTorture > number * 5) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nDon't Do This!");
+    } else if (hpCounterTorture <= number * 6 && hpCounterTorture > number * 5) {
         ImageTorturing = ImageAdd("Images/6HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 5 && HpCounterTorture > number * 4) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 5 && hpCounterTorture > number * 4) {
         ImageTorturing = ImageAdd("Images/5HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nWhy Are You \nDoing This!");
-    } else if (HpCounterTorture <= number * 4 && HpCounterTorture > number * 3) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nWhy Are You \nDoing This!");
+    } else if (hpCounterTorture <= number * 4 && hpCounterTorture > number * 3) {
         ImageTorturing = ImageAdd("Images/4HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 3 && HpCounterTorture > number * 2) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 3 && hpCounterTorture > number * 2) {
         ImageTorturing = ImageAdd("Images/3HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-        TextSetText(TextTorture, "\n\n\n\n\n\nYou Will Burn!");
-    } else if (HpCounterTorture <= number * 2 && HpCounterTorture > number * 1) {
+        ViewSetImage(hpTorture, ImageTorturing);
+        TextSetText(textTorture, "\n\n\n\n\n\nYou Will Burn!");
+    } else if (hpCounterTorture <= number * 2 && hpCounterTorture > number * 1) {
         ImageTorturing = ImageAdd("Images/2HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= number * 1 && HpCounterTorture > 0) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= number * 1 && hpCounterTorture > 0) {
         ImageTorturing = ImageAdd("Images/1HP.png");
-        ViewSetImage(HpTorture, ImageTorturing);
-    } else if (HpCounterTorture <= 0) {
+        ViewSetImage(hpTorture, ImageTorturing);
+    } else if (hpCounterTorture <= 0) {
         pause = false;
         CurrentScreen = ScreenStory4a1;
         ScreenSwitch();
@@ -2221,7 +2221,7 @@ int round(double num) {
 }
 void HealthBar() {
     int Image;
-    if (HealthUpdate) {
+    if (healthUpdate) {
         const int shipMaxHealth = 18 + 2 * ship;
         const int fracHealth = round(20 * health / shipMaxHealth);
         Image = ImageAdd(concatHealth(fracHealth));
@@ -2230,7 +2230,7 @@ void HealthBar() {
         if (health == 0) {
             if (CurrentScreen == ScreenEndless) {
                 CurrentScreen = ScreenHighscore;
-                UpdateHighscore = true;
+                updateHighscore = true;
             } else if (CurrentScreen == ScreenStoryBattle1) {
                 CurrentScreen = ScreenStory2a1;
                 Reset();
@@ -2243,7 +2243,7 @@ void HealthBar() {
             }
             ScreenSwitch();
         }
-        HealthUpdate = false;
+        healthUpdate = false;
         healthRegenCounter = 0;
     }
 }
@@ -3181,25 +3181,25 @@ void EnemyShipMove() {
     if (eShipY9 < 40) {
         ViewSetxy(eShip9, eShipX9, eShipY9 + EnemyFlySpeed);
     } else if (eShipY9 >= 40 && eShipY9 < 600) {
-        const int factor = (GoRight) ? (1) : (-1);
+        const int factor = (goRight) ? (1) : (-1);
         ViewSetxy(eShip9, eShipX9 + factor, eShipY9);
     }
     if (eShipX9 == 29) {
-        GoRight = true;
+        goRight = true;
     } else if (eShipX9 == 149) {
-        GoRight = false;
+        goRight = false;
     }
     //ship 10
     if (eShipY10 < 40) {
         ViewSetxy(eShip10, eShipX10, eShipY10 + EnemyFlySpeed);
     } else if (eShipY10 >= 40 && eShipY10 < 600) {
-        const int factor = (GoRight) ? (1) : (-1);
+        const int factor = (goRight) ? (1) : (-1);
         ViewSetxy(eShip10, eShipX10 + factor, eShipY10);
     }
     if (eShipX10 == 25) {
-        GoRight = true;
+        goRight = true;
     } else if (eShipX10 == 145) {
-        GoRight = false;
+        goRight = false;
     }
 }
 void DoEnemyShipMove() {
@@ -3272,7 +3272,7 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e1Bullet1[i], 600, 600);
             }
         }
@@ -3285,7 +3285,7 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e2Bullet1[i], 600, 600);
             }
         }
@@ -3298,7 +3298,7 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e3Bullet1[i], 600, 600);
             }
         }
@@ -3311,7 +3311,7 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e4Bullet1[i], 600, 600);
             }
         }
@@ -3327,12 +3327,12 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e5Bullet1[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e5Bullet3[i], 600, 600);
             }
         }
@@ -3348,12 +3348,12 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e6Bullet1[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e6Bullet3[i], 600, 600);
             }
         }
@@ -3366,7 +3366,7 @@ void DoEnemyShipShoot() {
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e7Bullet2[i], 600, 600);
             }
         }
@@ -3385,17 +3385,17 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e8Bullet1[i], 600, 600);
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e8Bullet2[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e8Bullet3[i], 600, 600);
             }
         }
@@ -3414,17 +3414,17 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e9Bullet1[i], 600, 600);
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e9Bullet2[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e9Bullet3[i], 600, 600);
             }
         }
@@ -3443,17 +3443,17 @@ void DoEnemyShipShoot() {
             }
             if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e10Bullet1[i], 600, 600);
             }
             if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
                 health -= 3;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e10Bullet2[i], 600, 600);
             }
             if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
                 health -= 1;
-                HealthUpdate = true;
+                healthUpdate = true;
                 ViewSetxy(e10Bullet3[i], 600, 600);
             }
         }
@@ -3657,8 +3657,8 @@ void EnemyDied() {
         if (CurrentScreen != ScreenStoryBattle4) {
             set += 1;
             shipMoveCounter = 0;
-            health = PossibleHealth;
-            HealthUpdate = true;
+            health = possibleHealth;
+            healthUpdate = true;
         } else if (CurrentScreen == ScreenStoryBattle4) {
             CurrentScreen = ScreenStory5a1;
             ScreenSwitch();
@@ -3697,8 +3697,8 @@ void EnemyDied() {
         if (CurrentScreen != ScreenStoryBattle6) {
             set += 1;
             shipMoveCounter = 0;
-            health = PossibleHealth;
-            HealthUpdate = true;
+            health = possibleHealth;
+            healthUpdate = true;
         } else if (CurrentScreen == ScreenStoryBattle6) {
             CurrentScreen = ScreenStory7w1;
             ScreenSwitch();
@@ -3712,7 +3712,7 @@ void ShipCollision() {
             if (eShip1Health[i] > 0) {
                 eShip1Health[i] -= 2 + level;
                 health -= 2 + level;
-                HealthUpdate = true;
+                healthUpdate = true;
             }
         }
         //ship 2
@@ -3720,7 +3720,7 @@ void ShipCollision() {
             if (eShip2Health[i] > 0) {
                 eShip2Health[i] -= 2 + level;
                 health -= 2 + level;
-                HealthUpdate = true;
+                healthUpdate = true;
             }
         }
         //ship 3
@@ -3728,7 +3728,7 @@ void ShipCollision() {
             if (eShip3Health[i] > 0) {
                 eShip3Health[i] -= 2 + level;
                 health -= 2 + level;
-                HealthUpdate = true;
+                healthUpdate = true;
             }
         }
         //ship 4
@@ -3736,7 +3736,7 @@ void ShipCollision() {
             if (eShip4Health[i] > 0) {
                 eShip4Health[i] -= 2 + level;
                 health -= 2 + level;
-                HealthUpdate = true;
+                healthUpdate = true;
             }
         }
     }
@@ -3746,7 +3746,7 @@ void ShipCollision() {
             if (eShip5Health[i] > 0) {
                 eShip5Health[i] -= 2 + level;
                 health -= 2 + level;
-                HealthUpdate = true;
+                healthUpdate = true;
             }
         }
         //ship 6
@@ -3754,7 +3754,7 @@ void ShipCollision() {
             if (eShip6Health[i] > 0) {
                 eShip6Health[i] -= 2 + level;
                 health -= 2 + level;
-                HealthUpdate = true;
+                healthUpdate = true;
             }
         }
         //ship 7
@@ -3762,7 +3762,7 @@ void ShipCollision() {
             if (eShip7Health[i] > 0) {
                 eShip7Health[i] -= 2 + level;
                 health -= 2 + level;
-                HealthUpdate = true;
+                healthUpdate = true;
             }
         }
         //ship 8
@@ -3770,7 +3770,7 @@ void ShipCollision() {
             if (eShip8Health[i] > 0) {
                 eShip8Health[i] -= 2 + level;
                 health -= 2 + level;
-                HealthUpdate = true;
+                healthUpdate = true;
             }
         }
     }
@@ -3779,7 +3779,7 @@ void ShipCollision() {
         if (eShip9Health > 0) {
             eShip9Health -= 2 + level;
             health -= 2 + level;
-            HealthUpdate = true;
+            healthUpdate = true;
         }
     }
     //ship 10
@@ -3787,7 +3787,7 @@ void ShipCollision() {
         if (eShip10Health > 0) {
             eShip10Health -= 2 + level;
             health -= 2 + level;
-            HealthUpdate = true;
+            healthUpdate = true;
         }
     }
 }
@@ -3803,7 +3803,7 @@ void HealthRegen() {
     if (healthRegenCounter >= 150) {
         healthRegenCounter = 0;
         health += 1;
-        HealthUpdate = true;
+        healthUpdate = true;
     }
 }
 bool CreateMove() {
@@ -3817,7 +3817,7 @@ void OnTimer() {
     SoundSwitch();
     DoUpdateHighscore();
     if (sound) {
-        counter += 1;
+        soundCounter += 1;
     }
     if (!pause) {
         if (CreateMove()) {
@@ -3826,7 +3826,7 @@ void OnTimer() {
             DoEnemyShipMove();
             bulletMoveCounter += 1;
             DoEnemyShipShoot();
-            if (health < PossibleHealth / 2) {
+            if (health < possibleHealth / 2) {
                 healthRegenCounter += 1;
             } else {
                 healthRegenCounter = 0;
@@ -3838,29 +3838,29 @@ void OnTimer() {
             EnemyDied();
             ShipCollision();
         } else if (CurrentScreen == ScreenStoryTorture && torture) {
-            if (CounterTorture == 0) {
-                ViewSetxy(ImageTorture, -1, -1);
-            } else if (CounterTorture == 1) {
-                ViewSetxy(ImageTorture, 0, 0);
-            } else if (CounterTorture == 2) {
-                ViewSetxy(ImageTorture, -2, -2);
-            } else if (CounterTorture == 3) {
-                ViewSetxy(ImageTorture, -1, -1);
-            } else if (CounterTorture == 4) {
-                ViewSetxy(ImageTorture, -2, 0);
-            } else if (CounterTorture == 5) {
-                ViewSetxy(ImageTorture, 0, -2);
+            if (counterTorture == 0) {
+                ViewSetxy(imageTorture, -1, -1);
+            } else if (counterTorture == 1) {
+                ViewSetxy(imageTorture, 0, 0);
+            } else if (counterTorture == 2) {
+                ViewSetxy(imageTorture, -2, -2);
+            } else if (counterTorture == 3) {
+                ViewSetxy(imageTorture, -1, -1);
+            } else if (counterTorture == 4) {
+                ViewSetxy(imageTorture, -2, 0);
+            } else if (counterTorture == 5) {
+                ViewSetxy(imageTorture, 0, -2);
             }
-            HpCounterTorture -= 3;
-            CounterTorture += 1;
-            if (CounterTorture >= 6) {
-                CounterTorture = 0;
+            hpCounterTorture -= 3;
+            counterTorture += 1;
+            if (counterTorture >= 6) {
+                counterTorture = 0;
             }
             TortureHealth();
         } else if (CurrentScreen == ScreenStoryTorture && !torture) {
-            HpCounterTorture += 1;
+            hpCounterTorture += 1;
             TortureHealth();
-            TextSetText(TextTorture, "");
+            TextSetText(textTorture, "");
         }
     }
 }
