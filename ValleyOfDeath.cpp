@@ -1,18 +1,30 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.6)
+ * Valley Of Death (1.2.7)
  * 22 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
 #include "DragonFireSDK.h"
 #include <assert.h>
 #include <math.h>
-bool sound, UpdateHighscore;
+
+const int e1BulletXOffset = 43, e1BulletYOffset = 83, e2BulletXOffset = 43, e2BulletYOffset = 94;
+const int e3BulletXOffset = 43, e3BulletYOffset = 88, e4BulletXOffset = 43, e4BulletYOffset = 94;
+const int e5BulletXOffset = 31, e5BulletYOffset = 71, e5BulletXOffset3 = 54, e5BulletYOffset3 = 71;
+const int e6BulletXOffset = 15, e6BulletYOffset = 53, e6BulletXOffset3 = 68, e6BulletYOffset3 = 53;
+const int e7BulletXOffset2 = 42, e7BulletYOffset2 = 83;
+const int e8BulletXOffset = 12, e8BulletYOffset = 54, e8BulletXOffset2 = 42, e8BulletYOffset2 = 92, e8BulletXOffset3 = 74, e8BulletYOffset3 = 54;
+const int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9BulletYOffset2 = 230, e9BulletXOffset3 = 130, e9BulletYOffset3 = 83;
+const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
+const int speed = 15, time = 15;
+const int SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
+
+bool sound, UpdateHighscore, pause, date, marry, BoolTempNum, torture, HealthUpdate, GoRight;
+char font, FontTorture, FileBuffer[5];
 int xp, ship, highscore;
 int counter;
-bool pause, date, marry;
 int health, set, level;
-int counter2, shipMoveCounter, bulletMoveCounter, counter5[10];
+int bulletTimeCounter, shipMoveCounter, bulletMoveCounter, enemyExplosionCounter[10];
 int ShipView, mX, mY, newX, newY;
 int mBullet1[15], mBullet2[15], mBullet3[15];
 int HpCounterTorture;
@@ -34,29 +46,15 @@ int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Heal
 int FileSound, FileUpdateHighscore;
 int FileXp, FileShip, FileHighscore;
 int FileCounter;
-char FileBuffer[5];
-bool BoolTempNum;
 int IntTempNum;
 int Mp3Handle;
-char font, FontTorture;
 int width1, width2, HP, text1, text2, text3;
-bool torture;
 int CounterTorture, ImageTorture, HpTorture, TextTorture;
-int counter8, counter10, healthRegenCounter;
+int shipActionCounter, healthRegenCounter;
 int r, s2, s3, s4, s5, s6, s7, s8, music;
 int PossibleHealth, ShipSpeed, SaveRon, rank;
 int BulletXOffset, BulletYOffset, BulletXOffset2, BulletYOffset2, BulletXOffset3, BulletYOffset3;
-const int e1BulletXOffset = 43, e1BulletYOffset = 83, e2BulletXOffset = 43, e2BulletYOffset = 94;
-const int e3BulletXOffset = 43, e3BulletYOffset = 88, e4BulletXOffset = 43, e4BulletYOffset = 94;
-const int e5BulletXOffset = 31, e5BulletYOffset = 71, e5BulletXOffset3 = 54, e5BulletYOffset3 = 71;
-const int e6BulletXOffset = 15, e6BulletYOffset = 53, e6BulletXOffset3 = 68, e6BulletYOffset3 = 53;
-const int e7BulletXOffset2 = 42, e7BulletYOffset2 = 83;
-const int e8BulletXOffset = 12, e8BulletYOffset = 54, e8BulletXOffset2 = 42, e8BulletYOffset2 = 92, e8BulletXOffset3 = 74, e8BulletYOffset3 = 54;
-const int e9BulletXOffset = 3, e9BulletYOffset = 83, e9BulletXOffset2 = 66, e9BulletYOffset2 = 230, e9BulletXOffset3 = 130, e9BulletYOffset3 = 83;
-const int e10BulletXOffset = 13, e10BulletYOffset = 83, e10BulletXOffset2 = 69, e10BulletYOffset2 = 233, e10BulletXOffset3 = 129, e10BulletYOffset3 = 83;
-const int speed = 15, time = 15;
-const int SpawnTime = 100, EnemyBaseHealth = 3, EnemyIncreaseHealth = 1, EnemyShootCooldownSpeed = 45, EnemyFlySpeed = 3, EnemyBulletSpeed = 8;
-bool HealthUpdate, GoRight;
+
 enum Screen {
     ScreenMenu,
     ScreenPause,
@@ -260,7 +258,7 @@ void LoadGame() {
 void Reset() {
     int picture, ship;
     HealthUpdate = true;
-    counter2 = 0;
+    bulletTimeCounter = 0;
     shipMoveCounter = 0;
     mX = 113;
     mY = 380;
@@ -1887,7 +1885,7 @@ void BulletTime() {
     int x, y, x2, y2, x3, y3;
     bool used = false;
     for (int i = 1; i <= 15; i++) {
-        if (counter2 == i * time) {
+        if (bulletTimeCounter == i * time) {
             used = true;
             if (ship == 8) {
                 ViewSetxy(mBullet1[i - 1], mX + BulletXOffset, mY + BulletYOffset);
@@ -1903,8 +1901,8 @@ void BulletTime() {
             }
         }
     }
-    if (counter2 >= 15 * time) {
-        counter2 = 0;
+    if (bulletTimeCounter >= 15 * time) {
+        bulletTimeCounter = 0;
     }
     if (!used) {
         for (int i = 0; i < 15; i++) {
@@ -3465,36 +3463,36 @@ bool ShipInAction(int ship) {
     bool ret = false;
     switch (ship) {
         case 1:
-            ret = eShip1Health[counter10] <= 0 && eShipY1[counter10] >= 0 && eShipX1[counter10] < 600
-                  && eShipY1[counter10] >= 0 && eShipX1[counter10] <= 320;
+            ret = eShip1Health[shipActionCounter] <= 0 && eShipY1[shipActionCounter] >= 0 && eShipX1[shipActionCounter] < 600
+                  && eShipY1[shipActionCounter] >= 0 && eShipX1[shipActionCounter] <= 320;
             break;
         case 2:
-            ret = eShip2Health[counter10] <= 0 && eShipY2[counter10] >= 0 && eShipX2[counter10] < 600
-                  && eShipY2[counter10] >= 0 && eShipX2[counter10] <= 320;
+            ret = eShip2Health[shipActionCounter] <= 0 && eShipY2[shipActionCounter] >= 0 && eShipX2[shipActionCounter] < 600
+                  && eShipY2[shipActionCounter] >= 0 && eShipX2[shipActionCounter] <= 320;
             break;
         case 3:
-            ret = eShip3Health[counter10] <= 0 && eShipY3[counter10] >= 0 && eShipX3[counter10] < 600
-                  && eShipY3[counter10] >= 0 && eShipX3[counter10] <= 320;
+            ret = eShip3Health[shipActionCounter] <= 0 && eShipY3[shipActionCounter] >= 0 && eShipX3[shipActionCounter] < 600
+                  && eShipY3[shipActionCounter] >= 0 && eShipX3[shipActionCounter] <= 320;
             break;
         case 4:
-            ret = eShip4Health[counter10] <= 0 && eShipY4[counter10] >= 0 && eShipX4[counter10] < 600
-                  && eShipY4[counter10] >= 0 && eShipX4[counter10] <= 320;
+            ret = eShip4Health[shipActionCounter] <= 0 && eShipY4[shipActionCounter] >= 0 && eShipX4[shipActionCounter] < 600
+                  && eShipY4[shipActionCounter] >= 0 && eShipX4[shipActionCounter] <= 320;
             break;
         case 5:
-            ret = eShip5Health[counter10] <= 0 && eShipY5[counter10] >= 0 && eShipX5[counter10] < 600
-                  && eShipY5[counter10] >= 0 && eShipX5[counter10] <= 320;
+            ret = eShip5Health[shipActionCounter] <= 0 && eShipY5[shipActionCounter] >= 0 && eShipX5[shipActionCounter] < 600
+                  && eShipY5[shipActionCounter] >= 0 && eShipX5[shipActionCounter] <= 320;
             break;
         case 6:
-            ret = eShip6Health[counter10] <= 0 && eShipY6[counter10] >= 0 && eShipX6[counter10] < 600
-                  && eShipY6[counter10] >= 0 && eShipX6[counter10] <= 320;
+            ret = eShip6Health[shipActionCounter] <= 0 && eShipY6[shipActionCounter] >= 0 && eShipX6[shipActionCounter] < 600
+                  && eShipY6[shipActionCounter] >= 0 && eShipX6[shipActionCounter] <= 320;
             break;
         case 7:
-            ret = eShip7Health[counter10] <= 0 && eShipY7[counter10] >= 0 && eShipX7[counter10] < 600
-                  && eShipY7[counter10] >= 0 && eShipX7[counter10] <= 320;
+            ret = eShip7Health[shipActionCounter] <= 0 && eShipY7[shipActionCounter] >= 0 && eShipX7[shipActionCounter] < 600
+                  && eShipY7[shipActionCounter] >= 0 && eShipX7[shipActionCounter] <= 320;
             break;
         case 8:
-            ret = eShip8Health[counter10] <= 0 && eShipY8[counter10] >= 0 && eShipX8[counter10] < 600
-                  && eShipY8[counter10] >= 0 && eShipX8[counter10] <= 320;
+            ret = eShip8Health[shipActionCounter] <= 0 && eShipY8[shipActionCounter] >= 0 && eShipX8[shipActionCounter] < 600
+                  && eShipY8[shipActionCounter] >= 0 && eShipX8[shipActionCounter] <= 320;
             break;
         case 9:
             ret = eShip9Health <= 0 && eShipY9 >= 0 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320;
@@ -3509,28 +3507,28 @@ int SetEnemyExplosion(int ship) {
     int explosion;
     switch (ship) {
         case 1:
-            explosion = (eShip1[counter10]);
+            explosion = (eShip1[shipActionCounter]);
             break;
         case 2:
-            explosion = (eShip2[counter10]);
+            explosion = (eShip2[shipActionCounter]);
             break;
         case 3:
-            explosion = (eShip3[counter10]);
+            explosion = (eShip3[shipActionCounter]);
             break;
         case 4:
-            explosion = (eShip4[counter10]);
+            explosion = (eShip4[shipActionCounter]);
             break;
         case 5:
-            explosion = (eShip5[counter10]);
+            explosion = (eShip5[shipActionCounter]);
             break;
         case 6:
-            explosion = (eShip6[counter10]);
+            explosion = (eShip6[shipActionCounter]);
             break;
         case 7:
-            explosion = (eShip7[counter10]);
+            explosion = (eShip7[shipActionCounter]);
             break;
         case 8:
-            explosion = (eShip8[counter10]);
+            explosion = (eShip8[shipActionCounter]);
             break;
     }
     return explosion;
@@ -3538,90 +3536,90 @@ int SetEnemyExplosion(int ship) {
 void EnemyDied() {
     int explosion, image;
     for (int i = 1; i <= 4; i++) {
-        for (counter10 = 0; counter10 < 10; counter10++) {
+        for (shipActionCounter = 0; shipActionCounter < 10; shipActionCounter++) {
             bool used = false;
             for (int j = 0; j <= 8; j++) {
-                if (counter5[i - 1] == j && ShipInAction(i) && !used) {
+                if (enemyExplosionCounter[i - 1] == j && ShipInAction(i) && !used) {
                     explosion = SetEnemyExplosion(i);
                     char temp[] = "Images/Explosion_1.png";
                     temp[17] = char(j + 1 + '0');
                     image = ImageAdd(temp);
                     ViewSetImage(explosion, image);
-                    counter5[i - 1] += 1;
+                    enemyExplosionCounter[i - 1] += 1;
                     used = true;
                 }
             }
-            if (counter5[i - 1] == 9 && ShipInAction(i)) {
+            if (enemyExplosionCounter[i - 1] == 9 && ShipInAction(i)) {
                 explosion = SetEnemyExplosion(i);
                 image = ImageAdd("Images/Explosion_10.png");
                 ViewSetImage(explosion, image);
-                counter5[i - 1] += 1;
-            } else if (counter5[i - 1] == 10 && ShipInAction(i)) {
+                enemyExplosionCounter[i - 1] += 1;
+            } else if (enemyExplosionCounter[i - 1] == 10 && ShipInAction(i)) {
                 explosion = SetEnemyExplosion(i);
                 image = ImageAdd("Images/Explosion_11.png");
                 ViewSetImage(explosion, image);
-                counter5[i - 1] += 1;
-            } else if (counter5[i - 1] == 11 && ShipInAction(i)) {
+                enemyExplosionCounter[i - 1] += 1;
+            } else if (enemyExplosionCounter[i - 1] == 11 && ShipInAction(i)) {
                 explosion = SetEnemyExplosion(i);
                 char tempShip[] = "Images/eShip_1.png";
                 tempShip[13] = char(i + '0');
                 image = ImageAdd(tempShip);
                 ViewSetImage(explosion, image);
                 if (i == 1) {
-                    ViewSetxy(eShip1[counter10], 600, 600);
+                    ViewSetxy(eShip1[shipActionCounter], 600, 600);
                 } else if (i == 2) {
-                    ViewSetxy(eShip2[counter10], 600, 600);
+                    ViewSetxy(eShip2[shipActionCounter], 600, 600);
                 } else if (i == 3) {
-                    ViewSetxy(eShip3[counter10], 600, 600);
+                    ViewSetxy(eShip3[shipActionCounter], 600, 600);
                 } else if (i == 4) {
-                    ViewSetxy(eShip4[counter10], 600, 600);
+                    ViewSetxy(eShip4[shipActionCounter], 600, 600);
                 }
-                counter5[i - 1] = 0;
+                enemyExplosionCounter[i - 1] = 0;
                 xp += 1 * level;
             }
         }
     }
 
     for (int i = 5; i <= 8; i++) {
-        for (counter10 = 0; counter10 < 5; counter10++) {
+        for (shipActionCounter = 0; shipActionCounter < 5; shipActionCounter++) {
             bool used = false;
             for (int j = 0; j <= 8; j++) {
-                if (counter5[i - 1] == j && ShipInAction(i) && !used) {
+                if (enemyExplosionCounter[i - 1] == j && ShipInAction(i) && !used) {
                     explosion = SetEnemyExplosion(i);
                     char temp[] = "Images/Explosion_1.png";
                     temp[17] = char(j + 1 + '0');
                     image = ImageAdd(temp);
                     ViewSetImage(explosion, image);
-                    counter5[i - 1] += 1;
+                    enemyExplosionCounter[i - 1] += 1;
                     used = true;
                 }
             }
-            if (counter5[i - 1] == 9 && ShipInAction(i)) {
+            if (enemyExplosionCounter[i - 1] == 9 && ShipInAction(i)) {
                 explosion = SetEnemyExplosion(i);
                 image = ImageAdd("Images/Explosion_10.png");
                 ViewSetImage(explosion, image);
-                counter5[i - 1] += 1;
-            } else if (counter5[i - 1] == 10 && ShipInAction(i)) {
+                enemyExplosionCounter[i - 1] += 1;
+            } else if (enemyExplosionCounter[i - 1] == 10 && ShipInAction(i)) {
                 explosion = SetEnemyExplosion(i);
                 image = ImageAdd("Images/Explosion_11.png");
                 ViewSetImage(explosion, image);
-                counter5[i - 1] += 1;
-            } else if (counter5[i - 1] == 11 && ShipInAction(i)) {
+                enemyExplosionCounter[i - 1] += 1;
+            } else if (enemyExplosionCounter[i - 1] == 11 && ShipInAction(i)) {
                 explosion = SetEnemyExplosion(i);
                 char tempShip[] = "Images/eShip_1.png";
                 tempShip[13] = char(i + '0');
                 image = ImageAdd(tempShip);
                 ViewSetImage(explosion, image);
                 if (i == 5) {
-                    ViewSetxy(eShip5[counter10], 600, 600);
+                    ViewSetxy(eShip5[shipActionCounter], 600, 600);
                 } else if (i == 6) {
-                    ViewSetxy(eShip6[counter10], 600, 600);
+                    ViewSetxy(eShip6[shipActionCounter], 600, 600);
                 } else if (i == 7) {
-                    ViewSetxy(eShip7[counter10], 600, 600);
+                    ViewSetxy(eShip7[shipActionCounter], 600, 600);
                 } else if (i == 8) {
-                    ViewSetxy(eShip8[counter10], 600, 600);
+                    ViewSetxy(eShip8[shipActionCounter], 600, 600);
                 }
-                counter5[i - 1] = 0;
+                enemyExplosionCounter[i - 1] = 0;
                 xp += 2 * level;
             }
         }
@@ -3629,32 +3627,32 @@ void EnemyDied() {
 
     bool used = false;
     for (int j = 0; j <= 8; j++) {
-        if (counter5[8] == j && ShipInAction(9) && !used) {
+        if (enemyExplosionCounter[8] == j && ShipInAction(9) && !used) {
             explosion = (eShip9);
             char temp[] = "Images/BigExplosion_1.png";
             temp[20] = char(j + 1 + '0');
             image = ImageAdd(temp);
             ViewSetImage(explosion, image);
-            counter5[8] += 1;
+            enemyExplosionCounter[8] += 1;
             used = true;
         }
     }
-    if (counter5[8] == 9 && ShipInAction(9)) {
+    if (enemyExplosionCounter[8] == 9 && ShipInAction(9)) {
         explosion = (eShip9);
         image = ImageAdd("Images/BigExplosion_10.png");
         ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (counter5[8] == 10 && ShipInAction(9)) {
+        enemyExplosionCounter[8] += 1;
+    } else if (enemyExplosionCounter[8] == 10 && ShipInAction(9)) {
         explosion = (eShip9);
         image = ImageAdd("Images/BigExplosion_11.png");
         ViewSetImage(explosion, image);
-        counter5[8] += 1;
-    } else if (counter5[8] == 11 && ShipInAction(9)) {
+        enemyExplosionCounter[8] += 1;
+    } else if (enemyExplosionCounter[8] == 11 && ShipInAction(9)) {
         explosion = (eShip9);
         image = ImageAdd("Images/eMini-Boss.png");
         ViewSetImage(explosion, image);
         ViewSetxy(eShip9, 600, 600);
-        counter5[8] = 0;
+        enemyExplosionCounter[8] = 0;
         xp += level * 5;
         if (CurrentScreen != ScreenStoryBattle4) {
             set += 1;
@@ -3669,32 +3667,32 @@ void EnemyDied() {
 
     used = false;
     for (int j = 0; j <= 8; j++) {
-        if (counter5[9] == j && ShipInAction(10) && !used) {
+        if (enemyExplosionCounter[9] == j && ShipInAction(10) && !used) {
             explosion = (eShip10);
             char temp[] = "Images/BigExplosion_1.png";
             temp[20] = char(j + 1 + '0');
             image = ImageAdd(temp);
             ViewSetImage(explosion, image);
-            counter5[9] += 1;
+            enemyExplosionCounter[9] += 1;
             used = true;
         }
     }
-    if (counter5[9] == 9 && ShipInAction(10)) {
+    if (enemyExplosionCounter[9] == 9 && ShipInAction(10)) {
         explosion = (eShip10);
         image = ImageAdd("Images/BigExplosion_10.png");
         ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (counter5[9] == 10 && ShipInAction(10)) {
+        enemyExplosionCounter[9] += 1;
+    } else if (enemyExplosionCounter[9] == 10 && ShipInAction(10)) {
         explosion = (eShip10);
         image = ImageAdd("Images/BigExplosion_11.png");
         ViewSetImage(explosion, image);
-        counter5[9] += 1;
-    } else if (counter5[9] == 11 && ShipInAction(10)) {
+        enemyExplosionCounter[9] += 1;
+    } else if (enemyExplosionCounter[9] == 11 && ShipInAction(10)) {
         explosion = (eShip10);
         image = ImageAdd("Images/eBoss.png");
         ViewSetImage(explosion, image);
         ViewSetxy(eShip10, 600, 600);
-        counter5[9] = 0;
+        enemyExplosionCounter[9] = 0;
         xp += level * 7;
         if (CurrentScreen != ScreenStoryBattle6) {
             set += 1;
@@ -3823,13 +3821,13 @@ void OnTimer() {
     }
     if (!pause) {
         if (CreateMove()) {
-            counter2 += 1;
-            shipMoveCounter += 1; //ship move counter
+            bulletTimeCounter += 1;
+            shipMoveCounter += 1;
             DoEnemyShipMove();
-            bulletMoveCounter += 1; //bullet move counter
+            bulletMoveCounter += 1;
             DoEnemyShipShoot();
             if (health < PossibleHealth / 2) {
-                healthRegenCounter += 1; //health regen
+                healthRegenCounter += 1;
             } else {
                 healthRegenCounter = 0;
             }
