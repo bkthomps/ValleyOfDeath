@@ -1,7 +1,7 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.10)
- * 22 January 2017
+ * Valley Of Death (1.2.11)
+ * 23 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
 #include "DragonFireSDK.h"
@@ -11,10 +11,10 @@
 const int SPAWN_TIME = 100, ENEMY_BASE_HEALTH = 3, ENEMY_INCREASE_HEALTH = 1, ENEMY_SHOOT_COOLDOWN_SPEED = 45;
 const int SPEED = 15, TIME = 15, ENEMY_FLY_SPEED = 3, ENEMY_BULLET_SPEED = 8;
 
-bool sound, updateHighscore, pause, date, marry, boolTempNum, torture, healthUpdate, goRight;
-char font, fontTorture, fileBuffer[5];
+bool updateHighscore, pause, date, marry, boolTempNum, torture, healthUpdate;
+char font, fileBuffer[5];
 int xp, ship, highscore, soundCounter, health, set, level, bulletTimeCounter, shipMoveCounter, bulletMoveCounter;
-int intTempNum, enemyExplosionCounter[10], shipView, mX, mY, newX, newY, mBullet1[15], mBullet2[15], mBullet3[15];
+int enemyExplosionCounter[10], shipView, mX, mY, newX, newY, mBullet1[15], mBullet2[15], mBullet3[15];
 int hpCounterTorture, e1Bullet1[50], e2Bullet1[50], e3Bullet1[50], e4Bullet1[50], e5Bullet1[25], e5Bullet3[25];
 int e6Bullet1[25], e6Bullet3[25], e7Bullet2[25], e8Bullet1[25], e8Bullet2[25], e8Bullet3[25];
 int e9Bullet1[5], e9Bullet2[5], e9Bullet3[5], e10Bullet1[5], e10Bullet2[5], e10Bullet3[5];
@@ -25,8 +25,8 @@ int eShipY1[10], eShipY2[10], eShipY3[10], eShipY4[10];
 int eShipY5[5], eShipY6[5], eShipY7[5], eShipY8[5], eShipY9, eShipY10;
 int eShip1Health[10], eShip2Health[10], eShip3Health[10], eShip4Health[10], eShip5Health[5];
 int eShip6Health[5], eShip7Health[5], eShip8Health[5], eShip9Health, eShip10Health;
-int width1, width2, hp, text1, text2, text3, counterTorture, imageTorture, hpTorture, textTorture, shipActionCounter;
-int healthRegenCounter, r, s2, s3, s4, s5, s6, s7, s8, music, possibleHealth, shipSpeed, saveRon, rank;
+int width1, width2, text1, text2, text3, counterTorture, imageTorture, hpTorture, textTorture, shipActionCounter;
+int healthRegenCounter, music, possibleHealth, shipSpeed, rank;
 int bulletXOffset, bulletYOffset, bulletXOffset2, bulletYOffset2, bulletXOffset3, bulletYOffset3;
 
 enum Screen {
@@ -154,13 +154,14 @@ int ContainerOptions;
 int ContainerDeleteCheckOne;
 int ContainerDeleteCheckTwo;
 
-void IntFileToGame() {
-    intTempNum = 0;
-    intTempNum += ((int) fileBuffer[0] - '0') * 10000;
-    intTempNum += ((int) fileBuffer[1] - '0') * 1000;
-    intTempNum += ((int) fileBuffer[2] - '0') * 100;
-    intTempNum += ((int) fileBuffer[3] - '0') * 10;
-    intTempNum += (int) fileBuffer[4] - '0';
+int IntFileToGame() {
+    int ret = 0;
+    ret += ((int) fileBuffer[0] - '0') * 10000;
+    ret += ((int) fileBuffer[1] - '0') * 1000;
+    ret += ((int) fileBuffer[2] - '0') * 100;
+    ret += ((int) fileBuffer[3] - '0') * 10;
+    ret += (int) fileBuffer[4] - '0';
+    return ret;
 }
 void BoolFileToGame() {
     boolTempNum = fileBuffer[0] == 't';
@@ -194,8 +195,7 @@ void LoadGame() {
     } else {
         fileXp = FileOpen("Xp.txt");
         FileRead(fileXp, fileBuffer, 5);
-        IntFileToGame();
-        xp = intTempNum;
+        xp = IntFileToGame();
     }
     if (!fileShip) {
         fileShip = FileCreate("Ship.txt");
@@ -203,24 +203,21 @@ void LoadGame() {
     } else {
         fileShip = FileOpen("Ship.txt");
         FileRead(fileShip, fileBuffer, 5);
-        IntFileToGame();
-        ship = intTempNum;
+        ship = IntFileToGame();
     }
     if (!fileHighscore) {
         fileHighscore = FileCreate("Highscore.txt");
     } else {
         fileHighscore = FileOpen("Highscore.txt");
         FileRead(fileHighscore, fileBuffer, 5);
-        IntFileToGame();
-        highscore = intTempNum;
+        highscore = IntFileToGame();
     }
     if (!fileCounter) {
         fileCounter = FileCreate("Counter.txt");
     } else {
         fileCounter = FileOpen("Counter.txt");
         FileRead(fileCounter, fileBuffer, 5);
-        IntFileToGame();
-        soundCounter = intTempNum;
+        soundCounter = IntFileToGame();
     }
     FileClose(fileSound);
     FileClose(fileUpdateHighscore);
@@ -230,8 +227,6 @@ void LoadGame() {
     FileClose(fileCounter);
 }
 void Reset() {
-    int picture, ship;
-    healthUpdate = true;
     bulletTimeCounter = 0;
     shipMoveCounter = 0;
     mX = 113;
@@ -267,6 +262,7 @@ void Reset() {
         ViewSetxy(e10Bullet2[i], 600, 600);
         ViewSetxy(e10Bullet3[i], 600, 600);
     }
+    int picture, ship;
     for (int i = 0; i < 10; i++) {
         ViewSetxy(eShip1[i], 600, 600);
         ship = (eShip1[i]);
@@ -625,12 +621,13 @@ int OnStoryLevel7(int id, int event, int x, int y) {
         if (id == 1) {
             CurrentScreen = ScreenStory7a2;
         } else if (id == 2) {
+            const int saveRon = TextAdd(ContainerStory7b2, 0, 0, "", font);
             if (date && !marry) {
                 TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell "
-					"your girlfriend that you \nwere a great man.");
+                    "your girlfriend that you \nwere a great man.");
             } else if (date && marry) {
                 TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell "
-					"your wife that you were a \ngreat man.");
+                    "your wife that you were a \ngreat man.");
             } else if (!date && !marry) {
                 TextSetText(saveRon, "\n\nRon: \nThe world will know of your \ngreatness.");
             }
@@ -833,13 +830,15 @@ int OnStoryMenuTouch(int id, int event, int x, int y) {
 void ShipType() {
     const int lift = 10;
     ViewSetxy(shipView, -200, -200);
+    assert(ship >= 1);
+    assert(ship <= 8);
+    possibleHealth = 18 + 2 * ship;
     switch (ship) {
         case 1:
             shipView = ViewAdd(ContainerEndless, "Images/Ship_1.png", -200, -200);
             bulletXOffset = 43;
             bulletYOffset = 11 - lift;
             shipSpeed = 7;
-            possibleHealth = 20;
             width1 = 9;
             width2 = 76;
             break;
@@ -848,7 +847,6 @@ void ShipType() {
             bulletXOffset = 43;
             bulletYOffset = 0 - lift;
             shipSpeed = 7;
-            possibleHealth = 22;
             width1 = 15;
             width2 = 69;
             break;
@@ -857,7 +855,6 @@ void ShipType() {
             bulletXOffset = 43;
             bulletYOffset = 6 - lift;
             shipSpeed = 7;
-            possibleHealth = 24;
             width1 = 18;
             width2 = 66;
             break;
@@ -866,7 +863,6 @@ void ShipType() {
             bulletXOffset = 43;
             bulletYOffset = 0 - lift;
             shipSpeed = 7;
-            possibleHealth = 26;
             width1 = -3;
             width2 = 87;
             break;
@@ -877,7 +873,6 @@ void ShipType() {
             bulletXOffset3 = 54;
             bulletYOffset3 = 23 - lift;
             shipSpeed = 6;
-            possibleHealth = 28;
             width1 = 13;
             width2 = 71;
             break;
@@ -888,7 +883,6 @@ void ShipType() {
             bulletXOffset3 = 68;
             bulletYOffset3 = 41 - lift;
             shipSpeed = 6;
-            possibleHealth = 30;
             width1 = 3;
             width2 = 81;
             break;
@@ -897,7 +891,6 @@ void ShipType() {
             bulletXOffset2 = 42;
             bulletYOffset2 = 11 - lift;
             shipSpeed = 5;
-            possibleHealth = 32;
             width1 = -2;
             width2 = 86;
             break;
@@ -910,11 +903,12 @@ void ShipType() {
             bulletXOffset3 = 74;
             bulletYOffset3 = 40 - lift;
             shipSpeed = 4;
-            possibleHealth = 34;
             width1 = -3;
             width2 = 86;
             break;
     }
+    assert(possibleHealth >= 20);
+    assert(possibleHealth <= 34);
 }
 int OnBattleTouch(int id, int event, int x, int y) {
     if (event == 1 || event == 2) {
@@ -950,86 +944,87 @@ int Unlocks(int id, int event, int x, int y) {
     return 0;
 }
 int OnUnlocksMenuTouch(int id, int event, int x, int y) {
-    int ImageUnlocks;
+    int imageUnlocks;
     if (event == 3) {
         assert(rank >= 1);
         assert(rank <= 20);
+        const int rankPosition = TextAdd(ContainerUnlocks, 10, 10, "", font);
         switch (rank) {
             case 1:
-                TextSetText(r, "\n\nLevel 1: Ordinary Shipman");
+                TextSetText(rankPosition, "\n\nLevel 1: Ordinary Shipman");
                 break;
             case 2:
-                TextSetText(r, "\n\nLevel 2: Able Shipman");
+                TextSetText(rankPosition, "\n\nLevel 2: Able Shipman");
                 break;
             case 3:
-                TextSetText(r, "\n\nLevel 3: Leading Shipman");
+                TextSetText(rankPosition, "\n\nLevel 3: Leading Shipman");
                 break;
             case 4:
-                TextSetText(r, "\n\nLevel 4: Master Shipman");
+                TextSetText(rankPosition, "\n\nLevel 4: Master Shipman");
                 break;
             case 5:
-                TextSetText(r, "\n\nLevel 5: Petty Officer 2nd \n\tClass");
+                TextSetText(rankPosition, "\n\nLevel 5: Petty Officer 2nd \n\tClass");
                 break;
             case 6:
-                TextSetText(r, "\n\nLevel 6: Petty Officer 1st \n\tClass");
+                TextSetText(rankPosition, "\n\nLevel 6: Petty Officer 1st \n\tClass");
                 break;
             case 7:
-                TextSetText(r, "\n\nLevel 7: Chief Petty Officer \n\t2nd Class");
+                TextSetText(rankPosition, "\n\nLevel 7: Chief Petty Officer \n\t2nd Class");
                 break;
             case 8:
-                TextSetText(r, "\n\nLevel 8: Chief Petty Officer \n\t1st Class");
+                TextSetText(rankPosition, "\n\nLevel 8: Chief Petty Officer \n\t1st Class");
                 break;
             case 9:
-                TextSetText(r, "\n\nLevel 9: Cadet");
+                TextSetText(rankPosition, "\n\nLevel 9: Cadet");
                 break;
             case 10:
-                TextSetText(r, "\n\nLevel 10: Ensign");
+                TextSetText(rankPosition, "\n\nLevel 10: Ensign");
                 break;
             case 11:
-                TextSetText(r, "\n\nLevel 11: Acting \n\t Sub-Lieutenant");
+                TextSetText(rankPosition, "\n\nLevel 11: Acting \n\t Sub-Lieutenant");
                 break;
             case 12:
-                TextSetText(r, "\n\nLevel 12: Sub-Lieutenant");
+                TextSetText(rankPosition, "\n\nLevel 12: Sub-Lieutenant");
                 break;
             case 13:
-                TextSetText(r, "\n\nLevel 13: Lieutenant");
+                TextSetText(rankPosition, "\n\nLevel 13: Lieutenant");
                 break;
             case 14:
-                TextSetText(r, "\n\nLevel 14: Lieutenant \n\t  Commander");
+                TextSetText(rankPosition, "\n\nLevel 14: Lieutenant \n\t  Commander");
                 break;
             case 15:
-                TextSetText(r, "\n\nLevel 15: Commander");
+                TextSetText(rankPosition, "\n\nLevel 15: Commander");
                 break;
             case 16:
-                TextSetText(r, "\n\nLevel 16: Captain");
+                TextSetText(rankPosition, "\n\nLevel 16: Captain");
                 break;
             case 17:
-                TextSetText(r, "\n\nLevel 17: Commodore");
+                TextSetText(rankPosition, "\n\nLevel 17: Commodore");
                 break;
             case 18:
-                TextSetText(r, "\n\nLevel 18: Rear-Admiral");
+                TextSetText(rankPosition, "\n\nLevel 18: Rear-Admiral");
                 break;
             case 19:
-                TextSetText(r, "\n\nLevel 19: Vice-Admiral");
+                TextSetText(rankPosition, "\n\nLevel 19: Vice-Admiral");
                 break;
             case 20:
-                TextSetText(r, "\n\nLevel 20: Admiral");
+                TextSetText(rankPosition, "\n\nLevel 20: Admiral");
                 break;
         }
-        ImageUnlocks = (rank >= 3) ? (ImageAdd("Unlocks/UnShip_2.png")) : (ImageAdd("Unlocks/LckShip_2.png"));
-        ViewSetImage(s2, ImageUnlocks);
-        ImageUnlocks = (rank >= 5) ? (ImageAdd("Unlocks/UnShip_3.png")) : (ImageAdd("Unlocks/LckShip_3.png"));
-        ViewSetImage(s3, ImageUnlocks);
-        ImageUnlocks = (rank >= 8) ? (ImageAdd("Unlocks/UnShip_4.png")) : (ImageAdd("Unlocks/LckShip_4.png"));
-        ViewSetImage(s4, ImageUnlocks);
-        ImageUnlocks = (rank >= 11) ? (ImageAdd("Unlocks/UnShip_5.png")) : (ImageAdd("Unlocks/LckShip_5.png"));
-        ViewSetImage(s5, ImageUnlocks);
-        ImageUnlocks = (rank >= 14) ? (ImageAdd("Unlocks/UnShip_6.png")) : (ImageAdd("Unlocks/LckShip_6.png"));
-        ViewSetImage(s6, ImageUnlocks);
-        ImageUnlocks = (rank >= 17) ? (ImageAdd("Unlocks/UnShip_7.png")) : (ImageAdd("Unlocks/LckShip_7.png"));
-        ViewSetImage(s7, ImageUnlocks);
-        ImageUnlocks = (rank >= 20) ? (ImageAdd("Unlocks/UnShip_8.png")) : (ImageAdd("Unlocks/LckShip_8.png"));
-        ViewSetImage(s8, ImageUnlocks);
+        imageUnlocks = (rank >= 3) ? (ImageAdd("Unlocks/UnShip_2.png")) : (ImageAdd("Unlocks/LckShip_2.png"));
+        ViewSetImage(ViewAdd(ContainerUnlocks, "Unlocks/LckShip_2.png", 120, 180, Unlocks, 2), imageUnlocks);
+        imageUnlocks = (rank >= 5) ? (ImageAdd("Unlocks/UnShip_3.png")) : (ImageAdd("Unlocks/LckShip_3.png"));
+        ViewSetImage(ViewAdd(ContainerUnlocks, "Unlocks/LckShip_3.png", 220, 180, Unlocks, 3), imageUnlocks);
+        imageUnlocks = (rank >= 8) ? (ImageAdd("Unlocks/UnShip_4.png")) : (ImageAdd("Unlocks/LckShip_4.png"));
+        ViewSetImage(ViewAdd(ContainerUnlocks, "Unlocks/LckShip_4.png", 20, 280, Unlocks, 4), imageUnlocks);
+        imageUnlocks = (rank >= 11) ? (ImageAdd("Unlocks/UnShip_5.png")) : (ImageAdd("Unlocks/LckShip_5.png"));
+        ViewSetImage(ViewAdd(ContainerUnlocks, "Unlocks/LckShip_5.png", 120, 280, Unlocks, 5), imageUnlocks);
+        imageUnlocks = (rank >= 14) ? (ImageAdd("Unlocks/UnShip_6.png")) : (ImageAdd("Unlocks/LckShip_6.png"));
+        ViewSetImage(ViewAdd(ContainerUnlocks, "Unlocks/LckShip_6.png", 220, 280, Unlocks, 6), imageUnlocks);
+        imageUnlocks = (rank >= 17) ? (ImageAdd("Unlocks/UnShip_7.png")) : (ImageAdd("Unlocks/LckShip_7.png"));
+        ViewSetImage(ViewAdd(ContainerUnlocks, "Unlocks/LckShip_7.png", 60, 380, Unlocks, 7), imageUnlocks);
+        imageUnlocks = (rank >= 20) ? (ImageAdd("Unlocks/UnShip_8.png")) : (ImageAdd("Unlocks/LckShip_8.png"));
+        ViewSetImage(ViewAdd(ContainerUnlocks, "Unlocks/LckShip_8.png", 180, 380, Unlocks, 8), imageUnlocks);
         CurrentScreen = ScreenUnlocks;
         ScreenSwitch();
     }
@@ -1174,7 +1169,7 @@ void ContainerSixSeven() {
     ViewAdd(ContainerStory6a2, "Images/btnLaugh.png", 20, 380, OnStoryLevel6, 2);
     ViewAdd(ContainerStory6a2, "Images/btnSo.png", 170, 380, OnStoryLevel6, 3);
     TextAdd(ContainerStory6a2, 0, 0, "\n\nAdmiral Skerbowh: \nYou will never be able to \ndefeat me. I am simply", 
-		font);
+        font);
     TextAdd(ContainerStory6a2, 0, 0, "\n\n\n\n\nsmarter, stronger, faster, and \nmore powerful than you.", font);
     //populate ContainerStory6a3
     ViewAdd(ContainerStory6a3, "Images/Background.png", 0, 0);
@@ -1182,42 +1177,41 @@ void ContainerSixSeven() {
     ViewAdd(ContainerStory6a3, "Images/btnOkSmall.png", 20, 380, OnStoryLevel6, 4);
     ViewAdd(ContainerStory6a3, "Images/btnLaugh.png", 170, 380, OnStoryLevel6, 4);
     TextAdd(ContainerStory6a3, 0, 0, "\n\nAdmiral Skerbowh: \nYou laugh in the face of \ndeath? I laugh at your", 
-		font);
+        font);
     TextAdd(ContainerStory6a3, 0, 0, "\n\n\n\n\nconfidence; however, you \ntruly cannot believe that you \nmay "
-		"emerge victorious.", font);
+        "emerge victorious.", font);
     //populate ContainerStory6b3
     ViewAdd(ContainerStory6b3, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory6b3, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory6b3, "Images/btnOkSmall.png", 20, 380, OnStoryLevel6, 4);
     ViewAdd(ContainerStory6b3, "Images/btnLaugh.png", 170, 380, OnStoryLevel6, 4);
     TextAdd(ContainerStory6b3, 0, 0, "\n\nAdmiral Skerbowh: \nSo... You aren't intelligent \nenough to comprehend "
-		"your", font);
+        "your", font);
     TextAdd(ContainerStory6b3, 0, 0, "\n\n\n\n\ncertain and eventual death.", font);
     //populate ContainerStory7w1
     ViewAdd(ContainerStory7w1, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7w1, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory7w1, "Images/btnOkBig.png", 20, 380, OnStoryLevel7, 3);
     TextAdd(ContainerStory7w1, 0, 0, "\n\nRon: \nYou defeated the enemy \nadmiral. The world will know \nof your "
-		"greatness.", font);
+        "greatness.", font);
     //populate ContainerStory7l1
     ViewAdd(ContainerStory7l1, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7l1, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory7l1, "Images/btnMyself.png", 20, 380, OnStoryLevel7, 1);
     ViewAdd(ContainerStory7l1, "Images/btnRon.png", 170, 380, OnStoryLevel7, 2);
     TextAdd(ContainerStory7l1, 0, 0, "\n\nAlex: \nMy ship has sustained critical \ndamage. Every single escape \npod "
-		"other than one has been", font);
+        "other than one has been", font);
     TextAdd(ContainerStory7l1, 0, 0, "\n\n\n\n\n\ntaken or destroyed. Should I \nsave myself or Ron?", font);
     //populate ContainerStory7a2
     ViewAdd(ContainerStory7a2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7a2, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory7a2, "Images/btnOkBig.png", 20, 380, OnStoryLevel7, 3);
     TextAdd(ContainerStory7a2, 0, 0, "\n\nExecutioner: \nYou are being executed for \ntreason since you abandoned "
-		"\nyour ship and crew to die.", font);
+        "\nyour ship and crew to die.", font);
     //populate ContainerStory7b2
     ViewAdd(ContainerStory7b2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory7b2, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory7b2, "Images/btnOkBig.png", 20, 380, OnStoryLevel7, 3);
-    saveRon = TextAdd(ContainerStory7b2, 0, 0, "", font);
 }
 void ContainerFive() {
     //populate ContainerStory5a1
@@ -1226,9 +1220,9 @@ void ContainerFive() {
     ViewAdd(ContainerStory5a1, "Images/btnOkSmall.png", 20, 380, OnStoryLevel5, 1);
     ViewAdd(ContainerStory5a1, "Images/btnThanks.png", 170, 380, OnStoryLevel5, 1);
     TextAdd(ContainerStory5a1, 0, 0, "\n\nCommodore Bailey: \nCongratulations on your way \nback. For your great "
-		"action", font);
+        "action", font);
     TextAdd(ContainerStory5a1, 0, 0, "\n\n\n\n\nout there, you have become \npilot of your own ship named \nICC "
-		"Kepler.", font);
+        "Kepler.", font);
     //populate ContainerStory5a2
     ViewAdd(ContainerStory5a2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory5a2, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1241,9 +1235,9 @@ void ContainerFive() {
     ViewAdd(ContainerStory5a3, "Images/btnNo.png", 20, 380, OnStoryLevel5, 3);
     ViewAdd(ContainerStory5a3, "Images/btnOkSmall.png", 170, 380, OnStoryLevel5, 4);
     TextAdd(ContainerStory5a3, 0, 0, "\n\nRon: \nWe located the escaped \nenemy. He is an admiral so \nhe is well "
-		"guarded, killing him", font);
+        "guarded, killing him", font);
     TextAdd(ContainerStory5a3, 0, 0, "\n\n\n\n\n\nwill be no easy feat. I will \ncome with you since I myself \nknow "
-		"where the enemy \nadmiral is.", font);
+        "where the enemy \nadmiral is.", font);
     //populate ContainerStory5b4
     ViewAdd(ContainerStory5b4, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory5b4, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1256,14 +1250,14 @@ void ContainerFive() {
     ViewAdd(ContainerStory5a5, "Images/btnAround.png", 20, 380, OnStoryLevel5, 5);
     ViewAdd(ContainerStory5a5, "Images/btnAttack.png", 170, 380, OnStoryLevel5, 6);
     TextAdd(ContainerStory5a5, 0, 0, "\n\nRon: \nThere's a whole platoon of \nships. Do you go around and \ntry to "
-		"avoid them, or do you", font);
+        "avoid them, or do you", font);
     TextAdd(ContainerStory5a5, 0, 0, "\n\n\n\n\n\nattack?", font);
     //populate ContainerStory5a6
     ViewAdd(ContainerStory5a6, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory5a6, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory5a6, "Images/btnOkBig.png", 20, 380, OnStoryLevel5, 7);
     TextAdd(ContainerStory5a6, 0, 0, "\n\nRon: \nThe ships see you before you \nare even able to go around \nand "
-		"attack.", font);
+        "attack.", font);
     //populate ContainerStory5b6
     ViewAdd(ContainerStory5b6, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory5b6, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1294,16 +1288,16 @@ void ContainerFour() {
     ViewAdd(ContainerStory4a4, "Images/btnEnemy.png", 20, 380, OnStoryLevel4, 5);
     ViewAdd(ContainerStory4a4, "Images/btnMine.png", 170, 380, OnStoryLevel4, 6);
     TextAdd(ContainerStory4a4, 0, 0, "\n\nAlly: \nYou need to get back. Luckily, \nmy radio signal reaches you. \nYou "
-		"can either take the", font);
+        "can either take the", font);
     TextAdd(ContainerStory4a4, 0, 0, "\n\n\n\n\n\nenemy ship or try to get back to yours. Also, if you make it back", 
-		font);
+        font);
     TextAdd(ContainerStory4a4, 0, 0, "\n\n\n\n\n\n\nto your ship, you'll be in \ntemporary command.", font);
     //populate ContainerStory4b5
     ViewAdd(ContainerStory4b5, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory4b5, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory4b5, "Images/btnOkBig.png", 20, 380, OnStoryLevel4, 6);
     TextAdd(ContainerStory4b5, 0, 0, "\n\nLieutenant Dan: \nThe enemy ship you were \nflying broke down. Luckily,", 
-		font);
+        font);
     TextAdd(ContainerStory4b5, 0, 0, "\n\n\n\n\nthe crew and I came to save \nyou.", font);
     //populate ContainerStory4a6
     ViewAdd(ContainerStory4a6, "Images/Background.png", 0, 0);
@@ -1311,15 +1305,15 @@ void ContainerFour() {
     ViewAdd(ContainerStory4a6, "Images/btnContact.png", 20, 380, OnStoryLevel4, 7);
     ViewAdd(ContainerStory4a6, "Images/btnShoot.png", 170, 380, OnStoryLevel4, 8);
     TextAdd(ContainerStory4a6, 0, 0, "\n\nLieutenant Dan: \nYou are in temporary \ncommand. There's ships up "
-		"\nahead; do you contact it to", font);
+        "\nahead; do you contact it to", font);
     TextAdd(ContainerStory4a6, 0, 0, "\n\n\n\n\n\nsee if it's friendly or do you \nshoot at it? There's no way "
-		"\naround.", font);
+        "\naround.", font);
     //populate ContainerStory4a7
     ViewAdd(ContainerStory4a7, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory4a7, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory4a7, "Images/btnOkBig.png", 20, 380, OnStoryLevel4, 9);
     TextAdd(ContainerStory4a7, 0, 0, "\n\nLieutenant Dan: \nThe ships say they are \nfriendly, so we went around "
-		"\nthem.", font);
+        "\nthem.", font);
     //populate ContainerStory4b7
     ViewAdd(ContainerStory4b7, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory4b7, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1356,7 +1350,7 @@ void ContainerThree() {
     ViewAdd(ContainerStory3a4, "Images/btnWhereAreWe.png", 20, 380, OnStoryLevel3, 4);
     ViewAdd(ContainerStory3a4, "Images/btnWhereCaptain.png", 170, 380, OnStoryLevel3, 4);
     TextAdd(ContainerStory3a4, 0, 0, "\n\nEnemy: \nSorry for knocking you out, it \nwas the only way to bring \nyou "
-		"here.", font);
+        "here.", font);
     //populate ContainerStory3a5
     ViewAdd(ContainerStory3a5, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory3a5, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1369,28 +1363,27 @@ void ContainerThree() {
     ViewAdd(ContainerStory3a6, "Images/btnOkSmall.png", 20, 380, OnStoryLevel3, 6);
     ViewAdd(ContainerStory3a6, "Images/btnSo.png", 170, 380, OnStoryLevel3, 6);
     TextAdd(ContainerStory3a6, 0, 0, "\n\nEnemy: \nTorture is what caused world \nwar 3 on your home planet: "
-		"\nEarth.", font);
+        "\nEarth.", font);
     //populate ContainerStory3a7
     ViewAdd(ContainerStory3a7, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory3a7, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory3a7, "Images/btnNo!.png", 20, 380, OnStoryLevel3, 7);
     ViewAdd(ContainerStory3a7, "Images/btnOkSmall.png", 170, 380, OnStoryLevel3, 7);
     TextAdd(ContainerStory3a7, 0, 0, "\n\nEnemy: \nI will force you to torture your \ncaptain, hopefully causing a "
-		"\nwar in the process.", font);
+        "\nwar in the process.", font);
     //populate ContainerStory3a8
     ViewAdd(ContainerStory3a8, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory3a8, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory3a8, "Images/btnNo!.png", 20, 380, OnStoryLevel3, 8);
     ViewAdd(ContainerStory3a8, "Images/btnOkSmall.png", 170, 380, OnStoryLevel3, 8);
     TextAdd(ContainerStory3a8, 0, 0, "\n\nEnemy: \nI will wait for you to torture \nhim until you do. There's "
-		"\nnothing you can do about it.", font);
+        "\nnothing you can do about it.", font);
     //populate ContainerStoryTorture
     TouchAdd(ContainerStoryTorture, 0, 0, 320, 568, OnTorture, 1);
     imageTorture = ViewAdd(ContainerStoryTorture, "Images/TortureModeOne.png", -2, -2);
     ViewAdd(ContainerStoryTorture, "Images/Pause.png", 270, 20, OnPause, 1);
     hpTorture = ViewAdd(ContainerStoryTorture, "Images/20HP.png", 20, 20);
-    //ViewAdd(ContainerStoryTorture, "Images/infToggle.png", 20, 380);
-    textTorture = TextAdd(ContainerStoryTorture, 70, 0, "", fontTorture);
+    textTorture = TextAdd(ContainerStoryTorture, 70, 0, "", FontAdd("Arial", "Regular", 24, 0xDF0101));
 }
 void ContainerTwo() {
     //populate ContainerStory2a1
@@ -1399,23 +1392,23 @@ void ContainerTwo() {
     ViewAdd(ContainerStory2a1, "Images/btnOkSmall.png", 20, 380, OnStoryLevel2, 1);
     ViewAdd(ContainerStory2a1, "Images/btnThanks.png", 170, 380, OnStoryLevel2, 1);
     TextAdd(ContainerStory2a1, 0, 0, "\n\nTeacher: \nThis test was designed to \ndetermine how well cadets \nwould "
-		"respond to stressful", font);
+        "respond to stressful", font);
     TextAdd(ContainerStory2a1, 0, 0, "\n\n\n\n\n\nsituations. You passed and \nhave been deemed fit for \nduty.", 
-		font);
+        font);
     //populate ContainerStory2a2
     ViewAdd(ContainerStory2a2, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory2a2, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory2a2, "Images/btnSure.png", 20, 380, OnStoryLevel2, 3);
     ViewAdd(ContainerStory2a2, "Images/btnNo.png", 170, 380, OnStoryLevel2, 4);
     TextAdd(ContainerStory2a2, 0, 0, "\n\nBecca: \nI heard you're the new soldier \nin town. Do you want to go \nout "
-		"to town with me?", font);
+        "to town with me?", font);
     //populate ContainerStory2a3
     ViewAdd(ContainerStory2a3, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory2a3, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory2a3, "Images/btnYes.png", 20, 380, OnStoryLevel2, 5);
     ViewAdd(ContainerStory2a3, "Images/btnNo.png", 170, 380, OnStoryLevel2, 6);
     TextAdd(ContainerStory2a3, 0, 0, "\n\nCaptain: \nSon, you have a bright future. \nWould you like to join me on "
-		"\nmy voyages?", font);
+        "\nmy voyages?", font);
     //populate ContainerStory2b4
     ViewAdd(ContainerStory2b4, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory2b4, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1433,7 +1426,7 @@ void ContainerTwo() {
     ViewAdd(ContainerStory2a6, "Images/btnEngage.png", 20, 380, OnStoryLevel2, 9);
     ViewAdd(ContainerStory2a6, "Images/btnAround.png", 170, 380, OnStoryLevel2, 10);
     TextAdd(ContainerStory2a6, 0, 0, "\n\nCaptain: \nThere's ships up ahead. \nShould we engage or go \naround?", 
-		font);
+        font);
     //populate ContainerStory2e7
     ViewAdd(ContainerStory2e7, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory2e7, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1459,7 +1452,6 @@ void ContainerOne() {
     //populate ContainerEndless
     ViewAdd(ContainerEndless, "Images/Background.png", 0, 0, OnBattleTouch, 1);
     ViewAdd(ContainerEndless, "Images/Pause.png", 270, 20, OnPause, 1);
-    hp = ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20);
     //player bullets
     for (int i = 0; i < 15; i++) {
         mBullet1[i] = ViewAdd(ContainerEndless, "Images/Bullet.png", -10, -10);
@@ -1516,16 +1508,16 @@ void ContainerOne() {
     ViewAdd(ContainerDied, "Images/Background.png", 0, 0);
     ViewAdd(ContainerDied, "Images/btnOkBig.png", 20, 380, OnDied, 1);
     TextAdd(ContainerDied, 0, 0, "\n\nYou died without completing \nyour journey or leaving \nyourself a legacy. "
-		"You left no", font);
+        "You left no", font);
     TextAdd(ContainerDied, 0, 0, "\n\n\n\n\nimprint on the world and \nnobody will ever remember \nyou.", font);
     //populate CointainerStory1a1
     ViewAdd(ContainerStory1a1, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory1a1, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory1a1, "Images/btnOkBig.png", 20, 380, OnStoryLevel1, 1);
     TextAdd(ContainerStory1a1, 0, 0, "\n\nRon: \nAlex, are you ready for the \nbig test? Remember: We \nadopted the "
-		"new cycle", font);
+        "new cycle", font);
     TextAdd(ContainerStory1a1, 0, 0, "\n\n\n\n\n\nsystem 93 cycles ago. If we \nstill used the old Earth \nmethod, "
-		"it would currently be", font);
+        "it would currently be", font);
     TextAdd(ContainerStory1a1, 0, 0, "\n\n\n\n\n\n\n\n\nyear 2433.", font);
     //populate ContainerStory1a2
     ViewAdd(ContainerStory1a2, "Images/Background.png", 0, 0);
@@ -1533,14 +1525,14 @@ void ContainerOne() {
     ViewAdd(ContainerStory1a2, "Images/btnStudy.png", 20, 380, OnStoryLevel1, 3);
     ViewAdd(ContainerStory1a2, "Images/btnParty.png", 170, 380, OnStoryLevel1, 4);
     TextAdd(ContainerStory1a2, 0, 0, "\n\nRon: \nAlso, you can either \nstudy for the big test \ntomorrow, or go to "
-		"a party", font);
+        "a party", font);
     TextAdd(ContainerStory1a2, 0, 0, "\n\n\n\n\n\nwith the cool guys and I. Just \ntell them Ron invited you.", font);
     //populate ContainerStory1s3
     ViewAdd(ContainerStory1s3, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory1s3, "Images/Pause.png", 270, 20, OnPause, 1);
     ViewAdd(ContainerStory1s3, "Images/btnSleep.png", 20, 380, OnStoryLevel1, 5);
     TextAdd(ContainerStory1s3, 0, 0, "\n\nBook: \nEverybody must listen to \nhigher command at all times. \nAlso, "
-		"ship pilots must never", font);
+        "ship pilots must never", font);
     TextAdd(ContainerStory1s3, 0, 0, "\n\n\n\n\n\nabandon their ship.", font);
     //populate ContainerStory1p3
     ViewAdd(ContainerStory1p3, "Images/Background.png", 0, 0);
@@ -1553,7 +1545,7 @@ void ContainerOne() {
     ViewAdd(ContainerStory1a4, "Images/btnRescue.png", 20, 380, OnStoryLevel1, 6);
     ViewAdd(ContainerStory1a4, "Images/btnEscape.png", 170, 380, OnStoryLevel1, 7);
     TextAdd(ContainerStory1a4, 0, 0, "\n\nTeacher: \nThe Kobayashi ship is \ntrapped behind enemy \nlines. What do "
-		"you do?", font);
+        "you do?", font);
     //populate ContainerStory1r5
     ViewAdd(ContainerStory1r5, "Images/Background.png", 0, 0);
     ViewAdd(ContainerStory1r5, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1639,7 +1631,6 @@ void AppMain() {
     LoadGame();
     DeclareContainers();
     font = FontAdd("Arial", "Regular", 24, 0xA4A4A4);
-    fontTorture = FontAdd("Arial", "Regular", 24, 0xDF0101);
 
     ScreenSwitch();
     ContainerOne();
@@ -1652,16 +1643,8 @@ void AppMain() {
     //populate ContainerUnlocks
     ViewAdd(ContainerUnlocks, "Images/Background.png", 0, 0);
     ViewAdd(ContainerUnlocks, "Images/Pause.png", 270, 20, OnPause, 1);
-    r = TextAdd(ContainerUnlocks, 10, 10, "", font);
     TextAdd(ContainerUnlocks, 10, 10, "\n\n\n\n\n Pick Your Ship By Clicking", font);
     ViewAdd(ContainerUnlocks, "Unlocks/UnShip_1.png", 20, 180, Unlocks, 1);
-    s2 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_2.png", 120, 180, Unlocks, 2);
-    s3 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_3.png", 220, 180, Unlocks, 3);
-    s4 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_4.png", 20, 280, Unlocks, 4);
-    s5 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_5.png", 120, 280, Unlocks, 5);
-    s6 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_6.png", 220, 280, Unlocks, 6);
-    s7 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_7.png", 60, 380, Unlocks, 7);
-    s8 = ViewAdd(ContainerUnlocks, "Unlocks/LckShip_8.png", 180, 380, Unlocks, 8);
     //populate ContainerOptions
     ViewAdd(ContainerOptions, "Images/Background.png", 0, 0);
     ViewAdd(ContainerOptions, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1672,7 +1655,7 @@ void AppMain() {
     //populate ContainerDeleteCheckOne
     ViewAdd(ContainerDeleteCheckOne, "Images/Background.png", 0, 0);
     TextAdd(ContainerDeleteCheckOne, 20, 20, "Are you sure you want to \nDELETE ALL PLAYER \nDATA including xp, rank, "
-		"\nhighscore, and ships?", font);
+        "\nhighscore, and ships?", font);
     ViewAdd(ContainerDeleteCheckOne, "Images/btnNoDelete.png", 20, 180, Options, 5);
     ViewAdd(ContainerDeleteCheckOne, "Images/btnYesDelete.png", 20, 300, Options, 3);
     //populate ContainerDeleteCheckTwo
@@ -1685,17 +1668,17 @@ void AppMain() {
     StartupMusic();
 }
 
-void IntGameToFile() {
-    fileBuffer[0] = char(intTempNum / 10000 + '0');
-    intTempNum %= 10000;
-    fileBuffer[1] = char(intTempNum / 1000 + '0');
-    intTempNum %= 1000;
-    fileBuffer[2] = char(intTempNum / 100 + '0');
-    intTempNum %= 100;
-    fileBuffer[3] = char(intTempNum / 10 + '0');
-    intTempNum %= 10;
-    fileBuffer[4] = char(intTempNum + '0');
-    intTempNum = 0;
+void IntGameToFile(int num) {
+    int numToSave = num;
+    fileBuffer[0] = char(numToSave / 10000 + '0');
+    numToSave %= 10000;
+    fileBuffer[1] = char(numToSave / 1000 + '0');
+    numToSave %= 1000;
+    fileBuffer[2] = char(numToSave / 100 + '0');
+    numToSave %= 100;
+    fileBuffer[3] = char(numToSave / 10 + '0');
+    numToSave %= 10;
+    fileBuffer[4] = char(numToSave + '0');
 }
 void BoolGameToFile() {
     fileBuffer[0] = (boolTempNum) ? ('t') : ('f');
@@ -1716,26 +1699,22 @@ void AppExit() {
     FileClose(fileUpdateHighscore);
     //fileXp
     int fileXp = FileOpen("Xp.txt");
-    intTempNum = xp;
-    IntGameToFile();
+    IntGameToFile(xp);
     FileWrite(fileXp, fileBuffer, 5);
     FileClose(fileXp);
     //fileShip
     int fileShip = FileOpen("Ship.txt");
-    intTempNum = ship;
-    IntGameToFile();
+    IntGameToFile(ship);
     FileWrite(fileShip, fileBuffer, 5);
     FileClose(fileShip);
     //fileHighscore
     int fileHighscore = FileOpen("Highscore.txt");
-    intTempNum = highscore;
-    IntGameToFile();
+    IntGameToFile(highscore);
     FileWrite(fileHighscore, fileBuffer, 5);
     FileClose(fileHighscore);
     //fileCounter
     int fileCounter = FileOpen("Counter.txt");
-    intTempNum = soundCounter;
-    IntGameToFile();
+    IntGameToFile(soundCounter);
     FileWrite(fileCounter, fileBuffer, 5);
     FileClose(fileCounter);
 }
@@ -2206,12 +2185,15 @@ int round(double num) {
     return ret;
 }
 void HealthBar() {
+    if (health < 0) {
+        health = 0;
+    }
     int Image;
     if (healthUpdate) {
         const int shipMaxHealth = 18 + 2 * ship;
         const int fracHealth = round(20 * health / shipMaxHealth);
         Image = ImageAdd(concatHealth(fracHealth));
-        ViewSetImage(hp, Image);
+        ViewSetImage(ViewAdd(ContainerEndless, "Images/20HP.png", 20, 20), Image);
         assert(health >= 0);
         if (health == 0) {
             if (CurrentScreen == ScreenEndless) {
@@ -3163,6 +3145,8 @@ void EnemyShipMove() {
             ViewSetxy(eShip8[i], eShipX8[i], eShipY8[i] + ENEMY_FLY_SPEED);
         }
     }
+    
+    bool goRight = false;
     //ship 9
     if (eShipY9 < 40) {
         ViewSetxy(eShip9, eShipX9, eShipY9 + ENEMY_FLY_SPEED);
@@ -3450,43 +3434,43 @@ bool ShipInAction(int ship) {
     switch (ship) {
         case 1:
             ret = eShip1Health[shipActionCounter] <= 0 && eShipY1[shipActionCounter] >= 0 
-				&& eShipX1[shipActionCounter] < 600 && eShipY1[shipActionCounter] >= 0 
-				&& eShipX1[shipActionCounter] <= 320;
+                && eShipX1[shipActionCounter] < 600 && eShipY1[shipActionCounter] >= 0 
+                && eShipX1[shipActionCounter] <= 320;
             break;
         case 2:
             ret = eShip2Health[shipActionCounter] <= 0 && eShipY2[shipActionCounter] >= 0 
-				&& eShipX2[shipActionCounter] < 600 && eShipY2[shipActionCounter] >= 0 
-				&& eShipX2[shipActionCounter] <= 320;
+                && eShipX2[shipActionCounter] < 600 && eShipY2[shipActionCounter] >= 0 
+                && eShipX2[shipActionCounter] <= 320;
             break;
         case 3:
             ret = eShip3Health[shipActionCounter] <= 0 && eShipY3[shipActionCounter] >= 0 
-				&& eShipX3[shipActionCounter] < 600 && eShipY3[shipActionCounter] >= 0 
-				&& eShipX3[shipActionCounter] <= 320;
+                && eShipX3[shipActionCounter] < 600 && eShipY3[shipActionCounter] >= 0 
+                && eShipX3[shipActionCounter] <= 320;
             break;
         case 4:
             ret = eShip4Health[shipActionCounter] <= 0 && eShipY4[shipActionCounter] >= 0 
-				&& eShipX4[shipActionCounter] < 600 && eShipY4[shipActionCounter] >= 0 
-				&& eShipX4[shipActionCounter] <= 320;
+                && eShipX4[shipActionCounter] < 600 && eShipY4[shipActionCounter] >= 0 
+                && eShipX4[shipActionCounter] <= 320;
             break;
         case 5:
             ret = eShip5Health[shipActionCounter] <= 0 && eShipY5[shipActionCounter] >= 0 
-				&& eShipX5[shipActionCounter] < 600 && eShipY5[shipActionCounter] >= 0 
-				&& eShipX5[shipActionCounter] <= 320;
+                && eShipX5[shipActionCounter] < 600 && eShipY5[shipActionCounter] >= 0 
+                && eShipX5[shipActionCounter] <= 320;
             break;
         case 6:
             ret = eShip6Health[shipActionCounter] <= 0 && eShipY6[shipActionCounter] >= 0 
-				&& eShipX6[shipActionCounter] < 600 && eShipY6[shipActionCounter] >= 0 
-				&& eShipX6[shipActionCounter] <= 320;
+                && eShipX6[shipActionCounter] < 600 && eShipY6[shipActionCounter] >= 0 
+                && eShipX6[shipActionCounter] <= 320;
             break;
         case 7:
             ret = eShip7Health[shipActionCounter] <= 0 && eShipY7[shipActionCounter] >= 0 
-				&& eShipX7[shipActionCounter] < 600 && eShipY7[shipActionCounter] >= 0 
-				&& eShipX7[shipActionCounter] <= 320;
+                && eShipX7[shipActionCounter] < 600 && eShipY7[shipActionCounter] >= 0 
+                && eShipX7[shipActionCounter] <= 320;
             break;
         case 8:
             ret = eShip8Health[shipActionCounter] <= 0 && eShipY8[shipActionCounter] >= 0 
-				&& eShipX8[shipActionCounter] < 600 && eShipY8[shipActionCounter] >= 0 
-				&& eShipX8[shipActionCounter] <= 320;
+                && eShipX8[shipActionCounter] < 600 && eShipY8[shipActionCounter] >= 0 
+                && eShipX8[shipActionCounter] <= 320;
             break;
         case 9:
             ret = eShip9Health <= 0 && eShipY9 >= 0 && eShipX9 < 600 && eShipY9 >= 0 && eShipX9 <= 320;
@@ -3703,7 +3687,7 @@ void ShipCollision() {
     for (int i = 0; i < 10; i++) {
         //ship 1
         if (mX + width1 < eShipX1[i] + 76 && mX + width2 > eShipX1[i] + 18 && mY < eShipY1[i] + 94 
-			&& mY + 94 > eShipY1[i]) {
+            && mY + 94 > eShipY1[i]) {
             if (eShip1Health[i] > 0) {
                 eShip1Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3712,7 +3696,7 @@ void ShipCollision() {
         }
         //ship 2
         if (mX + width1 < eShipX2[i] + 69 && mX + width2 > eShipX2[i] + 24 && mY < eShipY2[i] + 94 
-			&& mY + 94 > eShipY2[i]) {
+            && mY + 94 > eShipY2[i]) {
             if (eShip2Health[i] > 0) {
                 eShip2Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3721,7 +3705,7 @@ void ShipCollision() {
         }
         //ship 3
         if (mX + width1 < eShipX3[i] + 66 && mX + width2 > eShipX3[i] + 27 && mY < eShipY3[i] + 94 
-			&& mY + 94 > eShipY3[i]) {
+            && mY + 94 > eShipY3[i]) {
             if (eShip3Health[i] > 0) {
                 eShip3Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3730,7 +3714,7 @@ void ShipCollision() {
         }
         //ship 4
         if (mX + width1 < eShipX4[i] + 87 && mX + width2 > eShipX4[i] + 6 && mY < eShipY4[i] + 94 
-			&& mY + 94 > eShipY4[i]) {
+            && mY + 94 > eShipY4[i]) {
             if (eShip4Health[i] > 0) {
                 eShip4Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3741,7 +3725,7 @@ void ShipCollision() {
     for (int i = 0; i < 5; i++) {
         //ship 5
         if (mX + width1 < eShipX5[i] + 71 && mX + width2 > eShipX5[i] + 22 && mY < eShipY5[i] + 94 
-			&& mY + 94 > eShipY5[i]) {
+            && mY + 94 > eShipY5[i]) {
             if (eShip5Health[i] > 0) {
                 eShip5Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3750,7 +3734,7 @@ void ShipCollision() {
         }
         //ship 6
         if (mX + width1 < eShipX6[i] + 81 && mX + width2 > eShipX6[i] + 12 && mY < eShipY6[i] + 94 
-			&& mY + 94 > eShipY6[i]) {
+            && mY + 94 > eShipY6[i]) {
             if (eShip6Health[i] > 0) {
                 eShip6Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3759,7 +3743,7 @@ void ShipCollision() {
         }
         //ship 7
         if (mX + width1 < eShipX7[i] + 86 && mX + width2 > eShipX7[i] + 7 && mY < eShipY7[i] + 94 
-			&& mY + 94 > eShipY7[i]) {
+            && mY + 94 > eShipY7[i]) {
             if (eShip7Health[i] > 0) {
                 eShip7Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3768,7 +3752,7 @@ void ShipCollision() {
         }
         //ship 8
         if (mX + width1 < eShipX8[i] + 86 && mX + width2 > eShipX8[i] + 6 && mY < eShipY8[i] + 94 
-			&& mY + 94 > eShipY8[i]) {
+            && mY + 94 > eShipY8[i]) {
             if (eShip8Health[i] > 0) {
                 eShip8Health[i] -= 2 + level;
                 health -= 2 + level;
@@ -3814,7 +3798,7 @@ bool CreateMove() {
                 || CurrentScreen == ScreenStoryBattle5 || CurrentScreen == ScreenStoryBattle6;
 }
 void OnTimer() {
-//called 30 times per second - 1800=1min - 10000=5min 36sec
+    //called 30 times per second - 1800=1min - 10000=5min 36sec
     Rank();
     SoundSwitch();
     DoUpdateHighscore();
