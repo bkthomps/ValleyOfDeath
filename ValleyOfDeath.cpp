@@ -11,7 +11,7 @@
 const int SPAWN_TIME = 100, ENEMY_BASE_HEALTH = 3, ENEMY_INCREASE_HEALTH = 1, ENEMY_SHOOT_COOLDOWN_SPEED = 45;
 const int SPEED = 15, TIME = 15, ENEMY_FLY_SPEED = 3, ENEMY_BULLET_SPEED = 8;
 
-bool updateHighscore, pause, date, marry, boolTempNum, torture, healthUpdate;
+bool sound, updateHighscore, pause, date, marry, boolTempNum, torture, healthUpdate;
 char font, fileBuffer[5];
 int xp, ship, highscore, soundCounter, health, set, level, bulletTimeCounter, shipMoveCounter, bulletMoveCounter;
 int enemyExplosionCounter[10], shipView, mX, mY, newX, newY, mBullet1[15], mBullet2[15], mBullet3[15];
