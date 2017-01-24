@@ -1287,7 +1287,7 @@ void ContainerFour() {
     ViewAdd(Container::story4a4, "Images/btnEnemy.png", 20, 380, OnStoryLevel4, 5);
     ViewAdd(Container::story4a4, "Images/btnMine.png", 170, 380, OnStoryLevel4, 6);
     TextAdd(Container::story4a4, 0, 0, "\n\nAlly: \nYou need to get back. Luckily, \nmy radio signal reaches you. "
-		"\nYou can either take the", font);
+        "\nYou can either take the", font);
     TextAdd(Container::story4a4, 0, 0, "\n\n\n\n\n\nenemy ship or try to get back to yours. Also, if you make it back", 
         font);
     TextAdd(Container::story4a4, 0, 0, "\n\n\n\n\n\n\nto your ship, you'll be in \ntemporary command.", font);
@@ -1369,7 +1369,7 @@ void ContainerThree() {
     ViewAdd(Container::story3a7, "Images/btnNo!.png", 20, 380, OnStoryLevel3, 7);
     ViewAdd(Container::story3a7, "Images/btnOkSmall.png", 170, 380, OnStoryLevel3, 7);
     TextAdd(Container::story3a7, 0, 0, "\n\nEnemy: \nI will force you to State::torture your \ncaptain, hopefully "
-		"causing a \nwar in the process.", font);
+        "causing a \nwar in the process.", font);
     //populate Container::story3a8
     ViewAdd(Container::story3a8, "Images/Background.png", 0, 0);
     ViewAdd(Container::story3a8, "Images/Pause.png", 270, 20, OnPause, 1);
@@ -1655,7 +1655,7 @@ void AppMain() {
     //populate Container::deleteCheckOne
     ViewAdd(Container::deleteCheckOne, "Images/Background.png", 0, 0);
     TextAdd(Container::deleteCheckOne, 20, 20, "Are you sure you want to \nDELETE ALL PLAYER \nDATA including xp, "
-		"rank, \nhighscore, and ships?", font);
+        "rank, \nhighscore, and ships?", font);
     ViewAdd(Container::deleteCheckOne, "Images/btnNoDelete.png", 20, 180, Options, 5);
     ViewAdd(Container::deleteCheckOne, "Images/btnYesDelete.png", 20, 300, Options, 3);
     //populate Container::deleteCheckTwo
@@ -1879,65 +1879,65 @@ void BulletTime() {
             for (int j = 0; j < 10; j++) {
                 //ship 1
                 if (y > EnemyShips::e1y[j] && y < EnemyShips::e1y[j] + 94 && x > EnemyShips::e1x[j] + 9 
-					&& x < EnemyShips::e1x[j] + 76) {
+                    && x < EnemyShips::e1x[j] + 76) {
                     ViewSetxy(Bullets::m1[i], -10, -10);
                     EnemyShips::e1hp[j] -= 1;
                 }
                 if (y2 > EnemyShips::e1y[j] && y2 < EnemyShips::e1y[j] + 94 && x2 > EnemyShips::e1x[j] + 9 
-					&& x2 < EnemyShips::e1x[j] + 76) {
+                    && x2 < EnemyShips::e1x[j] + 76) {
                     ViewSetxy(Bullets::m2[i], -20, -20);
                     EnemyShips::e1hp[j] -= 3;
                 }
                 if (y3 > EnemyShips::e1y[j] && y3 < EnemyShips::e1y[j] + 94 && x3 > EnemyShips::e1x[j] + 9 
-					&& x3 < EnemyShips::e1x[j] + 76) {
+                    && x3 < EnemyShips::e1x[j] + 76) {
                     ViewSetxy(Bullets::m3[i], -10, -10);
                     EnemyShips::e1hp[j] -= 1;
                 }
                 //ship 2
                 if (y > EnemyShips::e2y[j] && y < EnemyShips::e2y[j] + 94 && x > EnemyShips::e2x[j] + 15 
-					&& x < EnemyShips::e2x[j] + 69) {
+                    && x < EnemyShips::e2x[j] + 69) {
                     ViewSetxy(Bullets::m1[i], -10, -10);
                     EnemyShips::e2hp[j] -= 1;
                 }
                 if (y2 > EnemyShips::e2y[j] && y2 < EnemyShips::e2y[j] + 94 && x2 > EnemyShips::e2x[j] + 15 
-					&& x2 < EnemyShips::e2x[j] + 69) {
+                    && x2 < EnemyShips::e2x[j] + 69) {
                     ViewSetxy(Bullets::m2[i], -20, -20);
                     EnemyShips::e2hp[j] -= 3;
                 }
                 if (y3 > EnemyShips::e2y[j] && y3 < EnemyShips::e2y[j] + 94 && x3 > EnemyShips::e2x[j] + 15 
-					&& x3 < EnemyShips::e2x[j] + 69) {
+                    && x3 < EnemyShips::e2x[j] + 69) {
                     ViewSetxy(Bullets::m3[i], -10, -10);
                     EnemyShips::e2hp[j] -= 1;
                 }
                 //ship 3
                 if (y > EnemyShips::e3y[j] && y < EnemyShips::e3y[j] + 94 && x > EnemyShips::e3x[j] + 18 
-					&& x < EnemyShips::e3x[j] + 66) {
+                    && x < EnemyShips::e3x[j] + 66) {
                     ViewSetxy(Bullets::m1[i], -10, -10);
                     EnemyShips::e3hp[j] -= 1;
                 }
                 if (y2 > EnemyShips::e3y[j] && y2 < EnemyShips::e3y[j] + 94 && x2 > EnemyShips::e3x[j] + 18 
-					&& x2 < EnemyShips::e3x[j] + 66) {
+                    && x2 < EnemyShips::e3x[j] + 66) {
                     ViewSetxy(Bullets::m2[i], -20, -20);
                     EnemyShips::e3hp[j] -= 3;
                 }
                 if (y3 > EnemyShips::e3y[j] && y3 < EnemyShips::e3y[j] + 94 && x3 > EnemyShips::e3x[j] + 18 
-					&& x3 < EnemyShips::e3x[j] + 66) {
+                    && x3 < EnemyShips::e3x[j] + 66) {
                     ViewSetxy(Bullets::m3[i], -10, -10);
                     EnemyShips::e3hp[j] -= 1;
                 }
                 //ship 4
                 if (y > EnemyShips::e4y[j] && y < EnemyShips::e4y[j] + 94 && x > EnemyShips::e4x[j] - 3 
-					&& x < EnemyShips::e4x[j] + 87) {
+                    && x < EnemyShips::e4x[j] + 87) {
                     ViewSetxy(Bullets::m1[i], -10, -10);
                     EnemyShips::e4hp[j] -= 1;
                 }
                 if (y2 > EnemyShips::e4y[j] && y2 < EnemyShips::e4y[j] + 94 && x2 > EnemyShips::e4x[j] - 3 
-					&& x2 < EnemyShips::e4x[j] + 87) {
+                    && x2 < EnemyShips::e4x[j] + 87) {
                     ViewSetxy(Bullets::m2[i], -20, -20);
                     EnemyShips::e4hp[j] -= 3;
                 }
                 if (y3 > EnemyShips::e4y[j] && y3 < EnemyShips::e4y[j] + 94 && x3 > EnemyShips::e4x[j] - 3 
-					&& x3 < EnemyShips::e4x[j] + 87) {
+                    && x3 < EnemyShips::e4x[j] + 87) {
                     ViewSetxy(Bullets::m3[i], -10, -10);
                     EnemyShips::e4hp[j] -= 1;
                 }
@@ -1945,98 +1945,98 @@ void BulletTime() {
             for (int j = 0; j < 5; j++) {
                 //ship 5
                 if (y > EnemyShips::e5y[j] && y < EnemyShips::e5y[j] + 94 && x > EnemyShips::e5x[j] + 13 
-					&& x < EnemyShips::e5x[j] + 71) {
+                    && x < EnemyShips::e5x[j] + 71) {
                     ViewSetxy(Bullets::m1[i], -10, -10);
                     EnemyShips::e5hp[j] -= 1;
                 }
                 if (y2 > EnemyShips::e5y[j] && y2 < EnemyShips::e5y[j] + 94 && x2 > EnemyShips::e5x[j] + 13 
-					&& x2 < EnemyShips::e5x[j] + 71) {
+                    && x2 < EnemyShips::e5x[j] + 71) {
                     ViewSetxy(Bullets::m2[i], -20, -20);
                     EnemyShips::e5hp[j] -= 3;
                 }
                 if (y3 > EnemyShips::e5y[j] && y3 < EnemyShips::e5y[j] + 94 && x3 > EnemyShips::e5x[j] + 13 
-					&& x3 < EnemyShips::e5x[j] + 71) {
+                    && x3 < EnemyShips::e5x[j] + 71) {
                     ViewSetxy(Bullets::m3[i], -10, -10);
                     EnemyShips::e5hp[j] -= 1;
                 }
                 //ship 6
                 if (y > EnemyShips::e6y[j] && y < EnemyShips::e6y[j] + 94 && x > EnemyShips::e6x[j] + 3 
-					&& x < EnemyShips::e6x[j] + 81) {
+                    && x < EnemyShips::e6x[j] + 81) {
                     ViewSetxy(Bullets::m1[i], -10, -10);
                     EnemyShips::e6hp[j] -= 1;
                 }
                 if (y2 > EnemyShips::e2y[j] && y2 < EnemyShips::e2y[j] + 94 && x2 > EnemyShips::e2x[j] + 3 
-					&& x2 < EnemyShips::e2x[j] + 81) {
+                    && x2 < EnemyShips::e2x[j] + 81) {
                     ViewSetxy(Bullets::m2[i], -20, -20);
                     EnemyShips::e2hp[j] -= 3;
                 }
                 if (y3 > EnemyShips::e6y[j] && y3 < EnemyShips::e6y[j] + 94 && x3 > EnemyShips::e6x[j] + 3 
-					&& x3 < EnemyShips::e6x[j] + 81) {
+                    && x3 < EnemyShips::e6x[j] + 81) {
                     ViewSetxy(Bullets::m3[i], -10, -10);
                     EnemyShips::e6hp[j] -= 1;
                 }
                 //ship 7
                 if (y > EnemyShips::e7y[j] && y < EnemyShips::e7y[j] + 94 && x > EnemyShips::e7x[j] - 2 
-					&& x < EnemyShips::e7x[j] + 86) {
+                    && x < EnemyShips::e7x[j] + 86) {
                     ViewSetxy(Bullets::m1[i], -10, -10);
                     EnemyShips::e7hp[j] -= 1;
                 }
                 if (y2 > EnemyShips::e7y[j] && y2 < EnemyShips::e7y[j] + 94 && x2 > EnemyShips::e7x[j] - 2 
-					&& x2 < EnemyShips::e7x[j] + 86) {
+                    && x2 < EnemyShips::e7x[j] + 86) {
                     ViewSetxy(Bullets::m2[i], -20, -20);
                     EnemyShips::e7hp[j] -= 3;
                 }
                 if (y3 > EnemyShips::e7y[j] && y3 < EnemyShips::e7y[j] + 94 && x3 > EnemyShips::e7x[j] - 2 
-					&& x3 < EnemyShips::e7x[j] + 86) {
+                    && x3 < EnemyShips::e7x[j] + 86) {
                     ViewSetxy(Bullets::m3[i], -10, -10);
                     EnemyShips::e7hp[j] -= 1;
                 }
                 //ship 8
                 if (y > EnemyShips::e8y[j] && y < EnemyShips::e8y[j] + 94 && x > EnemyShips::e8x[j] - 3 
-					&& x < EnemyShips::e8x[j] + 86) {
+                    && x < EnemyShips::e8x[j] + 86) {
                     ViewSetxy(Bullets::m1[i], -10, -10);
                     EnemyShips::e8hp[j] -= 1;
                 }
                 if (y2 > EnemyShips::e8y[j] && y2 < EnemyShips::e8y[j] + 94 && x2 > EnemyShips::e8x[j] - 3 
-					&& x2 < EnemyShips::e8x[j] + 86) {
+                    && x2 < EnemyShips::e8x[j] + 86) {
                     ViewSetxy(Bullets::m2[i], -20, -20);
                     EnemyShips::e8hp[j] -= 3;
                 }
                 if (y3 > EnemyShips::e8y[j] && y3 < EnemyShips::e8y[j] + 94 && x3 > EnemyShips::e8x[j] - 3 
-					&& x3 < EnemyShips::e8x[j] + 86) {
+                    && x3 < EnemyShips::e8x[j] + 86) {
                     ViewSetxy(Bullets::m3[i], -10, -10);
                     EnemyShips::e8hp[j] -= 1;
                 }
             }
             //ship 9
             if (y > EnemyShips::e9y[0] && y < EnemyShips::e9y[0] + 94 && x > EnemyShips::e9x[0] 
-				&& x < EnemyShips::e9x[0] + 240) {
+                && x < EnemyShips::e9x[0] + 240) {
                 ViewSetxy(Bullets::m1[i], -10, -10);
                 EnemyShips::e9hp[0] -= 1;
             }
             if (y2 > EnemyShips::e9y[0] && y2 < EnemyShips::e9y[0] + 94 && x2 > EnemyShips::e9x[0] 
-				&& x2 < EnemyShips::e9x[0] + 240) {
+                && x2 < EnemyShips::e9x[0] + 240) {
                 ViewSetxy(Bullets::m2[i], -20, -20);
                 EnemyShips::e9hp[0] -= 3;
             }
             if (y3 > EnemyShips::e9y[0] && y3 < EnemyShips::e9y[0] + 94 && x3 > EnemyShips::e9x[0] 
-				&& x3 < EnemyShips::e9x[0] + 240) {
+                && x3 < EnemyShips::e9x[0] + 240) {
                 ViewSetxy(Bullets::m3[i], -10, -10);
                 EnemyShips::e9hp[0] -= 1;
             }
             //ship 10
             if (y > EnemyShips::e10y[0] && y < EnemyShips::e10y[0] + 94 && x > EnemyShips::e10x[0] 
-				&& x < EnemyShips::e10x[0] + 240) {
+                && x < EnemyShips::e10x[0] + 240) {
                 ViewSetxy(Bullets::m1[i], -10, -10);
                 EnemyShips::e10hp[0] -= 1;
             }
             if (y2 > EnemyShips::e10y[0] && y2 < EnemyShips::e10y[0] + 94 && x2 > EnemyShips::e10x[0] 
-				&& x2 < EnemyShips::e10x[0] + 240) {
+                && x2 < EnemyShips::e10x[0] + 240) {
                 ViewSetxy(Bullets::m2[i], -20, -20);
                 EnemyShips::e10hp[0] -= 3;
             }
             if (y3 > EnemyShips::e10y[0] && y3 < EnemyShips::e10y[0] + 94 && x3 > EnemyShips::e10x[0] 
-				&& x3 < EnemyShips::e10x[0] + 240) {
+                && x3 < EnemyShips::e10x[0] + 240) {
                 ViewSetxy(Bullets::m3[i], -10, -10);
                 EnemyShips::e10hp[0] -= 1;
             }
@@ -3448,11 +3448,11 @@ bool ShipInAction(int ship) {
             break;
         case 9:
             ret = EnemyShips::e9hp[0] <= 0 && EnemyShips::e9y[0] >= 0 && EnemyShips::e9x[0] < 600 
-				&& EnemyShips::e9y[0] >= 0 && EnemyShips::e9x[0] <= 320;
+                && EnemyShips::e9y[0] >= 0 && EnemyShips::e9x[0] <= 320;
             break;
         case 10:
             ret = EnemyShips::e10hp[0] <= 0 && EnemyShips::e10y[0] >= 0 && EnemyShips::e10x[0] < 600 
-				&& EnemyShips::e10y[0] >= 0 && EnemyShips::e10x[0] <= 320;
+                && EnemyShips::e10y[0] >= 0 && EnemyShips::e10x[0] <= 320;
             break;
     }
     return ret;
@@ -3663,7 +3663,7 @@ void ShipCollision() {
     for (int i = 0; i < 10; i++) {
         //ship 1
         if (mX + width1 < EnemyShips::e1x[i] + 76 && mX + width2 > EnemyShips::e1x[i] + 18 
-			&& mY < EnemyShips::e1y[i] + 94 && mY + 94 > EnemyShips::e1y[i]) {
+            && mY < EnemyShips::e1y[i] + 94 && mY + 94 > EnemyShips::e1y[i]) {
             if (EnemyShips::e1hp[i] > 0) {
                 EnemyShips::e1hp[i] -= 2 + level;
                 health -= 2 + level;
@@ -3672,7 +3672,7 @@ void ShipCollision() {
         }
         //ship 2
         if (mX + width1 < EnemyShips::e2x[i] + 69 && mX + width2 > EnemyShips::e2x[i] + 24 
-			&& mY < EnemyShips::e2y[i] + 94 && mY + 94 > EnemyShips::e2y[i]) {
+            && mY < EnemyShips::e2y[i] + 94 && mY + 94 > EnemyShips::e2y[i]) {
             if (EnemyShips::e2hp[i] > 0) {
                 EnemyShips::e2hp[i] -= 2 + level;
                 health -= 2 + level;
@@ -3681,7 +3681,7 @@ void ShipCollision() {
         }
         //ship 3
         if (mX + width1 < EnemyShips::e3x[i] + 66 && mX + width2 > EnemyShips::e3x[i] + 27 
-			&& mY < EnemyShips::e3y[i] + 94 && mY + 94 > EnemyShips::e3y[i]) {
+            && mY < EnemyShips::e3y[i] + 94 && mY + 94 > EnemyShips::e3y[i]) {
             if (EnemyShips::e3hp[i] > 0) {
                 EnemyShips::e3hp[i] -= 2 + level;
                 health -= 2 + level;
@@ -3690,7 +3690,7 @@ void ShipCollision() {
         }
         //ship 4
         if (mX + width1 < EnemyShips::e4x[i] + 87 && mX + width2 > EnemyShips::e4x[i] + 6 
-			&& mY < EnemyShips::e4y[i] + 94 && mY + 94 > EnemyShips::e4y[i]) {
+            && mY < EnemyShips::e4y[i] + 94 && mY + 94 > EnemyShips::e4y[i]) {
             if (EnemyShips::e4hp[i] > 0) {
                 EnemyShips::e4hp[i] -= 2 + level;
                 health -= 2 + level;
@@ -3701,7 +3701,7 @@ void ShipCollision() {
     for (int i = 0; i < 5; i++) {
         //ship 5
         if (mX + width1 < EnemyShips::e5x[i] + 71 && mX + width2 > EnemyShips::e5x[i] + 22 
-			&& mY < EnemyShips::e5y[i] + 94 && mY + 94 > EnemyShips::e5y[i]) {
+            && mY < EnemyShips::e5y[i] + 94 && mY + 94 > EnemyShips::e5y[i]) {
             if (EnemyShips::e5hp[i] > 0) {
                 EnemyShips::e5hp[i] -= 2 + level;
                 health -= 2 + level;
@@ -3710,7 +3710,7 @@ void ShipCollision() {
         }
         //ship 6
         if (mX + width1 < EnemyShips::e6x[i] + 81 && mX + width2 > EnemyShips::e6x[i] + 12 
-			&& mY < EnemyShips::e6y[i] + 94 && mY + 94 > EnemyShips::e6y[i]) {
+            && mY < EnemyShips::e6y[i] + 94 && mY + 94 > EnemyShips::e6y[i]) {
             if (EnemyShips::e6hp[i] > 0) {
                 EnemyShips::e6hp[i] -= 2 + level;
                 health -= 2 + level;
@@ -3719,7 +3719,7 @@ void ShipCollision() {
         }
         //ship 7
         if (mX + width1 < EnemyShips::e7x[i] + 86 && mX + width2 > EnemyShips::e7x[i] + 7 
-			&& mY < EnemyShips::e7y[i] + 94 && mY + 94 > EnemyShips::e7y[i]) {
+            && mY < EnemyShips::e7y[i] + 94 && mY + 94 > EnemyShips::e7y[i]) {
             if (EnemyShips::e7hp[i] > 0) {
                 EnemyShips::e7hp[i] -= 2 + level;
                 health -= 2 + level;
@@ -3728,7 +3728,7 @@ void ShipCollision() {
         }
         //ship 8
         if (mX + width1 < EnemyShips::e8x[i] + 86 && mX + width2 > EnemyShips::e8x[i] + 6 
-			&& mY < EnemyShips::e8y[i] + 94 && mY + 94 > EnemyShips::e8y[i]) {
+            && mY < EnemyShips::e8y[i] + 94 && mY + 94 > EnemyShips::e8y[i]) {
             if (EnemyShips::e8hp[i] > 0) {
                 EnemyShips::e8hp[i] -= 2 + level;
                 health -= 2 + level;
@@ -3738,7 +3738,7 @@ void ShipCollision() {
     }
     //ship 9
     if (mX + width1 < EnemyShips::e9x[0] + 142 && mX + width2 > EnemyShips::e9x[0] 
-	    && mY < EnemyShips::e9y[0] + 240 && mY + 94 > EnemyShips::e9y[0]) {
+        && mY < EnemyShips::e9y[0] + 240 && mY + 94 > EnemyShips::e9y[0]) {
         if (EnemyShips::e9hp[0] > 0) {
             EnemyShips::e9hp[0] -= 2 + level;
             health -= 2 + level;
@@ -3747,7 +3747,7 @@ void ShipCollision() {
     }
     //ship 10
     if (mX + width1 < EnemyShips::e10x[0] + 150 && mX + width2 > EnemyShips::e10x[0] 
-	    && mY < EnemyShips::e10y[0] + 240 && mY + 94 > EnemyShips::e10y[0]) {
+        && mY < EnemyShips::e10y[0] + 240 && mY + 94 > EnemyShips::e10y[0]) {
         if (EnemyShips::e10hp[0] > 0) {
             EnemyShips::e10hp[0] -= 2 + level;
             health -= 2 + level;
