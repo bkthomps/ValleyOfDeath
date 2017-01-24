@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.11)
+ * Valley Of Death (1.2.12)
  * 23 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -11,8 +11,8 @@
 const int SPAWN_TIME = 100, ENEMY_BASE_HEALTH = 3, ENEMY_INCREASE_HEALTH = 1, ENEMY_SHOOT_COOLDOWN_SPEED = 45;
 const int SPEED = 15, TIME = 15, ENEMY_FLY_SPEED = 3, ENEMY_BULLET_SPEED = 8;
 
-bool sound, updateHighscore, pause, date, marry, boolTempNum, torture, healthUpdate;
-char font, fileBuffer[5];
+bool sound, pause, date, marry, torture, healthUpdate;
+char font;
 int xp, ship, highscore, soundCounter, health, set, level, bulletTimeCounter, shipMoveCounter, bulletMoveCounter;
 int enemyExplosionCounter[10], shipView, mX, mY, newX, newY, mBullet1[15], mBullet2[15], mBullet3[15];
 int hpCounterTorture, e1Bullet1[50], e2Bullet1[50], e3Bullet1[50], e4Bullet1[50], e5Bullet1[25], e5Bullet3[25];
@@ -154,48 +154,39 @@ int ContainerOptions;
 int ContainerDeleteCheckOne;
 int ContainerDeleteCheckTwo;
 
-int IntFileToGame() {
+int IntFileToGame(char* buffer) {
     int ret = 0;
-    ret += ((int) fileBuffer[0] - '0') * 10000;
-    ret += ((int) fileBuffer[1] - '0') * 1000;
-    ret += ((int) fileBuffer[2] - '0') * 100;
-    ret += ((int) fileBuffer[3] - '0') * 10;
-    ret += (int) fileBuffer[4] - '0';
+    ret += ((int) buffer[0] - '0') * 10000;
+    ret += ((int) buffer[1] - '0') * 1000;
+    ret += ((int) buffer[2] - '0') * 100;
+    ret += ((int) buffer[3] - '0') * 10;
+    ret += (int) buffer[4] - '0';
     return ret;
 }
-void BoolFileToGame() {
-    boolTempNum = fileBuffer[0] == 't';
+bool BoolFileToGame(char* buffer) {
+    return buffer[0] == 't';
 }
 void LoadGame() {
     int fileSound = FileOpen("Sound.txt");
-    int fileUpdateHighscore = FileOpen("updateHighscore.txt");
     int fileXp = FileOpen("Xp.txt");
     int fileShip = FileOpen("Ship.txt");
     int fileHighscore = FileOpen("Highscore.txt");
     int fileCounter = FileOpen("Counter.txt");
+	char fileBuffer[5];
     if (!fileSound) {
         fileSound = FileCreate("Sound.txt");
         sound = true;
     } else {
         fileSound = FileOpen("Sound.txt");
         FileRead(fileSound, fileBuffer, 1);
-        BoolFileToGame();
-        sound = boolTempNum;
-    }
-    if (!fileUpdateHighscore) {
-        fileUpdateHighscore = FileCreate("updateHighscore.txt");
-    } else {
-        fileUpdateHighscore = FileOpen("updateHighscore.txt");
-        FileRead(fileUpdateHighscore, fileBuffer, 1);
-        BoolFileToGame();
-        updateHighscore = boolTempNum;
+        sound = BoolFileToGame(fileBuffer);
     }
     if (!fileXp) {
         fileXp = FileCreate("Xp.txt");
     } else {
         fileXp = FileOpen("Xp.txt");
         FileRead(fileXp, fileBuffer, 5);
-        xp = IntFileToGame();
+        xp = IntFileToGame(fileBuffer);
     }
     if (!fileShip) {
         fileShip = FileCreate("Ship.txt");
@@ -203,24 +194,23 @@ void LoadGame() {
     } else {
         fileShip = FileOpen("Ship.txt");
         FileRead(fileShip, fileBuffer, 5);
-        ship = IntFileToGame();
+        ship = IntFileToGame(fileBuffer);
     }
     if (!fileHighscore) {
         fileHighscore = FileCreate("Highscore.txt");
     } else {
         fileHighscore = FileOpen("Highscore.txt");
         FileRead(fileHighscore, fileBuffer, 5);
-        highscore = IntFileToGame();
+        highscore = IntFileToGame(fileBuffer);
     }
     if (!fileCounter) {
         fileCounter = FileCreate("Counter.txt");
     } else {
         fileCounter = FileOpen("Counter.txt");
         FileRead(fileCounter, fileBuffer, 5);
-        soundCounter = IntFileToGame();
+        soundCounter = IntFileToGame(fileBuffer);
     }
     FileClose(fileSound);
-    FileClose(fileUpdateHighscore);
     FileClose(fileXp);
     FileClose(fileShip);
     FileClose(fileHighscore);
@@ -564,6 +554,8 @@ void ScreenSwitch() {
     }
 }
 
+void DoUpdateHighscore(); //TODO: header
+
 int OnTorture(int id, int event, int x, int y) {
     if (event == 1 || event == 3) {
         torture = !torture;
@@ -587,7 +579,7 @@ int OnReturnToMenu(int id, int event, int x, int y) {
     if (event == 3) {
         Reset();
         if (PreviousScreen == ScreenEndless) {
-            updateHighscore = true;
+            DoUpdateHighscore();
             CurrentScreen = ScreenHighscore;
         } else if (PreviousScreen == ScreenUnlocks || PreviousScreen == ScreenOptions) {
             CurrentScreen = ScreenMenu;
@@ -1668,53 +1660,47 @@ void AppMain() {
     StartupMusic();
 }
 
-void IntGameToFile(int num) {
+void IntGameToFile(int num, char* buffer) {
     int numToSave = num;
-    fileBuffer[0] = char(numToSave / 10000 + '0');
+    buffer[0] = char(numToSave / 10000 + '0');
     numToSave %= 10000;
-    fileBuffer[1] = char(numToSave / 1000 + '0');
+    buffer[1] = char(numToSave / 1000 + '0');
     numToSave %= 1000;
-    fileBuffer[2] = char(numToSave / 100 + '0');
+    buffer[2] = char(numToSave / 100 + '0');
     numToSave %= 100;
-    fileBuffer[3] = char(numToSave / 10 + '0');
+    buffer[3] = char(numToSave / 10 + '0');
     numToSave %= 10;
-    fileBuffer[4] = char(numToSave + '0');
+    buffer[4] = char(numToSave + '0');
 }
-void BoolGameToFile() {
-    fileBuffer[0] = (boolTempNum) ? ('t') : ('f');
+void BoolGameToFile(bool num, char* buffer) {
+    buffer[0] = (num) ? ('t') : ('f');
 }
 void AppExit() {
     Mp3Stop();
+	char fileBuffer[5];
     //fileSound
     int fileSound = FileOpen("Sound.txt");
-    boolTempNum = sound;
-    BoolGameToFile();
+    BoolGameToFile(sound, fileBuffer);
     FileWrite(fileSound, fileBuffer, 1);
     FileClose(fileSound);
-    //fileUpdateHighscore
-    int fileUpdateHighscore = FileOpen("updateHighscore.txt");
-    boolTempNum = updateHighscore;
-    BoolGameToFile();
-    FileWrite(fileUpdateHighscore, fileBuffer, 1);
-    FileClose(fileUpdateHighscore);
     //fileXp
     int fileXp = FileOpen("Xp.txt");
-    IntGameToFile(xp);
+    IntGameToFile(xp, fileBuffer);
     FileWrite(fileXp, fileBuffer, 5);
     FileClose(fileXp);
     //fileShip
     int fileShip = FileOpen("Ship.txt");
-    IntGameToFile(ship);
+    IntGameToFile(ship, fileBuffer);
     FileWrite(fileShip, fileBuffer, 5);
     FileClose(fileShip);
     //fileHighscore
     int fileHighscore = FileOpen("Highscore.txt");
-    IntGameToFile(highscore);
+    IntGameToFile(highscore, fileBuffer);
     FileWrite(fileHighscore, fileBuffer, 5);
     FileClose(fileHighscore);
     //fileCounter
     int fileCounter = FileOpen("Counter.txt");
-    IntGameToFile(soundCounter);
+    IntGameToFile(soundCounter, fileBuffer);
     FileWrite(fileCounter, fileBuffer, 5);
     FileClose(fileCounter);
 }
@@ -2035,39 +2021,33 @@ void DoHighscore() {
     }
 }
 void DoUpdateHighscore() {
-    if (updateHighscore) {
-        if (level > highscore) {
-            highscore = level;
-        }
-        DoHighscore();
-        assert(health >= 0);
-        (health == 0) ? (TextSetText(text1, "\n\nYou Died.")) : (TextSetText(text1, "\n\nYou Left."));
-
-        char lvl[] = "\n\n\n\n\n\nYou Left At Level   ";
-        if (health <= 0) {
-            char temp[] = "\n\n\n\n\n\nSurvived To";
-            for (int i = 0; i < 17; i++) {
-                lvl[i] = temp[i];
-            }
-        }
-
-        if (level <= 9) {
-            lvl[25] = char(level + '0');
-            TextSetText(text2, lvl);
-        } else if (level >= 10 && level <= 99) {
-            int one = level / 10;
-            int two = level % 10;
-            lvl[25] = char(one + '0');
-            lvl[26] = char(two + '0');
-            TextSetText(text2, lvl);
-        } else {
-            (health <= 0) ? (TextSetText(text2, "\n\n\n\n\n\nSurvived To Level 99+")) :
-            (TextSetText(text2, "\n\n\n\n\n\nYou Left At Level 99+"));
-        }
-
-        Reset();
-        updateHighscore = false;
+    if (level > highscore) {
+        highscore = level;
     }
+    DoHighscore();
+    assert(health >= 0);
+    (health == 0) ? (TextSetText(text1, "\n\nYou Died.")) : (TextSetText(text1, "\n\nYou Left."));
+    char lvl[] = "\n\n\n\n\n\nYou Left At Level   ";
+    if (health <= 0) {
+        char temp[] = "\n\n\n\n\n\nSurvived To";
+        for (int i = 0; i < 17; i++) {
+            lvl[i] = temp[i];
+        }
+    }
+    if (level <= 9) {
+        lvl[25] = char(level + '0');
+        TextSetText(text2, lvl);
+    } else if (level >= 10 && level <= 99) {
+        int one = level / 10;
+        int two = level % 10;
+        lvl[24] = char(one + '0');
+        lvl[25] = char(two + '0');
+        TextSetText(text2, lvl);
+    } else {
+        (health <= 0) ? (TextSetText(text2, "\n\n\n\n\n\nSurvived To Level 99+")) :
+        (TextSetText(text2, "\n\n\n\n\n\nYou Left At Level 99+"));
+    }
+    Reset();
 }
 void TortureHealth() {
     int ImageTorturing, number = 100;
@@ -2198,7 +2178,7 @@ void HealthBar() {
         if (health == 0) {
             if (CurrentScreen == ScreenEndless) {
                 CurrentScreen = ScreenHighscore;
-                updateHighscore = true;
+                DoUpdateHighscore();
             } else if (CurrentScreen == ScreenStoryBattle1) {
                 CurrentScreen = ScreenStory2a1;
                 Reset();
@@ -3801,7 +3781,6 @@ void OnTimer() {
     //called 30 times per second - 1800=1min - 10000=5min 36sec
     Rank();
     SoundSwitch();
-    DoUpdateHighscore();
     if (sound) {
         soundCounter += 1;
     }
