@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.15)
+ * Valley Of Death (1.2.16)
  * 25 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -8,7 +8,12 @@
 #include <assert.h>
 #include <math.h>
 
-#if 1
+const int XP_SHIP_DESTROY_1_TO_4 = 1;
+const int XP_SHIP_DESTROY_5_TO_8 = 2;
+const int XP_SHIP_DESTROY_9 = 5;
+const int XP_SHIP_DESTROY_10 = 10;
+const int XP_WIN_GAME = 25;
+const int XP_INCREASE = 5;
 
 const int ENEMY_BASE_HEALTH = 3;
 const int ENEMY_INCREASE_HEALTH = 5;
@@ -20,25 +25,8 @@ const int ENEMY_BULLET_COOLDOWN_SPEED = 22;
 
 const int PLAYER_HEALTH_RATIO = 15;
 const int PLAYER_FLY_SPEED_RATIO = 15;
-const int PLAYER_BULLET_SPEED = 25;
-const int PLAYER_BULLET_COOLDOWN_SPEED = 8;
-
-#else
-
-const int ENEMY_BASE_HEALTH = 3;
-const int ENEMY_INCREASE_HEALTH = 5;
-const int ENEMY_SPAWN_TIME = 100;
-
-const int ENEMY_FLY_SPEED = 3;
-const int ENEMY_BULLET_SPEED = 8;
-const int ENEMY_BULLET_COOLDOWN_SPEED = 45;
-
-const int PLAYER_HEALTH_RATIO = 10;
-const int PLAYER_FLY_SPEED_RATIO = 10;
-const int PLAYER_BULLET_SPEED = 15;
-const int PLAYER_BULLET_COOLDOWN_SPEED = 15;
-
-#endif
+const int PLAYER_BULLET_SPEED = 22;
+const int PLAYER_BULLET_COOLDOWN_SPEED = 10;
 
 char font;
 int xp, ship, highscore, health, set, level, shipView, mX, mY, newX, newY, music, possibleHealth, shipSpeed, rank;
@@ -608,7 +596,7 @@ int onStoryLevelSeven(int id, int event, int x, int y) {
             }
             currentScreen = screenStory7b2;
         } else if (id == 3) {
-            xp += 10;
+            xp += XP_WIN_GAME;
             currentScreen = screenMenu;
         }
         screenSwitch();
@@ -825,8 +813,8 @@ int onStoryLevelOne(int id, int event, int x, int y) {
                 level = 1;
                 break;
         }
-        assert(id != 2); //TODO: test this
-        if (/*id != 2 &&*/id != 8) {
+        assert(id != 2);
+        if (id != 8) {
             screenSwitch();
         }
     }
@@ -1064,16 +1052,16 @@ int onUnlocksMenuTouch(int id, int event, int x, int y) {
 }
 
 int options(int id, int event, int x, int y) {
-    int ImageMusic;
+    int imageMusic;
     if (id == 1 && event == 3) {
         if (state::sound) {
-            ImageMusic = ImageAdd("unlocks/MusicOff.png");
-            ViewSetImage(music, ImageMusic);
+            imageMusic = ImageAdd("unlocks/MusicOff.png");
+            ViewSetImage(music, imageMusic);
             state::sound = false;
             Mp3Stop();
         } else {
-            ImageMusic = ImageAdd("unlocks/MusicOn.png");
-            ViewSetImage(music, ImageMusic);
+            imageMusic = ImageAdd("unlocks/MusicOn.png");
+            ViewSetImage(music, imageMusic);
             state::sound = true;
             if (counter::sound >= 1 && counter::sound < 7000) {
                 counter::sound = 7000;
@@ -1302,7 +1290,7 @@ void containerFour() {
     ViewAdd(container::story4a1, "Images/Pause.png", 270, 20, onPause, 1);
     ViewAdd(container::story4a1, "Images/btnTakeGun.png", 20, 380, onStoryLevelFour, 2);
     ViewAdd(container::story4a1, "Images/btnDoNothing.png", 170, 380, onStoryLevelFour, 1);
-    TextAdd(container::story4a1, 0, 0, "\n\nEnemy: \nNow to state::torture you too.", font);
+    TextAdd(container::story4a1, 0, 0, "\n\nEnemy: \nNow to torture you too.", font);
     //populate container::story4a2
     ViewAdd(container::story4a2, "Images/Background.png", 0, 0);
     ViewAdd(container::story4a2, "Images/Pause.png", 270, 20, onPause, 1);
@@ -1388,7 +1376,7 @@ void containerThree() {
     ViewAdd(container::story3a5, "Images/Pause.png", 270, 20, onPause, 1);
     ViewAdd(container::story3a5, "Images/btnYes.png", 20, 380, onStoryLevelThree, 5);
     ViewAdd(container::story3a5, "Images/btnNo.png", 170, 380, onStoryLevelThree, 5);
-    TextAdd(container::story3a5, 0, 0, "\n\nEnemy: \nAre you familiar with state::torture?", font);
+    TextAdd(container::story3a5, 0, 0, "\n\nEnemy: \nAre you familiar with torture?", font);
     //populate container::story3a6
     ViewAdd(container::story3a6, "Images/Background.png", 0, 0);
     ViewAdd(container::story3a6, "Images/Pause.png", 270, 20, onPause, 1);
@@ -3542,7 +3530,7 @@ void enemyDied() {
                     ViewSetxy(enemyShips::e4[counter::shipAction], 600, 600);
                 }
                 counter::enemyExplosion[i - 1] = 0;
-                xp += 1 * level;
+                xp += XP_SHIP_DESTROY_1_TO_4 + round(level / XP_INCREASE);
             }
         }
     }
@@ -3587,7 +3575,7 @@ void enemyDied() {
                     ViewSetxy(enemyShips::e8[counter::shipAction], 600, 600);
                 }
                 counter::enemyExplosion[i - 1] = 0;
-                xp += 2 * level;
+                xp += XP_SHIP_DESTROY_5_TO_8 + round(level / XP_INCREASE);
             }
         }
     }
@@ -3620,7 +3608,7 @@ void enemyDied() {
         ViewSetImage(explosion, image);
         ViewSetxy(enemyShips::e9[0], 600, 600);
         counter::enemyExplosion[8] = 0;
-        xp += level * 5;
+        xp += XP_SHIP_DESTROY_9 + round(2 * level / XP_INCREASE);
         if (currentScreen != screenStoryBattle4) {
             set += 1;
             counter::shipMove = 0;
@@ -3660,7 +3648,7 @@ void enemyDied() {
         ViewSetImage(explosion, image);
         ViewSetxy(enemyShips::e10[0], 600, 600);
         counter::enemyExplosion[9] = 0;
-        xp += level * 7;
+        xp += XP_SHIP_DESTROY_10 + round(2 * level / XP_INCREASE);
         if (currentScreen != screenStoryBattle6) {
             set += 1;
             counter::shipMove = 0;
