@@ -1,11 +1,10 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.17)
+ * Valley Of Death (1.2.18)
  * 26 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
 #include "DragonFireSDK.h"
-#include <assert.h>
 #include <math.h>
 
 const int XP_SHIP_DESTROY_1_TO_4 = 1;
@@ -17,16 +16,16 @@ const int XP_INCREASE = 5;
 
 const int ENEMY_BASE_HEALTH = 3;
 const int ENEMY_INCREASE_HEALTH = 5;
-const int ENEMY_SPAWN_TIME = 50;
+const int ENEMY_SPAWN_TIME = 80;
 
-const int ENEMY_FLY_SPEED = 6;
-const int ENEMY_BULLET_SPEED = 16;
-const int ENEMY_BULLET_COOLDOWN_SPEED = 22;
+const int ENEMY_FLY_SPEED = 4;
+const int ENEMY_BULLET_SPEED = 10;
+const int ENEMY_BULLET_COOLDOWN_SPEED = 38;
 
-const int PLAYER_HEALTH_RATIO = 15;
-const int PLAYER_FLY_SPEED_RATIO = 15;
-const int PLAYER_BULLET_SPEED = 22;
-const int PLAYER_BULLET_COOLDOWN_SPEED = 10;
+const int PLAYER_HEALTH_RATIO = 10;
+const int PLAYER_FLY_SPEED_RATIO = 10;
+const int PLAYER_BULLET_SPEED = 18;
+const int PLAYER_BULLET_COOLDOWN_SPEED = 18;
 
 char font;
 int xp, ship, highscore, health, set, level, shipView, mX, mY, newX, newY, music, possibleHealth, shipSpeed, rank;
@@ -3099,7 +3098,7 @@ void enemyShipMove() {
         }
     }
     
-    bool goRight = false;
+    static bool goRight = false;
     //ship 9
     if (enemyShips::e9y[0] < 40) {
         ViewSetxy(enemyShips::e9[0], enemyShips::e9x[0], enemyShips::e9y[0] + ENEMY_FLY_SPEED);
