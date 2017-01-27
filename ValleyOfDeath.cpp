@@ -1,6 +1,6 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.18)
+ * Valley Of Death (1.2.19)
  * 26 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -13,6 +13,10 @@ const int XP_SHIP_DESTROY_9 = 5;
 const int XP_SHIP_DESTROY_10 = 10;
 const int XP_WIN_GAME = 25;
 const int XP_INCREASE = 5;
+
+const int ENEMY_9_BASE_HEALTH = 25;
+const int ENEMY_10_BASE_HEALTH = 50;
+const int ENEMY_BOSS_INCREASE_HEALTH = 3;
 
 const int ENEMY_BASE_HEALTH = 3;
 const int ENEMY_INCREASE_HEALTH = 5;
@@ -2338,7 +2342,7 @@ void setOne() {
     }
     if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_1) {
-            enemyShips::e9hp[0] = 48 + level * 2;
+            enemyShips::e9hp[0] = ENEMY_9_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
             ViewSetxy(enemyShips::e9[0], 89, -240);
         }
     } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_1) {
@@ -2508,7 +2512,7 @@ void setTwo() {
         ViewSetxy(enemyShips::e3[1], 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_2) {
-            enemyShips::e9hp[0] = 48 + level * 2;
+            enemyShips::e9hp[0] = ENEMY_9_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
             ViewSetxy(enemyShips::e9[0], 89, -240);
         }
     } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_2) {
@@ -2685,7 +2689,7 @@ void setThree() {
         ViewSetxy(enemyShips::e5[0], 33, -94);
         ViewSetxy(enemyShips::e7[2], 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
-        enemyShips::e9hp[0] = 48 + level * 2;
+        enemyShips::e9hp[0] = ENEMY_9_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
         ViewSetxy(enemyShips::e9[0], 89, -240);
     }
 }
@@ -2857,7 +2861,7 @@ void setFour() {
         ViewSetxy(enemyShips::e2[8], 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_5) {
-            enemyShips::e9hp[0] = 48 + level * 2;
+            enemyShips::e9hp[0] = ENEMY_9_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
             ViewSetxy(enemyShips::e9[0], 89, -240);
         }
     } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_5) {
@@ -3032,7 +3036,7 @@ void setFive() {
         ViewSetxy(enemyShips::e6[3], 33, -94);
         ViewSetxy(enemyShips::e8[4], 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
-        enemyShips::e10hp[0] = 98 + level * 2;
+        enemyShips::e10hp[0] = ENEMY_10_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
         ViewSetxy(enemyShips::e10[0], 85, -240);
     }
 }
@@ -3719,7 +3723,7 @@ void shipCollision() {
         && mY < enemyShips::e9y[0] + 240 && mY + 94 > enemyShips::e9y[0]) {
         if (enemyShips::e9hp[0] > 0) {
             enemyShips::e9hp[0] -= 3;
-            health -= 3;
+            health = 0;
             state::healthUpdate = true;
         }
     }
@@ -3728,7 +3732,7 @@ void shipCollision() {
         && mY < enemyShips::e10y[0] + 240 && mY + 94 > enemyShips::e10y[0]) {
         if (enemyShips::e10hp[0] > 0) {
             enemyShips::e10hp[0] -= 3;
-            health -= 3;
+            health = 0;
             state::healthUpdate = true;
         }
     }
