@@ -1,7 +1,7 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.16)
- * 25 January 2017
+ * Valley Of Death (1.2.17)
+ * 26 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
 #include "DragonFireSDK.h"
@@ -70,20 +70,20 @@ namespace container {
     int unlocks, options, deleteCheckOne, deleteCheckTwo;
 }
 enum Screen {
-    screenMenu, screenPause, screenEndless, screenHighscore, screenDied,
-    screenStory1a1, screenStory1a2, screenStory1s3, screenStory1p3, screenStory1a4, screenStory1r5, screenStory1e5, 
-        screenStoryBattle1,
-    screenStory2a1, screenStory2a2, screenStory2a3, screenStory2b4, screenStory2a5, screenStory2a6, screenStory2e7, 
-        screenStory2a7, screenStoryBattle2,
-    screenStory3a1, screenStory3b2, screenStory3a3, screenStory3a4, screenStory3a5, screenStory3a6, screenStory3a7, 
-        screenStory3a8, screenStoryTorture,
-    screenStory4a1, screenStory4a2, screenStory4a3, screenStory4a4, screenStory4b5, screenStory4a6, screenStory4a7, 
-        screenStory4b7, screenStory4a8, screenStoryBattle4,
-    screenStory5a1, screenStory5a2, screenStory5a3, screenStory5b4, screenStory5a5, screenStory5a6, screenStory5b6, 
-        screenStoryBattle5,
-    screenStory6a1, screenStory6a2, screenStory6a3, screenStory6b3, screenStoryBattle6,
-    screenStory7w1, screenStory7l1, screenStory7a2, screenStory7b2,
-    screenUnlocks, screenOptions, screenDeleteCheckOne, screenDeleteCheckTwo
+    SCREEN_MENU, SCREEN_PAUSE, SCREEN_ENDLESS, SCREEN_HIGHSCORE, SCREEN_DIED,
+    SCREEN_STORY_1A1, SCREEN_STORY_1A2, SCREEN_STORY_1S3, SCREEN_STORY_1P3, SCREEN_STORY_1A4, SCREEN_STORY_1R5, 
+        SCREEN_STORY_1E5, SCREEN_STORY_BATTLE_1,
+    SCREEN_STORY_2A1, SCREEN_STORY_2A2, SCREEN_STORY_2A3, SCREEN_STORY_2B4, SCREEN_STORY_2A5, SCREEN_STORY_2A6, 
+        SCREEN_STORY_2E7, SCREEN_STORY_2A7, SCREEN_STORY_BATTLE_2,
+    SCREEN_STORY_3A1, SCREEN_STORY_3B2, SCREEN_STORY_3A3, SCREEN_STORY_3A4, SCREEN_STORY_3A5, SCREEN_STORY_3A6, 
+        SCREEN_STORY_3A7, SCREEN_STORY_3A8, SCREEN_STORY_TORTURE,
+    SCREEN_STORY_4A1, SCREEN_STORY_4A2, SCREEN_STORY_4A3, SCREEN_STORY_4A4, SCREEN_STORY_4B5, SCREEN_STORY_4A6, 
+        SCREEN_STORY_4A7, SCREEN_STORY_4B7, SCREEN_STORY_4A8, SCREEN_STORY_BATTLE_4,
+    SCREEN_STORY_5A1, SCREEN_STORY_5A2, SCREEN_STORY_5A3, SCREEN_STORY_5B4, SCREEN_STORY_5A5, SCREEN_STORY_5A6, 
+        SCREEN_STORY_5B6, SCREEN_STORY_BATTLE_5,
+    SCREEN_STORY_6A1, SCREEN_STORY_6A2, SCREEN_STORY_6A3, SCREEN_STORY_6B3, SCREEN_STORY_BATTLE_6,
+    SCREEN_STORY_7W1, SCREEN_STORY_7L1, SCREEN_STORY_7A2, SCREEN_STORY_7B2,
+    SCREEN_UNLOCKS, SCREEN_OPTIONS, SCREEN_DELETE_CHECK_ONE, SCREEN_DELETE_CHECK_TWO
 };
 
 Screen currentScreen, previousScreen;
@@ -288,97 +288,97 @@ void screenSwitch() {
     ContainerSetVisible(container::deleteCheckOne, 0);
     ContainerSetVisible(container::deleteCheckTwo, 0);
     switch (currentScreen) {
-        case screenPause:
+        case SCREEN_PAUSE:
             ContainerSetVisible(container::pause, 1);
             break;
-        case screenMenu:
+        case SCREEN_MENU:
             ContainerSetVisible(container::menu, 1);
             break;
-        case screenHighscore:
+        case SCREEN_HIGHSCORE:
             ContainerSetVisible(container::highscore, 1);
             break;
-        case screenDied:
+        case SCREEN_DIED:
             ContainerSetVisible(container::died, 1);
             break;
-        case screenEndless:
+        case SCREEN_ENDLESS:
             ContainerSetVisible(container::endless, 1);
             break;
-        case screenStory1a1:
+        case SCREEN_STORY_1A1:
             ContainerSetVisible(container::story1a1, 1);
             break;
-        case screenStory1a2:
+        case SCREEN_STORY_1A2:
             ContainerSetVisible(container::story1a2, 1);
             break;
-        case screenStory1s3:
+        case SCREEN_STORY_1S3:
             ContainerSetVisible(container::story1s3, 1);
             break;
-        case screenStory1p3:
+        case SCREEN_STORY_1P3:
             ContainerSetVisible(container::story1p3, 1);
             break;
-        case screenStory1a4:
+        case SCREEN_STORY_1A4:
             ContainerSetVisible(container::story1a4, 1);
             break;
-        case screenStory1r5:
+        case SCREEN_STORY_1R5:
             ContainerSetVisible(container::story1r5, 1);
             break;
-        case screenStory1e5:
+        case SCREEN_STORY_1E5:
             ContainerSetVisible(container::story1e5, 1);
             break;
-        case screenStoryBattle1:
+        case SCREEN_STORY_BATTLE_1:
             ContainerSetVisible(container::endless, 1);
             break;
-        case screenStory2a1:
+        case SCREEN_STORY_2A1:
             ContainerSetVisible(container::story2a1, 1);
             break;
-        case screenStory2a2:
+        case SCREEN_STORY_2A2:
             ContainerSetVisible(container::story2a2, 1);
             break;
-        case screenStory2a3:
+        case SCREEN_STORY_2A3:
             ContainerSetVisible(container::story2a3, 1);
             break;
-        case screenStory2b4:
+        case SCREEN_STORY_2B4:
             ContainerSetVisible(container::story2b4, 1);
             break;
-        case screenStory2a5:
+        case SCREEN_STORY_2A5:
             ContainerSetVisible(container::story2a5, 1);
             break;
-        case screenStory2a6:
+        case SCREEN_STORY_2A6:
             ContainerSetVisible(container::story2a6, 1);
             break;
-        case screenStory2e7:
+        case SCREEN_STORY_2E7:
             ContainerSetVisible(container::story2e7, 1);
             break;
-        case screenStory2a7:
+        case SCREEN_STORY_2A7:
             ContainerSetVisible(container::story2a7, 1);
             break;
-        case screenStoryBattle2:
+        case SCREEN_STORY_BATTLE_2:
             ContainerSetVisible(container::endless, 1);
             break;
-        case screenStory3a1:
+        case SCREEN_STORY_3A1:
             ContainerSetVisible(container::story3a1, 1);
             break;
-        case screenStory3b2:
+        case SCREEN_STORY_3B2:
             ContainerSetVisible(container::story3b2, 1);
             break;
-        case screenStory3a3:
+        case SCREEN_STORY_3A3:
             ContainerSetVisible(container::story3a3, 1);
             break;
-        case screenStory3a4:
+        case SCREEN_STORY_3A4:
             ContainerSetVisible(container::story3a4, 1);
             break;
-        case screenStory3a5:
+        case SCREEN_STORY_3A5:
             ContainerSetVisible(container::story3a5, 1);
             break;
-        case screenStory3a6:
+        case SCREEN_STORY_3A6:
             ContainerSetVisible(container::story3a6, 1);
             break;
-        case screenStory3a7:
+        case SCREEN_STORY_3A7:
             ContainerSetVisible(container::story3a7, 1);
             break;
-        case screenStory3a8:
+        case SCREEN_STORY_3A8:
             ContainerSetVisible(container::story3a8, 1);
             break;
-        case screenStoryTorture:
+        case SCREEN_STORY_TORTURE:
             int imageTorturing;
             imageTorturing = ImageAdd("Images/20HP.png");
             ViewSetImage(hpTorture, imageTorturing);
@@ -386,97 +386,97 @@ void screenSwitch() {
             counter::torture = 0;
             ContainerSetVisible(container::storyTorture, 1);
             break;
-        case screenStory4a1:
+        case SCREEN_STORY_4A1:
             ContainerSetVisible(container::story4a1, 1);
             break;
-        case screenStory4a2:
+        case SCREEN_STORY_4A2:
             ContainerSetVisible(container::story4a2, 1);
             break;
-        case screenStory4a3:
+        case SCREEN_STORY_4A3:
             ContainerSetVisible(container::story4a3, 1);
             break;
-        case screenStory4a4:
+        case SCREEN_STORY_4A4:
             ContainerSetVisible(container::story4a4, 1);
             break;
-        case screenStory4b5:
+        case SCREEN_STORY_4B5:
             ContainerSetVisible(container::story4b5, 1);
             break;
-        case screenStory4a6:
+        case SCREEN_STORY_4A6:
             ContainerSetVisible(container::story4a6, 1);
             break;
-        case screenStory4a7:
+        case SCREEN_STORY_4A7:
             ContainerSetVisible(container::story4a7, 1);
             break;
-        case screenStory4b7:
+        case SCREEN_STORY_4B7:
             ContainerSetVisible(container::story4b7, 1);
             break;
-        case screenStory4a8:
+        case SCREEN_STORY_4A8:
             ContainerSetVisible(container::story4a8, 1);
             break;
-        case screenStoryBattle4:
+        case SCREEN_STORY_BATTLE_4:
             ContainerSetVisible(container::endless, 1);
             break;
-        case screenStory5a1:
+        case SCREEN_STORY_5A1:
             ContainerSetVisible(container::story5a1, 1);
             break;
-        case screenStory5a2:
+        case SCREEN_STORY_5A2:
             ContainerSetVisible(container::story5a2, 1);
             break;
-        case screenStory5a3:
+        case SCREEN_STORY_5A3:
             ContainerSetVisible(container::story5a3, 1);
             break;
-        case screenStory5b4:
+        case SCREEN_STORY_5B4:
             ContainerSetVisible(container::story5b4, 1);
             break;
-        case screenStory5a5:
+        case SCREEN_STORY_5A5:
             ContainerSetVisible(container::story5a5, 1);
             break;
-        case screenStory5a6:
+        case SCREEN_STORY_5A6:
             ContainerSetVisible(container::story5a6, 1);
             break;
-        case screenStory5b6:
+        case SCREEN_STORY_5B6:
             ContainerSetVisible(container::story5b6, 1);
             break;
-        case screenStoryBattle5:
+        case SCREEN_STORY_BATTLE_5:
             ContainerSetVisible(container::endless, 1);
             break;
-        case screenStory6a1:
+        case SCREEN_STORY_6A1:
             ContainerSetVisible(container::story6a1, 1);
             break;
-        case screenStory6a2:
+        case SCREEN_STORY_6A2:
             ContainerSetVisible(container::story6a2, 1);
             break;
-        case screenStory6a3:
+        case SCREEN_STORY_6A3:
             ContainerSetVisible(container::story6a3, 1);
             break;
-        case screenStory6b3:
+        case SCREEN_STORY_6B3:
             ContainerSetVisible(container::story6b3, 1);
             break;
-        case screenStoryBattle6:
+        case SCREEN_STORY_BATTLE_6:
             ContainerSetVisible(container::endless, 1);
             break;
-        case screenStory7w1:
+        case SCREEN_STORY_7W1:
             ContainerSetVisible(container::story7w1, 1);
             break;
-        case screenStory7l1:
+        case SCREEN_STORY_7L1:
             ContainerSetVisible(container::story7l1, 1);
             break;
-        case screenStory7a2:
+        case SCREEN_STORY_7A2:
             ContainerSetVisible(container::story7a2, 1);
             break;
-        case screenStory7b2:
+        case SCREEN_STORY_7B2:
             ContainerSetVisible(container::story7b2, 1);
             break;
-        case screenUnlocks:
+        case SCREEN_UNLOCKS:
             ContainerSetVisible(container::unlocks, 1);
             break;
-        case screenOptions:
+        case SCREEN_OPTIONS:
             ContainerSetVisible(container::options, 1);
             break;
-        case screenDeleteCheckOne:
+        case SCREEN_DELETE_CHECK_ONE:
             ContainerSetVisible(container::deleteCheckOne, 1);
             break;
-        case screenDeleteCheckTwo:
+        case SCREEN_DELETE_CHECK_TWO:
             ContainerSetVisible(container::deleteCheckTwo, 1);
             break;
     }
@@ -502,7 +502,6 @@ void doUpdateHighscore() {
         highscore = level;
     }
     doHighscore();
-    assert(health >= 0);
     (health <= 0) ? (TextSetText(text1, "\n\nYou Died.")) : (TextSetText(text1, "\n\nYou Left."));
     char lvl[] = "\n\n\n\n\n\nYou Left At Level   ";
     if (health <= 0) {
@@ -534,7 +533,7 @@ int onTorture(int id, int event, int x, int y) {
     return 0;
 }
 int onHighscore(int id, int event, int x, int y) {
-    currentScreen = screenMenu;
+    currentScreen = SCREEN_MENU;
     screenSwitch();
     TextSetText(text1, "");
     TextSetText(text2, "");
@@ -542,20 +541,20 @@ int onHighscore(int id, int event, int x, int y) {
     return 0;
 }
 int onDied(int id, int event, int x, int y) {
-    currentScreen = screenMenu;
+    currentScreen = SCREEN_MENU;
     screenSwitch();
     return 0;
 }
 int onReturnToMenu(int id, int event, int x, int y) {
     if (event == 3) {
         reset();
-        if (previousScreen == screenEndless) {
+        if (previousScreen == SCREEN_ENDLESS) {
             doUpdateHighscore();
-            currentScreen = screenHighscore;
-        } else if (previousScreen == screenUnlocks || previousScreen == screenOptions) {
-            currentScreen = screenMenu;
+            currentScreen = SCREEN_HIGHSCORE;
+        } else if (previousScreen == SCREEN_UNLOCKS || previousScreen == SCREEN_OPTIONS) {
+            currentScreen = SCREEN_MENU;
         } else {
-            currentScreen = screenDied;
+            currentScreen = SCREEN_DIED;
         }
         screenSwitch();
     }
@@ -572,7 +571,7 @@ int onResume(int id, int event, int x, int y) {
 int onPause(int id, int event, int x, int y) {
     if (event == 1) {
         previousScreen = currentScreen;
-        currentScreen = screenPause;
+        currentScreen = SCREEN_PAUSE;
         screenSwitch();
         state::pause = true;
     }
@@ -582,7 +581,7 @@ int onPause(int id, int event, int x, int y) {
 int onStoryLevelSeven(int id, int event, int x, int y) {
     if (event == 3) {
         if (id == 1) {
-            currentScreen = screenStory7a2;
+            currentScreen = SCREEN_STORY_7A2;
         } else if (id == 2) {
             const int SAVE_RON = TextAdd(container::story7b2, 0, 0, "", font);
             if (state::date && !state::marry) {
@@ -594,10 +593,10 @@ int onStoryLevelSeven(int id, int event, int x, int y) {
             } else if (!state::date && !state::marry) {
                 TextSetText(SAVE_RON, "\n\nRon: \nThe world will know of your \ngreatness.");
             }
-            currentScreen = screenStory7b2;
+            currentScreen = SCREEN_STORY_7B2;
         } else if (id == 3) {
             xp += XP_WIN_GAME;
-            currentScreen = screenMenu;
+            currentScreen = SCREEN_MENU;
         }
         screenSwitch();
     }
@@ -607,16 +606,16 @@ int onStoryLevelSix(int id, int event, int x, int y) {
     if (event == 3) {
         switch (id) {
             case 1:
-                currentScreen = screenStory6a2;
+                currentScreen = SCREEN_STORY_6A2;
                 break;
             case 2:
-                currentScreen = screenStory6a3;
+                currentScreen = SCREEN_STORY_6A3;
                 break;
             case 3:
-                currentScreen = screenStory6b3;
+                currentScreen = SCREEN_STORY_6B3;
                 break;
             case 4:
-                currentScreen = screenStoryBattle6;
+                currentScreen = SCREEN_STORY_BATTLE_6;
                 screenSwitch();
                 reset();
                 set = 5;
@@ -632,26 +631,26 @@ int onStoryLevelSix(int id, int event, int x, int y) {
 int onStoryLevelFive(int id, int event, int x, int y) {
     if (event == 3) {
         if (id == 1 && !state::date) {
-            currentScreen = screenStory5a3;
+            currentScreen = SCREEN_STORY_5A3;
         } else if (id == 1 && state::date) {
-            currentScreen = screenStory5a2;
+            currentScreen = SCREEN_STORY_5A2;
         } else if (id == 2) {
             state::marry = true;
-            currentScreen = screenStory5a3;
+            currentScreen = SCREEN_STORY_5A3;
         } else if (id == 8) {
             state::marry = false;
-            currentScreen = screenStory5a3;
+            currentScreen = SCREEN_STORY_5A3;
         } else if (id == 3) {
-            currentScreen = screenStory5b4;
+            currentScreen = SCREEN_STORY_5B4;
         } else if (id == 4) {
-            currentScreen = screenStory5a5;
+            currentScreen = SCREEN_STORY_5A5;
         } else if (id == 5) {
-            currentScreen = screenStory5a6;
+            currentScreen = SCREEN_STORY_5A6;
         } else if (id == 6) {
-            currentScreen = screenStory5b6;
+            currentScreen = SCREEN_STORY_5B6;
         }
         if (id == 7) {
-            currentScreen = screenStoryBattle5;
+            currentScreen = SCREEN_STORY_BATTLE_5;
             screenSwitch();
             reset();
             set = 4;
@@ -666,34 +665,34 @@ int onStoryLevelFour(int id, int event, int x, int y) {
     if (event == 3) {
         switch (id) {
             case 1:
-                currentScreen = screenDied;
+                currentScreen = SCREEN_DIED;
                 break;
             case 2:
-                currentScreen = screenStory4a2;
+                currentScreen = SCREEN_STORY_4A2;
                 break;
             case 3:
-                currentScreen = screenStory4a3;
+                currentScreen = SCREEN_STORY_4A3;
                 break;
             case 4:
-                currentScreen = screenStory4a4;
+                currentScreen = SCREEN_STORY_4A4;
                 break;
             case 5:
-                currentScreen = screenStory4b5;
+                currentScreen = SCREEN_STORY_4B5;
                 break;
             case 6:
-                currentScreen = screenStory4a6;
+                currentScreen = SCREEN_STORY_4A6;
                 break;
             case 7:
-                currentScreen = screenStory4a7;
+                currentScreen = SCREEN_STORY_4A7;
                 break;
             case 8:
-                currentScreen = screenStory4b7;
+                currentScreen = SCREEN_STORY_4B7;
                 break;
             case 9:
-                currentScreen = screenStory4a8;
+                currentScreen = SCREEN_STORY_4A8;
                 break;
             case 10:
-                currentScreen = screenStoryBattle4;
+                currentScreen = SCREEN_STORY_BATTLE_4;
                 screenSwitch();
                 reset();
                 set = 3;
@@ -710,28 +709,28 @@ int onStoryLevelThree(int id, int event, int x, int y) {
     if (event == 3) {
         switch (id) {
             case 1:
-                currentScreen = screenStory3b2;
+                currentScreen = SCREEN_STORY_3B2;
                 break;
             case 2:
-                currentScreen = screenStory3a3;
+                currentScreen = SCREEN_STORY_3A3;
                 break;
             case 3:
-                currentScreen = screenStory3a4;
+                currentScreen = SCREEN_STORY_3A4;
                 break;
             case 4:
-                currentScreen = screenStory3a5;
+                currentScreen = SCREEN_STORY_3A5;
                 break;
             case 5:
-                currentScreen = screenStory3a6;
+                currentScreen = SCREEN_STORY_3A6;
                 break;
             case 6:
-                currentScreen = screenStory3a7;
+                currentScreen = SCREEN_STORY_3A7;
                 break;
             case 7:
-                currentScreen = screenStory3a8;
+                currentScreen = SCREEN_STORY_3A8;
                 break;
             case 8:
-                currentScreen = screenStoryTorture;
+                currentScreen = SCREEN_STORY_TORTURE;
                 break;
         }
         screenSwitch();
@@ -742,36 +741,36 @@ int onStoryLevelTwo(int id, int event, int x, int y) {
     if (event == 3) {
         switch (id) {
             case 1:
-                currentScreen = screenStory2a2;
+                currentScreen = SCREEN_STORY_2A2;
                 break;
             case 3:
                 state::date = true;
-                currentScreen = screenStory2a3;
+                currentScreen = SCREEN_STORY_2A3;
                 break;
             case 4:
                 state::date = false;
-                currentScreen = screenStory2a3;
+                currentScreen = SCREEN_STORY_2A3;
                 break;
             case 5:
-                currentScreen = screenStory2a5;
+                currentScreen = SCREEN_STORY_2A5;
                 break;
             case 6:
-                currentScreen = screenStory2b4;
+                currentScreen = SCREEN_STORY_2B4;
                 break;
             case 7:
-                currentScreen = screenStory2a5;
+                currentScreen = SCREEN_STORY_2A5;
                 break;
             case 8:
-                currentScreen = screenStory2a6;
+                currentScreen = SCREEN_STORY_2A6;
                 break;
             case 9:
-                currentScreen = screenStory2e7;
+                currentScreen = SCREEN_STORY_2E7;
                 break;
             case 10:
-                currentScreen = screenStory2a7;
+                currentScreen = SCREEN_STORY_2A7;
                 break;
             case 11:
-                currentScreen = screenStoryBattle2;
+                currentScreen = SCREEN_STORY_BATTLE_2;
                 screenSwitch();
                 reset();
                 set = 2;
@@ -788,32 +787,31 @@ int onStoryLevelOne(int id, int event, int x, int y) {
     if (event == 3) {
         switch (id) {
             case 1:
-                currentScreen = screenStory1a2;
+                currentScreen = SCREEN_STORY_1A2;
                 break;
             case 3:
-                currentScreen = screenStory1s3;
+                currentScreen = SCREEN_STORY_1S3;
                 break;
             case 4:
-                currentScreen = screenStory1p3;
+                currentScreen = SCREEN_STORY_1P3;
                 break;
             case 5:
-                currentScreen = screenStory1a4;
+                currentScreen = SCREEN_STORY_1A4;
                 break;
             case 6:
-                currentScreen = screenStory1r5;
+                currentScreen = SCREEN_STORY_1R5;
                 break;
             case 7:
-                currentScreen = screenStory1e5;
+                currentScreen = SCREEN_STORY_1E5;
                 break;
             case 8:
-                currentScreen = screenStoryBattle1;
+                currentScreen = SCREEN_STORY_BATTLE_1;
                 screenSwitch();
                 reset();
                 set = 1;
                 level = 1;
                 break;
         }
-        assert(id != 2);
         if (id != 8) {
             screenSwitch();
         }
@@ -822,36 +820,18 @@ int onStoryLevelOne(int id, int event, int x, int y) {
 }
 int onStoryMenuTouch(int id, int event, int x, int y) {
     if (event == 3) {
-        currentScreen = screenStory1a1;
+        currentScreen = SCREEN_STORY_1A1;
         screenSwitch();
     }
     return 0;
 }
 
 int round(double num) {
-    assert(num >= 0);
-    const double FRAC = num - (int) num;
-    assert(FRAC < 1);
-    assert(FRAC >= 0);
-    int ret;
-    if (FRAC > 0.5) {
-        ret = (int) (num + 0.5);
-    } else if (FRAC < 0.5) {
-        ret = (int) num;
-    } else if (FRAC == 0.5) {
-        if ((int) (num + 0.5) % 2 == 0) {
-            ret = (int) (num + 0.5);
-        } else {
-            ret = (int) (num - 0.5);
-        }
-    }
-    return ret;
+    return (num < 0) ? (num - 0.5) : (num + 0.5);
 }
 void shipType() {
     const int LIFT = 10;
     ViewSetxy(shipView, -200, -200);
-    assert(ship >= 1);
-    assert(ship <= 8);
     possibleHealth = round((18 + 2 * ship) * PLAYER_HEALTH_RATIO / 10);
     switch (ship) {
         case 1:
@@ -927,8 +907,6 @@ void shipType() {
             width2 = 86;
             break;
     }
-    assert(possibleHealth >= 20);
-    assert(possibleHealth <= round(34 * PLAYER_HEALTH_RATIO / 10));
 }
 int onBattleTouch(int id, int event, int x, int y) {
     if (event == 1 || event == 2) {
@@ -944,7 +922,7 @@ int onEndlessMenuTouch(int id, int event, int x, int y) {
         state::healthUpdate = true;
         level = 1;
         set = 1;
-        currentScreen = screenEndless;
+        currentScreen = SCREEN_ENDLESS;
         screenSwitch();
     }
     return 0;
@@ -958,7 +936,7 @@ int unlocks(int id, int event, int x, int y) {
     if (event == 3 && isShipUnlocked(id)) {
             ship = id;
             shipType();
-            currentScreen = screenMenu;
+            currentScreen = SCREEN_MENU;
             screenSwitch();
     }
     return 0;
@@ -966,8 +944,6 @@ int unlocks(int id, int event, int x, int y) {
 int onUnlocksMenuTouch(int id, int event, int x, int y) {
     int imageUnlocks;
     if (event == 3) {
-        assert(rank >= 1);
-        assert(rank <= 20);
         const int RANK_POSITION = TextAdd(container::unlocks, 10, 10, "", font);
         switch (rank) {
             case 1:
@@ -1045,7 +1021,7 @@ int onUnlocksMenuTouch(int id, int event, int x, int y) {
         ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_7.png", 60, 380, unlocks, 7), imageUnlocks);
         imageUnlocks = (rank >= 20) ? (ImageAdd("unlocks/UnShip_8.png")) : (ImageAdd("unlocks/LckShip_8.png"));
         ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_8.png", 180, 380, unlocks, 8), imageUnlocks);
-        currentScreen = screenUnlocks;
+        currentScreen = SCREEN_UNLOCKS;
         screenSwitch();
     }
     return 0;
@@ -1092,27 +1068,27 @@ int options(int id, int event, int x, int y) {
             }
         }
     } else if (id == 2 && event == 3) {
-        currentScreen = screenDeleteCheckOne;
+        currentScreen = SCREEN_DELETE_CHECK_ONE;
         screenSwitch();
     } else if (id == 3 && event == 3) {
-        currentScreen = screenDeleteCheckTwo;
+        currentScreen = SCREEN_DELETE_CHECK_TWO;
         screenSwitch();
     } else if (id == 4 && event == 3) {
         xp = 0;
         ship = 1;
         highscore = 0;
         shipType();
-        currentScreen = screenMenu;
+        currentScreen = SCREEN_MENU;
         screenSwitch();
     } else if (id == 5 && event == 3) {
-        currentScreen = screenOptions;
+        currentScreen = SCREEN_OPTIONS;
         screenSwitch();
     }
     return 0;
 }
 int onOptionsMenuTouch(int id, int event, int x, int y) {
     if (event == 3) {
-        currentScreen = screenOptions;
+        currentScreen = SCREEN_OPTIONS;
         screenSwitch();
     }
     return 0;
@@ -1735,10 +1711,10 @@ void AppExit() {
 }
 
 bool isNotActive() {
-    return currentScreen != screenEndless && currentScreen != screenStoryBattle1
-               && currentScreen != screenStoryBattle2 && currentScreen != screenStoryBattle4
-               && currentScreen != screenStoryBattle5 && currentScreen != screenStoryBattle6
-               && currentScreen != screenDied && currentScreen != screenHighscore;
+    return currentScreen != SCREEN_ENDLESS && currentScreen != SCREEN_STORY_BATTLE_1
+               && currentScreen != SCREEN_STORY_BATTLE_2 && currentScreen != SCREEN_STORY_BATTLE_4
+               && currentScreen != SCREEN_STORY_BATTLE_5 && currentScreen != SCREEN_STORY_BATTLE_6
+               && currentScreen != SCREEN_DIED && currentScreen != SCREEN_HIGHSCORE;
 }
 void soundSwitch() {
     if (state::sound) {
@@ -2069,7 +2045,7 @@ void tortureHealth() {
     if (counter::hpTorture > number * 20 && state::torture) {
         counter::hpTorture = number * 20;
     } else if (counter::hpTorture > number * 40 && !state::torture) {
-        currentScreen = screenDied;
+        currentScreen = SCREEN_DIED;
         screenSwitch();
     } else if (counter::hpTorture <= number * 20 && counter::hpTorture > number * 19) {
         imageTorturing = ImageAdd("Images/20HP.png");
@@ -2142,13 +2118,16 @@ void tortureHealth() {
         ViewSetImage(hpTorture, imageTorturing);
     } else if (counter::hpTorture <= 0) {
         state::pause = false;
-        currentScreen = screenStory4a1;
+        currentScreen = SCREEN_STORY_4A1;
         screenSwitch();
     }
 }
 char* concatHealth(int num) {
-    assert(num < 100);
-    assert(num >= 0);
+    if (num <= 0) {
+        num = 1;
+    } else if (num > 20) {
+        num = 20;
+    }
     if (num >= 10) {
         char ret[] = "Images/00HP.png";
         ret[7] = char(num / 10 + '0');
@@ -2169,19 +2148,18 @@ void healthBar() {
         const int FRAC_HEALTH = round(20 * health / possibleHealth);
         image = ImageAdd(concatHealth(FRAC_HEALTH));
         ViewSetImage(healthImage, image);
-        assert(health >= 0);
-        if (health == 0) {
-            if (currentScreen == screenEndless) {
-                currentScreen = screenHighscore;
+        if (health <= 0) {
+            if (currentScreen == SCREEN_ENDLESS) {
+                currentScreen = SCREEN_HIGHSCORE;
                 doUpdateHighscore();
-            } else if (currentScreen == screenStoryBattle1) {
-                currentScreen = screenStory2a1;
+            } else if (currentScreen == SCREEN_STORY_BATTLE_1) {
+                currentScreen = SCREEN_STORY_2A1;
                 reset();
-            } else if (currentScreen == screenStoryBattle6) {
-                currentScreen = screenStory7l1;
+            } else if (currentScreen == SCREEN_STORY_BATTLE_6) {
+                currentScreen = SCREEN_STORY_7L1;
                 reset();
             } else {
-                currentScreen = screenDied;
+                currentScreen = SCREEN_DIED;
                 reset();
             }
             screenSwitch();
@@ -2360,12 +2338,12 @@ void setOne() {
         ViewSetxy(enemyShips::e1[3], 193, -94);
     }
     if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
-        if (currentScreen != screenStoryBattle1) {
+        if (currentScreen != SCREEN_STORY_BATTLE_1) {
             enemyShips::e9hp[0] = 48 + level * 2;
             ViewSetxy(enemyShips::e9[0], 89, -240);
         }
-    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == screenStoryBattle1) {
-        currentScreen = screenStory2a1;
+    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_1) {
+        currentScreen = SCREEN_STORY_2A1;
         screenSwitch();
     }
 }
@@ -2530,12 +2508,12 @@ void setTwo() {
         ViewSetxy(enemyShips::e5[1], 33, -94);
         ViewSetxy(enemyShips::e3[1], 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
-        if (currentScreen != screenStoryBattle2) {
+        if (currentScreen != SCREEN_STORY_BATTLE_2) {
             enemyShips::e9hp[0] = 48 + level * 2;
             ViewSetxy(enemyShips::e9[0], 89, -240);
         }
-    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == screenStoryBattle2) {
-        currentScreen = screenStory3a1;
+    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_2) {
+        currentScreen = SCREEN_STORY_3A1;
         screenSwitch();
     }
 }
@@ -2879,12 +2857,12 @@ void setFour() {
         ViewSetxy(enemyShips::e5[3], 33, -94);
         ViewSetxy(enemyShips::e2[8], 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
-        if (currentScreen != screenStoryBattle5) {
+        if (currentScreen != SCREEN_STORY_BATTLE_5) {
             enemyShips::e9hp[0] = 48 + level * 2;
             ViewSetxy(enemyShips::e9[0], 89, -240);
         }
-    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == screenStoryBattle5) {
-        currentScreen = screenStory6a1;
+    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_5) {
+        currentScreen = SCREEN_STORY_6A1;
         screenSwitch();
     }
 }
@@ -3609,13 +3587,13 @@ void enemyDied() {
         ViewSetxy(enemyShips::e9[0], 600, 600);
         counter::enemyExplosion[8] = 0;
         xp += XP_SHIP_DESTROY_9 + round(2 * level / XP_INCREASE);
-        if (currentScreen != screenStoryBattle4) {
+        if (currentScreen != SCREEN_STORY_BATTLE_4) {
             set += 1;
             counter::shipMove = 0;
             health = possibleHealth;
             state::healthUpdate = true;
-        } else if (currentScreen == screenStoryBattle4) {
-            currentScreen = screenStory5a1;
+        } else if (currentScreen == SCREEN_STORY_BATTLE_4) {
+            currentScreen = SCREEN_STORY_5A1;
             screenSwitch();
         }
     }
@@ -3649,13 +3627,13 @@ void enemyDied() {
         ViewSetxy(enemyShips::e10[0], 600, 600);
         counter::enemyExplosion[9] = 0;
         xp += XP_SHIP_DESTROY_10 + round(2 * level / XP_INCREASE);
-        if (currentScreen != screenStoryBattle6) {
+        if (currentScreen != SCREEN_STORY_BATTLE_6) {
             set += 1;
             counter::shipMove = 0;
             health = possibleHealth;
             state::healthUpdate = true;
-        } else if (currentScreen == screenStoryBattle6) {
-            currentScreen = screenStory7w1;
+        } else if (currentScreen == SCREEN_STORY_BATTLE_6) {
+            currentScreen = SCREEN_STORY_7W1;
             screenSwitch();
         }
     }
@@ -3757,7 +3735,6 @@ void shipCollision() {
     }
 }
 void rankFromXp() {
-    assert(xp >= 0);
     const double INPUT_VAL = xp / 50;
     rank = (int) (1.38 * sqrt(INPUT_VAL) + 1);
     if (rank > 20) {
@@ -3772,9 +3749,9 @@ void healthRegen() {
     }
 }
 bool createMove() {
-    return currentScreen == screenEndless || currentScreen == screenStoryBattle1
-                || currentScreen == screenStoryBattle2 || currentScreen == screenStoryBattle4
-                || currentScreen == screenStoryBattle5 || currentScreen == screenStoryBattle6;
+    return currentScreen == SCREEN_ENDLESS || currentScreen == SCREEN_STORY_BATTLE_1
+                || currentScreen == SCREEN_STORY_BATTLE_2 || currentScreen == SCREEN_STORY_BATTLE_4
+                || currentScreen == SCREEN_STORY_BATTLE_5 || currentScreen == SCREEN_STORY_BATTLE_6;
 }
 void OnTimer() {
     //called 30 times per second - 1800=1min - 10000=5min 36sec
@@ -3801,7 +3778,7 @@ void OnTimer() {
             mShipMove();
             enemyDied();
             shipCollision();
-        } else if (currentScreen == screenStoryTorture && state::torture) {
+        } else if (currentScreen == SCREEN_STORY_TORTURE && state::torture) {
             if (counter::torture == 0) {
                 ViewSetxy(imageTorture, -1, -1);
             } else if (counter::torture == 1) {
@@ -3821,7 +3798,7 @@ void OnTimer() {
                 counter::torture = 0;
             }
             tortureHealth();
-        } else if (currentScreen == screenStoryTorture && !state::torture) {
+        } else if (currentScreen == SCREEN_STORY_TORTURE && !state::torture) {
             counter::hpTorture += 1;
             tortureHealth();
             TextSetText(textTorture, "");
