@@ -1,7 +1,7 @@
 /**
  * Bailey Thompson
- * Valley Of Death (1.2.19)
- * 26 January 2017
+ * Valley Of Death (1.3.0)
+ * 29 January 2017
  * Info: This is a scrolling shooter iPhone app.
  */
 #include "DragonFireSDK.h"
@@ -830,7 +830,7 @@ int onStoryMenuTouch(int id, int event, int x, int y) {
 }
 
 int round(double num) {
-    return (num < 0) ? (num - 0.5) : (num + 0.5);
+    return (int) ((num < 0) ? (num - 0.5) : (num + 0.5));
 }
 void shipType() {
     const int LIFT = 10;
