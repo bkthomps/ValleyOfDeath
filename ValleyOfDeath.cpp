@@ -1,11 +1,13 @@
-/**
+/*
  * Bailey Thompson
- * Valley Of Death (1.3.0)
- * 29 January 2017
+ * Valley Of Death (1.3.1)
+ * 23 March 2017
  * Info: This is a scrolling shooter iPhone app.
  */
+
 #include "DragonFireSDK.h"
 #include <math.h>
+#include "Ships.h"
 
 const int XP_SHIP_DESTROY_1_TO_4 = 1;
 const int XP_SHIP_DESTROY_5_TO_8 = 2;
@@ -14,14 +16,7 @@ const int XP_SHIP_DESTROY_10 = 10;
 const int XP_WIN_GAME = 25;
 const int XP_INCREASE = 5;
 
-const int ENEMY_9_BASE_HEALTH = 25;
-const int ENEMY_10_BASE_HEALTH = 50;
-const int ENEMY_BOSS_INCREASE_HEALTH = 3;
-
-const int ENEMY_BASE_HEALTH = 3;
-const int ENEMY_INCREASE_HEALTH = 5;
 const int ENEMY_SPAWN_TIME = 80;
-
 const int ENEMY_FLY_SPEED = 4;
 const int ENEMY_BULLET_SPEED = 10;
 const int ENEMY_BULLET_COOLDOWN_SPEED = 38;
@@ -31,6 +26,18 @@ const int PLAYER_FLY_SPEED_RATIO = 10;
 const int PLAYER_BULLET_SPEED = 18;
 const int PLAYER_BULLET_COOLDOWN_SPEED = 18;
 
+PlayerShip player;
+SingleShip one[10];
+SingleShip two[10];
+SingleShip three[10];
+SingleShip four[10];
+DoubleShip five[5];
+DoubleShip six[5];
+RocketShip seven[5];
+MasterShip eight[5];
+MiniBoss nine;
+MasterBoss ten;
+
 char font;
 int xp, ship, highscore, health, set, level, shipView, mX, mY, newX, newY, music, possibleHealth, shipSpeed, rank;
 int bulletXOffset, bulletYOffset, bulletXOffset2, bulletYOffset2, bulletXOffset3, bulletYOffset3;
@@ -38,23 +45,8 @@ int width1, width2, text1, text2, text3, imageTorture, hpTorture, textTorture, h
 
 namespace bullets {
     int m1[15], m2[15], m3[15];
-    int e1b2[50];
-    int e2b2[50];
-    int e3b2[50];
-    int e4b2[50];
-    int e5b1[25], e5b3[25];
-    int e6b1[25], e6b3[25];
-    int e7b2[25];
-    int e8b1[25], e8b2[25], e8b3[25];
-    int e9b1[5], e9b2[5], e9b3[5];
-    int e10b1[5], e10b2[5], e10b3[5];
 }
-namespace enemyShips {
-    int e1[10], e2[10], e3[10], e4[10], e5[5], e6[5], e7[5], e8[5], e9[1], e10[1];
-    int e1x[10], e2x[10], e3x[10], e4x[10], e5x[5], e6x[5], e7x[5], e8x[5], e9x[1], e10x[1];
-    int e1y[10], e2y[10], e3y[10], e4y[10], e5y[5], e6y[5], e7y[5], e8y[5], e9y[1], e10y[1];
-    int e1hp[10], e2hp[10], e3hp[10], e4hp[10], e5hp[5], e6hp[5], e7hp[5], e8hp[5], e9hp[1], e10hp[1];
-}
+
 namespace counter {
     int sound, bulletTime, shipMove, bulletMove, hpTorture, torture, shipAction, healthRegen, enemyExplosion[10];
 }
@@ -159,73 +151,73 @@ void reset() {
         ViewSetxy(bullets::m2[i], -20, -20);
         ViewSetxy(bullets::m3[i], -10, -10);
     }
-    for (int i = 0; i < 50; i++) {
-        ViewSetxy(bullets::e1b2[i], 600, 600);
-        ViewSetxy(bullets::e2b2[i], 600, 600);
-        ViewSetxy(bullets::e3b2[i], 600, 600);
-        ViewSetxy(bullets::e4b2[i], 600, 600);
-    }
-    for (int i = 0; i < 25; i++) {
-        ViewSetxy(bullets::e5b1[i], 600, 600);
-        ViewSetxy(bullets::e5b3[i], 600, 600);
-        ViewSetxy(bullets::e6b1[i], 600, 600);
-        ViewSetxy(bullets::e6b3[i], 600, 600);
-        ViewSetxy(bullets::e7b2[i], 600, 600);
-        ViewSetxy(bullets::e8b1[i], 600, 600);
-        ViewSetxy(bullets::e8b2[i], 600, 600);
-        ViewSetxy(bullets::e8b3[i], 600, 600);
-    }
     for (int i = 0; i < 5; i++) {
-        ViewSetxy(bullets::e9b1[i], 600, 600);
-        ViewSetxy(bullets::e9b2[i], 600, 600);
-        ViewSetxy(bullets::e9b3[i], 600, 600);
-        ViewSetxy(bullets::e10b1[i], 600, 600);
-        ViewSetxy(bullets::e10b2[i], 600, 600);
-        ViewSetxy(bullets::e10b3[i], 600, 600);
+        for (int j = 0; j < 10; j++) {
+            one[j].setBullet(i, 600, 600);
+            two[j].setBullet(i, 600, 600);
+            three[j].setBullet(i, 600, 600);
+            four[j].setBullet(i, 600, 600);
+        }
+        for (int j = 0; j < 5; j++) {
+            five[j].setBulletOne(i, 600, 600);
+            five[j].setBulletTwo(i, 600, 600);
+            six[j].setBulletOne(i, 600, 600);
+            six[j].setBulletTwo(i, 600, 600);
+            seven[j].setRocket(i, 600, 600);
+            eight[j].setBulletOne(i, 600, 600);
+            eight[j].setRocket(i, 600, 600);
+            eight[j].setBulletTwo(i, 600, 600);
+        }
+        nine.setBulletOne(i, 600, 600);
+        nine.setRocket(i, 600, 600);
+        nine.setBulletTwo(i, 600, 600);
+        ten.setBulletOne(i, 600, 600);
+        ten.setRocket(i, 600, 600);
+        ten.setBulletTwo(i, 600, 600);
     }
     int picture, ship;
     for (int i = 0; i < 10; i++) {
-        ViewSetxy(enemyShips::e1[i], 600, 600);
-        ship = (enemyShips::e1[i]);
+        one[i].setShip(600, 600);
+        ship = one[i].getInstance();
         picture = ImageAdd("Images/eShip_1.png");
         ViewSetImage(ship, picture);
-        ViewSetxy(enemyShips::e2[i], 600, 600);
-        ship = (enemyShips::e2[i]);
+        two[i].setShip(600, 600);
+        ship = two[i].getInstance();
         picture = ImageAdd("Images/eShip_2.png");
         ViewSetImage(ship, picture);
-        ViewSetxy(enemyShips::e3[i], 600, 600);
-        ship = (enemyShips::e3[i]);
+        three[i].setShip(600, 600);
+        ship = three[i].getInstance();
         picture = ImageAdd("Images/eShip_3.png");
         ViewSetImage(ship, picture);
-        ViewSetxy(enemyShips::e4[i], 600, 600);
-        ship = (enemyShips::e4[i]);
+        four[i].setShip(600, 600);
+        ship = four[i].getInstance();
         picture = ImageAdd("Images/eShip_4.png");
         ViewSetImage(ship, picture);
     }
     for (int i = 0; i < 5; i++) {
-        ViewSetxy(enemyShips::e5[i], 600, 600);
-        ship = (enemyShips::e5[i]);
+        five[i].setShip(600, 600);
+        ship = five[i].getInstance();
         picture = ImageAdd("Images/eShip_5.png");
         ViewSetImage(ship, picture);
-        ViewSetxy(enemyShips::e6[i], 600, 600);
-        ship = (enemyShips::e6[i]);
+        six[i].setShip(600, 600);
+        ship = six[i].getInstance();
         picture = ImageAdd("Images/eShip_6.png");
         ViewSetImage(ship, picture);
-        ViewSetxy(enemyShips::e7[i], 600, 600);
-        ship = (enemyShips::e7[i]);
+        seven[i].setShip(600, 600);
+        ship = seven[i].getInstance();
         picture = ImageAdd("Images/eShip_7.png");
         ViewSetImage(ship, picture);
-        ViewSetxy(enemyShips::e8[i], 600, 600);
-        ship = (enemyShips::e8[i]);
+        eight[i].setShip(600, 600);
+        ship = eight[i].getInstance();
         picture = ImageAdd("Images/eShip_8.png");
         ViewSetImage(ship, picture);
     }
-    ViewSetxy(enemyShips::e9[0], 600, 600);
-    ship = (enemyShips::e9[0]);
+    nine.setShip(600, 600);
+    ship = nine.getInstance();
     picture = ImageAdd("Images/eMini-Boss.png");
     ViewSetImage(ship, picture);
-    ViewSetxy(enemyShips::e10[0], 600, 600);
-    ship = (enemyShips::e10[0]);
+    ten.setShip(600, 600);
+    ship = ten.getInstance();
     picture = ImageAdd("Images/eBoss.png");
     ViewSetImage(ship, picture);
     health = possibleHealth;
@@ -1459,45 +1451,45 @@ void containerOne() {
         bullets::m3[i] = ViewAdd(container::endless, "Images/Bullet.png", -10, -10);
     }
     //enemy bullets
-    for (int i = 0; i < 50; i++) {
-        bullets::e1b2[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e2b2[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e3b2[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e4b2[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-    }
-    for (int i = 0; i < 25; i++) {
-        bullets::e5b1[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e5b3[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e6b1[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e6b3[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e7b2[i] = ViewAdd(container::endless, "Images/eRocket.png", 600, 600);
-        bullets::e8b1[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e8b2[i] = ViewAdd(container::endless, "Images/eRocket.png", 600, 600);
-        bullets::e8b3[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-    }
     for (int i = 0; i < 5; i++) {
-        bullets::e9b1[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e9b2[i] = ViewAdd(container::endless, "Images/eRocket.png", 600, 600);
-        bullets::e9b3[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e10b1[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
-        bullets::e10b2[i] = ViewAdd(container::endless, "Images/eRocket.png", 600, 600);
-        bullets::e10b3[i] = ViewAdd(container::endless, "Images/eBullet.png", 600, 600);
+        for (int j = 0; j < 10; j++) {
+            one[i].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            two[i].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            three[i].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            four[i].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+        }
+        for (int j = 0; j < 5; j++) {
+            five[i].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            five[i].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            six[i].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            six[i].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            seven[i].setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
+            eight[i].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            eight[i].setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
+            eight[i].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+        }
+        nine.setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+        nine.setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
+        nine.setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+        ten.setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+        ten.setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
+        ten.setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
     }
     //ships
     for (int i = 0; i < 10; i++) {
-        enemyShips::e1[i] = ViewAdd(container::endless, "Images/eShip_1.png", 600, 600);
-        enemyShips::e2[i] = ViewAdd(container::endless, "Images/eShip_2.png", 600, 600);
-        enemyShips::e3[i] = ViewAdd(container::endless, "Images/eShip_3.png", 600, 600);
-        enemyShips::e4[i] = ViewAdd(container::endless, "Images/eShip_4.png", 600, 600);
+        one[i].setInstance(ViewAdd(container::endless, "Images/eShip_1.png", 600, 600));
+        two[i].setInstance(ViewAdd(container::endless, "Images/eShip_2.png", 600, 600));
+        three[i].setInstance(ViewAdd(container::endless, "Images/eShip_3.png", 600, 600));
+        four[i].setInstance(ViewAdd(container::endless, "Images/eShip_4.png", 600, 600));
     }
     for (int i = 0; i < 5; i++) {
-        enemyShips::e5[i] = ViewAdd(container::endless, "Images/eShip_5.png", 600, 600);
-        enemyShips::e6[i] = ViewAdd(container::endless, "Images/eShip_6.png", 600, 600);
-        enemyShips::e7[i] = ViewAdd(container::endless, "Images/eShip_7.png", 600, 600);
-        enemyShips::e8[i] = ViewAdd(container::endless, "Images/eShip_8.png", 600, 600);
+        five[i].setInstance(ViewAdd(container::endless, "Images/eShip_5.png", 600, 600));
+        six[i].setInstance(ViewAdd(container::endless, "Images/eShip_6.png", 600, 600));
+        seven[i].setInstance(ViewAdd(container::endless, "Images/eShip_7.png", 600, 600));
+        eight[i].setInstance(ViewAdd(container::endless, "Images/eShip_8.png", 600, 600));
     }
-    enemyShips::e9[0] = ViewAdd(container::endless, "Images/eMini-Boss.png", 600, 600);
-    enemyShips::e10[0] = ViewAdd(container::endless, "Images/eBoss.png", 600, 600);
+    nine.setInstance(ViewAdd(container::endless, "Images/eMini-Boss.png", 600, 600));
+    ten.setInstance(ViewAdd(container::endless, "Images/eBoss.png", 600, 600));
     //populate container::menu
     ViewAdd(container::menu, "Images/Background.png", 0, 0);
     ViewAdd(container::menu, "Images/btnStory.png", 20, 40, onStoryMenuTouch, 1);
@@ -1878,167 +1870,157 @@ void bulletTime() {
             }
             for (int j = 0; j < 10; j++) {
                 //ship 1
-                if (y > enemyShips::e1y[j] && y < enemyShips::e1y[j] + 94 && x > enemyShips::e1x[j] + 9 
-                    && x < enemyShips::e1x[j] + 76) {
+                const int enemy1x = one[j].getXCoord();
+                const int enemy1y = one[j].getYCoord();
+                if (y > enemy1y && y < enemy1y + 94 && x > enemy1x + 9 && x < enemy1x + 76) {
                     ViewSetxy(bullets::m1[i], -10, -10);
-                    enemyShips::e1hp[j] -= 1;
+                    one[j].damage(1);
                 }
-                if (y2 > enemyShips::e1y[j] && y2 < enemyShips::e1y[j] + 94 && x2 > enemyShips::e1x[j] + 9 
-                    && x2 < enemyShips::e1x[j] + 76) {
+                if (y2 > enemy1y && y2 < enemy1y + 94 && x2 > enemy1x + 9 && x2 < enemy1x + 76) {
                     ViewSetxy(bullets::m2[i], -20, -20);
-                    enemyShips::e1hp[j] -= 3;
+                    one[j].damage(3);
                 }
-                if (y3 > enemyShips::e1y[j] && y3 < enemyShips::e1y[j] + 94 && x3 > enemyShips::e1x[j] + 9 
-                    && x3 < enemyShips::e1x[j] + 76) {
+                if (y3 > enemy1y && y3 < enemy1y + 94 && x3 > enemy1x + 9 && x3 < enemy1x + 76) {
                     ViewSetxy(bullets::m3[i], -10, -10);
-                    enemyShips::e1hp[j] -= 1;
+                    one[j].damage(1);
                 }
                 //ship 2
-                if (y > enemyShips::e2y[j] && y < enemyShips::e2y[j] + 94 && x > enemyShips::e2x[j] + 15 
-                    && x < enemyShips::e2x[j] + 69) {
+                const int enemy2x = two[j].getXCoord();
+                const int enemy2y = two[j].getYCoord();
+                if (y > enemy2y && y < enemy2y + 94 && x > enemy2x + 15 && x < enemy2x + 69) {
                     ViewSetxy(bullets::m1[i], -10, -10);
-                    enemyShips::e2hp[j] -= 1;
+                    two[j].damage(1);
                 }
-                if (y2 > enemyShips::e2y[j] && y2 < enemyShips::e2y[j] + 94 && x2 > enemyShips::e2x[j] + 15 
-                    && x2 < enemyShips::e2x[j] + 69) {
+                if (y2 > enemy2y && y2 < enemy2y + 94 && x2 > enemy2x + 15 && x2 < enemy2x + 69) {
                     ViewSetxy(bullets::m2[i], -20, -20);
-                    enemyShips::e2hp[j] -= 3;
+                    two[j].damage(3);
                 }
-                if (y3 > enemyShips::e2y[j] && y3 < enemyShips::e2y[j] + 94 && x3 > enemyShips::e2x[j] + 15 
-                    && x3 < enemyShips::e2x[j] + 69) {
+                if (y3 > enemy2y && y3 < enemy2y + 94 && x3 > enemy2x + 15 && x3 < enemy2x + 69) {
                     ViewSetxy(bullets::m3[i], -10, -10);
-                    enemyShips::e2hp[j] -= 1;
+                    two[j].damage(1);
                 }
                 //ship 3
-                if (y > enemyShips::e3y[j] && y < enemyShips::e3y[j] + 94 && x > enemyShips::e3x[j] + 18 
-                    && x < enemyShips::e3x[j] + 66) {
+                const int enemy3x = three[j].getXCoord();
+                const int enemy3y = three[j].getYCoord();
+                if (y > enemy3y && y < enemy3y + 94 && x > enemy3x + 18 && x < enemy3x + 66) {
                     ViewSetxy(bullets::m1[i], -10, -10);
-                    enemyShips::e3hp[j] -= 1;
+                    three[j].damage(1);
                 }
-                if (y2 > enemyShips::e3y[j] && y2 < enemyShips::e3y[j] + 94 && x2 > enemyShips::e3x[j] + 18 
-                    && x2 < enemyShips::e3x[j] + 66) {
+                if (y2 > enemy3y && y2 < enemy3y + 94 && x2 > enemy3x + 18 && x2 < enemy3x + 66) {
                     ViewSetxy(bullets::m2[i], -20, -20);
-                    enemyShips::e3hp[j] -= 3;
+                    three[j].damage(3);
                 }
-                if (y3 > enemyShips::e3y[j] && y3 < enemyShips::e3y[j] + 94 && x3 > enemyShips::e3x[j] + 18 
-                    && x3 < enemyShips::e3x[j] + 66) {
+                if (y3 > enemy3y && y3 < enemy3y + 94 && x3 > enemy3x + 18 && x3 < enemy3x + 66) {
                     ViewSetxy(bullets::m3[i], -10, -10);
-                    enemyShips::e3hp[j] -= 1;
+                    three[j].damage(1);
                 }
                 //ship 4
-                if (y > enemyShips::e4y[j] && y < enemyShips::e4y[j] + 94 && x > enemyShips::e4x[j] - 3 
-                    && x < enemyShips::e4x[j] + 87) {
+                const int enemy4x = four[j].getXCoord();
+                const int enemy4y = four[j].getYCoord();
+                if (y > enemy4y && y < enemy4y + 94 && x > enemy4x - 3 && x < enemy4x + 87) {
                     ViewSetxy(bullets::m1[i], -10, -10);
-                    enemyShips::e4hp[j] -= 1;
+                    four[j].damage(1);
                 }
-                if (y2 > enemyShips::e4y[j] && y2 < enemyShips::e4y[j] + 94 && x2 > enemyShips::e4x[j] - 3 
-                    && x2 < enemyShips::e4x[j] + 87) {
+                if (y2 > enemy4y && y2 < enemy4y + 94 && x2 > enemy4x - 3 && x2 < enemy4x + 87) {
                     ViewSetxy(bullets::m2[i], -20, -20);
-                    enemyShips::e4hp[j] -= 3;
+                    four[j].damage(3);
                 }
-                if (y3 > enemyShips::e4y[j] && y3 < enemyShips::e4y[j] + 94 && x3 > enemyShips::e4x[j] - 3 
-                    && x3 < enemyShips::e4x[j] + 87) {
+                if (y3 > enemy4y && y3 < enemy4y + 94 && x3 > enemy4x - 3 && x3 < enemy4x + 87) {
                     ViewSetxy(bullets::m3[i], -10, -10);
-                    enemyShips::e4hp[j] -= 1;
+                    four[j].damage(1);
                 }
             }
             for (int j = 0; j < 5; j++) {
                 //ship 5
-                if (y > enemyShips::e5y[j] && y < enemyShips::e5y[j] + 94 && x > enemyShips::e5x[j] + 13 
-                    && x < enemyShips::e5x[j] + 71) {
+                const int enemy5x = five[j].getXCoord();
+                const int enemy5y = five[j].getYCoord();
+                if (y > enemy5y && y < enemy5y + 94 && x > enemy5x + 13 && x < enemy5x + 71) {
                     ViewSetxy(bullets::m1[i], -10, -10);
-                    enemyShips::e5hp[j] -= 1;
+                    five[j].damage(1);
                 }
-                if (y2 > enemyShips::e5y[j] && y2 < enemyShips::e5y[j] + 94 && x2 > enemyShips::e5x[j] + 13 
-                    && x2 < enemyShips::e5x[j] + 71) {
+                if (y2 > enemy5y && y2 < enemy5y + 94 && x2 > enemy5x + 13 && x2 < enemy5x + 71) {
                     ViewSetxy(bullets::m2[i], -20, -20);
-                    enemyShips::e5hp[j] -= 3;
+                    five[j].damage(3);
                 }
-                if (y3 > enemyShips::e5y[j] && y3 < enemyShips::e5y[j] + 94 && x3 > enemyShips::e5x[j] + 13 
-                    && x3 < enemyShips::e5x[j] + 71) {
+                if (y3 > enemy5y && y3 < enemy5y + 94 && x3 > enemy5x + 13 && x3 < enemy5x + 71) {
                     ViewSetxy(bullets::m3[i], -10, -10);
-                    enemyShips::e5hp[j] -= 1;
+                    five[j].damage(1);
                 }
                 //ship 6
-                if (y > enemyShips::e6y[j] && y < enemyShips::e6y[j] + 94 && x > enemyShips::e6x[j] + 3 
-                    && x < enemyShips::e6x[j] + 81) {
+                const int enemy6x = six[j].getXCoord();
+                const int enemy6y = six[j].getYCoord();
+                if (y > enemy6y && y < enemy6y + 94 && x > enemy6x + 3 && x < enemy6x + 81) {
                     ViewSetxy(bullets::m1[i], -10, -10);
-                    enemyShips::e6hp[j] -= 1;
+                    six[j].damage(1);
                 }
-                if (y2 > enemyShips::e2y[j] && y2 < enemyShips::e2y[j] + 94 && x2 > enemyShips::e2x[j] + 3 
-                    && x2 < enemyShips::e2x[j] + 81) {
+                if (y2 > enemy6y && y2 < enemy6y + 94 && x2 > enemy6x + 3 && x2 < enemy6x + 81) {
                     ViewSetxy(bullets::m2[i], -20, -20);
-                    enemyShips::e2hp[j] -= 3;
+                    six[j].damage(3);
                 }
-                if (y3 > enemyShips::e6y[j] && y3 < enemyShips::e6y[j] + 94 && x3 > enemyShips::e6x[j] + 3 
-                    && x3 < enemyShips::e6x[j] + 81) {
+                if (y3 > enemy6y && y3 < enemy6y + 94 && x3 > enemy6x + 3 && x3 < enemy6x + 81) {
                     ViewSetxy(bullets::m3[i], -10, -10);
-                    enemyShips::e6hp[j] -= 1;
+                    six[j].damage(1);
                 }
                 //ship 7
-                if (y > enemyShips::e7y[j] && y < enemyShips::e7y[j] + 94 && x > enemyShips::e7x[j] - 2 
-                    && x < enemyShips::e7x[j] + 86) {
+                const int enemy7x = seven[j].getXCoord();
+                const int enemy7y = seven[j].getYCoord();
+                if (y > enemy7y && y < enemy7y + 94 && x > enemy7x - 2 && x < enemy7x + 86) {
                     ViewSetxy(bullets::m1[i], -10, -10);
-                    enemyShips::e7hp[j] -= 1;
+                    seven[j].damage(1);
                 }
-                if (y2 > enemyShips::e7y[j] && y2 < enemyShips::e7y[j] + 94 && x2 > enemyShips::e7x[j] - 2 
-                    && x2 < enemyShips::e7x[j] + 86) {
+                if (y2 > enemy7y && y2 < enemy7y + 94 && x2 > enemy7x - 2 && x2 < enemy7x + 86) {
                     ViewSetxy(bullets::m2[i], -20, -20);
-                    enemyShips::e7hp[j] -= 3;
+                    seven[j].damage(3);
                 }
-                if (y3 > enemyShips::e7y[j] && y3 < enemyShips::e7y[j] + 94 && x3 > enemyShips::e7x[j] - 2 
-                    && x3 < enemyShips::e7x[j] + 86) {
+                if (y3 > enemy7y && y3 < enemy7y + 94 && x3 > enemy7x - 2 && x3 < enemy7x + 86) {
                     ViewSetxy(bullets::m3[i], -10, -10);
-                    enemyShips::e7hp[j] -= 1;
+                    seven[j].damage(1);
                 }
                 //ship 8
-                if (y > enemyShips::e8y[j] && y < enemyShips::e8y[j] + 94 && x > enemyShips::e8x[j] - 3 
-                    && x < enemyShips::e8x[j] + 86) {
+                const int enemy8x = eight[j].getXCoord();
+                const int enemy8y = eight[j].getYCoord();
+                if (y > enemy8y && y < enemy8y + 94 && x > enemy8x - 3 && x < enemy8x + 86) {
                     ViewSetxy(bullets::m1[i], -10, -10);
-                    enemyShips::e8hp[j] -= 1;
+                    eight[j].damage(1);
                 }
-                if (y2 > enemyShips::e8y[j] && y2 < enemyShips::e8y[j] + 94 && x2 > enemyShips::e8x[j] - 3 
-                    && x2 < enemyShips::e8x[j] + 86) {
+                if (y2 > enemy8y && y2 < enemy8y + 94 && x2 > enemy8x - 3 && x2 < enemy8x + 86) {
                     ViewSetxy(bullets::m2[i], -20, -20);
-                    enemyShips::e8hp[j] -= 3;
+                    eight[j].damage(3);
                 }
-                if (y3 > enemyShips::e8y[j] && y3 < enemyShips::e8y[j] + 94 && x3 > enemyShips::e8x[j] - 3 
-                    && x3 < enemyShips::e8x[j] + 86) {
+                if (y3 > enemy8y && y3 < enemy8y + 94 && x3 > enemy8x - 3 && x3 < enemy8x + 86) {
                     ViewSetxy(bullets::m3[i], -10, -10);
-                    enemyShips::e8hp[j] -= 1;
+                    eight[j].damage(1);
                 }
             }
             //ship 9
-            if (y > enemyShips::e9y[0] && y < enemyShips::e9y[0] + 94 && x > enemyShips::e9x[0] 
-                && x < enemyShips::e9x[0] + 240) {
+            const int enemy9x = nine.getXCoord();
+            const int enemy9y = nine.getYCoord();
+            if (y > enemy9y && y < enemy9y + 94 && x > enemy9x && x < enemy9x + 240) {
                 ViewSetxy(bullets::m1[i], -10, -10);
-                enemyShips::e9hp[0] -= 1;
+                nine.damage(1);
             }
-            if (y2 > enemyShips::e9y[0] && y2 < enemyShips::e9y[0] + 94 && x2 > enemyShips::e9x[0] 
-                && x2 < enemyShips::e9x[0] + 240) {
+            if (y2 > enemy9y && y2 < enemy9y + 94 && x2 > enemy9x && x2 < enemy9x + 240) {
                 ViewSetxy(bullets::m2[i], -20, -20);
-                enemyShips::e9hp[0] -= 3;
+                nine.damage(3);
             }
-            if (y3 > enemyShips::e9y[0] && y3 < enemyShips::e9y[0] + 94 && x3 > enemyShips::e9x[0] 
-                && x3 < enemyShips::e9x[0] + 240) {
+            if (y3 > enemy9y && y3 < enemy9y + 94 && x3 > enemy9x && x3 < enemy9x + 240) {
                 ViewSetxy(bullets::m3[i], -10, -10);
-                enemyShips::e9hp[0] -= 1;
+                nine.damage(1);
             }
             //ship 10
-            if (y > enemyShips::e10y[0] && y < enemyShips::e10y[0] + 94 && x > enemyShips::e10x[0] 
-                && x < enemyShips::e10x[0] + 240) {
+            const int enemy10x = ten.getXCoord();
+            const int enemy10y = ten.getYCoord();
+            if (y > enemy10y && y < enemy10y + 94 && x > enemy10x && x < enemy10x + 240) {
                 ViewSetxy(bullets::m1[i], -10, -10);
-                enemyShips::e10hp[0] -= 1;
+                ten.damage(1);
             }
-            if (y2 > enemyShips::e10y[0] && y2 < enemyShips::e10y[0] + 94 && x2 > enemyShips::e10x[0] 
-                && x2 < enemyShips::e10x[0] + 240) {
+            if (y2 > enemy10y && y2 < enemy10y + 94 && x2 > enemy10x && x2 < enemy10x + 240) {
                 ViewSetxy(bullets::m2[i], -20, -20);
-                enemyShips::e10hp[0] -= 3;
+                ten.damage(3);
             }
-            if (y3 > enemyShips::e10y[0] && y3 < enemyShips::e10y[0] + 94 && x3 > enemyShips::e10x[0] 
-                && x3 < enemyShips::e10x[0] + 240) {
+            if (y3 > enemy10y && y3 < enemy10y + 94 && x3 > enemy10x && x3 < enemy10x + 240) {
                 ViewSetxy(bullets::m3[i], -10, -10);
-                enemyShips::e10hp[0] -= 1;
+                ten.damage(1);
             }
         }
     }
@@ -2173,177 +2155,177 @@ void healthBar() {
 }
 void setOne() {
     if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[0], 113, -94);
+        one[0].resetHealth(level);
+        ViewSetxy(one[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[1], 33, -94);
-        ViewSetxy(enemyShips::e2[0], 193, -94);
+        one[1].resetHealth(level);
+        two[0].resetHealth(level);
+        ViewSetxy(one[1].getInstance(), 33, -94);
+        ViewSetxy(two[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[1], 113, -94);
+        two[1].resetHealth(level);
+        ViewSetxy(two[1].getInstance(), 113, -94);
     } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[2], 33, -94);
-        ViewSetxy(enemyShips::e1[2], 193, -94);
+        two[2].resetHealth(level);
+        one[2].resetHealth(level);
+        ViewSetxy(two[2].getInstance(), 33, -94);
+        ViewSetxy(one[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[3], 0, -94);
-        ViewSetxy(enemyShips::e3[0], 113, -94);
-        ViewSetxy(enemyShips::e2[3], 226, -94);
+        one[3].resetHealth(level);
+        three[0].resetHealth(level);
+        two[3].resetHealth(level);
+        ViewSetxy(one[3].getInstance(), 0, -94);
+        ViewSetxy(three[0].getInstance(), 113, -94);
+        ViewSetxy(two[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[1], 0, -94);
-        ViewSetxy(enemyShips::e2[4], 113, -94);
-        ViewSetxy(enemyShips::e3[2], 226, -94);
+        three[1].resetHealth(level);
+        two[4].resetHealth(level);
+        three[2].resetHealth(level);
+        ViewSetxy(three[1].getInstance(), 0, -94);
+        ViewSetxy(two[4].getInstance(), 113, -94);
+        ViewSetxy(three[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[4], 0, -94);
-        ViewSetxy(enemyShips::e1[5], 113, -94);
-        ViewSetxy(enemyShips::e2[5], 226, -94);
+        one[4].resetHealth(level);
+        one[5].resetHealth(level);
+        two[5].resetHealth(level);
+        ViewSetxy(one[4].getInstance(), 0, -94);
+        ViewSetxy(one[5].getInstance(), 113, -94);
+        ViewSetxy(two[5].getInstance(), 226, -94);
     } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[3], 0, -94);
-        ViewSetxy(enemyShips::e1[6], 113, -94);
-        ViewSetxy(enemyShips::e1[7], 226, -94);
+        three[3].resetHealth(level);
+        one[6].resetHealth(level);
+        one[7].resetHealth(level);
+        ViewSetxy(three[3].getInstance(), 0, -94);
+        ViewSetxy(one[6].getInstance(), 113, -94);
+        ViewSetxy(one[7].getInstance(), 226, -94);
     } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[6], 33, -94);
-        ViewSetxy(enemyShips::e3[4], 193, -94);
+        two[6].resetHealth(level);
+        three[4].resetHealth(level);
+        ViewSetxy(two[6].getInstance(), 33, -94);
+        ViewSetxy(three[4].getInstance(), 193, -94);
     } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[0], 113, -94);
+        four[0].resetHealth(level);
+        ViewSetxy(four[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[5], 33, -94);
-        ViewSetxy(enemyShips::e4[1], 193, -94);
+        three[5].resetHealth(level);
+        four[1].resetHealth(level);
+        ViewSetxy(three[5].getInstance(), 33, -94);
+        ViewSetxy(four[1].getInstance(), 193, -94);
     } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[8], 0, -94);
-        ViewSetxy(enemyShips::e2[7], 113, -94);
-        ViewSetxy(enemyShips::e1[9], 226, -94);
+        one[8].resetHealth(level);
+        two[7].resetHealth(level);
+        one[9].resetHealth(level);
+        ViewSetxy(one[8].getInstance(), 0, -94);
+        ViewSetxy(two[7].getInstance(), 113, -94);
+        ViewSetxy(one[9].getInstance(), 226, -94);
     } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[2], 0, -94);
-        ViewSetxy(enemyShips::e1[0], 113, -94);
-        ViewSetxy(enemyShips::e3[6], 226, -94);
+        four[2].resetHealth(level);
+        one[0].resetHealth(level);
+        three[6].resetHealth(level);
+        ViewSetxy(four[2].getInstance(), 0, -94);
+        ViewSetxy(one[0].getInstance(), 113, -94);
+        ViewSetxy(three[6].getInstance(), 226, -94);
     } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[8], 0, -94);
-        ViewSetxy(enemyShips::e4[3], 113, -94);
-        ViewSetxy(enemyShips::e3[7], 226, -94);
+        two[8].resetHealth(level);
+        four[3].resetHealth(level);
+        three[7].resetHealth(level);
+        ViewSetxy(two[8].getInstance(), 0, -94);
+        ViewSetxy(four[3].getInstance(), 113, -94);
+        ViewSetxy(three[7].getInstance(), 226, -94);
     } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[4], 33, -94);
-        ViewSetxy(enemyShips::e4[5], 193, -94);
+        four[4].resetHealth(level);
+        four[5].resetHealth(level);
+        ViewSetxy(four[4].getInstance(), 33, -94);
+        ViewSetxy(four[5].getInstance(), 193, -94);
     } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[9], 0, -94);
-        ViewSetxy(enemyShips::e2[0], 113, -94);
-        ViewSetxy(enemyShips::e3[8], 226, -94);
+        two[9].resetHealth(level);
+        two[0].resetHealth(level);
+        three[8].resetHealth(level);
+        ViewSetxy(two[9].getInstance(), 0, -94);
+        ViewSetxy(two[0].getInstance(), 113, -94);
+        ViewSetxy(three[8].getInstance(), 226, -94);
     } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[9], 0, -94);
-        ViewSetxy(enemyShips::e1[2], 113, -94);
-        ViewSetxy(enemyShips::e2[1], 226, -94);
+        three[9].resetHealth(level);
+        one[2].resetHealth(level);
+        two[1].resetHealth(level);
+        ViewSetxy(three[9].getInstance(), 0, -94);
+        ViewSetxy(one[2].getInstance(), 113, -94);
+        ViewSetxy(two[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[6], 33, -94);
-        ViewSetxy(enemyShips::e2[2], 193, -94);
+        four[6].resetHealth(level);
+        two[2].resetHealth(level);
+        ViewSetxy(four[6].getInstance(), 33, -94);
+        ViewSetxy(two[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[0], 113, -94);
+        five[0].resetHealth(level);
+        ViewSetxy(five[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[3], 33, -94);
-        ViewSetxy(enemyShips::e4[7], 193, -94);
+        two[3].resetHealth(level);
+        four[7].resetHealth(level);
+        ViewSetxy(two[3].getInstance(), 33, -94);
+        ViewSetxy(four[7].getInstance(), 193, -94);
     } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[1], 0, -94);
-        ViewSetxy(enemyShips::e5[1], 113, -94);
-        ViewSetxy(enemyShips::e1[2], 226, -94);
+        one[1].resetHealth(level);
+        five[1].resetHealth(level);
+        one[2].resetHealth(level);
+        ViewSetxy(one[1].getInstance(), 0, -94);
+        ViewSetxy(five[1].getInstance(), 113, -94);
+        ViewSetxy(one[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[8], 0, -94);
-        ViewSetxy(enemyShips::e2[4], 113, -94);
-        ViewSetxy(enemyShips::e4[9], 226, -94);
+        four[8].resetHealth(level);
+        two[4].resetHealth(level);
+        four[9].resetHealth(level);
+        ViewSetxy(four[8].getInstance(), 0, -94);
+        ViewSetxy(two[4].getInstance(), 113, -94);
+        ViewSetxy(four[9].getInstance(), 226, -94);
     } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[2], 33, -94);
-        ViewSetxy(enemyShips::e5[3], 193, -94);
+        five[2].resetHealth(level);
+        five[3].resetHealth(level);
+        ViewSetxy(five[2].getInstance(), 33, -94);
+        ViewSetxy(five[3].getInstance(), 193, -94);
     } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[0], 0, -94);
-        ViewSetxy(enemyShips::e5[4], 113, -94);
-        ViewSetxy(enemyShips::e4[1], 226, -94);
+        four[0].resetHealth(level);
+        five[4].resetHealth(level);
+        four[1].resetHealth(level);
+        ViewSetxy(four[0].getInstance(), 0, -94);
+        ViewSetxy(five[4].getInstance(), 113, -94);
+        ViewSetxy(four[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[0], 0, -94);
-        ViewSetxy(enemyShips::e1[3], 113, -94);
-        ViewSetxy(enemyShips::e3[0], 226, -94);
+        five[0].resetHealth(level);
+        one[3].resetHealth(level);
+        three[0].resetHealth(level);
+        ViewSetxy(five[0].getInstance(), 0, -94);
+        ViewSetxy(one[3].getInstance(), 113, -94);
+        ViewSetxy(three[0].getInstance(), 226, -94);
     } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[1], 33, -94);
-        ViewSetxy(enemyShips::e5[2], 193, -94);
+        five[1].resetHealth(level);
+        five[2].resetHealth(level);
+        ViewSetxy(five[1].getInstance(), 33, -94);
+        ViewSetxy(five[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[4], 0, -94);
-        ViewSetxy(enemyShips::e3[1], 113, -94);
-        ViewSetxy(enemyShips::e1[1], 226, -94);
+        one[4].resetHealth(level);
+        three[1].resetHealth(level);
+        one[1].resetHealth(level);
+        ViewSetxy(one[4].getInstance(), 0, -94);
+        ViewSetxy(three[1].getInstance(), 113, -94);
+        ViewSetxy(one[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[2], 0, -94);
-        ViewSetxy(enemyShips::e5[3], 113, -94);
-        ViewSetxy(enemyShips::e2[5], 226, -94);
+        four[2].resetHealth(level);
+        five[3].resetHealth(level);
+        two[5].resetHealth(level);
+        ViewSetxy(four[2].getInstance(), 0, -94);
+        ViewSetxy(five[3].getInstance(), 113, -94);
+        ViewSetxy(two[5].getInstance(), 226, -94);
     } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[2], 33, -94);
-        ViewSetxy(enemyShips::e1[3], 193, -94);
+        one[2].resetHealth(level);
+        one[3].resetHealth(level);
+        ViewSetxy(one[2].getInstance(), 33, -94);
+        ViewSetxy(one[3].getInstance(), 193, -94);
     }
     if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_1) {
-            enemyShips::e9hp[0] = ENEMY_9_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
-            ViewSetxy(enemyShips::e9[0], 89, -240);
+            nine.resetHealth(level);
+            ViewSetxy(nine.getInstance(), 89, -240);
         }
     } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_1) {
         currentScreen = SCREEN_STORY_2A1;
@@ -2352,168 +2334,168 @@ void setOne() {
 }
 void setTwo() {
     if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[0], 33, -94);
-        ViewSetxy(enemyShips::e2[0], 193, -94);
+        one[0].resetHealth(level);
+        two[0].resetHealth(level);
+        ViewSetxy(one[0].getInstance(), 33, -94);
+        ViewSetxy(two[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[0], 33, -94);
-        ViewSetxy(enemyShips::e3[0], 193, -94);
+        four[0].resetHealth(level);
+        three[0].resetHealth(level);
+        ViewSetxy(four[0].getInstance(), 33, -94);
+        ViewSetxy(three[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[0], 113, -94);
+        five[0].resetHealth(level);
+        ViewSetxy(five[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[1], 33, -94);
-        ViewSetxy(enemyShips::e2[1], 193, -94);
+        three[1].resetHealth(level);
+        two[1].resetHealth(level);
+        ViewSetxy(three[1].getInstance(), 33, -94);
+        ViewSetxy(two[1].getInstance(), 193, -94);
     } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[2], 0, -94);
-        ViewSetxy(enemyShips::e4[1], 113, -94);
-        ViewSetxy(enemyShips::e3[3], 226, -94);
+        three[2].resetHealth(level);
+        four[1].resetHealth(level);
+        three[3].resetHealth(level);
+        ViewSetxy(three[2].getInstance(), 0, -94);
+        ViewSetxy(four[1].getInstance(), 113, -94);
+        ViewSetxy(three[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[1], 0, -94);
-        ViewSetxy(enemyShips::e2[2], 113, -94);
-        ViewSetxy(enemyShips::e2[3], 226, -94);
+        one[1].resetHealth(level);
+        two[2].resetHealth(level);
+        two[3].resetHealth(level);
+        ViewSetxy(one[1].getInstance(), 0, -94);
+        ViewSetxy(two[2].getInstance(), 113, -94);
+        ViewSetxy(two[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[2], 0, -94);
-        ViewSetxy(enemyShips::e2[4], 113, -94);
-        ViewSetxy(enemyShips::e3[4], 226, -94);
+        four[2].resetHealth(level);
+        two[4].resetHealth(level);
+        three[4].resetHealth(level);
+        ViewSetxy(four[2].getInstance(), 0, -94);
+        ViewSetxy(two[4].getInstance(), 113, -94);
+        ViewSetxy(three[4].getInstance(), 226, -94);
     } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[5], 0, -94);
-        ViewSetxy(enemyShips::e1[2], 113, -94);
-        ViewSetxy(enemyShips::e1[3], 226, -94);
+        two[5].resetHealth(level);
+        one[2].resetHealth(level);
+        one[3].resetHealth(level);
+        ViewSetxy(two[5].getInstance(), 0, -94);
+        ViewSetxy(one[2].getInstance(), 113, -94);
+        ViewSetxy(one[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[3], 33, -94);
-        ViewSetxy(enemyShips::e3[5], 193, -94);
+        four[3].resetHealth(level);
+        three[5].resetHealth(level);
+        ViewSetxy(four[3].getInstance(), 33, -94);
+        ViewSetxy(three[5].getInstance(), 193, -94);
     } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[1], 33, -94);
-        ViewSetxy(enemyShips::e5[2], 193, -94);
+        five[1].resetHealth(level);
+        five[2].resetHealth(level);
+        ViewSetxy(five[1].getInstance(), 33, -94);
+        ViewSetxy(five[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[4], 113, -94);
+        four[4].resetHealth(level);
+        ViewSetxy(four[4].getInstance(), 113, -94);
     } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[3], 33, -94);
-        ViewSetxy(enemyShips::e2[6], 193, -94);
+        five[3].resetHealth(level);
+        two[6].resetHealth(level);
+        ViewSetxy(five[3].getInstance(), 33, -94);
+        ViewSetxy(two[6].getInstance(), 193, -94);
     } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[6], 0, -94);
-        ViewSetxy(enemyShips::e2[7], 113, -94);
-        ViewSetxy(enemyShips::e2[8], 226, -94);
+        three[6].resetHealth(level);
+        two[7].resetHealth(level);
+        two[8].resetHealth(level);
+        ViewSetxy(three[6].getInstance(), 0, -94);
+        ViewSetxy(two[7].getInstance(), 113, -94);
+        ViewSetxy(two[8].getInstance(), 226, -94);
     } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[9], 0, -94);
-        ViewSetxy(enemyShips::e5[4], 113, -94);
-        ViewSetxy(enemyShips::e1[4], 226, -94);
+        two[9].resetHealth(level);
+        five[4].resetHealth(level);
+        one[4].resetHealth(level);
+        ViewSetxy(two[9].getInstance(), 0, -94);
+        ViewSetxy(five[4].getInstance(), 113, -94);
+        ViewSetxy(four[4].getInstance(), 226, -94);
     } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[0], 0, -94);
-        ViewSetxy(enemyShips::e1[5], 113, -94);
-        ViewSetxy(enemyShips::e4[5], 226, -94);
+        five[0].resetHealth(level);
+        one[5].resetHealth(level);
+        four[5].resetHealth(level);
+        ViewSetxy(five[0].getInstance(), 0, -94);
+        ViewSetxy(one[5].getInstance(), 113, -94);
+        ViewSetxy(four[5].getInstance(), 226, -94);
     } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[6], 33, -94);
-        ViewSetxy(enemyShips::e3[7], 193, -94);
+        one[6].resetHealth(level);
+        three[7].resetHealth(level);
+        ViewSetxy(one[6].getInstance(), 33, -94);
+        ViewSetxy(three[7].getInstance(), 193, -94);
     } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[6], 33, -94);
-        ViewSetxy(enemyShips::e5[1], 193, -94);
+        four[6].resetHealth(level);
+        five[1].resetHealth(level);
+        ViewSetxy(four[6].getInstance(), 33, -94);
+        ViewSetxy(five[1].getInstance(), 193, -94);
     } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[7], 0, -94);
-        ViewSetxy(enemyShips::e5[2], 113, -94);
-        ViewSetxy(enemyShips::e1[8], 226, -94);
+        one[7].resetHealth(level);
+        five[2].resetHealth(level);
+        one[8].resetHealth(level);
+        ViewSetxy(one[7].getInstance(), 0, -94);
+        ViewSetxy(five[2].getInstance(), 113, -94);
+        ViewSetxy(one[8].getInstance(), 226, -94);
     } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[9], 33, -94);
-        ViewSetxy(enemyShips::e3[8], 193, -94);
+        one[9].resetHealth(level);
+        three[8].resetHealth(level);
+        ViewSetxy(one[9].getInstance(), 33, -94);
+        ViewSetxy(three[8].getInstance(), 193, -94);
     } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[0], 113, -94);
+        six[0].resetHealth(level);
+        ViewSetxy(six[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[9], 113, -94);
+        three[9].resetHealth(level);
+        ViewSetxy(three[9].getInstance(), 113, -94);
     } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[0], 33, -94);
-        ViewSetxy(enemyShips::e1[0], 193, -94);
+        two[0].resetHealth(level);
+        one[0].resetHealth(level);
+        ViewSetxy(two[0].getInstance(), 33, -94);
+        ViewSetxy(one[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[0], 33, -94);
-        ViewSetxy(enemyShips::e5[3], 193, -94);
+        three[0].resetHealth(level);
+        five[3].resetHealth(level);
+        ViewSetxy(three[0].getInstance(), 33, -94);
+        ViewSetxy(five[3].getInstance(), 193, -94);
     } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[1], 0, -94);
-        ViewSetxy(enemyShips::e4[7], 113, -94);
-        ViewSetxy(enemyShips::e6[2], 226, -94);
+        six[1].resetHealth(level);
+        four[7].resetHealth(level);
+        six[2].resetHealth(level);
+        ViewSetxy(six[1].getInstance(), 0, -94);
+        ViewSetxy(four[7].getInstance(), 113, -94);
+        ViewSetxy(six[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[8], 0, -94);
-        ViewSetxy(enemyShips::e5[4], 113, -94);
-        ViewSetxy(enemyShips::e1[2], 226, -94);
+        four[8].resetHealth(level);
+        five[4].resetHealth(level);
+        one[2].resetHealth(level);
+        ViewSetxy(four[8].getInstance(), 0, -94);
+        ViewSetxy(five[4].getInstance(), 113, -94);
+        ViewSetxy(one[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[3], 0, -94);
-        ViewSetxy(enemyShips::e4[9], 113, -94);
-        ViewSetxy(enemyShips::e6[4], 226, -94);
+        six[3].resetHealth(level);
+        four[9].resetHealth(level);
+        six[4].resetHealth(level);
+        ViewSetxy(six[3].getInstance(), 0, -94);
+        ViewSetxy(four[9].getInstance(), 113, -94);
+        ViewSetxy(six[4].getInstance(), 226, -94);
     } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[0], 33, -94);
-        ViewSetxy(enemyShips::e5[0], 193, -94);
+        four[0].resetHealth(level);
+        five[0].resetHealth(level);
+        ViewSetxy(four[0].getInstance(), 33, -94);
+        ViewSetxy(five[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[2], 33, -94);
-        ViewSetxy(enemyShips::e6[0], 193, -94);
+        one[2].resetHealth(level);
+        six[0].resetHealth(level);
+        ViewSetxy(one[2].getInstance(), 33, -94);
+        ViewSetxy(six[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[1], 33, -94);
-        ViewSetxy(enemyShips::e3[1], 193, -94);
+        five[1].resetHealth(level);
+        three[1].resetHealth(level);
+        ViewSetxy(five[1].getInstance(), 33, -94);
+        ViewSetxy(three[1].getInstance(), 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_2) {
-            enemyShips::e9hp[0] = ENEMY_9_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
-            ViewSetxy(enemyShips::e9[0], 89, -240);
+            nine.resetHealth(level);
+            ViewSetxy(nine.getInstance(), 89, -240);
         }
     } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_2) {
         currentScreen = SCREEN_STORY_3A1;
@@ -2522,347 +2504,347 @@ void setTwo() {
 }
 void setThree() {
     if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[0], 33, -94);
-        ViewSetxy(enemyShips::e2[0], 193, -94);
+        six[0].resetHealth(level);
+        two[0].resetHealth(level);
+        ViewSetxy(six[0].getInstance(), 33, -94);
+        ViewSetxy(two[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[0], 33, -94);
-        ViewSetxy(enemyShips::e5[0], 193, -94);
+        three[0].resetHealth(level);
+        five[0].resetHealth(level);
+        ViewSetxy(three[0].getInstance(), 33, -94);
+        ViewSetxy(five[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[0], 0, -94);
-        ViewSetxy(enemyShips::e4[0], 113, -94);
-        ViewSetxy(enemyShips::e4[1], 226, -94);
+        one[0].resetHealth(level);
+        four[0].resetHealth(level);
+        four[1].resetHealth(level);
+        ViewSetxy(one[0].getInstance(), 0, -94);
+        ViewSetxy(four[0].getInstance(), 113, -94);
+        ViewSetxy(four[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[1], 0, -94);
-        ViewSetxy(enemyShips::e3[1], 113, -94);
-        ViewSetxy(enemyShips::e4[2], 226, -94);
+        one[1].resetHealth(level);
+        three[1].resetHealth(level);
+        four[2].resetHealth(level);
+        ViewSetxy(one[1].getInstance(), 0, -94);
+        ViewSetxy(three[1].getInstance(), 113, -94);
+        ViewSetxy(four[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[1], 113, -94);
+        six[1].resetHealth(level);
+        ViewSetxy(six[1].getInstance(), 113, -94);
     } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[2], 33, -94);
-        ViewSetxy(enemyShips::e1[2], 193, -94);
+        three[2].resetHealth(level);
+        one[2].resetHealth(level);
+        ViewSetxy(three[2].getInstance(), 33, -94);
+        ViewSetxy(one[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[1], 33, -94);
-        ViewSetxy(enemyShips::e5[1], 193, -94);
+        two[1].resetHealth(level);
+        five[1].resetHealth(level);
+        ViewSetxy(two[1].getInstance(), 33, -94);
+        ViewSetxy(five[1].getInstance(), 193, -94);
     } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[2], 0, -94);
-        ViewSetxy(enemyShips::e2[2], 113, -94);
-        ViewSetxy(enemyShips::e5[2], 226, -94);
+        six[2].resetHealth(level);
+        two[2].resetHealth(level);
+        five[2].resetHealth(level);
+        ViewSetxy(six[2].getInstance(), 0, -94);
+        ViewSetxy(two[2].getInstance(), 113, -94);
+        ViewSetxy(five[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[3], 0, -94);
-        ViewSetxy(enemyShips::e4[3], 113, -94);
-        ViewSetxy(enemyShips::e2[3], 226, -94);
+        one[3].resetHealth(level);
+        four[3].resetHealth(level);
+        two[3].resetHealth(level);
+        ViewSetxy(one[3].getInstance(), 0, -94);
+        ViewSetxy(four[3].getInstance(), 113, -94);
+        ViewSetxy(two[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[3], 0, -94);
-        ViewSetxy(enemyShips::e1[4], 113, -94);
-        ViewSetxy(enemyShips::e5[3], 226, -94);
+        three[3].resetHealth(level);
+        one[4].resetHealth(level);
+        five[3].resetHealth(level);
+        ViewSetxy(three[3].getInstance(), 0, -94);
+        ViewSetxy(one[4].getInstance(), 113, -94);
+        ViewSetxy(five[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[4], 0, -94);
-        ViewSetxy(enemyShips::e2[4], 113, -94);
-        ViewSetxy(enemyShips::e4[4], 226, -94);
+        five[4].resetHealth(level);
+        two[4].resetHealth(level);
+        four[4].resetHealth(level);
+        ViewSetxy(five[4].getInstance(), 0, -94);
+        ViewSetxy(two[4].getInstance(), 113, -94);
+        ViewSetxy(four[4].getInstance(), 226, -94);
     } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[3], 33, -94);
-        ViewSetxy(enemyShips::e3[4], 193, -94);
+        six[3].resetHealth(level);
+        three[4].resetHealth(level);
+        ViewSetxy(six[3].getInstance(), 33, -94);
+        ViewSetxy(three[4].getInstance(), 193, -94);
     } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[5], 33, -94);
-        ViewSetxy(enemyShips::e3[5], 193, -94);
+        one[5].resetHealth(level);
+        three[5].resetHealth(level);
+        ViewSetxy(one[5].getInstance(), 33, -94);
+        ViewSetxy(three[5].getInstance(), 193, -94);
     } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[0], 0, -94);
-        ViewSetxy(enemyShips::e6[4], 113, -94);
-        ViewSetxy(enemyShips::e5[1], 226, -94);
+        five[0].resetHealth(level);
+        six[4].resetHealth(level);
+        five[1].resetHealth(level);
+        ViewSetxy(five[0].getInstance(), 0, -94);
+        ViewSetxy(six[4].getInstance(), 113, -94);
+        ViewSetxy(five[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[6], 0, -94);
-        ViewSetxy(enemyShips::e4[5], 113, -94);
-        ViewSetxy(enemyShips::e2[5], 226, -94);
+        three[6].resetHealth(level);
+        four[5].resetHealth(level);
+        two[5].resetHealth(level);
+        ViewSetxy(three[6].getInstance(), 0, -94);
+        ViewSetxy(four[5].getInstance(), 113, -94);
+        ViewSetxy(two[5].getInstance(), 226, -94);
     } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[0], 0, -94);
-        ViewSetxy(enemyShips::e4[6], 113, -94);
-        ViewSetxy(enemyShips::e6[1], 226, -94);
+        six[0].resetHealth(level);
+        four[6].resetHealth(level);
+        six[1].resetHealth(level);
+        ViewSetxy(six[0].getInstance(), 0, -94);
+        ViewSetxy(four[6].getInstance(), 113, -94);
+        ViewSetxy(six[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[0], 113, -94);
+        seven[0].resetHealth(level);
+        ViewSetxy(seven[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[1], 33, -94);
-        ViewSetxy(enemyShips::e7[2], 193, -94);
+        seven[1].resetHealth(level);
+        seven[2].resetHealth(level);
+        ViewSetxy(seven[1].getInstance(), 33, -94);
+        ViewSetxy(seven[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[2], 0, -94);
-        ViewSetxy(enemyShips::e7[3], 113, -94);
-        ViewSetxy(enemyShips::e4[7], 226, -94);
+        five[2].resetHealth(level);
+        seven[3].resetHealth(level);
+        four[7].resetHealth(level);
+        ViewSetxy(five[2].getInstance(), 0, -94);
+        ViewSetxy(seven[3].getInstance(), 113, -94);
+        ViewSetxy(four[7].getInstance(), 226, -94);
     } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[7], 0, -94);
-        ViewSetxy(enemyShips::e5[3], 113, -94);
-        ViewSetxy(enemyShips::e2[6], 226, -94);
+        three[7].resetHealth(level);
+        five[3].resetHealth(level);
+        two[6].resetHealth(level);
+        ViewSetxy(three[7].getInstance(), 0, -94);
+        ViewSetxy(five[3].getInstance(), 113, -94);
+        ViewSetxy(two[6].getInstance(), 226, -94);
     } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[4], 0, -94);
-        ViewSetxy(enemyShips::e7[4], 113, -94);
-        ViewSetxy(enemyShips::e4[8], 226, -94);
+        five[4].resetHealth(level);
+        seven[4].resetHealth(level);
+        four[8].resetHealth(level);
+        ViewSetxy(five[4].getInstance(), 0, -94);
+        ViewSetxy(seven[4].getInstance(), 113, -94);
+        ViewSetxy(four[8].getInstance(), 226, -94);
     } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[3], 0, -94);
-        ViewSetxy(enemyShips::e1[6], 113, -94);
-        ViewSetxy(enemyShips::e3[8], 226, -94);
+        six[3].resetHealth(level);
+        one[6].resetHealth(level);
+        three[8].resetHealth(level);
+        ViewSetxy(six[3].getInstance(), 0, -94);
+        ViewSetxy(one[6].getInstance(), 113, -94);
+        ViewSetxy(three[8].getInstance(), 226, -94);
     } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[9], 33, -94);
-        ViewSetxy(enemyShips::e4[9], 193, -94);
+        three[9].resetHealth(level);
+        four[9].resetHealth(level);
+        ViewSetxy(three[9].getInstance(), 33, -94);
+        ViewSetxy(four[9].getInstance(), 193, -94);
     } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[0], 33, -94);
-        ViewSetxy(enemyShips::e6[4], 193, -94);
+        seven[0].resetHealth(level);
+        six[4].resetHealth(level);
+        ViewSetxy(seven[0].getInstance(), 33, -94);
+        ViewSetxy(six[4].getInstance(), 193, -94);
     } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[0], 113, -94);
+        six[0].resetHealth(level);
+        ViewSetxy(six[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[7], 33, -94);
-        ViewSetxy(enemyShips::e1[7], 193, -94);
+        two[7].resetHealth(level);
+        one[7].resetHealth(level);
+        ViewSetxy(two[7].getInstance(), 33, -94);
+        ViewSetxy(one[7].getInstance(), 193, -94);
     } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[1], 33, -94);
-        ViewSetxy(enemyShips::e7[1], 193, -94);
+        six[1].resetHealth(level);
+        seven[1].resetHealth(level);
+        ViewSetxy(six[1].getInstance(), 33, -94);
+        ViewSetxy(seven[1].getInstance(), 193, -94);
     } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[1], 0, -94);
-        ViewSetxy(enemyShips::e1[8], 113, -94);
-        ViewSetxy(enemyShips::e2[8], 226, -94);
+        three[1].resetHealth(level);
+        one[8].resetHealth(level);
+        two[8].resetHealth(level);
+        ViewSetxy(three[1].getInstance(), 0, -94);
+        ViewSetxy(one[8].getInstance(), 113, -94);
+        ViewSetxy(two[8].getInstance(), 226, -94);
     } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[0], 33, -94);
-        ViewSetxy(enemyShips::e7[2], 193, -94);
+        five[0].resetHealth(level);
+        seven[2].resetHealth(level);
+        ViewSetxy(five[0].getInstance(), 33, -94);
+        ViewSetxy(seven[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
-        enemyShips::e9hp[0] = ENEMY_9_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e9[0], 89, -240);
+        nine.resetHealth(level);
+        ViewSetxy(nine.getInstance(), 89, -240);
     }
 }
 void setFour() {
     if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[0], 33, -94);
-        ViewSetxy(enemyShips::e2[0], 193, -94);
+        one[0].resetHealth(level);
+        two[0].resetHealth(level);
+        ViewSetxy(one[0].getInstance(), 33, -94);
+        ViewSetxy(two[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[0], 33, -94);
-        ViewSetxy(enemyShips::e3[0], 193, -94);
+        six[0].resetHealth(level);
+        three[0].resetHealth(level);
+        ViewSetxy(six[0].getInstance(), 33, -94);
+        ViewSetxy(three[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[0], 0, -94);
-        ViewSetxy(enemyShips::e5[0], 113, -94);
-        ViewSetxy(enemyShips::e4[1], 226, -94);
+        four[0].resetHealth(level);
+        five[0].resetHealth(level);
+        four[1].resetHealth(level);
+        ViewSetxy(four[0].getInstance(), 0, -94);
+        ViewSetxy(five[0].getInstance(), 113, -94);
+        ViewSetxy(four[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[1], 0, -94);
-        ViewSetxy(enemyShips::e7[0], 113, -94);
-        ViewSetxy(enemyShips::e2[1], 226, -94);
+        one[1].resetHealth(level);
+        seven[0].resetHealth(level);
+        two[1].resetHealth(level);
+        ViewSetxy(one[1].getInstance(), 0, -94);
+        ViewSetxy(seven[0].getInstance(), 113, -94);
+        ViewSetxy(two[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[1], 0, -94);
-        ViewSetxy(enemyShips::e3[1], 113, -94);
-        ViewSetxy(enemyShips::e4[2], 226, -94);
+        five[1].resetHealth(level);
+        three[1].resetHealth(level);
+        four[2].resetHealth(level);
+        ViewSetxy(five[1].getInstance(), 0, -94);
+        ViewSetxy(three[1].getInstance(), 113, -94);
+        ViewSetxy(four[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[1], 33, -94);
-        ViewSetxy(enemyShips::e7[1], 193, -94);
+        six[1].resetHealth(level);
+        seven[1].resetHealth(level);
+        ViewSetxy(six[1].getInstance(), 33, -94);
+        ViewSetxy(seven[1].getInstance(), 193, -94);
     } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[2], 113, -94);
+        six[2].resetHealth(level);
+        ViewSetxy(six[2].getInstance(), 113, -94);
     } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[2], 113, -94);
+        seven[2].resetHealth(level);
+        ViewSetxy(seven[2].getInstance(), 113, -94);
     } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[2], 33, -94);
-        ViewSetxy(enemyShips::e1[2], 193, -94);
+        two[2].resetHealth(level);
+        one[2].resetHealth(level);
+        ViewSetxy(two[2].getInstance(), 33, -94);
+        ViewSetxy(one[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[2], 33, -94);
-        ViewSetxy(enemyShips::e5[2], 193, -94);
+        three[2].resetHealth(level);
+        five[2].resetHealth(level);
+        ViewSetxy(three[2].getInstance(), 33, -94);
+        ViewSetxy(five[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[3], 0, -94);
-        ViewSetxy(enemyShips::e1[3], 113, -94);
-        ViewSetxy(enemyShips::e7[3], 226, -94);
+        six[3].resetHealth(level);
+        one[3].resetHealth(level);
+        seven[3].resetHealth(level);
+        ViewSetxy(six[3].getInstance(), 0, -94);
+        ViewSetxy(one[3].getInstance(), 113, -94);
+        ViewSetxy(seven[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[3], 0, -94);
-        ViewSetxy(enemyShips::e7[4], 113, -94);
-        ViewSetxy(enemyShips::e3[3], 226, -94);
+        four[3].resetHealth(level);
+        seven[4].resetHealth(level);
+        three[3].resetHealth(level);
+        ViewSetxy(four[3].getInstance(), 0, -94);
+        ViewSetxy(seven[4].getInstance(), 113, -94);
+        ViewSetxy(three[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[4], 0, -94);
-        ViewSetxy(enemyShips::e6[4], 113, -94);
-        ViewSetxy(enemyShips::e2[3], 226, -94);
+        one[4].resetHealth(level);
+        six[4].resetHealth(level);
+        two[3].resetHealth(level);
+        ViewSetxy(one[4].getInstance(), 0, -94);
+        ViewSetxy(six[4].getInstance(), 113, -94);
+        ViewSetxy(two[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[0], 113, -94);
+        seven[0].resetHealth(level);
+        ViewSetxy(seven[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[4], 33, -94);
-        ViewSetxy(enemyShips::e3[4], 193, -94);
+        four[4].resetHealth(level);
+        three[4].resetHealth(level);
+        ViewSetxy(four[4].getInstance(), 33, -94);
+        ViewSetxy(three[4].getInstance(), 193, -94);
     } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[5], 33, -94);
-        ViewSetxy(enemyShips::e2[4], 193, -94);
+        one[5].resetHealth(level);
+        two[4].resetHealth(level);
+        ViewSetxy(one[5].getInstance(), 33, -94);
+        ViewSetxy(two[4].getInstance(), 193, -94);
     } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[3], 0, -94);
-        ViewSetxy(enemyShips::e6[0], 113, -94);
-        ViewSetxy(enemyShips::e5[4], 226, -94);
+        five[3].resetHealth(level);
+        six[0].resetHealth(level);
+        five[4].resetHealth(level);
+        ViewSetxy(five[3].getInstance(), 0, -94);
+        ViewSetxy(six[0].getInstance(), 113, -94);
+        ViewSetxy(five[4].getInstance(), 226, -94);
     } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[1], 0, -94);
-        ViewSetxy(enemyShips::e7[1], 113, -94);
-        ViewSetxy(enemyShips::e3[5], 226, -94);
+        six[1].resetHealth(level);
+        seven[1].resetHealth(level);
+        three[5].resetHealth(level);
+        ViewSetxy(six[1].getInstance(), 0, -94);
+        ViewSetxy(seven[1].getInstance(), 113, -94);
+        ViewSetxy(three[5].getInstance(), 226, -94);
     } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[6], 0, -94);
-        ViewSetxy(enemyShips::e5[0], 113, -94);
-        ViewSetxy(enemyShips::e2[5], 226, -94);
+        one[6].resetHealth(level);
+        five[0].resetHealth(level);
+        two[5].resetHealth(level);
+        ViewSetxy(one[6].getInstance(), 0, -94);
+        ViewSetxy(five[0].getInstance(), 113, -94);
+        ViewSetxy(two[5].getInstance(), 226, -94);
     } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[2], 0, -94);
-        ViewSetxy(enemyShips::e4[5], 113, -94);
-        ViewSetxy(enemyShips::e5[6], 226, -94);
+        seven[2].resetHealth(level);
+        four[5].resetHealth(level);
+        five[1].resetHealth(level);
+        ViewSetxy(seven[2].getInstance(), 0, -94);
+        ViewSetxy(four[5].getInstance(), 113, -94);
+        ViewSetxy(five[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[0], 113, -94);
+        eight[0].resetHealth(level);
+        ViewSetxy(eight[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e8hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[3], 33, -94);
-        ViewSetxy(enemyShips::e8[1], 193, -94);
+        seven[3].resetHealth(level);
+        eight[1].resetHealth(level);
+        ViewSetxy(seven[3].getInstance(), 33, -94);
+        ViewSetxy(eight[1].getInstance(), 193, -94);
     } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[7], 33, -94);
-        ViewSetxy(enemyShips::e2[6], 193, -94);
+        one[7].resetHealth(level);
+        two[6].resetHealth(level);
+        ViewSetxy(one[7].getInstance(), 33, -94);
+        ViewSetxy(two[6].getInstance(), 193, -94);
     } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[6], 33, -94);
-        ViewSetxy(enemyShips::e3[6], 193, -94);
+        four[6].resetHealth(level);
+        three[6].resetHealth(level);
+        ViewSetxy(four[6].getInstance(), 33, -94);
+        ViewSetxy(three[6].getInstance(), 193, -94);
     } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e8hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[4], 0, -94);
-        ViewSetxy(enemyShips::e8[2], 113, -94);
-        ViewSetxy(enemyShips::e4[7], 226, -94);
+        seven[4].resetHealth(level);
+        eight[2].resetHealth(level);
+        four[7].resetHealth(level);
+        ViewSetxy(seven[4].getInstance(), 0, -94);
+        ViewSetxy(eight[2].getInstance(), 113, -94);
+        ViewSetxy(four[7].getInstance(), 226, -94);
     } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[2], 0, -94);
-        ViewSetxy(enemyShips::e2[7], 113, -94);
-        ViewSetxy(enemyShips::e6[3], 226, -94);
+        six[2].resetHealth(level);
+        two[7].resetHealth(level);
+        six[3].resetHealth(level);
+        ViewSetxy(six[2].getInstance(), 0, -94);
+        ViewSetxy(two[7].getInstance(), 113, -94);
+        ViewSetxy(six[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[9] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[8], 0, -94);
-        ViewSetxy(enemyShips::e5[2], 113, -94);
-        ViewSetxy(enemyShips::e1[9], 226, -94);
+        one[8].resetHealth(level);
+        five[2].resetHealth(level);
+        one[9].resetHealth(level);
+        ViewSetxy(one[8].getInstance(), 0, -94);
+        ViewSetxy(five[2].getInstance(), 113, -94);
+        ViewSetxy(one[9].getInstance(), 226, -94);
     } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e8hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e8[3], 0, -94);
-        ViewSetxy(enemyShips::e3[7], 113, -94);
-        ViewSetxy(enemyShips::e8[4], 226, -94);
+        eight[3].resetHealth(level);
+        three[7].resetHealth(level);
+        eight[4].resetHealth(level);
+        ViewSetxy(eight[3].getInstance(), 0, -94);
+        ViewSetxy(three[7].getInstance(), 113, -94);
+        ViewSetxy(eight[4].getInstance(), 226, -94);
     } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[3], 33, -94);
-        ViewSetxy(enemyShips::e2[8], 193, -94);
+        five[3].resetHealth(level);
+        two[8].resetHealth(level);
+        ViewSetxy(five[3].getInstance(), 33, -94);
+        ViewSetxy(two[8].getInstance(), 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_5) {
-            enemyShips::e9hp[0] = ENEMY_9_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
-            ViewSetxy(enemyShips::e9[0], 89, -240);
+            nine.resetHealth(level);
+            ViewSetxy(nine.getInstance(), 89, -240);
         }
     } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_5) {
         currentScreen = SCREEN_STORY_6A1;
@@ -2871,260 +2853,260 @@ void setFour() {
 }
 void setFive() {
     if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[0], 113, -94);
+        six[0].resetHealth(level);
+        ViewSetxy(six[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[0], 33, -94);
-        ViewSetxy(enemyShips::e2[0], 193, -94);
+        seven[0].resetHealth(level);
+        two[0].resetHealth(level);
+        ViewSetxy(seven[0].getInstance(), 33, -94);
+        ViewSetxy(two[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
-        enemyShips::e1hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e8hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e1[0], 33, -94);
-        ViewSetxy(enemyShips::e8[0], 193, -94);
+        one[0].resetHealth(level);
+        eight[0].resetHealth(level);
+        ViewSetxy(one[0].getInstance(), 33, -94);
+        ViewSetxy(eight[0].getInstance(), 193, -94);
     } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[0], 0, -94);
-        ViewSetxy(enemyShips::e6[1], 113, -94);
-        ViewSetxy(enemyShips::e4[0], 226, -94);
+        five[0].resetHealth(level);
+        six[1].resetHealth(level);
+        four[0].resetHealth(level);
+        ViewSetxy(five[0].getInstance(), 0, -94);
+        ViewSetxy(six[1].getInstance(), 113, -94);
+        ViewSetxy(four[0].getInstance(), 226, -94);
     } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[0], 0, -94);
-        ViewSetxy(enemyShips::e1[1], 113, -94);
-        ViewSetxy(enemyShips::e7[1], 226, -94);
+        three[0].resetHealth(level);
+        one[1].resetHealth(level);
+        seven[1].resetHealth(level);
+        ViewSetxy(three[0].getInstance(), 0, -94);
+        ViewSetxy(one[1].getInstance(), 113, -94);
+        ViewSetxy(seven[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e8hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[2], 0, -94);
-        ViewSetxy(enemyShips::e8[1], 113, -94);
-        ViewSetxy(enemyShips::e6[2], 226, -94);
+        seven[2].resetHealth(level);
+        eight[1].resetHealth(level);
+        six[2].resetHealth(level);
+        ViewSetxy(seven[2].getInstance(), 0, -94);
+        ViewSetxy(eight[1].getInstance(), 113, -94);
+        ViewSetxy(six[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[1], 0, -94);
-        ViewSetxy(enemyShips::e1[2], 113, -94);
-        ViewSetxy(enemyShips::e4[1], 226, -94);
+        three[1].resetHealth(level);
+        one[2].resetHealth(level);
+        four[1].resetHealth(level);
+        ViewSetxy(three[1].getInstance(), 0, -94);
+        ViewSetxy(one[2].getInstance(), 113, -94);
+        ViewSetxy(four[1].getInstance(), 226, -94);
     } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[1], 33, -94);
-        ViewSetxy(enemyShips::e7[3], 193, -94);
+        two[1].resetHealth(level);
+        seven[3].resetHealth(level);
+        ViewSetxy(two[1].getInstance(), 33, -94);
+        ViewSetxy(seven[3].getInstance(), 193, -94);
     } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[3], 33, -94);
-        ViewSetxy(enemyShips::e3[2], 193, -94);
+        six[3].resetHealth(level);
+        three[2].resetHealth(level);
+        ViewSetxy(six[3].getInstance(), 33, -94);
+        ViewSetxy(three[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[4], 113, -94);
+        six[4].resetHealth(level);
+        ViewSetxy(six[4].getInstance(), 113, -94);
     } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e8[2], 113, -94);
+        eight[2].resetHealth(level);
+        ViewSetxy(eight[2].getInstance(), 113, -94);
     } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[1], 0, -94);
-        ViewSetxy(enemyShips::e1[3], 113, -94);
-        ViewSetxy(enemyShips::e6[0], 226, -94);
+        five[1].resetHealth(level);
+        one[3].resetHealth(level);
+        six[0].resetHealth(level);
+        ViewSetxy(five[1].getInstance(), 0, -94);
+        ViewSetxy(one[3].getInstance(), 113, -94);
+        ViewSetxy(six[0].getInstance(), 226, -94);
     } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
-        enemyShips::e4hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e4[2], 0, -94);
-        ViewSetxy(enemyShips::e3[3], 113, -94);
-        ViewSetxy(enemyShips::e5[2], 226, -94);
+        four[2].resetHealth(level);
+        three[3].resetHealth(level);
+        five[2].resetHealth(level);
+        ViewSetxy(four[2].getInstance(), 0, -94);
+        ViewSetxy(three[3].getInstance(), 113, -94);
+        ViewSetxy(five[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[2], 0, -94);
-        ViewSetxy(enemyShips::e6[1], 113, -94);
-        ViewSetxy(enemyShips::e3[4], 226, -94);
+        two[2].resetHealth(level);
+        six[1].resetHealth(level);
+        three[4].resetHealth(level);
+        ViewSetxy(two[2].getInstance(), 0, -94);
+        ViewSetxy(six[1].getInstance(), 113, -94);
+        ViewSetxy(three[4].getInstance(), 226, -94);
     } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e8[3], 33, -94);
-        ViewSetxy(enemyShips::e4[3], 193, -94);
+        eight[3].resetHealth(level);
+        four[3].resetHealth(level);
+        ViewSetxy(eight[3].getInstance(), 33, -94);
+        ViewSetxy(four[3].getInstance(), 193, -94);
     } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
-        enemyShips::e3hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e3[5], 33, -94);
-        ViewSetxy(enemyShips::e6[2], 193, -94);
+        three[5].resetHealth(level);
+        six[2].resetHealth(level);
+        ViewSetxy(three[5].getInstance(), 33, -94);
+        ViewSetxy(six[2].getInstance(), 193, -94);
     } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e8[4], 0, -94);
-        ViewSetxy(enemyShips::e5[3], 113, -94);
-        ViewSetxy(enemyShips::e6[3], 226, -94);
+        eight[4].resetHealth(level);
+        five[3].resetHealth(level);
+        six[3].resetHealth(level);
+        ViewSetxy(eight[4].getInstance(), 0, -94);
+        ViewSetxy(five[3].getInstance(), 113, -94);
+        ViewSetxy(six[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[4], 113, -94);
+        seven[4].resetHealth(level);
+        ViewSetxy(seven[4].getInstance(), 113, -94);
     } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e8[0], 113, -94);
+        eight[0].resetHealth(level);
+        ViewSetxy(eight[0].getInstance(), 113, -94);
     } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
-        enemyShips::e5hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e5[4], 33, -94);
-        ViewSetxy(enemyShips::e6[4], 193, -94);
+        five[4].resetHealth(level);
+        six[4].resetHealth(level); 
+        ViewSetxy(five[4].getInstance(), 33, -94);
+        ViewSetxy(six[4].getInstance(), 193, -94);
     } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e8[1], 0, -94);
-        ViewSetxy(enemyShips::e6[0], 113, -94);
-        ViewSetxy(enemyShips::e7[0], 226, -94);
+        eight[1].resetHealth(level);
+        six[0].resetHealth(level);
+        seven[0].resetHealth(level);
+        ViewSetxy(eight[1].getInstance(), 0, -94);
+        ViewSetxy(six[0].getInstance(), 113, -94);
+        ViewSetxy(seven[0].getInstance(), 226, -94);
     } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e4hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[3], 0, -94);
-        ViewSetxy(enemyShips::e4[4], 113, -94);
-        ViewSetxy(enemyShips::e3[6], 226, -94);
+        two[3].resetHealth(level);
+        four[4].resetHealth(level);
+        three[6].resetHealth(level);
+        ViewSetxy(two[3].getInstance(), 0, -94);
+        ViewSetxy(four[4].getInstance(), 113, -94);
+        ViewSetxy(three[6].getInstance(), 226, -94);
     } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e2hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[0] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[1], 0, -94);
-        ViewSetxy(enemyShips::e2[4], 113, -94);
-        ViewSetxy(enemyShips::e5[0], 226, -94);
+        six[1].resetHealth(level);
+        two[4].resetHealth(level);
+        five[0].resetHealth(level);
+        ViewSetxy(six[1].getInstance(), 0, -94);
+        ViewSetxy(two[4].getInstance(), 113, -94);
+        ViewSetxy(five[0].getInstance(), 226, -94);
     } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e8[2], 0, -94);
-        ViewSetxy(enemyShips::e7[1], 113, -94);
-        ViewSetxy(enemyShips::e6[2], 226, -94);
+        eight[2].resetHealth(level);
+        seven[1].resetHealth(level);
+        six[2].resetHealth(level);
+        ViewSetxy(eight[2].getInstance(), 0, -94);
+        ViewSetxy(seven[1].getInstance(), 113, -94);
+        ViewSetxy(six[2].getInstance(), 226, -94);
     } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[5] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e7hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[7] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[5], 0, -94);
-        ViewSetxy(enemyShips::e7[2], 113, -94);
-        ViewSetxy(enemyShips::e3[7], 226, -94);
+        two[5].resetHealth(level);
+        seven[2].resetHealth(level);
+        three[7].resetHealth(level);
+        ViewSetxy(two[5].getInstance(), 0, -94);
+        ViewSetxy(seven[2].getInstance(), 113, -94);
+        ViewSetxy(three[7].getInstance(), 226, -94);
     } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
-        enemyShips::e8hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e1hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e8[3], 33, -94);
-        ViewSetxy(enemyShips::e1[4], 193, -94);
+        eight[3].resetHealth(level);
+        one[4].resetHealth(level);
+        ViewSetxy(eight[3].getInstance(), 33, -94);
+        ViewSetxy(one[4].getInstance(), 193, -94);
     } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
-        enemyShips::e2hp[6] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[1] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e3hp[8] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e2[6], 0, -94);
-        ViewSetxy(enemyShips::e5[1], 113, -94);
-        ViewSetxy(enemyShips::e3[8], 226, -94);
+        two[6].resetHealth(level);
+        five[1].resetHealth(level);
+        three[8].resetHealth(level);
+        ViewSetxy(two[6].getInstance(), 0, -94);
+        ViewSetxy(five[1].getInstance(), 113, -94);
+        ViewSetxy(three[8].getInstance(), 226, -94);
     } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
-        enemyShips::e7hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e5hp[2] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e7[3], 0, -94);
-        ViewSetxy(enemyShips::e5[2], 113, -94);
-        ViewSetxy(enemyShips::e6[3], 226, -94);
+        seven[3].resetHealth(level);
+        five[2].resetHealth(level);
+        six[3].resetHealth(level);
+        ViewSetxy(seven[3].getInstance(), 0, -94);
+        ViewSetxy(five[2].getInstance(), 113, -94);
+        ViewSetxy(six[3].getInstance(), 226, -94);
     } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
-        enemyShips::e6hp[3] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        enemyShips::e8hp[4] = ENEMY_BASE_HEALTH + round(level / ENEMY_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e6[3], 33, -94);
-        ViewSetxy(enemyShips::e8[4], 193, -94);
+        six[3].resetHealth(level);
+        eight[4].resetHealth(level);
+        ViewSetxy(six[3].getInstance(), 33, -94);
+        ViewSetxy(eight[4].getInstance(), 193, -94);
     } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
-        enemyShips::e10hp[0] = ENEMY_10_BASE_HEALTH + round(level / ENEMY_BOSS_INCREASE_HEALTH);
-        ViewSetxy(enemyShips::e10[0], 85, -240);
+        ten.resetHealth(level);
+        ViewSetxy(ten.getInstance(), 85, -240);
     }
 }
 void enemyShipMove() {
     for (int i = 0; i < 10; i++) {
-        //x cords
-        enemyShips::e1y[i] = ViewGety(enemyShips::e1[i]);
-        enemyShips::e2y[i] = ViewGety(enemyShips::e2[i]);
-        enemyShips::e3y[i] = ViewGety(enemyShips::e3[i]);
-        enemyShips::e4y[i] = ViewGety(enemyShips::e4[i]);
         //y cords
-        enemyShips::e1x[i] = ViewGetx(enemyShips::e1[i]);
-        enemyShips::e2x[i] = ViewGetx(enemyShips::e2[i]);
-        enemyShips::e3x[i] = ViewGetx(enemyShips::e3[i]);
-        enemyShips::e4x[i] = ViewGetx(enemyShips::e4[i]);
+        one[i].setYCoord(ViewGety(one[i].getInstance()));
+        two[i].setYCoord(ViewGety(two[i].getInstance()));
+        three[i].setYCoord(ViewGety(three[i].getInstance()));
+        four[i].setYCoord(ViewGety(four[i].getInstance()));
+        //x cords
+        one[i].setXCoord(ViewGetx(one[i].getInstance()));
+        two[i].setXCoord(ViewGetx(two[i].getInstance()));
+        three[i].setXCoord(ViewGetx(three[i].getInstance()));
+        four[i].setXCoord(ViewGetx(four[i].getInstance()));
     }
     for (int i = 0; i < 5; i++) {
-        //x cords
-        enemyShips::e5y[i] = ViewGety(enemyShips::e5[i]);
-        enemyShips::e6y[i] = ViewGety(enemyShips::e6[i]);
-        enemyShips::e7y[i] = ViewGety(enemyShips::e7[i]);
-        enemyShips::e8y[i] = ViewGety(enemyShips::e8[i]);
         //y cords
-        enemyShips::e5x[i] = ViewGetx(enemyShips::e5[i]);
-        enemyShips::e6x[i] = ViewGetx(enemyShips::e6[i]);
-        enemyShips::e7x[i] = ViewGetx(enemyShips::e7[i]);
-        enemyShips::e8x[i] = ViewGetx(enemyShips::e8[i]);
+        five[i].setYCoord(ViewGety(five[i].getInstance()));
+        six[i].setYCoord(ViewGety(six[i].getInstance()));
+        seven[i].setYCoord(ViewGety(seven[i].getInstance()));
+        eight[i].setYCoord(ViewGety(eight[i].getInstance()));
+        //x cords
+        five[i].setXCoord(ViewGetx(five[i].getInstance()));
+        six[i].setXCoord(ViewGetx(six[i].getInstance()));
+        seven[i].setXCoord(ViewGetx(seven[i].getInstance()));
+        eight[i].setXCoord(ViewGetx(eight[i].getInstance()));
     }
     //x cords
-    enemyShips::e9x[0] = ViewGetx(enemyShips::e9[0]);
+    nine.setXCoord(ViewGetx(nine.getInstance()));
     //y cords
-    enemyShips::e9y[0] = ViewGety(enemyShips::e9[0]);
+    nine.setYCoord(ViewGety(nine.getInstance()));
     //x cords
-    enemyShips::e10x[0] = ViewGetx(enemyShips::e10[0]);
+    ten.setXCoord(ViewGetx(ten.getInstance()));
     //y cords
-    enemyShips::e10y[0] = ViewGety(enemyShips::e10[0]);
+    ten.setYCoord(ViewGety(ten.getInstance()));
     for (int i = 0; i < 10; i++) {
-        if (enemyShips::e1y[i] < 600) {
-            ViewSetxy(enemyShips::e1[i], enemyShips::e1x[i], enemyShips::e1y[i] + ENEMY_FLY_SPEED);
+        if (one[i].getYCoord() < 600) {
+            ViewSetxy(one[i].getInstance(), one[i].getXCoord(), one[i].getYCoord() + ENEMY_FLY_SPEED);
         }
-        if (enemyShips::e2y[i] < 600) {
-            ViewSetxy(enemyShips::e2[i], enemyShips::e2x[i], enemyShips::e2y[i] + ENEMY_FLY_SPEED);
+        if (two[i].getYCoord() < 600) {
+            ViewSetxy(two[i].getInstance(), two[i].getXCoord(), two[i].getYCoord() + ENEMY_FLY_SPEED);
         }
-        if (enemyShips::e3y[i] < 600) {
-            ViewSetxy(enemyShips::e3[i], enemyShips::e3x[i], enemyShips::e3y[i] + ENEMY_FLY_SPEED);
+        if (three[i].getYCoord() < 600) {
+            ViewSetxy(three[i].getInstance(), three[i].getXCoord(), three[i].getYCoord() + ENEMY_FLY_SPEED);
         }
-        if (enemyShips::e4y[i] < 600) {
-            ViewSetxy(enemyShips::e4[i], enemyShips::e4x[i], enemyShips::e4y[i] + ENEMY_FLY_SPEED);
+        if (four[i].getYCoord() < 600) {
+            ViewSetxy(four[i].getInstance(), four[i].getXCoord(), four[i].getYCoord() + ENEMY_FLY_SPEED);
         }
     }
     for (int i = 0; i < 5; i++) {
-        if (enemyShips::e5y[i] < 600) {
-            ViewSetxy(enemyShips::e5[i], enemyShips::e5x[i], enemyShips::e5y[i] + ENEMY_FLY_SPEED);
+        if (five[i].getYCoord() < 600) {
+            ViewSetxy(five[i].getInstance(), five[i].getXCoord(), five[i].getYCoord() + ENEMY_FLY_SPEED);
         }
-        if (enemyShips::e6y[i] < 600) {
-            ViewSetxy(enemyShips::e6[i], enemyShips::e6x[i], enemyShips::e6y[i] + ENEMY_FLY_SPEED);
+        if (six[i].getYCoord() < 600) {
+            ViewSetxy(six[i].getInstance(), six[i].getXCoord(), six[i].getYCoord() + ENEMY_FLY_SPEED);
         }
-        if (enemyShips::e7y[i] < 600) {
-            ViewSetxy(enemyShips::e7[i], enemyShips::e7x[i], enemyShips::e7y[i] + ENEMY_FLY_SPEED);
+        if (seven[i].getYCoord() < 600) {
+            ViewSetxy(seven[i].getInstance(), seven[i].getXCoord(), seven[i].getYCoord() + ENEMY_FLY_SPEED);
         }
-        if (enemyShips::e8y[i] < 600) {
-            ViewSetxy(enemyShips::e8[i], enemyShips::e8x[i], enemyShips::e8y[i] + ENEMY_FLY_SPEED);
+        if (eight[i].getYCoord() < 600) {
+            ViewSetxy(eight[i].getInstance(), eight[i].getXCoord(), eight[i].getYCoord() + ENEMY_FLY_SPEED);
         }
     }
     
     static bool goRight = false;
     //ship 9
-    if (enemyShips::e9y[0] < 40) {
-        ViewSetxy(enemyShips::e9[0], enemyShips::e9x[0], enemyShips::e9y[0] + ENEMY_FLY_SPEED);
-    } else if (enemyShips::e9y[0] >= 40 && enemyShips::e9y[0] < 600) {
+    if (nine.getYCoord() < 40) {
+        ViewSetxy(nine.getInstance(), nine.getXCoord(), nine.getYCoord() + ENEMY_FLY_SPEED);
+    } else if (nine.getYCoord() >= 40 && nine.getYCoord() < 600) {
         const int FACTOR = (goRight) ? (1) : (-1);
-        ViewSetxy(enemyShips::e9[0], enemyShips::e9x[0] + FACTOR, enemyShips::e9y[0]);
+        ViewSetxy(nine.getInstance(), nine.getXCoord() + FACTOR, nine.getYCoord());
     }
-    if (enemyShips::e9x[0] == 29) {
+    if (nine.getXCoord() == 29) {
         goRight = true;
-    } else if (enemyShips::e9x[0] == 149) {
+    } else if (nine.getXCoord() == 149) {
         goRight = false;
     }
     //ship 10
-    if (enemyShips::e10y[0] < 40) {
-        ViewSetxy(enemyShips::e10[0], enemyShips::e10x[0], enemyShips::e10y[0] + ENEMY_FLY_SPEED);
-    } else if (enemyShips::e10y[0] >= 40 && enemyShips::e10y[0] < 600) {
+    if (ten.getYCoord() < 40) {
+        ViewSetxy(ten.getInstance(), ten.getXCoord(), ten.getYCoord() + ENEMY_FLY_SPEED);
+    } else if (ten.getYCoord() >= 40 && ten.getYCoord() < 600) {
         const int FACTOR = (goRight) ? (1) : (-1);
-        ViewSetxy(enemyShips::e10[0], enemyShips::e10x[0] + FACTOR, enemyShips::e10y[0]);
+        ViewSetxy(ten.getInstance(), ten.getXCoord() + FACTOR, ten.getYCoord());
     }
-    if (enemyShips::e10x[0] == 25) {
+    if (ten.getXCoord() == 25) {
         goRight = true;
-    } else if (enemyShips::e10x[0] == 145) {
+    } else if (ten.getXCoord() == 145) {
         goRight = false;
     }
 }
@@ -3154,35 +3136,34 @@ void doEnemyShipMove() {
     }
 }
 void doEnemyShipShoot() {
-    int ex, ey, ex2, ey2, ex3, ey3;
     for (int i = 0; i < 5; i++) {
         if (counter::bulletMove == (i + 1) * ENEMY_BULLET_COOLDOWN_SPEED) {
             //ship 1-4
             for (int j = 0; j < 10; j++) {
-                ViewSetxy(bullets::e1b2[10 * i + j], enemyShips::e1x[j] + 43, enemyShips::e1y[j] + 83);
-                ViewSetxy(bullets::e2b2[10 * i + j], enemyShips::e2x[j] + 43, enemyShips::e2y[j] + 94);
-                ViewSetxy(bullets::e3b2[10 * i + j], enemyShips::e3x[j] + 43, enemyShips::e3y[j] + 88);
-                ViewSetxy(bullets::e4b2[10 * i + j], enemyShips::e4x[j] + 43, enemyShips::e4y[j] + 94);
+                one[j].setBullet(i, one[j].getXCoord() + 43, one[j].getYCoord() + 83);
+                two[j].setBullet(i, two[j].getXCoord() + 43, two[j].getYCoord() + 94);
+                three[j].setBullet(i, three[j].getXCoord() + 43, three[j].getYCoord() + 88);
+                four[j].setBullet(i, four[j].getXCoord() + 43, four[j].getYCoord() + 94);
             }
             //ship 5-8
             for (int j = 0; j < 5; j++) {
-                ViewSetxy(bullets::e5b1[5 * i + j], enemyShips::e5x[j] + 31, enemyShips::e5y[j] + 71);
-                ViewSetxy(bullets::e5b3[5 * i + j], enemyShips::e5x[j] + 54, enemyShips::e5y[j] + 71);
-                ViewSetxy(bullets::e6b1[5 * i + j], enemyShips::e6x[j] + 15, enemyShips::e6y[j] + 53);
-                ViewSetxy(bullets::e6b3[5 * i + j], enemyShips::e6x[j] + 68, enemyShips::e6y[j] + 53);
-                ViewSetxy(bullets::e7b2[5 * i + j], enemyShips::e7x[j] + 42, enemyShips::e7y[j] + 83);
-                ViewSetxy(bullets::e8b1[5 * i + j], enemyShips::e8x[j] + 12, enemyShips::e8y[j] + 54);
-                ViewSetxy(bullets::e8b2[5 * i + j], enemyShips::e8x[j] + 42, enemyShips::e8y[j] + 92);
-                ViewSetxy(bullets::e8b3[5 * i + j], enemyShips::e8x[j] + 74, enemyShips::e8y[j] + 54);
+                five[j].setBulletOne(i, five[j].getXCoord() + 31, five[j].getYCoord() + 71);
+                five[j].setBulletTwo(i, five[j].getXCoord() + 54, five[j].getYCoord() + 71);
+                six[j].setBulletOne(i, six[j].getXCoord() + 15, six[j].getYCoord() + 53);
+                six[j].setBulletTwo(i, six[j].getXCoord() + 68, six[j].getYCoord() + 53);
+                seven[j].setRocket(i, seven[j].getXCoord() + 42, seven[j].getYCoord() + 83);
+                eight[j].setBulletOne(i, eight[j].getXCoord() + 12, eight[j].getYCoord() + 54);
+                eight[j].setRocket(i, eight[j].getXCoord() + 42, eight[j].getYCoord() + 92);
+                eight[j].setBulletTwo(i, eight[j].getXCoord() + 74, eight[j].getYCoord() + 54);
             }
             //ship 9
-            ViewSetxy(bullets::e9b1[i], enemyShips::e9x[0] + 3, enemyShips::e9y[0] + 83);
-            ViewSetxy(bullets::e9b2[i], enemyShips::e9x[0] + 66, enemyShips::e9y[0] + 230);
-            ViewSetxy(bullets::e9b3[i], enemyShips::e9x[0] + 130, enemyShips::e9y[0] + 83);
+            nine.setBulletOne(i, nine.getXCoord() + 3, nine.getYCoord() + 83);
+            nine.setRocket(i, nine.getXCoord() + 66, nine.getYCoord() + 230);
+            nine.setBulletTwo(i, nine.getXCoord() + 130, nine.getYCoord() + 83);
             //ship 10
-            ViewSetxy(bullets::e10b1[i], enemyShips::e10x[0] + 13, enemyShips::e10y[0] + 83);
-            ViewSetxy(bullets::e10b2[i], enemyShips::e10x[0] + 69, enemyShips::e10y[0] + 233);
-            ViewSetxy(bullets::e10b3[i], enemyShips::e10x[0] + 129, enemyShips::e10y[0] + 83);
+            ten.setBulletOne(i, ten.getXCoord() + 13, ten.getYCoord() + 83);
+            ten.setRocket(i, ten.getXCoord() + 69, ten.getYCoord() + 233);
+            ten.setBulletTwo(i, ten.getXCoord() + 129, ten.getYCoord() + 83);
         }
     }
     if (counter::bulletMove >= 5 * ENEMY_BULLET_COOLDOWN_SPEED) {
@@ -3190,281 +3171,291 @@ void doEnemyShipShoot() {
     }
     if (counter::bulletMove % ENEMY_BULLET_COOLDOWN_SPEED != 0) {
         //1
-        for (int i = 0; i < 50; i++) {
-            ex = ViewGetx(bullets::e1b2[i]);
-            ey = ViewGety(bullets::e1b2[i]);
-            if (ey < 600) {
-                ViewSetxy(bullets::e1b2[i], ex, ey + ENEMY_BULLET_SPEED);
-            }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e1b2[i], 600, 600);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 5; j++) {
+                const int xCoord = ViewGetx(one[i].getBullet(j));
+                const int yCoord = ViewGety(one[i].getBullet(j));
+                if (yCoord < 600) {
+                    one[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
+                }
+                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + width1 && xCoord < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    one[i].setBullet(j, 600, 600);
+                }
             }
         }
         //2
-        for (int i = 0; i < 50; i++) {
-            ex = ViewGetx(bullets::e2b2[i]);
-            ey = ViewGety(bullets::e2b2[i]);
-            if (ey < 600) {
-                ViewSetxy(bullets::e2b2[i], ex, ey + ENEMY_BULLET_SPEED);
-            }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e2b2[i], 600, 600);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 5; j++) {
+                const int xCoord = ViewGetx(two[i].getBullet(j));
+                const int yCoord = ViewGety(two[i].getBullet(j));
+                if (yCoord < 600) {
+                    two[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
+                }
+                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + width1 && xCoord < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    two[i].setBullet(j, 600, 600);
+                }
             }
         }
         //3
-        for (int i = 0; i < 50; i++) {
-            ex = ViewGetx(bullets::e3b2[i]);
-            ey = ViewGety(bullets::e3b2[i]);
-            if (ey < 600) {
-                ViewSetxy(bullets::e3b2[i], ex, ey + ENEMY_BULLET_SPEED);
-            }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e3b2[i], 600, 600);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 5; j++) {
+                const int xCoord = ViewGetx(three[i].getBullet(j));
+                const int yCoord = ViewGety(three[i].getBullet(j));
+                if (yCoord < 600) {
+                    three[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
+                }
+                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + width1 && xCoord < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    three[i].setBullet(j, 600, 600);
+                }
             }
         }
         //4
-        for (int i = 0; i < 50; i++) {
-            ex = ViewGetx(bullets::e4b2[i]);
-            ey = ViewGety(bullets::e4b2[i]);
-            if (ey < 600) {
-                ViewSetxy(bullets::e4b2[i], ex, ey + ENEMY_BULLET_SPEED);
-            }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e4b2[i], 600, 600);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 5; j++) {
+                const int xCoord = ViewGetx(four[i].getBullet(j));
+                const int yCoord = ViewGety(four[i].getBullet(j));
+                if (yCoord < 600) {
+                    four[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
+                }
+                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + width1 && xCoord < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    four[i].setBullet(j, 600, 600);
+                }
             }
         }
         //5
-        for (int i = 0; i < 25; i++) {
-            ex = ViewGetx(bullets::e5b1[i]);
-            ey = ViewGety(bullets::e5b1[i]);
-            ex3 = ViewGetx(bullets::e5b3[i]);
-            ey3 = ViewGety(bullets::e5b3[i]);
-            if (ey < 600 || ey3 < 600) {
-                ViewSetxy(bullets::e5b1[i], ex, ey + ENEMY_BULLET_SPEED);
-                ViewSetxy(bullets::e5b3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
-            }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e5b1[i], 600, 600);
-            }
-            if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e5b3[i], 600, 600);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                const int xCoordOne = ViewGetx(five[i].getBulletOne(j));
+                const int yCoordOne = ViewGety(five[i].getBulletOne(j));
+                const int xCoordThree = ViewGetx(five[i].getBulletTwo(j));
+                const int yCoordThree = ViewGety(five[i].getBulletTwo(j));
+                if (yCoordOne < 600 || yCoordThree < 600) {
+                    five[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+                    five[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
+                }
+                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    five[i].setBulletOne(j, 600, 600);
+                }
+                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    five[i].setBulletTwo(j, 600, 600);
+                }
             }
         }
         //6
-        for (int i = 0; i < 25; i++) {
-            ex = ViewGetx(bullets::e6b1[i]);
-            ey = ViewGety(bullets::e6b1[i]);
-            ex3 = ViewGetx(bullets::e6b3[i]);
-            ey3 = ViewGety(bullets::e6b3[i]);
-            if (ey < 600 || ey3 < 600) {
-                ViewSetxy(bullets::e6b1[i], ex, ey + ENEMY_BULLET_SPEED);
-                ViewSetxy(bullets::e6b3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
-            }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e6b1[i], 600, 600);
-            }
-            if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e6b3[i], 600, 600);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                const int xCoordOne = ViewGetx(six[i].getBulletOne(j));
+                const int yCoordOne = ViewGety(six[i].getBulletOne(j));
+                const int xCoordThree = ViewGetx(six[i].getBulletTwo(j));
+                const int yCoordThree = ViewGety(six[i].getBulletTwo(j));
+                if (yCoordOne < 600 || yCoordThree < 600) {
+                    six[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+                    six[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
+                }
+                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    six[i].setBulletOne(j, 600, 600);
+                }
+                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    six[i].setBulletTwo(j, 600, 600);
+                }
             }
         }
         //7
-        for (int i = 0; i < 25; i++) {
-            ex2 = ViewGetx(bullets::e7b2[i]);
-            ey2 = ViewGety(bullets::e7b2[i]);
-            if (ey2 < 600) {
-                ViewSetxy(bullets::e7b2[i], ex2, ey2 + ENEMY_BULLET_SPEED);
-            }
-            if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
-                health -= 3;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e7b2[i], 600, 600);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                const int xCoordTwo = ViewGetx(seven[i].getRocket(j));
+                const int yCoordTwo = ViewGety(seven[i].getRocket(j));
+                if (yCoordTwo < 600) {
+                    seven[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
+                }
+                if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + width1 && xCoordTwo < mX + width2) {
+                    health -= 3;
+                    state::healthUpdate = true;
+                    seven[i].setRocket(j, 600, 600);
+                }
             }
         }
         //8
-        for (int i = 0; i < 25; i++) {
-            ex = ViewGetx(bullets::e8b1[i]);
-            ey = ViewGety(bullets::e8b1[i]);
-            ex2 = ViewGetx(bullets::e8b2[i]);
-            ey2 = ViewGety(bullets::e8b2[i]);
-            ex3 = ViewGetx(bullets::e8b3[i]);
-            ey3 = ViewGety(bullets::e8b3[i]);
-            if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(bullets::e8b1[i], ex, ey + ENEMY_BULLET_SPEED);
-                ViewSetxy(bullets::e8b2[i], ex2, ey2 + ENEMY_BULLET_SPEED);
-                ViewSetxy(bullets::e8b3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
-            }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e8b1[i], 600, 600);
-            }
-            if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
-                health -= 3;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e8b2[i], 600, 600);
-            }
-            if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
-                health -= 1;
-                state::healthUpdate = true;
-                ViewSetxy(bullets::e8b3[i], 600, 600);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                const int xCoordOne = ViewGetx(eight[i].getBulletOne(j));
+                const int yCoordOne = ViewGety(eight[i].getBulletOne(j));
+                const int xCoordTwo = ViewGetx(eight[i].getRocket(j));
+                const int yCoordTwo = ViewGety(eight[i].getRocket(j));
+                const int xCoordThree = ViewGetx(eight[i].getBulletTwo(j));
+                const int yCoordThree = ViewGety(eight[i].getBulletTwo(j));
+                if (yCoordOne < 600 || yCoordTwo < 600 || yCoordThree < 600) {
+                    eight[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+                    eight[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
+                    eight[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
+                }
+                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    eight[i].setBulletOne(j, 600, 600);
+                }
+                if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + width1 && xCoordTwo < mX + width2) {
+                    health -= 3;
+                    state::healthUpdate = true;
+                    eight[i].setRocket(j, 600, 600);
+                }
+                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
+                    health -= 1;
+                    state::healthUpdate = true;
+                    eight[i].setBulletTwo(j, 600, 600);
+                }
             }
         }
         //9
-        for (int i = 0; i < 5; i++) {
-            ex = ViewGetx(bullets::e9b1[i]);
-            ey = ViewGety(bullets::e9b1[i]);
-            ex2 = ViewGetx(bullets::e9b2[i]);
-            ey2 = ViewGety(bullets::e9b2[i]);
-            ex3 = ViewGetx(bullets::e9b3[i]);
-            ey3 = ViewGety(bullets::e9b3[i]);
-            if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(bullets::e9b1[i], ex, ey + ENEMY_BULLET_SPEED);
-                ViewSetxy(bullets::e9b2[i], ex2, ey2 + ENEMY_BULLET_SPEED);
-                ViewSetxy(bullets::e9b3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
+        for (int j = 0; j < 5; j++) {
+            const int xCoordOne = ViewGetx(nine.getBulletOne(j));
+            const int yCoordOne = ViewGety(nine.getBulletOne(j));
+            const int xCoordTwo = ViewGetx(nine.getRocket(j));
+            const int yCoordTwo = ViewGety(nine.getRocket(j));
+            const int xCoordThree = ViewGetx(nine.getBulletTwo(j));
+            const int yCoordThree = ViewGety(nine.getBulletTwo(j));
+            if (yCoordOne < 600 || yCoordTwo < 600 || yCoordThree < 600) {
+                nine.setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+                nine.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
+                nine.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
             }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
+            if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
                 health -= 1;
                 state::healthUpdate = true;
-                ViewSetxy(bullets::e9b1[i], 600, 600);
+                nine.setBulletOne(j, 600, 600);
             }
-            if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
+            if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + width1 && xCoordTwo < mX + width2) {
                 health -= 3;
                 state::healthUpdate = true;
-                ViewSetxy(bullets::e9b2[i], 600, 600);
+                nine.setRocket(j, 600, 600);
             }
-            if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
+            if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
                 health -= 1;
                 state::healthUpdate = true;
-                ViewSetxy(bullets::e9b3[i], 600, 600);
+                nine.setBulletTwo(j, 600, 600);
             }
         }
         //10
-        for (int i = 0; i < 5; i++) {
-            ex = ViewGetx(bullets::e10b1[i]);
-            ey = ViewGety(bullets::e10b1[i]);
-            ex2 = ViewGetx(bullets::e10b2[i]);
-            ey2 = ViewGety(bullets::e10b2[i]);
-            ex3 = ViewGetx(bullets::e10b3[i]);
-            ey3 = ViewGety(bullets::e10b3[i]);
-            if (ey < 600 || ey2 < 600 || ey3 < 600) {
-                ViewSetxy(bullets::e10b1[i], ex, ey + ENEMY_BULLET_SPEED);
-                ViewSetxy(bullets::e10b2[i], ex2, ey2 + ENEMY_BULLET_SPEED);
-                ViewSetxy(bullets::e10b3[i], ex3, ey3 + ENEMY_BULLET_SPEED);
+        for (int j = 0; j < 5; j++) {
+            const int xCoordOne = ViewGetx(ten.getBulletOne(j));
+            const int yCoordOne = ViewGety(ten.getBulletOne(j));
+            const int xCoordTwo = ViewGetx(ten.getRocket(j));
+            const int yCoordTwo = ViewGety(ten.getRocket(j));
+            const int xCoordThree = ViewGetx(ten.getBulletTwo(j));
+            const int yCoordThree = ViewGety(ten.getBulletTwo(j));
+            if (yCoordOne < 600 || yCoordTwo < 600 || yCoordThree < 600) {
+                ten.setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+                ten.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
+                ten.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
             }
-            if (ey > mY && ey < mY + 94 && ex > mX + width1 && ex < mX + width2) {
+            if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
                 health -= 1;
                 state::healthUpdate = true;
-                ViewSetxy(bullets::e10b1[i], 600, 600);
+                ten.setBulletOne(j, 600, 600);
             }
-            if (ey2 > mY && ey2 < mY + 94 && ex2 > mX + width1 && ex2 < mX + width2) {
+            if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + width1 && xCoordTwo < mX + width2) {
                 health -= 3;
                 state::healthUpdate = true;
-                ViewSetxy(bullets::e10b2[i], 600, 600);
+                ten.setRocket(j, 600, 600);
             }
-            if (ey3 > mY && ey3 < mY + 94 && ex3 > mX + width1 && ex3 < mX + width2) {
+            if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
                 health -= 1;
                 state::healthUpdate = true;
-                ViewSetxy(bullets::e10b3[i], 600, 600);
+                ten.setBulletTwo(j, 600, 600);
             }
         }
     }
 }
 bool shipInAction(int ship) {
+    const int i = counter::shipAction;
     bool ret = false;
     switch (ship) {
         case 1:
-            ret = enemyShips::e1hp[counter::shipAction] <= 0 && enemyShips::e1y[counter::shipAction] >= 0 
-                && enemyShips::e1x[counter::shipAction] < 600 && enemyShips::e1y[counter::shipAction] >= 0 
-                && enemyShips::e1x[counter::shipAction] <= 320;
+            ret = one[i].getHealth() <= 0 && one[i].getYCoord() >= 0 && one[i].getXCoord() < 600 
+                && one[i].getYCoord() >= 0 && one[i].getXCoord() <= 320;
             break;
         case 2:
-            ret = enemyShips::e2hp[counter::shipAction] <= 0 && enemyShips::e2y[counter::shipAction] >= 0 
-                && enemyShips::e2x[counter::shipAction] < 600 && enemyShips::e2y[counter::shipAction] >= 0 
-                && enemyShips::e2x[counter::shipAction] <= 320;
+            ret = two[i].getHealth() <= 0 && two[i].getYCoord() >= 0 && two[i].getXCoord() < 600 
+                && two[i].getYCoord() >= 0 && two[i].getXCoord() <= 320;
             break;
         case 3:
-            ret = enemyShips::e3hp[counter::shipAction] <= 0 && enemyShips::e3y[counter::shipAction] >= 0 
-                && enemyShips::e3x[counter::shipAction] < 600 && enemyShips::e3y[counter::shipAction] >= 0 
-                && enemyShips::e3x[counter::shipAction] <= 320;
+            ret = three[i].getHealth() <= 0 && three[i].getYCoord() >= 0 && three[i].getXCoord() < 600 
+                && three[i].getYCoord() >= 0 && three[i].getXCoord() <= 320;
             break;
         case 4:
-            ret = enemyShips::e4hp[counter::shipAction] <= 0 && enemyShips::e4y[counter::shipAction] >= 0 
-                && enemyShips::e4x[counter::shipAction] < 600 && enemyShips::e4y[counter::shipAction] >= 0 
-                && enemyShips::e4x[counter::shipAction] <= 320;
+            ret = four[i].getHealth() <= 0 && four[i].getYCoord() >= 0 && four[i].getXCoord() < 600 
+                && four[i].getYCoord() >= 0 && four[i].getXCoord() <= 320;
             break;
         case 5:
-            ret = enemyShips::e5hp[counter::shipAction] <= 0 && enemyShips::e5y[counter::shipAction] >= 0 
-                && enemyShips::e5x[counter::shipAction] < 600 && enemyShips::e5y[counter::shipAction] >= 0 
-                && enemyShips::e5x[counter::shipAction] <= 320;
+            ret = five[i].getHealth() <= 0 && five[i].getYCoord() >= 0 && five[i].getXCoord() < 600 
+                && five[i].getYCoord() >= 0 && five[i].getXCoord() <= 320;
             break;
         case 6:
-            ret = enemyShips::e6hp[counter::shipAction] <= 0 && enemyShips::e6y[counter::shipAction] >= 0 
-                && enemyShips::e6x[counter::shipAction] < 600 && enemyShips::e6y[counter::shipAction] >= 0 
-                && enemyShips::e6x[counter::shipAction] <= 320;
+            ret = six[i].getHealth() <= 0 && six[i].getYCoord() >= 0 && six[i].getXCoord() < 600 
+                && six[i].getYCoord() >= 0 && six[i].getXCoord() <= 320;
             break;
         case 7:
-            ret = enemyShips::e7hp[counter::shipAction] <= 0 && enemyShips::e7y[counter::shipAction] >= 0 
-                && enemyShips::e7x[counter::shipAction] < 600 && enemyShips::e7y[counter::shipAction] >= 0 
-                && enemyShips::e7x[counter::shipAction] <= 320;
+            ret = seven[i].getHealth() <= 0 && seven[i].getYCoord() >= 0 && seven[i].getXCoord() < 600 
+                && seven[i].getYCoord() >= 0 && seven[i].getXCoord() <= 320;
             break;
         case 8:
-            ret = enemyShips::e8hp[counter::shipAction] <= 0 && enemyShips::e8y[counter::shipAction] >= 0 
-                && enemyShips::e8x[counter::shipAction] < 600 && enemyShips::e8y[counter::shipAction] >= 0 
-                && enemyShips::e8x[counter::shipAction] <= 320;
+            ret = eight[i].getHealth() <= 0 && eight[i].getYCoord() >= 0 && eight[i].getXCoord() < 600 
+                && eight[i].getYCoord() >= 0 && eight[i].getXCoord() <= 320;
             break;
         case 9:
-            ret = enemyShips::e9hp[0] <= 0 && enemyShips::e9y[0] >= 0 && enemyShips::e9x[0] < 600 
-                && enemyShips::e9y[0] >= 0 && enemyShips::e9x[0] <= 320;
+            ret = nine.getHealth() <= 0 && nine.getYCoord() >= 0 && nine.getXCoord() < 600 
+                && nine.getYCoord() >= 0 && nine.getXCoord() <= 320;
             break;
         case 10:
-            ret = enemyShips::e10hp[0] <= 0 && enemyShips::e10y[0] >= 0 && enemyShips::e10x[0] < 600 
-                && enemyShips::e10y[0] >= 0 && enemyShips::e10x[0] <= 320;
+            ret = ten.getHealth() <= 0 && ten.getYCoord() >= 0 && ten.getXCoord() < 600 
+                && ten.getYCoord() >= 0 && ten.getXCoord() <= 320;
             break;
     }
     return ret;
 }
 int setEnemyExplosion(int ship) {
+    const int i = counter::shipAction;
     int explosion;
     switch (ship) {
         case 1:
-            explosion = (enemyShips::e1[counter::shipAction]);
+            explosion = one[i].getInstance();
             break;
         case 2:
-            explosion = (enemyShips::e2[counter::shipAction]);
+            explosion = two[i].getInstance();
             break;
         case 3:
-            explosion = (enemyShips::e3[counter::shipAction]);
+            explosion = three[i].getInstance();
             break;
         case 4:
-            explosion = (enemyShips::e4[counter::shipAction]);
+            explosion = four[i].getInstance();
             break;
         case 5:
-            explosion = (enemyShips::e5[counter::shipAction]);
+            explosion = five[i].getInstance();
             break;
         case 6:
-            explosion = (enemyShips::e6[counter::shipAction]);
+            explosion = six[i].getInstance();
             break;
         case 7:
-            explosion = (enemyShips::e7[counter::shipAction]);
+            explosion = seven[i].getInstance();
             break;
         case 8:
-            explosion = (enemyShips::e8[counter::shipAction]);
+            explosion = eight[i].getInstance();
             break;
     }
     return explosion;
@@ -3502,13 +3493,13 @@ void enemyDied() {
                 image = ImageAdd(tempShip);
                 ViewSetImage(explosion, image);
                 if (i == 1) {
-                    ViewSetxy(enemyShips::e1[counter::shipAction], 600, 600);
+                    ViewSetxy(one[counter::shipAction].getInstance(), 600, 600);
                 } else if (i == 2) {
-                    ViewSetxy(enemyShips::e2[counter::shipAction], 600, 600);
+                    ViewSetxy(two[counter::shipAction].getInstance(), 600, 600);
                 } else if (i == 3) {
-                    ViewSetxy(enemyShips::e3[counter::shipAction], 600, 600);
+                    ViewSetxy(three[counter::shipAction].getInstance(), 600, 600);
                 } else if (i == 4) {
-                    ViewSetxy(enemyShips::e4[counter::shipAction], 600, 600);
+                    ViewSetxy(four[counter::shipAction].getInstance(), 600, 600);
                 }
                 counter::enemyExplosion[i - 1] = 0;
                 xp += XP_SHIP_DESTROY_1_TO_4 + round(level / XP_INCREASE);
@@ -3547,13 +3538,13 @@ void enemyDied() {
                 image = ImageAdd(tempShip);
                 ViewSetImage(explosion, image);
                 if (i == 5) {
-                    ViewSetxy(enemyShips::e5[counter::shipAction], 600, 600);
+                    ViewSetxy(five[counter::shipAction].getInstance(), 600, 600);
                 } else if (i == 6) {
-                    ViewSetxy(enemyShips::e6[counter::shipAction], 600, 600);
+                    ViewSetxy(six[counter::shipAction].getInstance(), 600, 600);
                 } else if (i == 7) {
-                    ViewSetxy(enemyShips::e7[counter::shipAction], 600, 600);
+                    ViewSetxy(seven[counter::shipAction].getInstance(), 600, 600);
                 } else if (i == 8) {
-                    ViewSetxy(enemyShips::e8[counter::shipAction], 600, 600);
+                    ViewSetxy(eight[counter::shipAction].getInstance(), 600, 600);
                 }
                 counter::enemyExplosion[i - 1] = 0;
                 xp += XP_SHIP_DESTROY_5_TO_8 + round(level / XP_INCREASE);
@@ -3564,7 +3555,7 @@ void enemyDied() {
     bool used = false;
     for (int j = 0; j <= 8; j++) {
         if (counter::enemyExplosion[8] == j && shipInAction(9) && !used) {
-            explosion = (enemyShips::e9[0]);
+            explosion = nine.getInstance();
             char temp[] = "Images/BigExplosion_1.png";
             temp[20] = char(j + 1 + '0');
             image = ImageAdd(temp);
@@ -3574,20 +3565,20 @@ void enemyDied() {
         }
     }
     if (counter::enemyExplosion[8] == 9 && shipInAction(9)) {
-        explosion = (enemyShips::e9[0]);
+        explosion = nine.getInstance();
         image = ImageAdd("Images/BigExplosion_10.png");
         ViewSetImage(explosion, image);
         counter::enemyExplosion[8] += 1;
     } else if (counter::enemyExplosion[8] == 10 && shipInAction(9)) {
-        explosion = (enemyShips::e9[0]);
+        explosion = nine.getInstance();
         image = ImageAdd("Images/BigExplosion_11.png");
         ViewSetImage(explosion, image);
         counter::enemyExplosion[8] += 1;
     } else if (counter::enemyExplosion[8] == 11 && shipInAction(9)) {
-        explosion = (enemyShips::e9[0]);
+        explosion = nine.getInstance();
         image = ImageAdd("Images/eMini-Boss.png");
         ViewSetImage(explosion, image);
-        ViewSetxy(enemyShips::e9[0], 600, 600);
+        ViewSetxy(nine.getInstance(), 600, 600);
         counter::enemyExplosion[8] = 0;
         xp += XP_SHIP_DESTROY_9 + round(2 * level / XP_INCREASE);
         if (currentScreen != SCREEN_STORY_BATTLE_4) {
@@ -3604,7 +3595,7 @@ void enemyDied() {
     used = false;
     for (int j = 0; j <= 8; j++) {
         if (counter::enemyExplosion[9] == j && shipInAction(10) && !used) {
-            explosion = (enemyShips::e10[0]);
+            explosion = ten.getInstance();
             char temp[] = "Images/BigExplosion_1.png";
             temp[20] = char(j + 1 + '0');
             image = ImageAdd(temp);
@@ -3614,20 +3605,20 @@ void enemyDied() {
         }
     }
     if (counter::enemyExplosion[9] == 9 && shipInAction(10)) {
-        explosion = (enemyShips::e10[0]);
+        explosion = ten.getInstance();
         image = ImageAdd("Images/BigExplosion_10.png");
         ViewSetImage(explosion, image);
         counter::enemyExplosion[9] += 1;
     } else if (counter::enemyExplosion[9] == 10 && shipInAction(10)) {
-        explosion = (enemyShips::e10[0]);
+        explosion = ten.getInstance();
         image = ImageAdd("Images/BigExplosion_11.png");
         ViewSetImage(explosion, image);
         counter::enemyExplosion[9] += 1;
     } else if (counter::enemyExplosion[9] == 11 && shipInAction(10)) {
-        explosion = (enemyShips::e10[0]);
+        explosion = ten.getInstance();
         image = ImageAdd("Images/eBoss.png");
         ViewSetImage(explosion, image);
-        ViewSetxy(enemyShips::e10[0], 600, 600);
+        ViewSetxy(ten.getInstance(), 600, 600);
         counter::enemyExplosion[9] = 0;
         xp += XP_SHIP_DESTROY_10 + round(2 * level / XP_INCREASE);
         if (currentScreen != SCREEN_STORY_BATTLE_6) {
@@ -3644,37 +3635,37 @@ void enemyDied() {
 void shipCollision() {
     for (int i = 0; i < 10; i++) {
         //ship 1
-        if (mX + width1 < enemyShips::e1x[i] + 76 && mX + width2 > enemyShips::e1x[i] + 18 
-            && mY < enemyShips::e1y[i] + 94 && mY + 94 > enemyShips::e1y[i]) {
-            if (enemyShips::e1hp[i] > 0) {
-                enemyShips::e1hp[i] -= 3;
+        if (mX + width1 < one[i].getXCoord() + 76 && mX + width2 > one[i].getXCoord() + 18 
+            && mY < one[i].getYCoord() + 94 && mY + 94 > one[i].getYCoord()) {
+            if (one[i].getHealth() > 0) {
+                one[i].damage(3);
                 health -= 3;
                 state::healthUpdate = true;
             }
         }
         //ship 2
-        if (mX + width1 < enemyShips::e2x[i] + 69 && mX + width2 > enemyShips::e2x[i] + 24 
-            && mY < enemyShips::e2y[i] + 94 && mY + 94 > enemyShips::e2y[i]) {
-            if (enemyShips::e2hp[i] > 0) {
-                enemyShips::e2hp[i] -= 3;
+        if (mX + width1 < two[i].getXCoord() + 69 && mX + width2 > two[i].getXCoord() + 24 
+            && mY < two[i].getYCoord() + 94 && mY + 94 > two[i].getYCoord()) {
+            if (two[i].getHealth() > 0) {
+                two[i].damage(3);
                 health -= 3;
                 state::healthUpdate = true;
             }
         }
         //ship 3
-        if (mX + width1 < enemyShips::e3x[i] + 66 && mX + width2 > enemyShips::e3x[i] + 27 
-            && mY < enemyShips::e3y[i] + 94 && mY + 94 > enemyShips::e3y[i]) {
-            if (enemyShips::e3hp[i] > 0) {
-                enemyShips::e3hp[i] -= 3;
+        if (mX + width1 < three[i].getXCoord() + 66 && mX + width2 > three[i].getXCoord() + 27 
+            && mY < three[i].getYCoord() + 94 && mY + 94 > three[i].getYCoord()) {
+            if (three[i].getHealth() > 0) {
+                three[i].damage(3);
                 health -= 3;
                 state::healthUpdate = true;
             }
         }
         //ship 4
-        if (mX + width1 < enemyShips::e4x[i] + 87 && mX + width2 > enemyShips::e4x[i] + 6 
-            && mY < enemyShips::e4y[i] + 94 && mY + 94 > enemyShips::e4y[i]) {
-            if (enemyShips::e4hp[i] > 0) {
-                enemyShips::e4hp[i] -= 3;
+        if (mX + width1 < four[i].getXCoord() + 87 && mX + width2 > four[i].getXCoord() + 6 
+            && mY < four[i].getYCoord() + 94 && mY + 94 > four[i].getYCoord()) {
+            if (four[i].getHealth() > 0) {
+                four[i].damage(3);
                 health -= 3;
                 state::healthUpdate = true;
             }
@@ -3682,56 +3673,56 @@ void shipCollision() {
     }
     for (int i = 0; i < 5; i++) {
         //ship 5
-        if (mX + width1 < enemyShips::e5x[i] + 71 && mX + width2 > enemyShips::e5x[i] + 22 
-            && mY < enemyShips::e5y[i] + 94 && mY + 94 > enemyShips::e5y[i]) {
-            if (enemyShips::e5hp[i] > 0) {
-                enemyShips::e5hp[i] -= 3;
+        if (mX + width1 < five[i].getXCoord() + 71 && mX + width2 > five[i].getXCoord() + 22 
+            && mY < five[i].getYCoord() + 94 && mY + 94 > five[i].getYCoord()) {
+            if (five[i].getHealth() > 0) {
+                five[i].damage(3);
                 health -= 3;
                 state::healthUpdate = true;
             }
         }
         //ship 6
-        if (mX + width1 < enemyShips::e6x[i] + 81 && mX + width2 > enemyShips::e6x[i] + 12 
-            && mY < enemyShips::e6y[i] + 94 && mY + 94 > enemyShips::e6y[i]) {
-            if (enemyShips::e6hp[i] > 0) {
-                enemyShips::e6hp[i] -= 3;
+        if (mX + width1 < six[i].getXCoord() + 81 && mX + width2 > six[i].getXCoord() + 12 
+            && mY < six[i].getYCoord() + 94 && mY + 94 > six[i].getYCoord()) {
+            if (six[i].getHealth() > 0) {
+                six[i].damage(3);
                 health -= 3;
                 state::healthUpdate = true;
             }
         }
         //ship 7
-        if (mX + width1 < enemyShips::e7x[i] + 86 && mX + width2 > enemyShips::e7x[i] + 7 
-            && mY < enemyShips::e7y[i] + 94 && mY + 94 > enemyShips::e7y[i]) {
-            if (enemyShips::e7hp[i] > 0) {
-                enemyShips::e7hp[i] -= 3;
+        if (mX + width1 < seven[i].getXCoord() + 86 && mX + width2 > seven[i].getXCoord() + 7 
+            && mY < seven[i].getYCoord() + 94 && mY + 94 > seven[i].getYCoord()) {
+            if (seven[i].getHealth() > 0) {
+                seven[i].damage(3);
                 health -= 3;
                 state::healthUpdate = true;
             }
         }
         //ship 8
-        if (mX + width1 < enemyShips::e8x[i] + 86 && mX + width2 > enemyShips::e8x[i] + 6 
-            && mY < enemyShips::e8y[i] + 94 && mY + 94 > enemyShips::e8y[i]) {
-            if (enemyShips::e8hp[i] > 0) {
-                enemyShips::e8hp[i] -= 3;
+        if (mX + width1 < eight[i].getXCoord() + 86 && mX + width2 > eight[i].getXCoord() + 6 
+            && mY < eight[i].getYCoord() + 94 && mY + 94 > eight[i].getYCoord()) {
+            if (eight[i].getHealth() > 0) {
+                eight[i].damage(3);
                 health -= 3;
                 state::healthUpdate = true;
             }
         }
     }
     //ship 9
-    if (mX + width1 < enemyShips::e9x[0] + 142 && mX + width2 > enemyShips::e9x[0] 
-        && mY < enemyShips::e9y[0] + 240 && mY + 94 > enemyShips::e9y[0]) {
-        if (enemyShips::e9hp[0] > 0) {
-            enemyShips::e9hp[0] -= 3;
+    if (mX + width1 < nine.getXCoord() + 142 && mX + width2 > nine.getXCoord() 
+        && mY < nine.getYCoord() + 240 && mY + 94 > nine.getYCoord()) {
+        if (nine.getHealth() > 0) {
+            nine.damage(3);
             health = 0;
             state::healthUpdate = true;
         }
     }
     //ship 10
-    if (mX + width1 < enemyShips::e10x[0] + 150 && mX + width2 > enemyShips::e10x[0] 
-        && mY < enemyShips::e10y[0] + 240 && mY + 94 > enemyShips::e10y[0]) {
-        if (enemyShips::e10hp[0] > 0) {
-            enemyShips::e10hp[0] -= 3;
+    if (mX + width1 < ten.getXCoord() + 150 && mX + width2 > ten.getXCoord() 
+        && mY < ten.getYCoord() + 240 && mY + 94 > ten.getYCoord()) {
+        if (ten.getHealth() > 0) {
+            ten.damage(3);
             health = 0;
             state::healthUpdate = true;
         }
