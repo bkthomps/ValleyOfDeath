@@ -1,10 +1,10 @@
 /*
  * Bailey Thompson
- * Valley Of Death (1.3.1)
+ * Valley Of Death (1.3.2)
  * 23 March 2017
  * Info: This is a scrolling shooter iPhone app.
  */
-
+ 
 #include "DragonFireSDK.h"
 #include <math.h>
 #include "Ships.h"
@@ -1453,20 +1453,20 @@ void containerOne() {
     //enemy bullets
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 10; j++) {
-            one[i].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            two[i].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            three[i].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            four[i].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            one[j].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            two[j].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            three[j].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            four[j].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
         }
         for (int j = 0; j < 5; j++) {
-            five[i].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            five[i].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            six[i].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            six[i].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            seven[i].setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
-            eight[i].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            eight[i].setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
-            eight[i].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            five[j].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            five[j].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            six[j].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            six[j].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            seven[j].setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
+            eight[j].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            eight[j].setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
+            eight[j].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
         }
         nine.setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
         nine.setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
