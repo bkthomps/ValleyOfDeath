@@ -1,6 +1,6 @@
 /*
  * Bailey Thompson
- * Valley Of Death (1.3.3)
+ * Valley Of Death (1.3.4)
  * 24 March 2017
  * Info: This is a scrolling shooter iPhone app.
  */
