@@ -1,7 +1,7 @@
 /*
  * Bailey Thompson
- * Valley Of Death (1.3.4)
- * 24 March 2017
+ * Valley Of Death (1.3.5)
+ * 25 March 2017
  * Info: This is a scrolling shooter iPhone app.
  */
  
@@ -28,6 +28,7 @@ const int PLAYER_FLY_SPEED_RATIO = 10;
 const int PLAYER_BULLET_SPEED = 18;
 const int PLAYER_BULLET_COOLDOWN_SPEED = 18;
 
+PlayerShip player;
 SingleShip one[10];
 SingleShip two[10];
 SingleShip three[10];
@@ -42,13 +43,8 @@ MasterBoss ten;
 Screen currentScreen, previousScreen;
 
 char font;
-int xp, ship, highscore, health, set, level, shipView, mX, mY, newX, newY, music, possibleHealth, shipSpeed, rank;
-int bulletXOffset, bulletYOffset, bulletXOffset2, bulletYOffset2, bulletXOffset3, bulletYOffset3;
+int xp, ship, highscore, health, set, level, shipView, mX, mY, newX, newY, music, shipSpeed, rank;
 int width1, width2, text1, text2, text3, imageTorture, hpTorture, textTorture, healthImage;
-
-namespace bullets {
-    int m1[15], m2[15], m3[15];
-}
 
 namespace counter {
     int sound, bulletTime, shipMove, bulletMove, hpTorture, torture, shipAction, healthRegen, enemyExplosion[10];
@@ -133,9 +129,9 @@ void reset() {
     newX = 113;
     newY = 380;
     for (int i = 0; i < 15; i++) {
-        ViewSetxy(bullets::m1[i], -10, -10);
-        ViewSetxy(bullets::m2[i], -20, -20);
-        ViewSetxy(bullets::m3[i], -10, -10);
+        ViewSetxy(player.bulletOne[i], -10, -10);
+        ViewSetxy(player.rocket[i], -20, -20);
+        ViewSetxy(player.bulletTwo[i], -10, -10);
     }
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 10; j++) {
@@ -206,7 +202,7 @@ void reset() {
     ship = ten.getInstance();
     picture = ImageAdd("Images/eBoss.png");
     ViewSetImage(ship, picture);
-    health = possibleHealth;
+    health = player.possibleHealth;
     state::healthUpdate = true;
     state::pause = false;
 }
@@ -810,76 +806,76 @@ int onStoryMenuTouch(int id, int event, int x, int y) {
 void shipType() {
     const int LIFT = 10;
     ViewSetxy(shipView, -200, -200);
-    possibleHealth = round((18 + 2 * ship) * PLAYER_HEALTH_RATIO / 10);
+    player.possibleHealth = round((18 + 2 * ship) * PLAYER_HEALTH_RATIO / 10);
     switch (ship) {
         case 1:
             shipView = ViewAdd(container::endless, "Images/Ship_1.png", -200, -200);
-            bulletXOffset = 43;
-            bulletYOffset = 11 - LIFT;
+            player.bulletOneOffsetXCoord = 43;
+            player.bulletOneOffsetYCoord = 11 - LIFT;
             shipSpeed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
             width1 = 9;
             width2 = 76;
             break;
         case 2:
             shipView = ViewAdd(container::endless, "Images/Ship_2.png", -200, -200);
-            bulletXOffset = 43;
-            bulletYOffset = 0 - LIFT;
+            player.bulletOneOffsetXCoord = 43;
+            player.bulletOneOffsetYCoord = 0 - LIFT;
             shipSpeed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
             width1 = 15;
             width2 = 69;
             break;
         case 3:
             shipView = ViewAdd(container::endless, "Images/Ship_3.png", -200, -200);
-            bulletXOffset = 43;
-            bulletYOffset = 6 - LIFT;
+            player.bulletOneOffsetXCoord = 43;
+            player.bulletOneOffsetYCoord = 6 - LIFT;
             shipSpeed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
             width1 = 18;
             width2 = 66;
             break;
         case 4:
             shipView = ViewAdd(container::endless, "Images/Ship_4.png", -200, -200);
-            bulletXOffset = 43;
-            bulletYOffset = 0 - LIFT;
+            player.bulletOneOffsetXCoord = 43;
+            player.bulletOneOffsetYCoord = 0 - LIFT;
             shipSpeed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
             width1 = -3;
             width2 = 87;
             break;
         case 5:
             shipView = ViewAdd(container::endless, "Images/Ship_5.png", -200, -200);
-            bulletXOffset = 31;
-            bulletYOffset = 23 - LIFT;
-            bulletXOffset3 = 54;
-            bulletYOffset3 = 23 - LIFT;
+            player.bulletOneOffsetXCoord = 31;
+            player.bulletOneOffsetYCoord = 23 - LIFT;
+            player.bulletTwoOffsetXCoord = 54;
+            player.bulletTwoOffsetYCoord = 23 - LIFT;
             shipSpeed = round(6 * PLAYER_FLY_SPEED_RATIO / 10);
             width1 = 13;
             width2 = 71;
             break;
         case 6:
             shipView = ViewAdd(container::endless, "Images/Ship_6.png", -200, -200);
-            bulletXOffset = 15;
-            bulletYOffset = 41 - LIFT;
-            bulletXOffset3 = 68;
-            bulletYOffset3 = 41 - LIFT;
+            player.bulletOneOffsetXCoord = 15;
+            player.bulletOneOffsetYCoord = 41 - LIFT;
+            player.bulletTwoOffsetXCoord = 68;
+            player.bulletTwoOffsetYCoord = 41 - LIFT;
             shipSpeed = round(6 * PLAYER_FLY_SPEED_RATIO / 10);
             width1 = 3;
             width2 = 81;
             break;
         case 7:
             shipView = ViewAdd(container::endless, "Images/Ship_7.png", -200, -200);
-            bulletXOffset2 = 42;
-            bulletYOffset2 = 11 - LIFT;
+            player.rocketOffsetXCoord = 42;
+            player.rocketOffsetYCoord = 11 - LIFT;
             shipSpeed = round(5 * PLAYER_FLY_SPEED_RATIO / 10);
             width1 = -2;
             width2 = 86;
             break;
         case 8:
             shipView = ViewAdd(container::endless, "Images/Ship_8.png", -200, -200);
-            bulletXOffset = 12;
-            bulletYOffset = 40 - LIFT;
-            bulletXOffset2 = 42;
-            bulletYOffset2 = 2 - LIFT;
-            bulletXOffset3 = 74;
-            bulletYOffset3 = 40 - LIFT;
+            player.bulletOneOffsetXCoord = 12;
+            player.bulletOneOffsetYCoord = 40 - LIFT;
+            player.rocketOffsetXCoord = 42;
+            player.rocketOffsetYCoord = 2 - LIFT;
+            player.bulletTwoOffsetXCoord = 74;
+            player.bulletTwoOffsetYCoord = 40 - LIFT;
             shipSpeed = round(4 * PLAYER_FLY_SPEED_RATIO / 10);
             width1 = -3;
             width2 = 86;
@@ -896,7 +892,7 @@ int onBattleTouch(int id, int event, int x, int y) {
 int onEndlessMenuTouch(int id, int event, int x, int y) {
     if (event == 3) {
         reset();
-        health = possibleHealth;
+        health = player.possibleHealth;
         state::healthUpdate = true;
         level = 1;
         set = 1;
@@ -1429,9 +1425,9 @@ void containerOne() {
     ViewAdd(container::endless, "Images/Pause.png", 270, 20, onPause, 1);
     //player bullets
     for (int i = 0; i < 15; i++) {
-        bullets::m1[i] = ViewAdd(container::endless, "Images/Bullet.png", -10, -10);
-        bullets::m2[i] = ViewAdd(container::endless, "Images/Rocket.png", -20, -20);
-        bullets::m3[i] = ViewAdd(container::endless, "Images/Bullet.png", -10, -10);
+        player.bulletOne[i] = ViewAdd(container::endless, "Images/Bullet.png", -10, -10);
+        player.rocket[i] = ViewAdd(container::endless, "Images/Rocket.png", -20, -20);
+        player.bulletTwo[i] = ViewAdd(container::endless, "Images/Bullet.png", -10, -10);
     }
     //enemy bullets
     for (int i = 0; i < 5; i++) {
@@ -1822,16 +1818,16 @@ void bulletTime() {
         if (counter::bulletTime == i * PLAYER_BULLET_COOLDOWN_SPEED) {
             used = true;
             if (ship == 8) {
-                ViewSetxy(bullets::m1[i - 1], mX + bulletXOffset, mY + bulletYOffset);
-                ViewSetxy(bullets::m2[i - 1], mX + bulletXOffset2, mY + bulletYOffset2);
-                ViewSetxy(bullets::m3[i - 1], mX + bulletXOffset3, mY + bulletYOffset3);
+                ViewSetxy(player.bulletOne[i - 1], mX + player.bulletOneOffsetXCoord, mY + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.rocket[i - 1], mX + player.rocketOffsetXCoord, mY + player.rocketOffsetYCoord);
+                ViewSetxy(player.bulletTwo[i - 1], mX + player.bulletTwoOffsetXCoord, mY + player.bulletTwoOffsetYCoord);
             } else if (ship == 7) {
-                ViewSetxy(bullets::m2[i - 1], mX + bulletXOffset2, mY + bulletYOffset2);
+                ViewSetxy(player.rocket[i - 1], mX + player.rocketOffsetXCoord, mY + player.rocketOffsetYCoord);
             } else if (ship == 6 || ship == 5) {
-                ViewSetxy(bullets::m1[i - 1], mX + bulletXOffset, mY + bulletYOffset);
-                ViewSetxy(bullets::m3[i - 1], mX + bulletXOffset3, mY + bulletYOffset3);
+                ViewSetxy(player.bulletOne[i - 1], mX + player.bulletOneOffsetXCoord, mY + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.bulletTwo[i - 1], mX + player.bulletTwoOffsetXCoord, mY + player.bulletTwoOffsetYCoord);
             } else {
-                ViewSetxy(bullets::m1[i - 1], mX + bulletXOffset, mY + bulletYOffset);
+                ViewSetxy(player.bulletOne[i - 1], mX + player.bulletOneOffsetXCoord, mY + player.bulletOneOffsetYCoord);
             }
         }
     }
@@ -1840,76 +1836,76 @@ void bulletTime() {
     }
     if (!used) {
         for (int i = 0; i < 15; i++) {
-            x = ViewGetx(bullets::m1[i]);
-            y = ViewGety(bullets::m1[i]);
-            x2 = ViewGetx(bullets::m2[i]);
-            y2 = ViewGety(bullets::m2[i]);
-            x3 = ViewGetx(bullets::m3[i]);
-            y3 = ViewGety(bullets::m3[i]);
+            x = ViewGetx(player.bulletOne[i]);
+            y = ViewGety(player.bulletOne[i]);
+            x2 = ViewGetx(player.rocket[i]);
+            y2 = ViewGety(player.rocket[i]);
+            x3 = ViewGetx(player.bulletTwo[i]);
+            y3 = ViewGety(player.bulletTwo[i]);
             if (y > -20 || y2 > -20 || y3 > -20) {
-                ViewSetxy(bullets::m1[i], x, y - PLAYER_BULLET_SPEED);
-                ViewSetxy(bullets::m2[i], x2, y2 - PLAYER_BULLET_SPEED);
-                ViewSetxy(bullets::m3[i], x3, y3 - PLAYER_BULLET_SPEED);
+                ViewSetxy(player.bulletOne[i], x, y - PLAYER_BULLET_SPEED);
+                ViewSetxy(player.rocket[i], x2, y2 - PLAYER_BULLET_SPEED);
+                ViewSetxy(player.bulletTwo[i], x3, y3 - PLAYER_BULLET_SPEED);
             }
             for (int j = 0; j < 10; j++) {
                 //ship 1
                 const int enemy1x = one[j].getXCoord();
                 const int enemy1y = one[j].getYCoord();
                 if (y > enemy1y && y < enemy1y + 94 && x > enemy1x + 9 && x < enemy1x + 76) {
-                    ViewSetxy(bullets::m1[i], -10, -10);
+                    ViewSetxy(player.bulletOne[i], -10, -10);
                     one[j].damage(1);
                 }
                 if (y2 > enemy1y && y2 < enemy1y + 94 && x2 > enemy1x + 9 && x2 < enemy1x + 76) {
-                    ViewSetxy(bullets::m2[i], -20, -20);
+                    ViewSetxy(player.rocket[i], -20, -20);
                     one[j].damage(3);
                 }
                 if (y3 > enemy1y && y3 < enemy1y + 94 && x3 > enemy1x + 9 && x3 < enemy1x + 76) {
-                    ViewSetxy(bullets::m3[i], -10, -10);
+                    ViewSetxy(player.bulletTwo[i], -10, -10);
                     one[j].damage(1);
                 }
                 //ship 2
                 const int enemy2x = two[j].getXCoord();
                 const int enemy2y = two[j].getYCoord();
                 if (y > enemy2y && y < enemy2y + 94 && x > enemy2x + 15 && x < enemy2x + 69) {
-                    ViewSetxy(bullets::m1[i], -10, -10);
+                    ViewSetxy(player.bulletOne[i], -10, -10);
                     two[j].damage(1);
                 }
                 if (y2 > enemy2y && y2 < enemy2y + 94 && x2 > enemy2x + 15 && x2 < enemy2x + 69) {
-                    ViewSetxy(bullets::m2[i], -20, -20);
+                    ViewSetxy(player.rocket[i], -20, -20);
                     two[j].damage(3);
                 }
                 if (y3 > enemy2y && y3 < enemy2y + 94 && x3 > enemy2x + 15 && x3 < enemy2x + 69) {
-                    ViewSetxy(bullets::m3[i], -10, -10);
+                    ViewSetxy(player.bulletTwo[i], -10, -10);
                     two[j].damage(1);
                 }
                 //ship 3
                 const int enemy3x = three[j].getXCoord();
                 const int enemy3y = three[j].getYCoord();
                 if (y > enemy3y && y < enemy3y + 94 && x > enemy3x + 18 && x < enemy3x + 66) {
-                    ViewSetxy(bullets::m1[i], -10, -10);
+                    ViewSetxy(player.bulletOne[i], -10, -10);
                     three[j].damage(1);
                 }
                 if (y2 > enemy3y && y2 < enemy3y + 94 && x2 > enemy3x + 18 && x2 < enemy3x + 66) {
-                    ViewSetxy(bullets::m2[i], -20, -20);
+                    ViewSetxy(player.rocket[i], -20, -20);
                     three[j].damage(3);
                 }
                 if (y3 > enemy3y && y3 < enemy3y + 94 && x3 > enemy3x + 18 && x3 < enemy3x + 66) {
-                    ViewSetxy(bullets::m3[i], -10, -10);
+                    ViewSetxy(player.bulletTwo[i], -10, -10);
                     three[j].damage(1);
                 }
                 //ship 4
                 const int enemy4x = four[j].getXCoord();
                 const int enemy4y = four[j].getYCoord();
                 if (y > enemy4y && y < enemy4y + 94 && x > enemy4x - 3 && x < enemy4x + 87) {
-                    ViewSetxy(bullets::m1[i], -10, -10);
+                    ViewSetxy(player.bulletOne[i], -10, -10);
                     four[j].damage(1);
                 }
                 if (y2 > enemy4y && y2 < enemy4y + 94 && x2 > enemy4x - 3 && x2 < enemy4x + 87) {
-                    ViewSetxy(bullets::m2[i], -20, -20);
+                    ViewSetxy(player.rocket[i], -20, -20);
                     four[j].damage(3);
                 }
                 if (y3 > enemy4y && y3 < enemy4y + 94 && x3 > enemy4x - 3 && x3 < enemy4x + 87) {
-                    ViewSetxy(bullets::m3[i], -10, -10);
+                    ViewSetxy(player.bulletTwo[i], -10, -10);
                     four[j].damage(1);
                 }
             }
@@ -1918,60 +1914,60 @@ void bulletTime() {
                 const int enemy5x = five[j].getXCoord();
                 const int enemy5y = five[j].getYCoord();
                 if (y > enemy5y && y < enemy5y + 94 && x > enemy5x + 13 && x < enemy5x + 71) {
-                    ViewSetxy(bullets::m1[i], -10, -10);
+                    ViewSetxy(player.bulletOne[i], -10, -10);
                     five[j].damage(1);
                 }
                 if (y2 > enemy5y && y2 < enemy5y + 94 && x2 > enemy5x + 13 && x2 < enemy5x + 71) {
-                    ViewSetxy(bullets::m2[i], -20, -20);
+                    ViewSetxy(player.rocket[i], -20, -20);
                     five[j].damage(3);
                 }
                 if (y3 > enemy5y && y3 < enemy5y + 94 && x3 > enemy5x + 13 && x3 < enemy5x + 71) {
-                    ViewSetxy(bullets::m3[i], -10, -10);
+                    ViewSetxy(player.bulletTwo[i], -10, -10);
                     five[j].damage(1);
                 }
                 //ship 6
                 const int enemy6x = six[j].getXCoord();
                 const int enemy6y = six[j].getYCoord();
                 if (y > enemy6y && y < enemy6y + 94 && x > enemy6x + 3 && x < enemy6x + 81) {
-                    ViewSetxy(bullets::m1[i], -10, -10);
+                    ViewSetxy(player.bulletOne[i], -10, -10);
                     six[j].damage(1);
                 }
                 if (y2 > enemy6y && y2 < enemy6y + 94 && x2 > enemy6x + 3 && x2 < enemy6x + 81) {
-                    ViewSetxy(bullets::m2[i], -20, -20);
+                    ViewSetxy(player.rocket[i], -20, -20);
                     six[j].damage(3);
                 }
                 if (y3 > enemy6y && y3 < enemy6y + 94 && x3 > enemy6x + 3 && x3 < enemy6x + 81) {
-                    ViewSetxy(bullets::m3[i], -10, -10);
+                    ViewSetxy(player.bulletTwo[i], -10, -10);
                     six[j].damage(1);
                 }
                 //ship 7
                 const int enemy7x = seven[j].getXCoord();
                 const int enemy7y = seven[j].getYCoord();
                 if (y > enemy7y && y < enemy7y + 94 && x > enemy7x - 2 && x < enemy7x + 86) {
-                    ViewSetxy(bullets::m1[i], -10, -10);
+                    ViewSetxy(player.bulletOne[i], -10, -10);
                     seven[j].damage(1);
                 }
                 if (y2 > enemy7y && y2 < enemy7y + 94 && x2 > enemy7x - 2 && x2 < enemy7x + 86) {
-                    ViewSetxy(bullets::m2[i], -20, -20);
+                    ViewSetxy(player.rocket[i], -20, -20);
                     seven[j].damage(3);
                 }
                 if (y3 > enemy7y && y3 < enemy7y + 94 && x3 > enemy7x - 2 && x3 < enemy7x + 86) {
-                    ViewSetxy(bullets::m3[i], -10, -10);
+                    ViewSetxy(player.bulletTwo[i], -10, -10);
                     seven[j].damage(1);
                 }
                 //ship 8
                 const int enemy8x = eight[j].getXCoord();
                 const int enemy8y = eight[j].getYCoord();
                 if (y > enemy8y && y < enemy8y + 94 && x > enemy8x - 3 && x < enemy8x + 86) {
-                    ViewSetxy(bullets::m1[i], -10, -10);
+                    ViewSetxy(player.bulletOne[i], -10, -10);
                     eight[j].damage(1);
                 }
                 if (y2 > enemy8y && y2 < enemy8y + 94 && x2 > enemy8x - 3 && x2 < enemy8x + 86) {
-                    ViewSetxy(bullets::m2[i], -20, -20);
+                    ViewSetxy(player.rocket[i], -20, -20);
                     eight[j].damage(3);
                 }
                 if (y3 > enemy8y && y3 < enemy8y + 94 && x3 > enemy8x - 3 && x3 < enemy8x + 86) {
-                    ViewSetxy(bullets::m3[i], -10, -10);
+                    ViewSetxy(player.bulletTwo[i], -10, -10);
                     eight[j].damage(1);
                 }
             }
@@ -1979,30 +1975,30 @@ void bulletTime() {
             const int enemy9x = nine.getXCoord();
             const int enemy9y = nine.getYCoord();
             if (y > enemy9y && y < enemy9y + 94 && x > enemy9x && x < enemy9x + 240) {
-                ViewSetxy(bullets::m1[i], -10, -10);
+                ViewSetxy(player.bulletOne[i], -10, -10);
                 nine.damage(1);
             }
             if (y2 > enemy9y && y2 < enemy9y + 94 && x2 > enemy9x && x2 < enemy9x + 240) {
-                ViewSetxy(bullets::m2[i], -20, -20);
+                ViewSetxy(player.rocket[i], -20, -20);
                 nine.damage(3);
             }
             if (y3 > enemy9y && y3 < enemy9y + 94 && x3 > enemy9x && x3 < enemy9x + 240) {
-                ViewSetxy(bullets::m3[i], -10, -10);
+                ViewSetxy(player.bulletTwo[i], -10, -10);
                 nine.damage(1);
             }
             //ship 10
             const int enemy10x = ten.getXCoord();
             const int enemy10y = ten.getYCoord();
             if (y > enemy10y && y < enemy10y + 94 && x > enemy10x && x < enemy10x + 240) {
-                ViewSetxy(bullets::m1[i], -10, -10);
+                ViewSetxy(player.bulletOne[i], -10, -10);
                 ten.damage(1);
             }
             if (y2 > enemy10y && y2 < enemy10y + 94 && x2 > enemy10x && x2 < enemy10x + 240) {
-                ViewSetxy(bullets::m2[i], -20, -20);
+                ViewSetxy(player.rocket[i], -20, -20);
                 ten.damage(3);
             }
             if (y3 > enemy10y && y3 < enemy10y + 94 && x3 > enemy10x && x3 < enemy10x + 240) {
-                ViewSetxy(bullets::m3[i], -10, -10);
+                ViewSetxy(player.bulletTwo[i], -10, -10);
                 ten.damage(1);
             }
         }
@@ -2113,7 +2109,7 @@ void healthBar() {
     }
     int image;
     if (state::healthUpdate) {
-        const int FRAC_HEALTH = round(20 * health / possibleHealth);
+        const int FRAC_HEALTH = round(20 * health / player.possibleHealth);
         image = ImageAdd(concatHealth(FRAC_HEALTH));
         ViewSetImage(healthImage, image);
         if (health <= 0) {
@@ -3567,7 +3563,7 @@ void enemyDied() {
         if (currentScreen != SCREEN_STORY_BATTLE_4) {
             set += 1;
             counter::shipMove = 0;
-            health = possibleHealth;
+            health = player.possibleHealth;
             state::healthUpdate = true;
         } else if (currentScreen == SCREEN_STORY_BATTLE_4) {
             currentScreen = SCREEN_STORY_5A1;
@@ -3607,7 +3603,7 @@ void enemyDied() {
         if (currentScreen != SCREEN_STORY_BATTLE_6) {
             set += 1;
             counter::shipMove = 0;
-            health = possibleHealth;
+            health = player.possibleHealth;
             state::healthUpdate = true;
         } else if (currentScreen == SCREEN_STORY_BATTLE_6) {
             currentScreen = SCREEN_STORY_7W1;
@@ -3744,7 +3740,7 @@ void OnTimer() {
             doEnemyShipMove();
             counter::bulletMove += 1;
             doEnemyShipShoot();
-            if (health < possibleHealth / 2) {
+            if (health < player.possibleHealth / 2) {
                 counter::healthRegen += 1;
             } else {
                 counter::healthRegen = 0;
