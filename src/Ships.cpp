@@ -1,6 +1,6 @@
 #include "DragonFireSDK.h"
-#include "Ships.h"
 #include "CustomMath.h"
+#include "Ships.h"
 
 const int ENEMY_BASE_HEALTH = 3;
 const int ENEMY_INCREASE_HEALTH = 5;
