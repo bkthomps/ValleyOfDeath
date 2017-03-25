@@ -1,6 +1,21 @@
 #ifndef SHIPS_H
 #define SHIPS_H
 
+const int PLAYER_BULLETS_PER_BULLET_TYPE = 15;
+const int ENEMY_BULLETS_PER_BULLET_TYPE = 5;
+
+struct PlayerShip {
+	int possibleHealth;
+
+	int bulletOneOffsetXCoord, bulletOneOffsetYCoord;
+	int rocketOffsetXCoord, rocketOffsetYCoord;
+	int bulletTwoOffsetXCoord, bulletTwoOffsetYCoord;
+
+    int bulletOne[PLAYER_BULLETS_PER_BULLET_TYPE];
+	int rocket[PLAYER_BULLETS_PER_BULLET_TYPE];
+	int bulletTwo[PLAYER_BULLETS_PER_BULLET_TYPE];
+};
+
 class Ship {
 public:
     void setShip(int x, int y);
@@ -26,7 +41,7 @@ public:
     void setBullet(int index, int x, int y);
     int getBullet(int index);
 private:
-    int bullet[5];
+    int bullet[ENEMY_BULLETS_PER_BULLET_TYPE];
 };
 
 class DoubleShip : public Ship {
@@ -39,8 +54,8 @@ public:
     int getBulletOne(int index);
     int getBulletTwo(int index);
 private:
-    int bulletOne[5];
-    int bulletTwo[5];
+    int bulletOne[ENEMY_BULLETS_PER_BULLET_TYPE];
+    int bulletTwo[ENEMY_BULLETS_PER_BULLET_TYPE];
 };
 
 class RocketShip : public Ship {
@@ -50,7 +65,7 @@ public:
     void setRocket(int index, int x, int y);
     int getRocket(int index);
 private:
-    int rocket[5];
+    int rocket[ENEMY_BULLETS_PER_BULLET_TYPE];
 };
 
 class TripleShip : public Ship {
@@ -65,9 +80,9 @@ public:
     int getRocket(int index);
     int getBulletTwo(int index);
 private:
-    int bulletOne[5];
-    int rocket[5];
-    int bulletTwo[5];
+    int bulletOne[ENEMY_BULLETS_PER_BULLET_TYPE];
+    int rocket[ENEMY_BULLETS_PER_BULLET_TYPE];
+    int bulletTwo[ENEMY_BULLETS_PER_BULLET_TYPE];
 };
 
 class MasterShip : public TripleShip {
