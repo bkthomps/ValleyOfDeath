@@ -1,6 +1,6 @@
 /*
  * Bailey Thompson
- * Valley Of Death (1.3.6)
+ * Valley Of Death (1.3.7)
  * 25 March 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -28,31 +28,42 @@ const int PLAYER_FLY_SPEED_RATIO = 10;
 const int PLAYER_BULLET_SPEED = 18;
 const int PLAYER_BULLET_COOLDOWN_SPEED = 18;
 
+const int AMOUNT_OF_TYPE_ONE_SHIPS = 10;
+const int AMOUNT_OF_TYPE_TWO_SHIPS = 5;
+
 PlayerShip player;
-SingleShip one[10];
-SingleShip two[10];
-SingleShip three[10];
-SingleShip four[10];
-DoubleShip five[5];
-DoubleShip six[5];
-RocketShip seven[5];
-MasterShip eight[5];
+SingleShip one[AMOUNT_OF_TYPE_ONE_SHIPS];
+SingleShip two[AMOUNT_OF_TYPE_ONE_SHIPS];
+SingleShip three[AMOUNT_OF_TYPE_ONE_SHIPS];
+SingleShip four[AMOUNT_OF_TYPE_ONE_SHIPS];
+DoubleShip five[AMOUNT_OF_TYPE_TWO_SHIPS];
+DoubleShip six[AMOUNT_OF_TYPE_TWO_SHIPS];
+RocketShip seven[AMOUNT_OF_TYPE_TWO_SHIPS];
+MasterShip eight[AMOUNT_OF_TYPE_TWO_SHIPS];
 MiniBoss nine;
 MasterBoss ten;
 
-Screen currentScreen, previousScreen;
+Screen currentScreen;
+Screen previousScreen;
 
 char font;
-int xp, highscore, health, set, level, mX, mY, newX, newY, music, rank;
-int text1, text2, text3, imageTorture, hpTorture, textTorture, healthImage;
+bool isSoundEnabled, isPaused, isStoryDate, isStoryMarry, isTorture, isHealthUpdate;
+int xp, highscore, set, level, music, rank, text1, text2, text3;
+int imageTorture, hpTorture, textTorture, healthImage;
 
-namespace counter {
-    int sound, bulletTime, shipMove, bulletMove, hpTorture, torture, shipAction, healthRegen, enemyExplosion[10];
-}
-namespace state {
-    bool sound, pause, date, marry, torture, healthUpdate;
-}
-namespace container {
+struct Counters {
+    int sound;
+    int bulletTime;
+    int shipMove;
+    int bulletMove;
+    int hpTorture;
+    int torture;
+    int shipAction;
+    int healthRegen;
+    int enemyExplosion[10];
+} counter;
+
+struct Containers {
     int pause, menu, highscore, endless, died;
     int story1a1, story1a2, story1s3, story1p3, story1a4, story1r5, story1e5;
     int story2a1, story2a2, story2a3, story2b4, story2a5, story2a6, story2e7, story2a7;
@@ -62,7 +73,7 @@ namespace container {
     int story6a1, story6a2, story6a3, story6b3;
     int story7w1, story7l1, story7a2, story7b2;
     int unlocks, options, deleteCheckOne, deleteCheckTwo;
-}
+} container;
 
 int intFileToGame(char* buffer) {
     int ret = 0;
@@ -85,10 +96,10 @@ void loadGame() {
     char fileBuffer[5];
     if (!fileSound) {
         fileSound = FileCreate("Sound.txt");
-        state::sound = true;
+        isSoundEnabled = true;
     } else {
         FileRead(fileSound, fileBuffer, 1);
-        state::sound = boolFileToGame(fileBuffer);
+        isSoundEnabled = boolFileToGame(fileBuffer);
     }
     if (!fileXp) {
         fileXp = FileCreate("Xp.txt");
@@ -113,7 +124,7 @@ void loadGame() {
         fileCounter = FileCreate("Counter.txt");
     } else {
         FileRead(fileCounter, fileBuffer, 5);
-        counter::sound = intFileToGame(fileBuffer);
+        counter.sound = intFileToGame(fileBuffer);
     }
     FileClose(fileSound);
     FileClose(fileXp);
@@ -122,12 +133,12 @@ void loadGame() {
     FileClose(fileCounter);
 }
 void reset() {
-    counter::bulletTime = 0;
-    counter::shipMove = 0;
-    mX = 113;
-    mY = 380;
-    newX = 113;
-    newY = 380;
+    counter.bulletTime = 0;
+    counter.shipMove = 0;
+    player.currentXCoord = 113;
+    player.currentYCoord = 380;
+    player.newXCoord = 113;
+    player.newYCoord = 380;
     for (int i = 0; i < 15; i++) {
         ViewSetxy(player.bulletOne[i], -10, -10);
         ViewSetxy(player.rocket[i], -20, -20);
@@ -202,259 +213,259 @@ void reset() {
     ship = ten.getInstance();
     picture = ImageAdd("Images/eBoss.png");
     ViewSetImage(ship, picture);
-    health = player.possibleHealth;
-    state::healthUpdate = true;
-    state::pause = false;
+    player.health = player.possibleHealth;
+    isHealthUpdate = true;
+    isPaused = false;
 }
 void screenSwitch() {
-    ContainerSetVisible(container::pause, 0);
-    ContainerSetVisible(container::menu, 0);
-    ContainerSetVisible(container::endless, 0);
-    ContainerSetVisible(container::highscore, 0);
-    ContainerSetVisible(container::died, 0);
-    ContainerSetVisible(container::story1a1, 0);
-    ContainerSetVisible(container::story1a2, 0);
-    ContainerSetVisible(container::story1s3, 0);
-    ContainerSetVisible(container::story1p3, 0);
-    ContainerSetVisible(container::story1a4, 0);
-    ContainerSetVisible(container::story1r5, 0);
-    ContainerSetVisible(container::story1e5, 0);
-    ContainerSetVisible(container::story2a1, 0);
-    ContainerSetVisible(container::story2a2, 0);
-    ContainerSetVisible(container::story2a3, 0);
-    ContainerSetVisible(container::story2b4, 0);
-    ContainerSetVisible(container::story2a5, 0);
-    ContainerSetVisible(container::story2a6, 0);
-    ContainerSetVisible(container::story2e7, 0);
-    ContainerSetVisible(container::story2a7, 0);
-    ContainerSetVisible(container::story3a1, 0);
-    ContainerSetVisible(container::story3b2, 0);
-    ContainerSetVisible(container::story3a3, 0);
-    ContainerSetVisible(container::story3a4, 0);
-    ContainerSetVisible(container::story3a5, 0);
-    ContainerSetVisible(container::story3a6, 0);
-    ContainerSetVisible(container::story3a7, 0);
-    ContainerSetVisible(container::story3a8, 0);
-    ContainerSetVisible(container::storyTorture, 0);
-    ContainerSetVisible(container::story4a1, 0);
-    ContainerSetVisible(container::story4a2, 0);
-    ContainerSetVisible(container::story4a3, 0);
-    ContainerSetVisible(container::story4a4, 0);
-    ContainerSetVisible(container::story4b5, 0);
-    ContainerSetVisible(container::story4a6, 0);
-    ContainerSetVisible(container::story4a7, 0);
-    ContainerSetVisible(container::story4b7, 0);
-    ContainerSetVisible(container::story4a8, 0);
-    ContainerSetVisible(container::story5a1, 0);
-    ContainerSetVisible(container::story5a2, 0);
-    ContainerSetVisible(container::story5a3, 0);
-    ContainerSetVisible(container::story5b4, 0);
-    ContainerSetVisible(container::story5a5, 0);
-    ContainerSetVisible(container::story5a6, 0);
-    ContainerSetVisible(container::story5b6, 0);
-    ContainerSetVisible(container::story6a1, 0);
-    ContainerSetVisible(container::story6a2, 0);
-    ContainerSetVisible(container::story6a3, 0);
-    ContainerSetVisible(container::story6b3, 0);
-    ContainerSetVisible(container::story7w1, 0);
-    ContainerSetVisible(container::story7l1, 0);
-    ContainerSetVisible(container::story7a2, 0);
-    ContainerSetVisible(container::story7b2, 0);
-    ContainerSetVisible(container::unlocks, 0);
-    ContainerSetVisible(container::options, 0);
-    ContainerSetVisible(container::deleteCheckOne, 0);
-    ContainerSetVisible(container::deleteCheckTwo, 0);
+    ContainerSetVisible(container.pause, 0);
+    ContainerSetVisible(container.menu, 0);
+    ContainerSetVisible(container.endless, 0);
+    ContainerSetVisible(container.highscore, 0);
+    ContainerSetVisible(container.died, 0);
+    ContainerSetVisible(container.story1a1, 0);
+    ContainerSetVisible(container.story1a2, 0);
+    ContainerSetVisible(container.story1s3, 0);
+    ContainerSetVisible(container.story1p3, 0);
+    ContainerSetVisible(container.story1a4, 0);
+    ContainerSetVisible(container.story1r5, 0);
+    ContainerSetVisible(container.story1e5, 0);
+    ContainerSetVisible(container.story2a1, 0);
+    ContainerSetVisible(container.story2a2, 0);
+    ContainerSetVisible(container.story2a3, 0);
+    ContainerSetVisible(container.story2b4, 0);
+    ContainerSetVisible(container.story2a5, 0);
+    ContainerSetVisible(container.story2a6, 0);
+    ContainerSetVisible(container.story2e7, 0);
+    ContainerSetVisible(container.story2a7, 0);
+    ContainerSetVisible(container.story3a1, 0);
+    ContainerSetVisible(container.story3b2, 0);
+    ContainerSetVisible(container.story3a3, 0);
+    ContainerSetVisible(container.story3a4, 0);
+    ContainerSetVisible(container.story3a5, 0);
+    ContainerSetVisible(container.story3a6, 0);
+    ContainerSetVisible(container.story3a7, 0);
+    ContainerSetVisible(container.story3a8, 0);
+    ContainerSetVisible(container.storyTorture, 0);
+    ContainerSetVisible(container.story4a1, 0);
+    ContainerSetVisible(container.story4a2, 0);
+    ContainerSetVisible(container.story4a3, 0);
+    ContainerSetVisible(container.story4a4, 0);
+    ContainerSetVisible(container.story4b5, 0);
+    ContainerSetVisible(container.story4a6, 0);
+    ContainerSetVisible(container.story4a7, 0);
+    ContainerSetVisible(container.story4b7, 0);
+    ContainerSetVisible(container.story4a8, 0);
+    ContainerSetVisible(container.story5a1, 0);
+    ContainerSetVisible(container.story5a2, 0);
+    ContainerSetVisible(container.story5a3, 0);
+    ContainerSetVisible(container.story5b4, 0);
+    ContainerSetVisible(container.story5a5, 0);
+    ContainerSetVisible(container.story5a6, 0);
+    ContainerSetVisible(container.story5b6, 0);
+    ContainerSetVisible(container.story6a1, 0);
+    ContainerSetVisible(container.story6a2, 0);
+    ContainerSetVisible(container.story6a3, 0);
+    ContainerSetVisible(container.story6b3, 0);
+    ContainerSetVisible(container.story7w1, 0);
+    ContainerSetVisible(container.story7l1, 0);
+    ContainerSetVisible(container.story7a2, 0);
+    ContainerSetVisible(container.story7b2, 0);
+    ContainerSetVisible(container.unlocks, 0);
+    ContainerSetVisible(container.options, 0);
+    ContainerSetVisible(container.deleteCheckOne, 0);
+    ContainerSetVisible(container.deleteCheckTwo, 0);
     switch (currentScreen) {
         case SCREEN_PAUSE:
-            ContainerSetVisible(container::pause, 1);
+            ContainerSetVisible(container.pause, 1);
             break;
         case SCREEN_MENU:
-            ContainerSetVisible(container::menu, 1);
+            ContainerSetVisible(container.menu, 1);
             break;
         case SCREEN_HIGHSCORE:
-            ContainerSetVisible(container::highscore, 1);
+            ContainerSetVisible(container.highscore, 1);
             break;
         case SCREEN_DIED:
-            ContainerSetVisible(container::died, 1);
+            ContainerSetVisible(container.died, 1);
             break;
         case SCREEN_ENDLESS:
-            ContainerSetVisible(container::endless, 1);
+            ContainerSetVisible(container.endless, 1);
             break;
         case SCREEN_STORY_1A1:
-            ContainerSetVisible(container::story1a1, 1);
+            ContainerSetVisible(container.story1a1, 1);
             break;
         case SCREEN_STORY_1A2:
-            ContainerSetVisible(container::story1a2, 1);
+            ContainerSetVisible(container.story1a2, 1);
             break;
         case SCREEN_STORY_1S3:
-            ContainerSetVisible(container::story1s3, 1);
+            ContainerSetVisible(container.story1s3, 1);
             break;
         case SCREEN_STORY_1P3:
-            ContainerSetVisible(container::story1p3, 1);
+            ContainerSetVisible(container.story1p3, 1);
             break;
         case SCREEN_STORY_1A4:
-            ContainerSetVisible(container::story1a4, 1);
+            ContainerSetVisible(container.story1a4, 1);
             break;
         case SCREEN_STORY_1R5:
-            ContainerSetVisible(container::story1r5, 1);
+            ContainerSetVisible(container.story1r5, 1);
             break;
         case SCREEN_STORY_1E5:
-            ContainerSetVisible(container::story1e5, 1);
+            ContainerSetVisible(container.story1e5, 1);
             break;
         case SCREEN_STORY_BATTLE_1:
-            ContainerSetVisible(container::endless, 1);
+            ContainerSetVisible(container.endless, 1);
             break;
         case SCREEN_STORY_2A1:
-            ContainerSetVisible(container::story2a1, 1);
+            ContainerSetVisible(container.story2a1, 1);
             break;
         case SCREEN_STORY_2A2:
-            ContainerSetVisible(container::story2a2, 1);
+            ContainerSetVisible(container.story2a2, 1);
             break;
         case SCREEN_STORY_2A3:
-            ContainerSetVisible(container::story2a3, 1);
+            ContainerSetVisible(container.story2a3, 1);
             break;
         case SCREEN_STORY_2B4:
-            ContainerSetVisible(container::story2b4, 1);
+            ContainerSetVisible(container.story2b4, 1);
             break;
         case SCREEN_STORY_2A5:
-            ContainerSetVisible(container::story2a5, 1);
+            ContainerSetVisible(container.story2a5, 1);
             break;
         case SCREEN_STORY_2A6:
-            ContainerSetVisible(container::story2a6, 1);
+            ContainerSetVisible(container.story2a6, 1);
             break;
         case SCREEN_STORY_2E7:
-            ContainerSetVisible(container::story2e7, 1);
+            ContainerSetVisible(container.story2e7, 1);
             break;
         case SCREEN_STORY_2A7:
-            ContainerSetVisible(container::story2a7, 1);
+            ContainerSetVisible(container.story2a7, 1);
             break;
         case SCREEN_STORY_BATTLE_2:
-            ContainerSetVisible(container::endless, 1);
+            ContainerSetVisible(container.endless, 1);
             break;
         case SCREEN_STORY_3A1:
-            ContainerSetVisible(container::story3a1, 1);
+            ContainerSetVisible(container.story3a1, 1);
             break;
         case SCREEN_STORY_3B2:
-            ContainerSetVisible(container::story3b2, 1);
+            ContainerSetVisible(container.story3b2, 1);
             break;
         case SCREEN_STORY_3A3:
-            ContainerSetVisible(container::story3a3, 1);
+            ContainerSetVisible(container.story3a3, 1);
             break;
         case SCREEN_STORY_3A4:
-            ContainerSetVisible(container::story3a4, 1);
+            ContainerSetVisible(container.story3a4, 1);
             break;
         case SCREEN_STORY_3A5:
-            ContainerSetVisible(container::story3a5, 1);
+            ContainerSetVisible(container.story3a5, 1);
             break;
         case SCREEN_STORY_3A6:
-            ContainerSetVisible(container::story3a6, 1);
+            ContainerSetVisible(container.story3a6, 1);
             break;
         case SCREEN_STORY_3A7:
-            ContainerSetVisible(container::story3a7, 1);
+            ContainerSetVisible(container.story3a7, 1);
             break;
         case SCREEN_STORY_3A8:
-            ContainerSetVisible(container::story3a8, 1);
+            ContainerSetVisible(container.story3a8, 1);
             break;
         case SCREEN_STORY_TORTURE:
             int imageTorturing;
             imageTorturing = ImageAdd("Images/20HP.png");
             ViewSetImage(hpTorture, imageTorturing);
-            counter::hpTorture = 2000;
-            counter::torture = 0;
-            ContainerSetVisible(container::storyTorture, 1);
+            counter.hpTorture = 2000;
+            counter.torture = 0;
+            ContainerSetVisible(container.storyTorture, 1);
             break;
         case SCREEN_STORY_4A1:
-            ContainerSetVisible(container::story4a1, 1);
+            ContainerSetVisible(container.story4a1, 1);
             break;
         case SCREEN_STORY_4A2:
-            ContainerSetVisible(container::story4a2, 1);
+            ContainerSetVisible(container.story4a2, 1);
             break;
         case SCREEN_STORY_4A3:
-            ContainerSetVisible(container::story4a3, 1);
+            ContainerSetVisible(container.story4a3, 1);
             break;
         case SCREEN_STORY_4A4:
-            ContainerSetVisible(container::story4a4, 1);
+            ContainerSetVisible(container.story4a4, 1);
             break;
         case SCREEN_STORY_4B5:
-            ContainerSetVisible(container::story4b5, 1);
+            ContainerSetVisible(container.story4b5, 1);
             break;
         case SCREEN_STORY_4A6:
-            ContainerSetVisible(container::story4a6, 1);
+            ContainerSetVisible(container.story4a6, 1);
             break;
         case SCREEN_STORY_4A7:
-            ContainerSetVisible(container::story4a7, 1);
+            ContainerSetVisible(container.story4a7, 1);
             break;
         case SCREEN_STORY_4B7:
-            ContainerSetVisible(container::story4b7, 1);
+            ContainerSetVisible(container.story4b7, 1);
             break;
         case SCREEN_STORY_4A8:
-            ContainerSetVisible(container::story4a8, 1);
+            ContainerSetVisible(container.story4a8, 1);
             break;
         case SCREEN_STORY_BATTLE_4:
-            ContainerSetVisible(container::endless, 1);
+            ContainerSetVisible(container.endless, 1);
             break;
         case SCREEN_STORY_5A1:
-            ContainerSetVisible(container::story5a1, 1);
+            ContainerSetVisible(container.story5a1, 1);
             break;
         case SCREEN_STORY_5A2:
-            ContainerSetVisible(container::story5a2, 1);
+            ContainerSetVisible(container.story5a2, 1);
             break;
         case SCREEN_STORY_5A3:
-            ContainerSetVisible(container::story5a3, 1);
+            ContainerSetVisible(container.story5a3, 1);
             break;
         case SCREEN_STORY_5B4:
-            ContainerSetVisible(container::story5b4, 1);
+            ContainerSetVisible(container.story5b4, 1);
             break;
         case SCREEN_STORY_5A5:
-            ContainerSetVisible(container::story5a5, 1);
+            ContainerSetVisible(container.story5a5, 1);
             break;
         case SCREEN_STORY_5A6:
-            ContainerSetVisible(container::story5a6, 1);
+            ContainerSetVisible(container.story5a6, 1);
             break;
         case SCREEN_STORY_5B6:
-            ContainerSetVisible(container::story5b6, 1);
+            ContainerSetVisible(container.story5b6, 1);
             break;
         case SCREEN_STORY_BATTLE_5:
-            ContainerSetVisible(container::endless, 1);
+            ContainerSetVisible(container.endless, 1);
             break;
         case SCREEN_STORY_6A1:
-            ContainerSetVisible(container::story6a1, 1);
+            ContainerSetVisible(container.story6a1, 1);
             break;
         case SCREEN_STORY_6A2:
-            ContainerSetVisible(container::story6a2, 1);
+            ContainerSetVisible(container.story6a2, 1);
             break;
         case SCREEN_STORY_6A3:
-            ContainerSetVisible(container::story6a3, 1);
+            ContainerSetVisible(container.story6a3, 1);
             break;
         case SCREEN_STORY_6B3:
-            ContainerSetVisible(container::story6b3, 1);
+            ContainerSetVisible(container.story6b3, 1);
             break;
         case SCREEN_STORY_BATTLE_6:
-            ContainerSetVisible(container::endless, 1);
+            ContainerSetVisible(container.endless, 1);
             break;
         case SCREEN_STORY_7W1:
-            ContainerSetVisible(container::story7w1, 1);
+            ContainerSetVisible(container.story7w1, 1);
             break;
         case SCREEN_STORY_7L1:
-            ContainerSetVisible(container::story7l1, 1);
+            ContainerSetVisible(container.story7l1, 1);
             break;
         case SCREEN_STORY_7A2:
-            ContainerSetVisible(container::story7a2, 1);
+            ContainerSetVisible(container.story7a2, 1);
             break;
         case SCREEN_STORY_7B2:
-            ContainerSetVisible(container::story7b2, 1);
+            ContainerSetVisible(container.story7b2, 1);
             break;
         case SCREEN_UNLOCKS:
-            ContainerSetVisible(container::unlocks, 1);
+            ContainerSetVisible(container.unlocks, 1);
             break;
         case SCREEN_OPTIONS:
-            ContainerSetVisible(container::options, 1);
+            ContainerSetVisible(container.options, 1);
             break;
         case SCREEN_DELETE_CHECK_ONE:
-            ContainerSetVisible(container::deleteCheckOne, 1);
+            ContainerSetVisible(container.deleteCheckOne, 1);
             break;
         case SCREEN_DELETE_CHECK_TWO:
-            ContainerSetVisible(container::deleteCheckTwo, 1);
+            ContainerSetVisible(container.deleteCheckTwo, 1);
             break;
     }
 }
@@ -479,9 +490,9 @@ void doUpdateHighscore() {
         highscore = level;
     }
     doHighscore();
-    (health <= 0) ? (TextSetText(text1, "\n\nYou Died.")) : (TextSetText(text1, "\n\nYou Left."));
+    (player.health <= 0) ? (TextSetText(text1, "\n\nYou Died.")) : (TextSetText(text1, "\n\nYou Left."));
     char lvl[] = "\n\n\n\n\n\nYou Left At Level   ";
-    if (health <= 0) {
+    if (player.health <= 0) {
         char temp[] = "\n\n\n\n\n\nSurvived To";
         for (int i = 0; i < 17; i++) {
             lvl[i] = temp[i];
@@ -497,7 +508,7 @@ void doUpdateHighscore() {
         lvl[25] = char(two + '0');
         TextSetText(text2, lvl);
     } else {
-        (health <= 0) ? (TextSetText(text2, "\n\n\n\n\n\nSurvived To Level 99+")) :
+        (player.health <= 0) ? (TextSetText(text2, "\n\n\n\n\n\nSurvived To Level 99+")) :
         (TextSetText(text2, "\n\n\n\n\n\nYou Left At Level 99+"));
     }
     reset();
@@ -505,7 +516,7 @@ void doUpdateHighscore() {
 
 int onTorture(int id, int event, int x, int y) {
     if (event == 1 || event == 3) {
-        state::torture = !state::torture;
+        isTorture = !isTorture;
     }
     return 0;
 }
@@ -541,7 +552,7 @@ int onResume(int id, int event, int x, int y) {
     if (event == 3) {
         currentScreen = previousScreen;
         screenSwitch();
-        state::pause = false;
+        isPaused = false;
     }
     return 0;
 }
@@ -550,7 +561,7 @@ int onPause(int id, int event, int x, int y) {
         previousScreen = currentScreen;
         currentScreen = SCREEN_PAUSE;
         screenSwitch();
-        state::pause = true;
+        isPaused = true;
     }
     return 0;
 }
@@ -560,14 +571,14 @@ int onStoryLevelSeven(int id, int event, int x, int y) {
         if (id == 1) {
             currentScreen = SCREEN_STORY_7A2;
         } else if (id == 2) {
-            const int SAVE_RON = TextAdd(container::story7b2, 0, 0, "", font);
-            if (state::date && !state::marry) {
+            const int SAVE_RON = TextAdd(container.story7b2, 0, 0, "", font);
+            if (isStoryDate && !isStoryMarry) {
                 TextSetText(SAVE_RON, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell "
                     "your girlfriend that you \nwere a great man.");
-            } else if (state::date && state::marry) {
+            } else if (isStoryDate && isStoryMarry) {
                 TextSetText(SAVE_RON, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell "
                     "your wife that you were a \ngreat man.");
-            } else if (!state::date && !state::marry) {
+            } else if (!isStoryDate && !isStoryMarry) {
                 TextSetText(SAVE_RON, "\n\nRon: \nThe world will know of your \ngreatness.");
             }
             currentScreen = SCREEN_STORY_7B2;
@@ -607,15 +618,15 @@ int onStoryLevelSix(int id, int event, int x, int y) {
 }
 int onStoryLevelFive(int id, int event, int x, int y) {
     if (event == 3) {
-        if (id == 1 && !state::date) {
+        if (id == 1 && !isStoryDate) {
             currentScreen = SCREEN_STORY_5A3;
-        } else if (id == 1 && state::date) {
+        } else if (id == 1 && isStoryDate) {
             currentScreen = SCREEN_STORY_5A2;
         } else if (id == 2) {
-            state::marry = true;
+            isStoryMarry = true;
             currentScreen = SCREEN_STORY_5A3;
         } else if (id == 8) {
-            state::marry = false;
+            isStoryMarry = false;
             currentScreen = SCREEN_STORY_5A3;
         } else if (id == 3) {
             currentScreen = SCREEN_STORY_5B4;
@@ -721,11 +732,11 @@ int onStoryLevelTwo(int id, int event, int x, int y) {
                 currentScreen = SCREEN_STORY_2A2;
                 break;
             case 3:
-                state::date = true;
+                isStoryDate = true;
                 currentScreen = SCREEN_STORY_2A3;
                 break;
             case 4:
-                state::date = false;
+                isStoryDate = false;
                 currentScreen = SCREEN_STORY_2A3;
                 break;
             case 5:
@@ -805,19 +816,19 @@ int onStoryMenuTouch(int id, int event, int x, int y) {
 
 void shipType() {
     const int LIFT = 10;
-    ViewSetxy(player.view, -200, -200);
+    ViewSetxy(player.instance, -200, -200);
     player.possibleHealth = round((18 + 2 * player.typeOfShip) * PLAYER_HEALTH_RATIO / 10);
     switch (player.typeOfShip) {
         case 1:
-            player.view = ViewAdd(container::endless, "Images/Ship_1.png", -200, -200);
+            player.instance = ViewAdd(container.endless, "Images/Ship_1.png", -200, -200);
             player.bulletOneOffsetXCoord = 43;
             player.bulletOneOffsetYCoord = 11 - LIFT;
             player.speed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
-			player.widthOne = 9;
-			player.widthTwo = 76;
+            player.widthOne = 9;
+            player.widthTwo = 76;
             break;
         case 2:
-            player.view = ViewAdd(container::endless, "Images/Ship_2.png", -200, -200);
+            player.instance = ViewAdd(container.endless, "Images/Ship_2.png", -200, -200);
             player.bulletOneOffsetXCoord = 43;
             player.bulletOneOffsetYCoord = 0 - LIFT;
             player.speed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
@@ -825,7 +836,7 @@ void shipType() {
             player.widthTwo = 69;
             break;
         case 3:
-            player.view = ViewAdd(container::endless, "Images/Ship_3.png", -200, -200);
+            player.instance = ViewAdd(container.endless, "Images/Ship_3.png", -200, -200);
             player.bulletOneOffsetXCoord = 43;
             player.bulletOneOffsetYCoord = 6 - LIFT;
             player.speed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
@@ -833,7 +844,7 @@ void shipType() {
             player.widthTwo = 66;
             break;
         case 4:
-            player.view = ViewAdd(container::endless, "Images/Ship_4.png", -200, -200);
+            player.instance = ViewAdd(container.endless, "Images/Ship_4.png", -200, -200);
             player.bulletOneOffsetXCoord = 43;
             player.bulletOneOffsetYCoord = 0 - LIFT;
             player.speed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
@@ -841,7 +852,7 @@ void shipType() {
             player.widthTwo = 87;
             break;
         case 5:
-            player.view = ViewAdd(container::endless, "Images/Ship_5.png", -200, -200);
+            player.instance = ViewAdd(container.endless, "Images/Ship_5.png", -200, -200);
             player.bulletOneOffsetXCoord = 31;
             player.bulletOneOffsetYCoord = 23 - LIFT;
             player.bulletTwoOffsetXCoord = 54;
@@ -851,7 +862,7 @@ void shipType() {
             player.widthTwo = 71;
             break;
         case 6:
-            player.view = ViewAdd(container::endless, "Images/Ship_6.png", -200, -200);
+            player.instance = ViewAdd(container.endless, "Images/Ship_6.png", -200, -200);
             player.bulletOneOffsetXCoord = 15;
             player.bulletOneOffsetYCoord = 41 - LIFT;
             player.bulletTwoOffsetXCoord = 68;
@@ -861,7 +872,7 @@ void shipType() {
             player.widthTwo = 81;
             break;
         case 7:
-            player.view = ViewAdd(container::endless, "Images/Ship_7.png", -200, -200);
+            player.instance = ViewAdd(container.endless, "Images/Ship_7.png", -200, -200);
             player.rocketOffsetXCoord = 42;
             player.rocketOffsetYCoord = 11 - LIFT;
             player.speed = round(5 * PLAYER_FLY_SPEED_RATIO / 10);
@@ -869,7 +880,7 @@ void shipType() {
             player.widthTwo = 86;
             break;
         case 8:
-            player.view = ViewAdd(container::endless, "Images/Ship_8.png", -200, -200);
+            player.instance = ViewAdd(container.endless, "Images/Ship_8.png", -200, -200);
             player.bulletOneOffsetXCoord = 12;
             player.bulletOneOffsetYCoord = 40 - LIFT;
             player.rocketOffsetXCoord = 42;
@@ -884,16 +895,16 @@ void shipType() {
 }
 int onBattleTouch(int id, int event, int x, int y) {
     if (event == 1 || event == 2) {
-        newX = x - 47;
-        newY = y - 47;
+        player.newXCoord = x - 47;
+        player.newYCoord = y - 47;
     }
     return 0;
 }
 int onEndlessMenuTouch(int id, int event, int x, int y) {
     if (event == 3) {
         reset();
-        health = player.possibleHealth;
-        state::healthUpdate = true;
+        player.health = player.possibleHealth;
+        isHealthUpdate = true;
         level = 1;
         set = 1;
         currentScreen = SCREEN_ENDLESS;
@@ -918,7 +929,7 @@ int unlocks(int id, int event, int x, int y) {
 int onUnlocksMenuTouch(int id, int event, int x, int y) {
     int imageUnlocks;
     if (event == 3) {
-        const int RANK_POSITION = TextAdd(container::unlocks, 10, 10, "", font);
+        const int RANK_POSITION = TextAdd(container.unlocks, 10, 10, "", font);
         switch (rank) {
             case 1:
                 TextSetText(RANK_POSITION, "\n\nLevel 1: Ordinary Shipman");
@@ -982,19 +993,19 @@ int onUnlocksMenuTouch(int id, int event, int x, int y) {
                 break;
         }
         imageUnlocks = (rank >= 3) ? (ImageAdd("unlocks/UnShip_2.png")) : (ImageAdd("unlocks/LckShip_2.png"));
-        ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_2.png", 120, 180, unlocks, 2), imageUnlocks);
+        ViewSetImage(ViewAdd(container.unlocks, "unlocks/LckShip_2.png", 120, 180, unlocks, 2), imageUnlocks);
         imageUnlocks = (rank >= 5) ? (ImageAdd("unlocks/UnShip_3.png")) : (ImageAdd("unlocks/LckShip_3.png"));
-        ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_3.png", 220, 180, unlocks, 3), imageUnlocks);
+        ViewSetImage(ViewAdd(container.unlocks, "unlocks/LckShip_3.png", 220, 180, unlocks, 3), imageUnlocks);
         imageUnlocks = (rank >= 8) ? (ImageAdd("unlocks/UnShip_4.png")) : (ImageAdd("unlocks/LckShip_4.png"));
-        ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_4.png", 20, 280, unlocks, 4), imageUnlocks);
+        ViewSetImage(ViewAdd(container.unlocks, "unlocks/LckShip_4.png", 20, 280, unlocks, 4), imageUnlocks);
         imageUnlocks = (rank >= 11) ? (ImageAdd("unlocks/UnShip_5.png")) : (ImageAdd("unlocks/LckShip_5.png"));
-        ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_5.png", 120, 280, unlocks, 5), imageUnlocks);
+        ViewSetImage(ViewAdd(container.unlocks, "unlocks/LckShip_5.png", 120, 280, unlocks, 5), imageUnlocks);
         imageUnlocks = (rank >= 14) ? (ImageAdd("unlocks/UnShip_6.png")) : (ImageAdd("unlocks/LckShip_6.png"));
-        ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_6.png", 220, 280, unlocks, 6), imageUnlocks);
+        ViewSetImage(ViewAdd(container.unlocks, "unlocks/LckShip_6.png", 220, 280, unlocks, 6), imageUnlocks);
         imageUnlocks = (rank >= 17) ? (ImageAdd("unlocks/UnShip_7.png")) : (ImageAdd("unlocks/LckShip_7.png"));
-        ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_7.png", 60, 380, unlocks, 7), imageUnlocks);
+        ViewSetImage(ViewAdd(container.unlocks, "unlocks/LckShip_7.png", 60, 380, unlocks, 7), imageUnlocks);
         imageUnlocks = (rank >= 20) ? (ImageAdd("unlocks/UnShip_8.png")) : (ImageAdd("unlocks/LckShip_8.png"));
-        ViewSetImage(ViewAdd(container::unlocks, "unlocks/LckShip_8.png", 180, 380, unlocks, 8), imageUnlocks);
+        ViewSetImage(ViewAdd(container.unlocks, "unlocks/LckShip_8.png", 180, 380, unlocks, 8), imageUnlocks);
         currentScreen = SCREEN_UNLOCKS;
         screenSwitch();
     }
@@ -1004,41 +1015,41 @@ int onUnlocksMenuTouch(int id, int event, int x, int y) {
 int options(int id, int event, int x, int y) {
     int imageMusic;
     if (id == 1 && event == 3) {
-        if (state::sound) {
+        if (isSoundEnabled) {
             imageMusic = ImageAdd("unlocks/MusicOff.png");
             ViewSetImage(music, imageMusic);
-            state::sound = false;
+            isSoundEnabled = false;
             Mp3Stop();
         } else {
             imageMusic = ImageAdd("unlocks/MusicOn.png");
             ViewSetImage(music, imageMusic);
-            state::sound = true;
-            if (counter::sound >= 1 && counter::sound < 7000) {
-                counter::sound = 7000;
-            } else if (counter::sound >= 7000 && counter::sound < 13000) {
-                counter::sound = 13000;
-            } else if (counter::sound >= 13000 && counter::sound < 19000) {
-                counter::sound = 19000;
-            } else if (counter::sound >= 19000 && counter::sound < 27000) {
-                counter::sound = 27000;
-            } else if (counter::sound >= 27000 && counter::sound < 34000) {
-                counter::sound = 34000;
-            } else if (counter::sound >= 34000 && counter::sound < 42000) {
-                counter::sound = 42000;
-            } else if (counter::sound >= 42000 && counter::sound < 49000) {
-                counter::sound = 49000;
-            } else if (counter::sound >= 49000 && counter::sound < 55000) {
-                counter::sound = 55000;
-            } else if (counter::sound >= 55000 && counter::sound < 61000) {
-                counter::sound = 61000;
-            } else if (counter::sound >= 61000 && counter::sound < 67000) {
-                counter::sound = 67000;
-            } else if (counter::sound >= 67000 && counter::sound < 73000) {
-                counter::sound = 73000;
-            } else if (counter::sound >= 73000 && counter::sound < 79000) {
-                counter::sound = 79000;
-            } else if (counter::sound >= 79000) {
-                counter::sound = 1;
+            isSoundEnabled = true;
+            if (counter.sound >= 1 && counter.sound < 7000) {
+                counter.sound = 7000;
+            } else if (counter.sound >= 7000 && counter.sound < 13000) {
+                counter.sound = 13000;
+            } else if (counter.sound >= 13000 && counter.sound < 19000) {
+                counter.sound = 19000;
+            } else if (counter.sound >= 19000 && counter.sound < 27000) {
+                counter.sound = 27000;
+            } else if (counter.sound >= 27000 && counter.sound < 34000) {
+                counter.sound = 34000;
+            } else if (counter.sound >= 34000 && counter.sound < 42000) {
+                counter.sound = 42000;
+            } else if (counter.sound >= 42000 && counter.sound < 49000) {
+                counter.sound = 49000;
+            } else if (counter.sound >= 49000 && counter.sound < 55000) {
+                counter.sound = 55000;
+            } else if (counter.sound >= 55000 && counter.sound < 61000) {
+                counter.sound = 61000;
+            } else if (counter.sound >= 61000 && counter.sound < 67000) {
+                counter.sound = 67000;
+            } else if (counter.sound >= 67000 && counter.sound < 73000) {
+                counter.sound = 73000;
+            } else if (counter.sound >= 73000 && counter.sound < 79000) {
+                counter.sound = 79000;
+            } else if (counter.sound >= 79000) {
+                counter.sound = 1;
             }
         }
     } else if (id == 2 && event == 3) {
@@ -1069,528 +1080,528 @@ int onOptionsMenuTouch(int id, int event, int x, int y) {
 }
 
 void declareContainers() {
-    container::pause = ContainerAdd(0, 0, 0);
-    container::menu = ContainerAdd(0, 0, 0);
-    container::highscore = ContainerAdd(0, 0, 0);
-    container::endless = ContainerAdd(0, 0, 0);
-    container::died = ContainerAdd(0, 0, 0);
-    container::story1a1 = ContainerAdd(0, 0, 0);
-    container::story1a2 = ContainerAdd(0, 0, 0);
-    container::story1s3 = ContainerAdd(0, 0, 0);
-    container::story1p3 = ContainerAdd(0, 0, 0);
-    container::story1a4 = ContainerAdd(0, 0, 0);
-    container::story1r5 = ContainerAdd(0, 0, 0);
-    container::story1e5 = ContainerAdd(0, 0, 0);
-    container::story2a1 = ContainerAdd(0, 0, 0);
-    container::story2a2 = ContainerAdd(0, 0, 0);
-    container::story2a3 = ContainerAdd(0, 0, 0);
-    container::story2b4 = ContainerAdd(0, 0, 0);
-    container::story2a5 = ContainerAdd(0, 0, 0);
-    container::story2a6 = ContainerAdd(0, 0, 0);
-    container::story2e7 = ContainerAdd(0, 0, 0);
-    container::story2a7 = ContainerAdd(0, 0, 0);
-    container::story3a1 = ContainerAdd(0, 0, 0);
-    container::story3b2 = ContainerAdd(0, 0, 0);
-    container::story3a3 = ContainerAdd(0, 0, 0);
-    container::story3a4 = ContainerAdd(0, 0, 0);
-    container::story3a5 = ContainerAdd(0, 0, 0);
-    container::story3a6 = ContainerAdd(0, 0, 0);
-    container::story3a7 = ContainerAdd(0, 0, 0);
-    container::story3a8 = ContainerAdd(0, 0, 0);
-    container::storyTorture = ContainerAdd(0, 0, 0);
-    container::story4a1 = ContainerAdd(0, 0, 0);
-    container::story4a2 = ContainerAdd(0, 0, 0);
-    container::story4a3 = ContainerAdd(0, 0, 0);
-    container::story4a4 = ContainerAdd(0, 0, 0);
-    container::story4b5 = ContainerAdd(0, 0, 0);
-    container::story4a6 = ContainerAdd(0, 0, 0);
-    container::story4a7 = ContainerAdd(0, 0, 0);
-    container::story4b7 = ContainerAdd(0, 0, 0);
-    container::story4a8 = ContainerAdd(0, 0, 0);
-    container::story5a1 = ContainerAdd(0, 0, 0);
-    container::story5a2 = ContainerAdd(0, 0, 0);
-    container::story5a3 = ContainerAdd(0, 0, 0);
-    container::story5b4 = ContainerAdd(0, 0, 0);
-    container::story5a5 = ContainerAdd(0, 0, 0);
-    container::story5a6 = ContainerAdd(0, 0, 0);
-    container::story5b6 = ContainerAdd(0, 0, 0);
-    container::story6a1 = ContainerAdd(0, 0, 0);
-    container::story6a2 = ContainerAdd(0, 0, 0);
-    container::story6a3 = ContainerAdd(0, 0, 0);
-    container::story6b3 = ContainerAdd(0, 0, 0);
-    container::story7w1 = ContainerAdd(0, 0, 0);
-    container::story7l1 = ContainerAdd(0, 0, 0);
-    container::story7a2 = ContainerAdd(0, 0, 0);
-    container::story7b2 = ContainerAdd(0, 0, 0);
-    container::unlocks = ContainerAdd(0, 0, 0);
-    container::options = ContainerAdd(0, 0, 0);
-    container::deleteCheckOne = ContainerAdd(0, 0, 0);
-    container::deleteCheckTwo = ContainerAdd(0, 0, 0);
+    container.pause = ContainerAdd(0, 0, 0);
+    container.menu = ContainerAdd(0, 0, 0);
+    container.highscore = ContainerAdd(0, 0, 0);
+    container.endless = ContainerAdd(0, 0, 0);
+    container.died = ContainerAdd(0, 0, 0);
+    container.story1a1 = ContainerAdd(0, 0, 0);
+    container.story1a2 = ContainerAdd(0, 0, 0);
+    container.story1s3 = ContainerAdd(0, 0, 0);
+    container.story1p3 = ContainerAdd(0, 0, 0);
+    container.story1a4 = ContainerAdd(0, 0, 0);
+    container.story1r5 = ContainerAdd(0, 0, 0);
+    container.story1e5 = ContainerAdd(0, 0, 0);
+    container.story2a1 = ContainerAdd(0, 0, 0);
+    container.story2a2 = ContainerAdd(0, 0, 0);
+    container.story2a3 = ContainerAdd(0, 0, 0);
+    container.story2b4 = ContainerAdd(0, 0, 0);
+    container.story2a5 = ContainerAdd(0, 0, 0);
+    container.story2a6 = ContainerAdd(0, 0, 0);
+    container.story2e7 = ContainerAdd(0, 0, 0);
+    container.story2a7 = ContainerAdd(0, 0, 0);
+    container.story3a1 = ContainerAdd(0, 0, 0);
+    container.story3b2 = ContainerAdd(0, 0, 0);
+    container.story3a3 = ContainerAdd(0, 0, 0);
+    container.story3a4 = ContainerAdd(0, 0, 0);
+    container.story3a5 = ContainerAdd(0, 0, 0);
+    container.story3a6 = ContainerAdd(0, 0, 0);
+    container.story3a7 = ContainerAdd(0, 0, 0);
+    container.story3a8 = ContainerAdd(0, 0, 0);
+    container.storyTorture = ContainerAdd(0, 0, 0);
+    container.story4a1 = ContainerAdd(0, 0, 0);
+    container.story4a2 = ContainerAdd(0, 0, 0);
+    container.story4a3 = ContainerAdd(0, 0, 0);
+    container.story4a4 = ContainerAdd(0, 0, 0);
+    container.story4b5 = ContainerAdd(0, 0, 0);
+    container.story4a6 = ContainerAdd(0, 0, 0);
+    container.story4a7 = ContainerAdd(0, 0, 0);
+    container.story4b7 = ContainerAdd(0, 0, 0);
+    container.story4a8 = ContainerAdd(0, 0, 0);
+    container.story5a1 = ContainerAdd(0, 0, 0);
+    container.story5a2 = ContainerAdd(0, 0, 0);
+    container.story5a3 = ContainerAdd(0, 0, 0);
+    container.story5b4 = ContainerAdd(0, 0, 0);
+    container.story5a5 = ContainerAdd(0, 0, 0);
+    container.story5a6 = ContainerAdd(0, 0, 0);
+    container.story5b6 = ContainerAdd(0, 0, 0);
+    container.story6a1 = ContainerAdd(0, 0, 0);
+    container.story6a2 = ContainerAdd(0, 0, 0);
+    container.story6a3 = ContainerAdd(0, 0, 0);
+    container.story6b3 = ContainerAdd(0, 0, 0);
+    container.story7w1 = ContainerAdd(0, 0, 0);
+    container.story7l1 = ContainerAdd(0, 0, 0);
+    container.story7a2 = ContainerAdd(0, 0, 0);
+    container.story7b2 = ContainerAdd(0, 0, 0);
+    container.unlocks = ContainerAdd(0, 0, 0);
+    container.options = ContainerAdd(0, 0, 0);
+    container.deleteCheckOne = ContainerAdd(0, 0, 0);
+    container.deleteCheckTwo = ContainerAdd(0, 0, 0);
 }
 void containerSixSeven() {
-    //populate container::story6a1
-    ViewAdd(container::story6a1, "Images/Background.png", 0, 0);
-    ViewAdd(container::story6a1, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story6a1, "Images/btnOkBig.png", 20, 380, onStoryLevelSix, 1);
-    TextAdd(container::story6a1, 0, 0, "\n\nRon: \nGreat work, now go kill the \nenemy admiral!", font);
-    //populate container::story6a2
-    ViewAdd(container::story6a2, "Images/Background.png", 0, 0);
-    ViewAdd(container::story6a2, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story6a2, "Images/btnLaugh.png", 20, 380, onStoryLevelSix, 2);
-    ViewAdd(container::story6a2, "Images/btnSo.png", 170, 380, onStoryLevelSix, 3);
-    TextAdd(container::story6a2, 0, 0, "\n\nAdmiral Skerbowh: \nYou will never be able to \ndefeat me. I am simply", 
+    //populate container.story6a1
+    ViewAdd(container.story6a1, "Images/Background.png", 0, 0);
+    ViewAdd(container.story6a1, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story6a1, "Images/btnOkBig.png", 20, 380, onStoryLevelSix, 1);
+    TextAdd(container.story6a1, 0, 0, "\n\nRon: \nGreat work, now go kill the \nenemy admiral!", font);
+    //populate container.story6a2
+    ViewAdd(container.story6a2, "Images/Background.png", 0, 0);
+    ViewAdd(container.story6a2, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story6a2, "Images/btnLaugh.png", 20, 380, onStoryLevelSix, 2);
+    ViewAdd(container.story6a2, "Images/btnSo.png", 170, 380, onStoryLevelSix, 3);
+    TextAdd(container.story6a2, 0, 0, "\n\nAdmiral Skerbowh: \nYou will never be able to \ndefeat me. I am simply", 
         font);
-    TextAdd(container::story6a2, 0, 0, "\n\n\n\n\nsmarter, stronger, faster, and \nmore powerful than you.", font);
-    //populate container::story6a3
-    ViewAdd(container::story6a3, "Images/Background.png", 0, 0);
-    ViewAdd(container::story6a3, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story6a3, "Images/btnOkSmall.png", 20, 380, onStoryLevelSix, 4);
-    ViewAdd(container::story6a3, "Images/btnLaugh.png", 170, 380, onStoryLevelSix, 4);
-    TextAdd(container::story6a3, 0, 0, "\n\nAdmiral Skerbowh: \nYou laugh in the face of \ndeath? I laugh at your", 
+    TextAdd(container.story6a2, 0, 0, "\n\n\n\n\nsmarter, stronger, faster, and \nmore powerful than you.", font);
+    //populate container.story6a3
+    ViewAdd(container.story6a3, "Images/Background.png", 0, 0);
+    ViewAdd(container.story6a3, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story6a3, "Images/btnOkSmall.png", 20, 380, onStoryLevelSix, 4);
+    ViewAdd(container.story6a3, "Images/btnLaugh.png", 170, 380, onStoryLevelSix, 4);
+    TextAdd(container.story6a3, 0, 0, "\n\nAdmiral Skerbowh: \nYou laugh in the face of \ndeath? I laugh at your", 
         font);
-    TextAdd(container::story6a3, 0, 0, "\n\n\n\n\nconfidence; however, you \ntruly cannot believe that you \nmay "
+    TextAdd(container.story6a3, 0, 0, "\n\n\n\n\nconfidence; however, you \ntruly cannot believe that you \nmay "
         "emerge victorious.", font);
-    //populate container::story6b3
-    ViewAdd(container::story6b3, "Images/Background.png", 0, 0);
-    ViewAdd(container::story6b3, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story6b3, "Images/btnOkSmall.png", 20, 380, onStoryLevelSix, 4);
-    ViewAdd(container::story6b3, "Images/btnLaugh.png", 170, 380, onStoryLevelSix, 4);
-    TextAdd(container::story6b3, 0, 0, "\n\nAdmiral Skerbowh: \nSo... You aren't intelligent \nenough to comprehend "
+    //populate container.story6b3
+    ViewAdd(container.story6b3, "Images/Background.png", 0, 0);
+    ViewAdd(container.story6b3, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story6b3, "Images/btnOkSmall.png", 20, 380, onStoryLevelSix, 4);
+    ViewAdd(container.story6b3, "Images/btnLaugh.png", 170, 380, onStoryLevelSix, 4);
+    TextAdd(container.story6b3, 0, 0, "\n\nAdmiral Skerbowh: \nSo... You aren't intelligent \nenough to comprehend "
         "your", font);
-    TextAdd(container::story6b3, 0, 0, "\n\n\n\n\ncertain and eventual death.", font);
-    //populate container::story7w1
-    ViewAdd(container::story7w1, "Images/Background.png", 0, 0);
-    ViewAdd(container::story7w1, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story7w1, "Images/btnOkBig.png", 20, 380, onStoryLevelSeven, 3);
-    TextAdd(container::story7w1, 0, 0, "\n\nRon: \nYou defeated the enemy \nadmiral. The world will know \nof your "
+    TextAdd(container.story6b3, 0, 0, "\n\n\n\n\ncertain and eventual death.", font);
+    //populate container.story7w1
+    ViewAdd(container.story7w1, "Images/Background.png", 0, 0);
+    ViewAdd(container.story7w1, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story7w1, "Images/btnOkBig.png", 20, 380, onStoryLevelSeven, 3);
+    TextAdd(container.story7w1, 0, 0, "\n\nRon: \nYou defeated the enemy \nadmiral. The world will know \nof your "
         "greatness.", font);
-    //populate container::story7l1
-    ViewAdd(container::story7l1, "Images/Background.png", 0, 0);
-    ViewAdd(container::story7l1, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story7l1, "Images/btnMyself.png", 20, 380, onStoryLevelSeven, 1);
-    ViewAdd(container::story7l1, "Images/btnRon.png", 170, 380, onStoryLevelSeven, 2);
-    TextAdd(container::story7l1, 0, 0, "\n\nAlex: \nMy ship has sustained critical \ndamage. Every single escape \npod "
+    //populate container.story7l1
+    ViewAdd(container.story7l1, "Images/Background.png", 0, 0);
+    ViewAdd(container.story7l1, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story7l1, "Images/btnMyself.png", 20, 380, onStoryLevelSeven, 1);
+    ViewAdd(container.story7l1, "Images/btnRon.png", 170, 380, onStoryLevelSeven, 2);
+    TextAdd(container.story7l1, 0, 0, "\n\nAlex: \nMy ship has sustained critical \ndamage. Every single escape \npod "
         "other than one has been", font);
-    TextAdd(container::story7l1, 0, 0, "\n\n\n\n\n\ntaken or destroyed. Should I \nsave myself or Ron?", font);
-    //populate container::story7a2
-    ViewAdd(container::story7a2, "Images/Background.png", 0, 0);
-    ViewAdd(container::story7a2, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story7a2, "Images/btnOkBig.png", 20, 380, onStoryLevelSeven, 3);
-    TextAdd(container::story7a2, 0, 0, "\n\nExecutioner: \nYou are being executed for \ntreason since you abandoned "
+    TextAdd(container.story7l1, 0, 0, "\n\n\n\n\n\ntaken or destroyed. Should I \nsave myself or Ron?", font);
+    //populate container.story7a2
+    ViewAdd(container.story7a2, "Images/Background.png", 0, 0);
+    ViewAdd(container.story7a2, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story7a2, "Images/btnOkBig.png", 20, 380, onStoryLevelSeven, 3);
+    TextAdd(container.story7a2, 0, 0, "\n\nExecutioner: \nYou are being executed for \ntreason since you abandoned "
         "\nyour ship and crew to die.", font);
-    //populate container::story7b2
-    ViewAdd(container::story7b2, "Images/Background.png", 0, 0);
-    ViewAdd(container::story7b2, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story7b2, "Images/btnOkBig.png", 20, 380, onStoryLevelSeven, 3);
+    //populate container.story7b2
+    ViewAdd(container.story7b2, "Images/Background.png", 0, 0);
+    ViewAdd(container.story7b2, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story7b2, "Images/btnOkBig.png", 20, 380, onStoryLevelSeven, 3);
 }
 void containerFive() {
-    //populate container::story5a1
-    ViewAdd(container::story5a1, "Images/Background.png", 0, 0);
-    ViewAdd(container::story5a1, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story5a1, "Images/btnOkSmall.png", 20, 380, onStoryLevelFive, 1);
-    ViewAdd(container::story5a1, "Images/btnThanks.png", 170, 380, onStoryLevelFive, 1);
-    TextAdd(container::story5a1, 0, 0, "\n\nCommodore Bailey: \nCongratulations on your way \nback. For your great "
+    //populate container.story5a1
+    ViewAdd(container.story5a1, "Images/Background.png", 0, 0);
+    ViewAdd(container.story5a1, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story5a1, "Images/btnOkSmall.png", 20, 380, onStoryLevelFive, 1);
+    ViewAdd(container.story5a1, "Images/btnThanks.png", 170, 380, onStoryLevelFive, 1);
+    TextAdd(container.story5a1, 0, 0, "\n\nCommodore Bailey: \nCongratulations on your way \nback. For your great "
         "action", font);
-    TextAdd(container::story5a1, 0, 0, "\n\n\n\n\nout there, you have become \npilot of your own ship named \nICC "
+    TextAdd(container.story5a1, 0, 0, "\n\n\n\n\nout there, you have become \npilot of your own ship named \nICC "
         "Kepler.", font);
-    //populate container::story5a2
-    ViewAdd(container::story5a2, "Images/Background.png", 0, 0);
-    ViewAdd(container::story5a2, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story5a2, "Images/btnYes.png", 20, 380, onStoryLevelFive, 2);
-    ViewAdd(container::story5a2, "Images/btnNo.png", 170, 380, onStoryLevelFive, 8);
-    TextAdd(container::story5a2, 0, 0, "\n\nBecca: \nWill you state::marry me?", font);
-    //populate container::story5a3
-    ViewAdd(container::story5a3, "Images/Background.png", 0, 0);
-    ViewAdd(container::story5a3, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story5a3, "Images/btnNo.png", 20, 380, onStoryLevelFive, 3);
-    ViewAdd(container::story5a3, "Images/btnOkSmall.png", 170, 380, onStoryLevelFive, 4);
-    TextAdd(container::story5a3, 0, 0, "\n\nRon: \nWe located the escaped \nenemy. He is an admiral so \nhe is well "
+    //populate container.story5a2
+    ViewAdd(container.story5a2, "Images/Background.png", 0, 0);
+    ViewAdd(container.story5a2, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story5a2, "Images/btnYes.png", 20, 380, onStoryLevelFive, 2);
+    ViewAdd(container.story5a2, "Images/btnNo.png", 170, 380, onStoryLevelFive, 8);
+    TextAdd(container.story5a2, 0, 0, "\n\nBecca: \nWill you isStoryMarry me?", font);
+    //populate container.story5a3
+    ViewAdd(container.story5a3, "Images/Background.png", 0, 0);
+    ViewAdd(container.story5a3, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story5a3, "Images/btnNo.png", 20, 380, onStoryLevelFive, 3);
+    ViewAdd(container.story5a3, "Images/btnOkSmall.png", 170, 380, onStoryLevelFive, 4);
+    TextAdd(container.story5a3, 0, 0, "\n\nRon: \nWe located the escaped \nenemy. He is an admiral so \nhe is well "
         "guarded, killing him", font);
-    TextAdd(container::story5a3, 0, 0, "\n\n\n\n\n\nwill be no easy feat. I will \ncome with you since I myself \nknow "
+    TextAdd(container.story5a3, 0, 0, "\n\n\n\n\n\nwill be no easy feat. I will \ncome with you since I myself \nknow "
         "where the enemy \nadmiral is.", font);
-    //populate container::story5b4
-    ViewAdd(container::story5b4, "Images/Background.png", 0, 0);
-    ViewAdd(container::story5b4, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story5b4, "Images/btnOkSmall.png", 20, 380, onStoryLevelFive, 4);
-    ViewAdd(container::story5b4, "Images/btnSorry.png", 170, 380, onStoryLevelFive, 4);
-    TextAdd(container::story5b4, 0, 0, "\n\nRon: \nFederation orders, sorry \nmate.", font);
-    //populate container::story5a5
-    ViewAdd(container::story5a5, "Images/Background.png", 0, 0);
-    ViewAdd(container::story5a5, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story5a5, "Images/btnAround.png", 20, 380, onStoryLevelFive, 5);
-    ViewAdd(container::story5a5, "Images/btnAttack.png", 170, 380, onStoryLevelFive, 6);
-    TextAdd(container::story5a5, 0, 0, "\n\nRon: \nThere's a whole platoon of \nships. Do you go around and \ntry to "
+    //populate container.story5b4
+    ViewAdd(container.story5b4, "Images/Background.png", 0, 0);
+    ViewAdd(container.story5b4, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story5b4, "Images/btnOkSmall.png", 20, 380, onStoryLevelFive, 4);
+    ViewAdd(container.story5b4, "Images/btnSorry.png", 170, 380, onStoryLevelFive, 4);
+    TextAdd(container.story5b4, 0, 0, "\n\nRon: \nFederation orders, sorry \nmate.", font);
+    //populate container.story5a5
+    ViewAdd(container.story5a5, "Images/Background.png", 0, 0);
+    ViewAdd(container.story5a5, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story5a5, "Images/btnAround.png", 20, 380, onStoryLevelFive, 5);
+    ViewAdd(container.story5a5, "Images/btnAttack.png", 170, 380, onStoryLevelFive, 6);
+    TextAdd(container.story5a5, 0, 0, "\n\nRon: \nThere's a whole platoon of \nships. Do you go around and \ntry to "
         "avoid them, or do you", font);
-    TextAdd(container::story5a5, 0, 0, "\n\n\n\n\n\nattack?", font);
-    //populate container::story5a6
-    ViewAdd(container::story5a6, "Images/Background.png", 0, 0);
-    ViewAdd(container::story5a6, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story5a6, "Images/btnOkBig.png", 20, 380, onStoryLevelFive, 7);
-    TextAdd(container::story5a6, 0, 0, "\n\nRon: \nThe ships see you before you \nare even able to go around \nand "
+    TextAdd(container.story5a5, 0, 0, "\n\n\n\n\n\nattack?", font);
+    //populate container.story5a6
+    ViewAdd(container.story5a6, "Images/Background.png", 0, 0);
+    ViewAdd(container.story5a6, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story5a6, "Images/btnOkBig.png", 20, 380, onStoryLevelFive, 7);
+    TextAdd(container.story5a6, 0, 0, "\n\nRon: \nThe ships see you before you \nare even able to go around \nand "
         "attack.", font);
-    //populate container::story5b6
-    ViewAdd(container::story5b6, "Images/Background.png", 0, 0);
-    ViewAdd(container::story5b6, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story5b6, "Images/btnOkBig.png", 20, 380, onStoryLevelFive, 7);
-    TextAdd(container::story5b6, 0, 0, "\n\nRon: \nAttacking the ships.", font);
+    //populate container.story5b6
+    ViewAdd(container.story5b6, "Images/Background.png", 0, 0);
+    ViewAdd(container.story5b6, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story5b6, "Images/btnOkBig.png", 20, 380, onStoryLevelFive, 7);
+    TextAdd(container.story5b6, 0, 0, "\n\nRon: \nAttacking the ships.", font);
 }
 void containerFour() {
-    //populate container::story4a1
-    ViewAdd(container::story4a1, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4a1, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4a1, "Images/btnTakeGun.png", 20, 380, onStoryLevelFour, 2);
-    ViewAdd(container::story4a1, "Images/btnDoNothing.png", 170, 380, onStoryLevelFour, 1);
-    TextAdd(container::story4a1, 0, 0, "\n\nEnemy: \nNow to torture you too.", font);
-    //populate container::story4a2
-    ViewAdd(container::story4a2, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4a2, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4a2, "Images/btnShoot.png", 20, 380, onStoryLevelFour, 3);
-    ViewAdd(container::story4a2, "Images/btnDoNothing.png", 170, 380, onStoryLevelFour, 1);
-    TextAdd(container::story4a2, 0, 0, "\n\nEnemy: \nYou wouldn't dare shoot!", font);
-    //populate container::story4a3
-    ViewAdd(container::story4a3, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4a3, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4a3, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 4);
-    TextAdd(container::story4a3, 0, 0, "\n\nAlex: \nHe escaped with an escape \npod!", font);
-    //populate container::story4a4
-    ViewAdd(container::story4a4, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4a4, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4a4, "Images/btnEnemy.png", 20, 380, onStoryLevelFour, 5);
-    ViewAdd(container::story4a4, "Images/btnMine.png", 170, 380, onStoryLevelFour, 6);
-    TextAdd(container::story4a4, 0, 0, "\n\nAlly: \nYou need to get back. Luckily, \nmy radio signal reaches you. "
+    //populate container.story4a1
+    ViewAdd(container.story4a1, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4a1, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4a1, "Images/btnTakeGun.png", 20, 380, onStoryLevelFour, 2);
+    ViewAdd(container.story4a1, "Images/btnDoNothing.png", 170, 380, onStoryLevelFour, 1);
+    TextAdd(container.story4a1, 0, 0, "\n\nEnemy: \nNow to torture you too.", font);
+    //populate container.story4a2
+    ViewAdd(container.story4a2, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4a2, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4a2, "Images/btnShoot.png", 20, 380, onStoryLevelFour, 3);
+    ViewAdd(container.story4a2, "Images/btnDoNothing.png", 170, 380, onStoryLevelFour, 1);
+    TextAdd(container.story4a2, 0, 0, "\n\nEnemy: \nYou wouldn't dare shoot!", font);
+    //populate container.story4a3
+    ViewAdd(container.story4a3, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4a3, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4a3, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 4);
+    TextAdd(container.story4a3, 0, 0, "\n\nAlex: \nHe escaped with an escape \npod!", font);
+    //populate container.story4a4
+    ViewAdd(container.story4a4, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4a4, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4a4, "Images/btnEnemy.png", 20, 380, onStoryLevelFour, 5);
+    ViewAdd(container.story4a4, "Images/btnMine.png", 170, 380, onStoryLevelFour, 6);
+    TextAdd(container.story4a4, 0, 0, "\n\nAlly: \nYou need to get back. Luckily, \nmy radio signal reaches you. "
         "\nYou can either take the", font);
-    TextAdd(container::story4a4, 0, 0, "\n\n\n\n\n\nenemy ship or try to get back to yours. Also, if you make it back", 
+    TextAdd(container.story4a4, 0, 0, "\n\n\n\n\n\nenemy ship or try to get back to yours. Also, if you make it back", 
         font);
-    TextAdd(container::story4a4, 0, 0, "\n\n\n\n\n\n\nto your ship, you'll be in \ntemporary command.", font);
-    //populate container::story4b5
-    ViewAdd(container::story4b5, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4b5, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4b5, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 6);
-    TextAdd(container::story4b5, 0, 0, "\n\nLieutenant Dan: \nThe enemy ship you were \nflying broke down. Luckily,", 
+    TextAdd(container.story4a4, 0, 0, "\n\n\n\n\n\n\nto your ship, you'll be in \ntemporary command.", font);
+    //populate container.story4b5
+    ViewAdd(container.story4b5, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4b5, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4b5, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 6);
+    TextAdd(container.story4b5, 0, 0, "\n\nLieutenant Dan: \nThe enemy ship you were \nflying broke down. Luckily,", 
         font);
-    TextAdd(container::story4b5, 0, 0, "\n\n\n\n\nthe crew and I came to save \nyou.", font);
-    //populate container::story4a6
-    ViewAdd(container::story4a6, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4a6, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4a6, "Images/btnContact.png", 20, 380, onStoryLevelFour, 7);
-    ViewAdd(container::story4a6, "Images/btnShoot.png", 170, 380, onStoryLevelFour, 8);
-    TextAdd(container::story4a6, 0, 0, "\n\nLieutenant Dan: \nYou are in temporary \ncommand. There's ships up "
+    TextAdd(container.story4b5, 0, 0, "\n\n\n\n\nthe crew and I came to save \nyou.", font);
+    //populate container.story4a6
+    ViewAdd(container.story4a6, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4a6, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4a6, "Images/btnContact.png", 20, 380, onStoryLevelFour, 7);
+    ViewAdd(container.story4a6, "Images/btnShoot.png", 170, 380, onStoryLevelFour, 8);
+    TextAdd(container.story4a6, 0, 0, "\n\nLieutenant Dan: \nYou are in temporary \ncommand. There's ships up "
         "\nahead; do you contact it to", font);
-    TextAdd(container::story4a6, 0, 0, "\n\n\n\n\n\nsee if it's friendly or do you \nshoot at it? There's no way "
+    TextAdd(container.story4a6, 0, 0, "\n\n\n\n\n\nsee if it's friendly or do you \nshoot at it? There's no way "
         "\naround.", font);
-    //populate container::story4a7
-    ViewAdd(container::story4a7, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4a7, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4a7, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 9);
-    TextAdd(container::story4a7, 0, 0, "\n\nLieutenant Dan: \nThe ships say they are \nfriendly, so we went around "
+    //populate container.story4a7
+    ViewAdd(container.story4a7, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4a7, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4a7, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 9);
+    TextAdd(container.story4a7, 0, 0, "\n\nLieutenant Dan: \nThe ships say they are \nfriendly, so we went around "
         "\nthem.", font);
-    //populate container::story4b7
-    ViewAdd(container::story4b7, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4b7, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4b7, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 10);
-    TextAdd(container::story4b7, 0, 0, "\n\nLieutenant Dan: \nYou shoot at the ships.", font);
-    //populate container::story4a8
-    ViewAdd(container::story4a8, "Images/Background.png", 0, 0);
-    ViewAdd(container::story4a8, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story4a8, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 10);
-    TextAdd(container::story4a8, 0, 0, "\n\nLieutenant Dan: \nThe ships followed you and \nattack.", font);
+    //populate container.story4b7
+    ViewAdd(container.story4b7, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4b7, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4b7, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 10);
+    TextAdd(container.story4b7, 0, 0, "\n\nLieutenant Dan: \nYou shoot at the ships.", font);
+    //populate container.story4a8
+    ViewAdd(container.story4a8, "Images/Background.png", 0, 0);
+    ViewAdd(container.story4a8, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story4a8, "Images/btnOkBig.png", 20, 380, onStoryLevelFour, 10);
+    TextAdd(container.story4a8, 0, 0, "\n\nLieutenant Dan: \nThe ships followed you and \nattack.", font);
 }
 void containerThree() {
-    //populate container::story3a1
-    ViewAdd(container::story3a1, "Images/Background.png", 0, 0);
-    ViewAdd(container::story3a1, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story3a1, "Images/btnOkSmall.png", 20, 380, onStoryLevelThree, 2);
-    ViewAdd(container::story3a1, "Images/btnNo.png", 170, 380, onStoryLevelThree, 1);
-    TextAdd(container::story3a1, 0, 0, "\n\nCaptain: \nWe should check the \nwreckage.", font);
-    //populate container::story3b2
-    ViewAdd(container::story3b2, "Images/Background.png", 0, 0);
-    ViewAdd(container::story3b2, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story3b2, "Images/btnSorry.png", 20, 380, onStoryLevelThree, 2);
-    ViewAdd(container::story3b2, "Images/btnOkSmall.png", 170, 380, onStoryLevelThree, 2);
-    TextAdd(container::story3b2, 0, 0, "\n\nCaptain: \nI'm captain and I say we will, \nso we will.", font);
-    //populate container::story3a3
-    ViewAdd(container::story3a3, "Images/Background.png", 0, 0);
-    ViewAdd(container::story3a3, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story3a3, "Images/btnOkSmall.png", 20, 380, onStoryLevelThree, 3);
-    ViewAdd(container::story3a3, "Images/btnNever.png", 170, 380, onStoryLevelThree, 3);
-    TextAdd(container::story3a3, 0, 0, "\n\nEnemy: \nHands up!", font);
-    //populate container::story3a4
-    ViewAdd(container::story3a4, "Images/Background.png", 0, 0);
-    ViewAdd(container::story3a4, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story3a4, "Images/btnWhereAreWe.png", 20, 380, onStoryLevelThree, 4);
-    ViewAdd(container::story3a4, "Images/btnWhereCaptain.png", 170, 380, onStoryLevelThree, 4);
-    TextAdd(container::story3a4, 0, 0, "\n\nEnemy: \nSorry for knocking you out, it \nwas the only way to bring \nyou "
+    //populate container.story3a1
+    ViewAdd(container.story3a1, "Images/Background.png", 0, 0);
+    ViewAdd(container.story3a1, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story3a1, "Images/btnOkSmall.png", 20, 380, onStoryLevelThree, 2);
+    ViewAdd(container.story3a1, "Images/btnNo.png", 170, 380, onStoryLevelThree, 1);
+    TextAdd(container.story3a1, 0, 0, "\n\nCaptain: \nWe should check the \nwreckage.", font);
+    //populate container.story3b2
+    ViewAdd(container.story3b2, "Images/Background.png", 0, 0);
+    ViewAdd(container.story3b2, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story3b2, "Images/btnSorry.png", 20, 380, onStoryLevelThree, 2);
+    ViewAdd(container.story3b2, "Images/btnOkSmall.png", 170, 380, onStoryLevelThree, 2);
+    TextAdd(container.story3b2, 0, 0, "\n\nCaptain: \nI'm captain and I say we will, \nso we will.", font);
+    //populate container.story3a3
+    ViewAdd(container.story3a3, "Images/Background.png", 0, 0);
+    ViewAdd(container.story3a3, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story3a3, "Images/btnOkSmall.png", 20, 380, onStoryLevelThree, 3);
+    ViewAdd(container.story3a3, "Images/btnNever.png", 170, 380, onStoryLevelThree, 3);
+    TextAdd(container.story3a3, 0, 0, "\n\nEnemy: \nHands up!", font);
+    //populate container.story3a4
+    ViewAdd(container.story3a4, "Images/Background.png", 0, 0);
+    ViewAdd(container.story3a4, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story3a4, "Images/btnWhereAreWe.png", 20, 380, onStoryLevelThree, 4);
+    ViewAdd(container.story3a4, "Images/btnWhereCaptain.png", 170, 380, onStoryLevelThree, 4);
+    TextAdd(container.story3a4, 0, 0, "\n\nEnemy: \nSorry for knocking you out, it \nwas the only way to bring \nyou "
         "here.", font);
-    //populate container::story3a5
-    ViewAdd(container::story3a5, "Images/Background.png", 0, 0);
-    ViewAdd(container::story3a5, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story3a5, "Images/btnYes.png", 20, 380, onStoryLevelThree, 5);
-    ViewAdd(container::story3a5, "Images/btnNo.png", 170, 380, onStoryLevelThree, 5);
-    TextAdd(container::story3a5, 0, 0, "\n\nEnemy: \nAre you familiar with torture?", font);
-    //populate container::story3a6
-    ViewAdd(container::story3a6, "Images/Background.png", 0, 0);
-    ViewAdd(container::story3a6, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story3a6, "Images/btnOkSmall.png", 20, 380, onStoryLevelThree, 6);
-    ViewAdd(container::story3a6, "Images/btnSo.png", 170, 380, onStoryLevelThree, 6);
-    TextAdd(container::story3a6, 0, 0, "\n\nEnemy: \nTorture is what caused world \nwar 3 on your home planet: "
+    //populate container.story3a5
+    ViewAdd(container.story3a5, "Images/Background.png", 0, 0);
+    ViewAdd(container.story3a5, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story3a5, "Images/btnYes.png", 20, 380, onStoryLevelThree, 5);
+    ViewAdd(container.story3a5, "Images/btnNo.png", 170, 380, onStoryLevelThree, 5);
+    TextAdd(container.story3a5, 0, 0, "\n\nEnemy: \nAre you familiar with torture?", font);
+    //populate container.story3a6
+    ViewAdd(container.story3a6, "Images/Background.png", 0, 0);
+    ViewAdd(container.story3a6, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story3a6, "Images/btnOkSmall.png", 20, 380, onStoryLevelThree, 6);
+    ViewAdd(container.story3a6, "Images/btnSo.png", 170, 380, onStoryLevelThree, 6);
+    TextAdd(container.story3a6, 0, 0, "\n\nEnemy: \nTorture is what caused world \nwar 3 on your home planet: "
         "\nEarth.", font);
-    //populate container::story3a7
-    ViewAdd(container::story3a7, "Images/Background.png", 0, 0);
-    ViewAdd(container::story3a7, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story3a7, "Images/btnNo!.png", 20, 380, onStoryLevelThree, 7);
-    ViewAdd(container::story3a7, "Images/btnOkSmall.png", 170, 380, onStoryLevelThree, 7);
-    TextAdd(container::story3a7, 0, 0, "\n\nEnemy: \nI will force you to torture your \ncaptain, hopefully "
+    //populate container.story3a7
+    ViewAdd(container.story3a7, "Images/Background.png", 0, 0);
+    ViewAdd(container.story3a7, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story3a7, "Images/btnNo!.png", 20, 380, onStoryLevelThree, 7);
+    ViewAdd(container.story3a7, "Images/btnOkSmall.png", 170, 380, onStoryLevelThree, 7);
+    TextAdd(container.story3a7, 0, 0, "\n\nEnemy: \nI will force you to torture your \ncaptain, hopefully "
         "causing a \nwar in the process.", font);
-    //populate container::story3a8
-    ViewAdd(container::story3a8, "Images/Background.png", 0, 0);
-    ViewAdd(container::story3a8, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story3a8, "Images/btnNo!.png", 20, 380, onStoryLevelThree, 8);
-    ViewAdd(container::story3a8, "Images/btnOkSmall.png", 170, 380, onStoryLevelThree, 8);
-    TextAdd(container::story3a8, 0, 0, "\n\nEnemy: \nI will wait for you to torture \nhim until you do. There's "
+    //populate container.story3a8
+    ViewAdd(container.story3a8, "Images/Background.png", 0, 0);
+    ViewAdd(container.story3a8, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story3a8, "Images/btnNo!.png", 20, 380, onStoryLevelThree, 8);
+    ViewAdd(container.story3a8, "Images/btnOkSmall.png", 170, 380, onStoryLevelThree, 8);
+    TextAdd(container.story3a8, 0, 0, "\n\nEnemy: \nI will wait for you to torture \nhim until you do. There's "
         "\nnothing you can do about it.", font);
-    //populate container::storyTorture
-    TouchAdd(container::storyTorture, 0, 0, 320, 568, onTorture, 1);
-    imageTorture = ViewAdd(container::storyTorture, "Images/TortureModeOne.png", -2, -2);
-    ViewAdd(container::storyTorture, "Images/Pause.png", 270, 20, onPause, 1);
-    hpTorture = ViewAdd(container::storyTorture, "Images/20HP.png", 20, 20);
-    textTorture = TextAdd(container::storyTorture, 70, 0, "", FontAdd("Arial", "Regular", 24, 0xDF0101));
+    //populate container.storyTorture
+    TouchAdd(container.storyTorture, 0, 0, 320, 568, onTorture, 1);
+    imageTorture = ViewAdd(container.storyTorture, "Images/TortureModeOne.png", -2, -2);
+    ViewAdd(container.storyTorture, "Images/Pause.png", 270, 20, onPause, 1);
+    hpTorture = ViewAdd(container.storyTorture, "Images/20HP.png", 20, 20);
+    textTorture = TextAdd(container.storyTorture, 70, 0, "", FontAdd("Arial", "Regular", 24, 0xDF0101));
 }
 void containerTwo() {
-    //populate container::story2a1
-    ViewAdd(container::story2a1, "Images/Background.png", 0, 0);
-    ViewAdd(container::story2a1, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story2a1, "Images/btnOkSmall.png", 20, 380, onStoryLevelTwo, 1);
-    ViewAdd(container::story2a1, "Images/btnThanks.png", 170, 380, onStoryLevelTwo, 1);
-    TextAdd(container::story2a1, 0, 0, "\n\nTeacher: \nThis test was designed to \ndetermine how well cadets \nwould "
+    //populate container.story2a1
+    ViewAdd(container.story2a1, "Images/Background.png", 0, 0);
+    ViewAdd(container.story2a1, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story2a1, "Images/btnOkSmall.png", 20, 380, onStoryLevelTwo, 1);
+    ViewAdd(container.story2a1, "Images/btnThanks.png", 170, 380, onStoryLevelTwo, 1);
+    TextAdd(container.story2a1, 0, 0, "\n\nTeacher: \nThis test was designed to \ndetermine how well cadets \nwould "
         "respond to stressful", font);
-    TextAdd(container::story2a1, 0, 0, "\n\n\n\n\n\nsituations. You passed and \nhave been deemed fit for \nduty.", 
+    TextAdd(container.story2a1, 0, 0, "\n\n\n\n\n\nsituations. You passed and \nhave been deemed fit for \nduty.", 
         font);
-    //populate container::story2a2
-    ViewAdd(container::story2a2, "Images/Background.png", 0, 0);
-    ViewAdd(container::story2a2, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story2a2, "Images/btnSure.png", 20, 380, onStoryLevelTwo, 3);
-    ViewAdd(container::story2a2, "Images/btnNo.png", 170, 380, onStoryLevelTwo, 4);
-    TextAdd(container::story2a2, 0, 0, "\n\nBecca: \nI heard you're the new soldier \nin town. Do you want to go \nout "
+    //populate container.story2a2
+    ViewAdd(container.story2a2, "Images/Background.png", 0, 0);
+    ViewAdd(container.story2a2, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story2a2, "Images/btnSure.png", 20, 380, onStoryLevelTwo, 3);
+    ViewAdd(container.story2a2, "Images/btnNo.png", 170, 380, onStoryLevelTwo, 4);
+    TextAdd(container.story2a2, 0, 0, "\n\nBecca: \nI heard you're the new soldier \nin town. Do you want to go \nout "
         "to town with me?", font);
-    //populate container::story2a3
-    ViewAdd(container::story2a3, "Images/Background.png", 0, 0);
-    ViewAdd(container::story2a3, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story2a3, "Images/btnYes.png", 20, 380, onStoryLevelTwo, 5);
-    ViewAdd(container::story2a3, "Images/btnNo.png", 170, 380, onStoryLevelTwo, 6);
-    TextAdd(container::story2a3, 0, 0, "\n\nCaptain: \nSon, you have a bright future. \nWould you like to join me on "
+    //populate container.story2a3
+    ViewAdd(container.story2a3, "Images/Background.png", 0, 0);
+    ViewAdd(container.story2a3, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story2a3, "Images/btnYes.png", 20, 380, onStoryLevelTwo, 5);
+    ViewAdd(container.story2a3, "Images/btnNo.png", 170, 380, onStoryLevelTwo, 6);
+    TextAdd(container.story2a3, 0, 0, "\n\nCaptain: \nSon, you have a bright future. \nWould you like to join me on "
         "\nmy voyages?", font);
-    //populate container::story2b4
-    ViewAdd(container::story2b4, "Images/Background.png", 0, 0);
-    ViewAdd(container::story2b4, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story2b4, "Images/btnOkSmall.png", 20, 380, onStoryLevelTwo, 7);
-    ViewAdd(container::story2b4, "Images/btnSorry.png", 170, 380, onStoryLevelTwo, 7);
-    TextAdd(container::story2b4, 0, 0, "\n\nCaptain: \nFederation orders, you have \nto do it.", font);
-    //populate container::story2a5
-    ViewAdd(container::story2a5, "Images/Background.png", 0, 0);
-    ViewAdd(container::story2a5, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story2a5, "Images/btnOkBig.png", 20, 380, onStoryLevelTwo, 8);
-    TextAdd(container::story2a5, 0, 0, "\n\nCaptain: \nPrepare your items, we are \nleaving tomorrow.", font);
-    //populate container::story2a6
-    ViewAdd(container::story2a6, "Images/Background.png", 0, 0);
-    ViewAdd(container::story2a6, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story2a6, "Images/btnEngage.png", 20, 380, onStoryLevelTwo, 9);
-    ViewAdd(container::story2a6, "Images/btnAround.png", 170, 380, onStoryLevelTwo, 10);
-    TextAdd(container::story2a6, 0, 0, "\n\nCaptain: \nThere's ships up ahead. \nShould we engage or go \naround?", 
+    //populate container.story2b4
+    ViewAdd(container.story2b4, "Images/Background.png", 0, 0);
+    ViewAdd(container.story2b4, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story2b4, "Images/btnOkSmall.png", 20, 380, onStoryLevelTwo, 7);
+    ViewAdd(container.story2b4, "Images/btnSorry.png", 170, 380, onStoryLevelTwo, 7);
+    TextAdd(container.story2b4, 0, 0, "\n\nCaptain: \nFederation orders, you have \nto do it.", font);
+    //populate container.story2a5
+    ViewAdd(container.story2a5, "Images/Background.png", 0, 0);
+    ViewAdd(container.story2a5, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story2a5, "Images/btnOkBig.png", 20, 380, onStoryLevelTwo, 8);
+    TextAdd(container.story2a5, 0, 0, "\n\nCaptain: \nPrepare your items, we are \nleaving tomorrow.", font);
+    //populate container.story2a6
+    ViewAdd(container.story2a6, "Images/Background.png", 0, 0);
+    ViewAdd(container.story2a6, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story2a6, "Images/btnEngage.png", 20, 380, onStoryLevelTwo, 9);
+    ViewAdd(container.story2a6, "Images/btnAround.png", 170, 380, onStoryLevelTwo, 10);
+    TextAdd(container.story2a6, 0, 0, "\n\nCaptain: \nThere's ships up ahead. \nShould we engage or go \naround?", 
         font);
-    //populate container::story2e7
-    ViewAdd(container::story2e7, "Images/Background.png", 0, 0);
-    ViewAdd(container::story2e7, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story2e7, "Images/btnOkBig.png", 20, 380, onStoryLevelTwo, 11);
-    TextAdd(container::story2e7, 0, 0, "\n\nCaptain: \nHave fun shooting!", font);
-    //populate container::story2a7
-    ViewAdd(container::story2a7, "Images/Background.png", 0, 0);
-    ViewAdd(container::story2a7, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story2a7, "Images/btnOkBig.png", 20, 380, onStoryLevelTwo, 11);
-    TextAdd(container::story2a7, 0, 0, "\n\nCaptain: \nThe ships noticed us and are \nattacking!", font);
+    //populate container.story2e7
+    ViewAdd(container.story2e7, "Images/Background.png", 0, 0);
+    ViewAdd(container.story2e7, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story2e7, "Images/btnOkBig.png", 20, 380, onStoryLevelTwo, 11);
+    TextAdd(container.story2e7, 0, 0, "\n\nCaptain: \nHave fun shooting!", font);
+    //populate container.story2a7
+    ViewAdd(container.story2a7, "Images/Background.png", 0, 0);
+    ViewAdd(container.story2a7, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story2a7, "Images/btnOkBig.png", 20, 380, onStoryLevelTwo, 11);
+    TextAdd(container.story2a7, 0, 0, "\n\nCaptain: \nThe ships noticed us and are \nattacking!", font);
 }
 void containerOne() {
-    //populate container::highscore
-    ViewAdd(container::highscore, "Images/MenuPause.png", 0, 0);
-    ViewAdd(container::highscore, "Images/btnOkBig.png", 20, 380, onHighscore, 1);
-    text1 = TextAdd(container::highscore, 20, 0, "", font);
-    text2 = TextAdd(container::highscore, 20, 0, "", font);
-    text3 = TextAdd(container::highscore, 20, 0, "", font);
-    //populate container::pause
-    ViewAdd(container::pause, "Images/MenuPause.png", 0, 0);
-    ViewAdd(container::pause, "Images/ReturnToMenu.png", 20, 120, onReturnToMenu, 1);
-    ViewAdd(container::pause, "Images/Resume.png", 20, 210, onResume, 1);
-    //populate container::endless
-    ViewAdd(container::endless, "Images/Background.png", 0, 0, onBattleTouch, 1);
-    healthImage = ViewAdd(container::endless, "Images/20HP.png", 20, 20);
-    ViewAdd(container::endless, "Images/Pause.png", 270, 20, onPause, 1);
+    //populate container.highscore
+    ViewAdd(container.highscore, "Images/MenuPause.png", 0, 0);
+    ViewAdd(container.highscore, "Images/btnOkBig.png", 20, 380, onHighscore, 1);
+    text1 = TextAdd(container.highscore, 20, 0, "", font);
+    text2 = TextAdd(container.highscore, 20, 0, "", font);
+    text3 = TextAdd(container.highscore, 20, 0, "", font);
+    //populate container.pause
+    ViewAdd(container.pause, "Images/MenuPause.png", 0, 0);
+    ViewAdd(container.pause, "Images/ReturnToMenu.png", 20, 120, onReturnToMenu, 1);
+    ViewAdd(container.pause, "Images/Resume.png", 20, 210, onResume, 1);
+    //populate container.endless
+    ViewAdd(container.endless, "Images/Background.png", 0, 0, onBattleTouch, 1);
+    healthImage = ViewAdd(container.endless, "Images/20HP.png", 20, 20);
+    ViewAdd(container.endless, "Images/Pause.png", 270, 20, onPause, 1);
     //player bullets
     for (int i = 0; i < 15; i++) {
-        player.bulletOne[i] = ViewAdd(container::endless, "Images/Bullet.png", -10, -10);
-        player.rocket[i] = ViewAdd(container::endless, "Images/Rocket.png", -20, -20);
-        player.bulletTwo[i] = ViewAdd(container::endless, "Images/Bullet.png", -10, -10);
+        player.bulletOne[i] = ViewAdd(container.endless, "Images/Bullet.png", -10, -10);
+        player.rocket[i] = ViewAdd(container.endless, "Images/Rocket.png", -20, -20);
+        player.bulletTwo[i] = ViewAdd(container.endless, "Images/Bullet.png", -10, -10);
     }
     //enemy bullets
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 10; j++) {
-            one[j].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            two[j].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            three[j].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            four[j].setBulletInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            one[j].setBulletInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+            two[j].setBulletInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+            three[j].setBulletInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+            four[j].setBulletInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
         }
         for (int j = 0; j < 5; j++) {
-            five[j].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            five[j].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            six[j].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            six[j].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            seven[j].setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
-            eight[j].setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-            eight[j].setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
-            eight[j].setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+            five[j].setBulletOneInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+            five[j].setBulletTwoInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+            six[j].setBulletOneInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+            six[j].setBulletTwoInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+            seven[j].setRocketInstance(i, ViewAdd(container.endless, "Images/eRocket.png", 600, 600));
+            eight[j].setBulletOneInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+            eight[j].setRocketInstance(i, ViewAdd(container.endless, "Images/eRocket.png", 600, 600));
+            eight[j].setBulletTwoInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
         }
-        nine.setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-        nine.setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
-        nine.setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-        ten.setBulletOneInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
-        ten.setRocketInstance(i, ViewAdd(container::endless, "Images/eRocket.png", 600, 600));
-        ten.setBulletTwoInstance(i, ViewAdd(container::endless, "Images/eBullet.png", 600, 600));
+        nine.setBulletOneInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+        nine.setRocketInstance(i, ViewAdd(container.endless, "Images/eRocket.png", 600, 600));
+        nine.setBulletTwoInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+        ten.setBulletOneInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
+        ten.setRocketInstance(i, ViewAdd(container.endless, "Images/eRocket.png", 600, 600));
+        ten.setBulletTwoInstance(i, ViewAdd(container.endless, "Images/eBullet.png", 600, 600));
     }
     //ships
     for (int i = 0; i < 10; i++) {
-        one[i].setInstance(ViewAdd(container::endless, "Images/eShip_1.png", 600, 600));
-        two[i].setInstance(ViewAdd(container::endless, "Images/eShip_2.png", 600, 600));
-        three[i].setInstance(ViewAdd(container::endless, "Images/eShip_3.png", 600, 600));
-        four[i].setInstance(ViewAdd(container::endless, "Images/eShip_4.png", 600, 600));
+        one[i].setInstance(ViewAdd(container.endless, "Images/eShip_1.png", 600, 600));
+        two[i].setInstance(ViewAdd(container.endless, "Images/eShip_2.png", 600, 600));
+        three[i].setInstance(ViewAdd(container.endless, "Images/eShip_3.png", 600, 600));
+        four[i].setInstance(ViewAdd(container.endless, "Images/eShip_4.png", 600, 600));
     }
     for (int i = 0; i < 5; i++) {
-        five[i].setInstance(ViewAdd(container::endless, "Images/eShip_5.png", 600, 600));
-        six[i].setInstance(ViewAdd(container::endless, "Images/eShip_6.png", 600, 600));
-        seven[i].setInstance(ViewAdd(container::endless, "Images/eShip_7.png", 600, 600));
-        eight[i].setInstance(ViewAdd(container::endless, "Images/eShip_8.png", 600, 600));
+        five[i].setInstance(ViewAdd(container.endless, "Images/eShip_5.png", 600, 600));
+        six[i].setInstance(ViewAdd(container.endless, "Images/eShip_6.png", 600, 600));
+        seven[i].setInstance(ViewAdd(container.endless, "Images/eShip_7.png", 600, 600));
+        eight[i].setInstance(ViewAdd(container.endless, "Images/eShip_8.png", 600, 600));
     }
-    nine.setInstance(ViewAdd(container::endless, "Images/eMini-Boss.png", 600, 600));
-    ten.setInstance(ViewAdd(container::endless, "Images/eBoss.png", 600, 600));
-    //populate container::menu
-    ViewAdd(container::menu, "Images/Background.png", 0, 0);
-    ViewAdd(container::menu, "Images/btnStory.png", 20, 40, onStoryMenuTouch, 1);
-    ViewAdd(container::menu, "Images/btnEndless.png", 20, 150, onEndlessMenuTouch, 1);
-    ViewAdd(container::menu, "Images/btnUnlocks.png", 20, 260, onUnlocksMenuTouch, 1);
-    ViewAdd(container::menu, "Images/btnOptions.png", 20, 370, onOptionsMenuTouch, 1);
-    //populate container::died
-    ViewAdd(container::died, "Images/Background.png", 0, 0);
-    ViewAdd(container::died, "Images/btnOkBig.png", 20, 380, onDied, 1);
-    TextAdd(container::died, 0, 0, "\n\nYou died without completing \nyour journey or leaving \nyourself a legacy. "
+    nine.setInstance(ViewAdd(container.endless, "Images/eMini-Boss.png", 600, 600));
+    ten.setInstance(ViewAdd(container.endless, "Images/eBoss.png", 600, 600));
+    //populate container.menu
+    ViewAdd(container.menu, "Images/Background.png", 0, 0);
+    ViewAdd(container.menu, "Images/btnStory.png", 20, 40, onStoryMenuTouch, 1);
+    ViewAdd(container.menu, "Images/btnEndless.png", 20, 150, onEndlessMenuTouch, 1);
+    ViewAdd(container.menu, "Images/btnUnlocks.png", 20, 260, onUnlocksMenuTouch, 1);
+    ViewAdd(container.menu, "Images/btnOptions.png", 20, 370, onOptionsMenuTouch, 1);
+    //populate container.died
+    ViewAdd(container.died, "Images/Background.png", 0, 0);
+    ViewAdd(container.died, "Images/btnOkBig.png", 20, 380, onDied, 1);
+    TextAdd(container.died, 0, 0, "\n\nYou died without completing \nyour journey or leaving \nyourself a legacy. "
         "You left no", font);
-    TextAdd(container::died, 0, 0, "\n\n\n\n\nimprint on the world and \nnobody will ever remember \nyou.", font);
+    TextAdd(container.died, 0, 0, "\n\n\n\n\nimprint on the world and \nnobody will ever remember \nyou.", font);
     //populate CointainerStory1a1
-    ViewAdd(container::story1a1, "Images/Background.png", 0, 0);
-    ViewAdd(container::story1a1, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story1a1, "Images/btnOkBig.png", 20, 380, onStoryLevelOne, 1);
-    TextAdd(container::story1a1, 0, 0, "\n\nRon: \nAlex, are you ready for the \nbig test? Remember: We \nadopted the "
+    ViewAdd(container.story1a1, "Images/Background.png", 0, 0);
+    ViewAdd(container.story1a1, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story1a1, "Images/btnOkBig.png", 20, 380, onStoryLevelOne, 1);
+    TextAdd(container.story1a1, 0, 0, "\n\nRon: \nAlex, are you ready for the \nbig test? Remember: We \nadopted the "
         "new cycle", font);
-    TextAdd(container::story1a1, 0, 0, "\n\n\n\n\n\nsystem 93 cycles ago. If we \nstill used the old Earth \nmethod, "
+    TextAdd(container.story1a1, 0, 0, "\n\n\n\n\n\nsystem 93 cycles ago. If we \nstill used the old Earth \nmethod, "
         "it would currently be", font);
-    TextAdd(container::story1a1, 0, 0, "\n\n\n\n\n\n\n\n\nyear 2433.", font);
-    //populate container::story1a2
-    ViewAdd(container::story1a2, "Images/Background.png", 0, 0);
-    ViewAdd(container::story1a2, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story1a2, "Images/btnStudy.png", 20, 380, onStoryLevelOne, 3);
-    ViewAdd(container::story1a2, "Images/btnParty.png", 170, 380, onStoryLevelOne, 4);
-    TextAdd(container::story1a2, 0, 0, "\n\nRon: \nAlso, you can either \nstudy for the big test \ntomorrow, or go to "
+    TextAdd(container.story1a1, 0, 0, "\n\n\n\n\n\n\n\n\nyear 2433.", font);
+    //populate container.story1a2
+    ViewAdd(container.story1a2, "Images/Background.png", 0, 0);
+    ViewAdd(container.story1a2, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story1a2, "Images/btnStudy.png", 20, 380, onStoryLevelOne, 3);
+    ViewAdd(container.story1a2, "Images/btnParty.png", 170, 380, onStoryLevelOne, 4);
+    TextAdd(container.story1a2, 0, 0, "\n\nRon: \nAlso, you can either \nstudy for the big test \ntomorrow, or go to "
         "a party", font);
-    TextAdd(container::story1a2, 0, 0, "\n\n\n\n\n\nwith the cool guys and I. Just \ntell them Ron invited you.", font);
-    //populate container::story1s3
-    ViewAdd(container::story1s3, "Images/Background.png", 0, 0);
-    ViewAdd(container::story1s3, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story1s3, "Images/btnSleep.png", 20, 380, onStoryLevelOne, 5);
-    TextAdd(container::story1s3, 0, 0, "\n\nBook: \nEverybody must listen to \nhigher command at all times. \nAlso, "
+    TextAdd(container.story1a2, 0, 0, "\n\n\n\n\n\nwith the cool guys and I. Just \ntell them Ron invited you.", font);
+    //populate container.story1s3
+    ViewAdd(container.story1s3, "Images/Background.png", 0, 0);
+    ViewAdd(container.story1s3, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story1s3, "Images/btnSleep.png", 20, 380, onStoryLevelOne, 5);
+    TextAdd(container.story1s3, 0, 0, "\n\nBook: \nEverybody must listen to \nhigher command at all times. \nAlso, "
         "ship pilots must never", font);
-    TextAdd(container::story1s3, 0, 0, "\n\n\n\n\n\nabandon their ship.", font);
-    //populate container::story1p3
-    ViewAdd(container::story1p3, "Images/Background.png", 0, 0);
-    ViewAdd(container::story1p3, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story1p3, "Images/btnSleep.png", 20, 380, onStoryLevelOne, 5);
-    TextAdd(container::story1p3, 0, 0, "\n\nRon: \nHave a great night.", font);
-    //populate container::story1a4
-    ViewAdd(container::story1a4, "Images/Background.png", 0, 0);
-    ViewAdd(container::story1a4, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story1a4, "Images/btnRescue.png", 20, 380, onStoryLevelOne, 6);
-    ViewAdd(container::story1a4, "Images/btnEscape.png", 170, 380, onStoryLevelOne, 7);
-    TextAdd(container::story1a4, 0, 0, "\n\nTeacher: \nThe Kobayashi ship is \ntrapped behind enemy \nlines. What do "
+    TextAdd(container.story1s3, 0, 0, "\n\n\n\n\n\nabandon their ship.", font);
+    //populate container.story1p3
+    ViewAdd(container.story1p3, "Images/Background.png", 0, 0);
+    ViewAdd(container.story1p3, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story1p3, "Images/btnSleep.png", 20, 380, onStoryLevelOne, 5);
+    TextAdd(container.story1p3, 0, 0, "\n\nRon: \nHave a great night.", font);
+    //populate container.story1a4
+    ViewAdd(container.story1a4, "Images/Background.png", 0, 0);
+    ViewAdd(container.story1a4, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story1a4, "Images/btnRescue.png", 20, 380, onStoryLevelOne, 6);
+    ViewAdd(container.story1a4, "Images/btnEscape.png", 170, 380, onStoryLevelOne, 7);
+    TextAdd(container.story1a4, 0, 0, "\n\nTeacher: \nThe Kobayashi ship is \ntrapped behind enemy \nlines. What do "
         "you do?", font);
-    //populate container::story1r5
-    ViewAdd(container::story1r5, "Images/Background.png", 0, 0);
-    ViewAdd(container::story1r5, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story1r5, "Images/btnOkBig.png", 20, 380, onStoryLevelOne, 8);
-    TextAdd(container::story1r5, 0, 0, "\n\nLieutenant: \nThey ambushed us!", font);
-    //populate container::story1e5
-    ViewAdd(container::story1e5, "Images/Background.png", 0, 0);
-    ViewAdd(container::story1e5, "Images/Pause.png", 270, 20, onPause, 1);
-    ViewAdd(container::story1e5, "Images/btnOkBig.png", 20, 380, onStoryLevelOne, 8);
-    TextAdd(container::story1e5, 0, 0, "\n\nLieutenant: \nThey followed us and are \nattacking!", font);
+    //populate container.story1r5
+    ViewAdd(container.story1r5, "Images/Background.png", 0, 0);
+    ViewAdd(container.story1r5, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story1r5, "Images/btnOkBig.png", 20, 380, onStoryLevelOne, 8);
+    TextAdd(container.story1r5, 0, 0, "\n\nLieutenant: \nThey ambushed us!", font);
+    //populate container.story1e5
+    ViewAdd(container.story1e5, "Images/Background.png", 0, 0);
+    ViewAdd(container.story1e5, "Images/Pause.png", 270, 20, onPause, 1);
+    ViewAdd(container.story1e5, "Images/btnOkBig.png", 20, 380, onStoryLevelOne, 8);
+    TextAdd(container.story1e5, 0, 0, "\n\nLieutenant: \nThey followed us and are \nattacking!", font);
 }
 void startupMusic() {
-    if (state::sound) {
-        if (counter::sound > 1 && counter::sound < 7000) {
-            counter::sound = 7000;
-        } else if (counter::sound > 7000 && counter::sound < 13000) {
-            counter::sound = 13000;
-        } else if (counter::sound > 13000 && counter::sound < 19000) {
-            counter::sound = 19000;
-        } else if (counter::sound > 19000 && counter::sound < 27000) {
-            counter::sound = 27000;
-        } else if (counter::sound > 27000 && counter::sound < 34000) {
-            counter::sound = 34000;
-        } else if (counter::sound > 34000 && counter::sound < 42000) {
-            counter::sound = 42000;
-        } else if (counter::sound > 42000 && counter::sound < 49000) {
-            counter::sound = 49000;
-        } else if (counter::sound > 49000 && counter::sound < 55000) {
-            counter::sound = 55000;
-        } else if (counter::sound > 55000 && counter::sound < 61000) {
-            counter::sound = 61000;
-        } else if (counter::sound > 61000 && counter::sound < 67000) {
-            counter::sound = 67000;
-        } else if (counter::sound > 67000 && counter::sound < 73000) {
-            counter::sound = 73000;
-        } else if (counter::sound > 73000 && counter::sound < 79000) {
-            counter::sound = 79000;
-        } else if (counter::sound > 79000) {
-            counter::sound = 1;
+    if (isSoundEnabled) {
+        if (counter.sound > 1 && counter.sound < 7000) {
+            counter.sound = 7000;
+        } else if (counter.sound > 7000 && counter.sound < 13000) {
+            counter.sound = 13000;
+        } else if (counter.sound > 13000 && counter.sound < 19000) {
+            counter.sound = 19000;
+        } else if (counter.sound > 19000 && counter.sound < 27000) {
+            counter.sound = 27000;
+        } else if (counter.sound > 27000 && counter.sound < 34000) {
+            counter.sound = 34000;
+        } else if (counter.sound > 34000 && counter.sound < 42000) {
+            counter.sound = 42000;
+        } else if (counter.sound > 42000 && counter.sound < 49000) {
+            counter.sound = 49000;
+        } else if (counter.sound > 49000 && counter.sound < 55000) {
+            counter.sound = 55000;
+        } else if (counter.sound > 55000 && counter.sound < 61000) {
+            counter.sound = 61000;
+        } else if (counter.sound > 61000 && counter.sound < 67000) {
+            counter.sound = 67000;
+        } else if (counter.sound > 67000 && counter.sound < 73000) {
+            counter.sound = 73000;
+        } else if (counter.sound > 73000 && counter.sound < 79000) {
+            counter.sound = 79000;
+        } else if (counter.sound > 79000) {
+            counter.sound = 1;
         }
-        if (counter::sound > 1 && counter::sound < 7000) {
+        if (counter.sound > 1 && counter.sound < 7000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/1.mp3"));
-        } else if (counter::sound > 7000 && counter::sound < 13000) {
+        } else if (counter.sound > 7000 && counter.sound < 13000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/2.mp3"));
-        } else if (counter::sound > 13000 && counter::sound < 19000) {
+        } else if (counter.sound > 13000 && counter.sound < 19000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/3.mp3"));
-        } else if (counter::sound > 19000 && counter::sound < 27000) {
+        } else if (counter.sound > 19000 && counter.sound < 27000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/5.mp3"));
-        } else if (counter::sound > 27000 && counter::sound < 34000) {
+        } else if (counter.sound > 27000 && counter.sound < 34000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/7.mp3"));
-        } else if (counter::sound > 34000 && counter::sound < 42000) {
+        } else if (counter.sound > 34000 && counter.sound < 42000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/8.mp3"));
-        } else if (counter::sound > 42000 && counter::sound < 49000) {
+        } else if (counter.sound > 42000 && counter.sound < 49000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/9.mp3"));
-        } else if (counter::sound > 49000 && counter::sound < 55000) {
+        } else if (counter.sound > 49000 && counter.sound < 55000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/11.mp3"));
-        } else if (counter::sound > 55000 && counter::sound < 61000) {
+        } else if (counter.sound > 55000 && counter.sound < 61000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/12.mp3"));
-        } else if (counter::sound > 61000 && counter::sound < 67000) {
+        } else if (counter.sound > 61000 && counter.sound < 67000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/13.mp3"));
-        } else if (counter::sound > 67000 && counter::sound < 73000) {
+        } else if (counter.sound > 67000 && counter.sound < 73000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/14.mp3"));
-        } else if (counter::sound > 73000 && counter::sound < 79000) {
+        } else if (counter.sound > 73000 && counter.sound < 79000) {
             Mp3Stop();
             Mp3Loop(Mp3Add("Sounds/15.mp3"));
         }
@@ -1611,29 +1622,29 @@ void AppMain() {
     containerFive();
     containerSixSeven();
 
-    //populate container::unlocks
-    ViewAdd(container::unlocks, "Images/Background.png", 0, 0);
-    ViewAdd(container::unlocks, "Images/Pause.png", 270, 20, onPause, 1);
-    TextAdd(container::unlocks, 10, 10, "\n\n\n\n\n Pick Your Ship By Clicking", font);
-    ViewAdd(container::unlocks, "unlocks/UnShip_1.png", 20, 180, unlocks, 1);
-    //populate container::options
-    ViewAdd(container::options, "Images/Background.png", 0, 0);
-    ViewAdd(container::options, "Images/Pause.png", 270, 20, onPause, 1);
-    char* musicString = (state::sound) ? ("unlocks/MusicOn.png") : ("unlocks/MusicOff.png");
-    music = ViewAdd(container::options, musicString, 20, 80, options, 1);
-    TextAdd(container::options, 20, 320, "\nCreated By \nBailey Thompson", font);
-    ViewAdd(container::options, "Images/btnDelete.png", 20, 200, options, 2);
-    //populate container::deleteCheckOne
-    ViewAdd(container::deleteCheckOne, "Images/Background.png", 0, 0);
-    TextAdd(container::deleteCheckOne, 20, 20, "Are you sure you want to \nDELETE ALL PLAYER \nDATA including xp, "
+    //populate container.unlocks
+    ViewAdd(container.unlocks, "Images/Background.png", 0, 0);
+    ViewAdd(container.unlocks, "Images/Pause.png", 270, 20, onPause, 1);
+    TextAdd(container.unlocks, 10, 10, "\n\n\n\n\n Pick Your Ship By Clicking", font);
+    ViewAdd(container.unlocks, "unlocks/UnShip_1.png", 20, 180, unlocks, 1);
+    //populate container.options
+    ViewAdd(container.options, "Images/Background.png", 0, 0);
+    ViewAdd(container.options, "Images/Pause.png", 270, 20, onPause, 1);
+    char* musicString = (isSoundEnabled) ? ("unlocks/MusicOn.png") : ("unlocks/MusicOff.png");
+    music = ViewAdd(container.options, musicString, 20, 80, options, 1);
+    TextAdd(container.options, 20, 320, "\nCreated By \nBailey Thompson", font);
+    ViewAdd(container.options, "Images/btnDelete.png", 20, 200, options, 2);
+    //populate container.deleteCheckOne
+    ViewAdd(container.deleteCheckOne, "Images/Background.png", 0, 0);
+    TextAdd(container.deleteCheckOne, 20, 20, "Are you sure you want to \nDELETE ALL PLAYER \nDATA including xp, "
         "rank, \nhighscore, and ships?", font);
-    ViewAdd(container::deleteCheckOne, "Images/btnNoDelete.png", 20, 180, options, 5);
-    ViewAdd(container::deleteCheckOne, "Images/btnYesDelete.png", 20, 300, options, 3);
-    //populate container::deleteCheckTwo
-    ViewAdd(container::deleteCheckTwo, "Images/Background.png", 0, 0);
-    TextAdd(container::deleteCheckTwo, 20, 20, "Are you really sure you \nwant to DELETE \nEVERYTHING?", font);
-    ViewAdd(container::deleteCheckTwo, "Images/btnNoDelete.png", 20, 300, options, 5);
-    ViewAdd(container::deleteCheckTwo, "Images/btnYesDelete.png", 20, 180, options, 4);
+    ViewAdd(container.deleteCheckOne, "Images/btnNoDelete.png", 20, 180, options, 5);
+    ViewAdd(container.deleteCheckOne, "Images/btnYesDelete.png", 20, 300, options, 3);
+    //populate container.deleteCheckTwo
+    ViewAdd(container.deleteCheckTwo, "Images/Background.png", 0, 0);
+    TextAdd(container.deleteCheckTwo, 20, 20, "Are you really sure you \nwant to DELETE \nEVERYTHING?", font);
+    ViewAdd(container.deleteCheckTwo, "Images/btnNoDelete.png", 20, 300, options, 5);
+    ViewAdd(container.deleteCheckTwo, "Images/btnYesDelete.png", 20, 180, options, 4);
 
     shipType();
     startupMusic();
@@ -1659,7 +1670,7 @@ void AppExit() {
     char fileBuffer[5];
     //fileSound
     int fileSound = FileOpen("Sound.txt");
-    boolGameToFile(state::sound, fileBuffer);
+    boolGameToFile(isSoundEnabled, fileBuffer);
     FileWrite(fileSound, fileBuffer, 1);
     FileClose(fileSound);
     //fileXp
@@ -1679,7 +1690,7 @@ void AppExit() {
     FileClose(fileHighscore);
     //fileCounter
     int fileCounter = FileOpen("Counter.txt");
-    intGameToFile(counter::sound, fileBuffer);
+    intGameToFile(counter.sound, fileBuffer);
     FileWrite(fileCounter, fileBuffer, 5);
     FileClose(fileCounter);
 }
@@ -1691,93 +1702,93 @@ bool isNotActive() {
                && currentScreen != SCREEN_DIED && currentScreen != SCREEN_HIGHSCORE;
 }
 void soundSwitch() {
-    if (state::sound) {
-        if (counter::sound == 1) {
+    if (isSoundEnabled) {
+        if (counter.sound == 1) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/1.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 7000) {
+        } else if (counter.sound == 7000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/2.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 13000) {
+        } else if (counter.sound == 13000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/3.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 19000) {
+        } else if (counter.sound == 19000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/5.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 27000) {
+        } else if (counter.sound == 27000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/7.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 34000) {
+        } else if (counter.sound == 34000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/8.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 42000) {
+        } else if (counter.sound == 42000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/9.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 49000) {
+        } else if (counter.sound == 49000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/11.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 55000) {
+        } else if (counter.sound == 55000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/12.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 61000) {
+        } else if (counter.sound == 61000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/13.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 67000) {
+        } else if (counter.sound == 67000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/14.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound == 73000) {
+        } else if (counter.sound == 73000) {
             if (isNotActive()) {
                 Mp3Stop();
                 Mp3Loop(Mp3Add("Sounds/15.mp3"));
             } else {
-                counter::sound--;
+                counter.sound--;
             }
-        } else if (counter::sound >= 79000) {
-            counter::sound = 0;
+        } else if (counter.sound >= 79000) {
+            counter.sound = 0;
         }
     } else {
         Mp3Stop();
@@ -1785,54 +1796,54 @@ void soundSwitch() {
 }
 void mShipMove() {
     //move x
-    if (newX > mX + player.speed / 2) {
-        mX += player.speed;
-    } else if (newX + player.speed / 2 < mX) {
-        mX -= player.speed;
+    if (player.newXCoord > player.currentXCoord + player.speed / 2) {
+        player.currentXCoord += player.speed;
+    } else if (player.newXCoord + player.speed / 2 < player.currentXCoord) {
+        player.currentXCoord -= player.speed;
     }
     //move y
-    if (newY > mY + player.speed / 2) {
-        mY += player.speed;
-    } else if (newY + player.speed / 2 < mY) {
-        mY -= player.speed;
+    if (player.newYCoord > player.currentYCoord + player.speed / 2) {
+        player.currentYCoord += player.speed;
+    } else if (player.newYCoord + player.speed / 2 < player.currentYCoord) {
+        player.currentYCoord -= player.speed;
     }
     //stop x
-    if (mX < 0) {
-        mX = 0;
-    } else if (mX > 226) {
-        mX = 226;
+    if (player.currentXCoord < 0) {
+        player.currentXCoord = 0;
+    } else if (player.currentXCoord > 226) {
+        player.currentXCoord = 226;
     }
     //stop y
-    if (mY < 50) {
-        mY = 50;
-    } else if (mY > 386) {
-        mY = 386;
+    if (player.currentYCoord < 50) {
+        player.currentYCoord = 50;
+    } else if (player.currentYCoord > 386) {
+        player.currentYCoord = 386;
     }
     //set ship view
-    ViewSetxy(player.view, mX, mY);
+    ViewSetxy(player.instance, player.currentXCoord, player.currentYCoord);
 }
 void bulletTime() {
     int x, y, x2, y2, x3, y3;
     bool used = false;
     for (int i = 1; i <= 15; i++) {
-        if (counter::bulletTime == i * PLAYER_BULLET_COOLDOWN_SPEED) {
+        if (counter.bulletTime == i * PLAYER_BULLET_COOLDOWN_SPEED) {
             used = true;
             if (player.typeOfShip == 8) {
-                ViewSetxy(player.bulletOne[i - 1], mX + player.bulletOneOffsetXCoord, mY + player.bulletOneOffsetYCoord);
-                ViewSetxy(player.rocket[i - 1], mX + player.rocketOffsetXCoord, mY + player.rocketOffsetYCoord);
-                ViewSetxy(player.bulletTwo[i - 1], mX + player.bulletTwoOffsetXCoord, mY + player.bulletTwoOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, player.currentYCoord + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord, player.currentYCoord + player.rocketOffsetYCoord);
+                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord, player.currentYCoord + player.bulletTwoOffsetYCoord);
             } else if (player.typeOfShip == 7) {
-                ViewSetxy(player.rocket[i - 1], mX + player.rocketOffsetXCoord, mY + player.rocketOffsetYCoord);
+                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord, player.currentYCoord + player.rocketOffsetYCoord);
             } else if (player.typeOfShip == 6 || player.typeOfShip == 5) {
-                ViewSetxy(player.bulletOne[i - 1], mX + player.bulletOneOffsetXCoord, mY + player.bulletOneOffsetYCoord);
-                ViewSetxy(player.bulletTwo[i - 1], mX + player.bulletTwoOffsetXCoord, mY + player.bulletTwoOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, player.currentYCoord + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord, player.currentYCoord + player.bulletTwoOffsetYCoord);
             } else {
-                ViewSetxy(player.bulletOne[i - 1], mX + player.bulletOneOffsetXCoord, mY + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, player.currentYCoord + player.bulletOneOffsetYCoord);
             }
         }
     }
-    if (counter::bulletTime >= 15 * PLAYER_BULLET_COOLDOWN_SPEED) {
-        counter::bulletTime = 0;
+    if (counter.bulletTime >= 15 * PLAYER_BULLET_COOLDOWN_SPEED) {
+        counter.bulletTime = 0;
     }
     if (!used) {
         for (int i = 0; i < 15; i++) {
@@ -2006,82 +2017,82 @@ void bulletTime() {
 }
 void tortureHealth() {
     int imageTorturing, number = 100;
-    if (counter::hpTorture > number * 20 && state::torture) {
-        counter::hpTorture = number * 20;
-    } else if (counter::hpTorture > number * 40 && !state::torture) {
+    if (counter.hpTorture > number * 20 && isTorture) {
+        counter.hpTorture = number * 20;
+    } else if (counter.hpTorture > number * 40 && !isTorture) {
         currentScreen = SCREEN_DIED;
         screenSwitch();
-    } else if (counter::hpTorture <= number * 20 && counter::hpTorture > number * 19) {
+    } else if (counter.hpTorture <= number * 20 && counter.hpTorture > number * 19) {
         imageTorturing = ImageAdd("Images/20HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 19 && counter::hpTorture > number * 18) {
+    } else if (counter.hpTorture <= number * 19 && counter.hpTorture > number * 18) {
         imageTorturing = ImageAdd("Images/19HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nStop This Madness!");
-    } else if (counter::hpTorture <= number * 18 && counter::hpTorture > number * 17) {
+    } else if (counter.hpTorture <= number * 18 && counter.hpTorture > number * 17) {
         imageTorturing = ImageAdd("Images/18HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 17 && counter::hpTorture > number * 16) {
+    } else if (counter.hpTorture <= number * 17 && counter.hpTorture > number * 16) {
         imageTorturing = ImageAdd("Images/17HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nDon't Do It!");
-    } else if (counter::hpTorture <= number * 16 && counter::hpTorture > number * 15) {
+    } else if (counter.hpTorture <= number * 16 && counter.hpTorture > number * 15) {
         imageTorturing = ImageAdd("Images/16HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 15 && counter::hpTorture > number * 14) {
+    } else if (counter.hpTorture <= number * 15 && counter.hpTorture > number * 14) {
         imageTorturing = ImageAdd("Images/15HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nI Beg Of You!");
-    } else if (counter::hpTorture <= number * 14 && counter::hpTorture > number * 13) {
+    } else if (counter.hpTorture <= number * 14 && counter.hpTorture > number * 13) {
         imageTorturing = ImageAdd("Images/14HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 13 && counter::hpTorture > number * 12) {
+    } else if (counter.hpTorture <= number * 13 && counter.hpTorture > number * 12) {
         imageTorturing = ImageAdd("Images/13HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nPlease Don't!");
-    } else if (counter::hpTorture <= number * 12 && counter::hpTorture > number * 11) {
+    } else if (counter.hpTorture <= number * 12 && counter.hpTorture > number * 11) {
         imageTorturing = ImageAdd("Images/12HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 11 && counter::hpTorture > number * 10) {
+    } else if (counter.hpTorture <= number * 11 && counter.hpTorture > number * 10) {
         imageTorturing = ImageAdd("Images/11HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nI Order You To Stop!");
-    } else if (counter::hpTorture <= number * 10 && counter::hpTorture > number * 9) {
+    } else if (counter.hpTorture <= number * 10 && counter.hpTorture > number * 9) {
         imageTorturing = ImageAdd("Images/10HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 9 && counter::hpTorture > number * 8) {
+    } else if (counter.hpTorture <= number * 9 && counter.hpTorture > number * 8) {
         imageTorturing = ImageAdd("Images/9HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nI Have A Family!");
-    } else if (counter::hpTorture <= number * 8 && counter::hpTorture > number * 7) {
+    } else if (counter.hpTorture <= number * 8 && counter.hpTorture > number * 7) {
         imageTorturing = ImageAdd("Images/8HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 7 && counter::hpTorture > number * 6) {
+    } else if (counter.hpTorture <= number * 7 && counter.hpTorture > number * 6) {
         imageTorturing = ImageAdd("Images/7HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nDon't Do This!");
-    } else if (counter::hpTorture <= number * 6 && counter::hpTorture > number * 5) {
+    } else if (counter.hpTorture <= number * 6 && counter.hpTorture > number * 5) {
         imageTorturing = ImageAdd("Images/6HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 5 && counter::hpTorture > number * 4) {
+    } else if (counter.hpTorture <= number * 5 && counter.hpTorture > number * 4) {
         imageTorturing = ImageAdd("Images/5HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nWhy Are You \nDoing This!");
-    } else if (counter::hpTorture <= number * 4 && counter::hpTorture > number * 3) {
+    } else if (counter.hpTorture <= number * 4 && counter.hpTorture > number * 3) {
         imageTorturing = ImageAdd("Images/4HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 3 && counter::hpTorture > number * 2) {
+    } else if (counter.hpTorture <= number * 3 && counter.hpTorture > number * 2) {
         imageTorturing = ImageAdd("Images/3HP.png");
         ViewSetImage(hpTorture, imageTorturing);
         TextSetText(textTorture, "\n\n\n\n\n\nYou Will Burn!");
-    } else if (counter::hpTorture <= number * 2 && counter::hpTorture > number * 1) {
+    } else if (counter.hpTorture <= number * 2 && counter.hpTorture > number * 1) {
         imageTorturing = ImageAdd("Images/2HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= number * 1 && counter::hpTorture > 0) {
+    } else if (counter.hpTorture <= number * 1 && counter.hpTorture > 0) {
         imageTorturing = ImageAdd("Images/1HP.png");
         ViewSetImage(hpTorture, imageTorturing);
-    } else if (counter::hpTorture <= 0) {
-        state::pause = false;
+    } else if (counter.hpTorture <= 0) {
+        isPaused = false;
         currentScreen = SCREEN_STORY_4A1;
         screenSwitch();
     }
@@ -2104,15 +2115,15 @@ char* concatHealth(int num) {
     }
 }
 void healthBar() {
-    if (health < 0) {
-        health = 0;
+    if (player.health < 0) {
+        player.health = 0;
     }
     int image;
-    if (state::healthUpdate) {
-        const int FRAC_HEALTH = round(20 * health / player.possibleHealth);
+    if (isHealthUpdate) {
+        const int FRAC_HEALTH = round(20 * player.health / player.possibleHealth);
         image = ImageAdd(concatHealth(FRAC_HEALTH));
         ViewSetImage(healthImage, image);
-        if (health <= 0) {
+        if (player.health <= 0) {
             if (currentScreen == SCREEN_ENDLESS) {
                 currentScreen = SCREEN_HIGHSCORE;
                 doUpdateHighscore();
@@ -2128,875 +2139,875 @@ void healthBar() {
             }
             screenSwitch();
         }
-        state::healthUpdate = false;
-        counter::healthRegen = 0;
+        isHealthUpdate = false;
+        counter.healthRegen = 0;
     }
 }
 void setOne() {
-    if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
+    if (counter.shipMove == 1 * ENEMY_SPAWN_TIME) {
         one[0].resetHealth(level);
         ViewSetxy(one[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 2 * ENEMY_SPAWN_TIME) {
         one[1].resetHealth(level);
         two[0].resetHealth(level);
         ViewSetxy(one[1].getInstance(), 33, -94);
         ViewSetxy(two[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 3 * ENEMY_SPAWN_TIME) {
         two[1].resetHealth(level);
         ViewSetxy(two[1].getInstance(), 113, -94);
-    } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 4 * ENEMY_SPAWN_TIME) {
         two[2].resetHealth(level);
         one[2].resetHealth(level);
         ViewSetxy(two[2].getInstance(), 33, -94);
         ViewSetxy(one[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 5 * ENEMY_SPAWN_TIME) {
         one[3].resetHealth(level);
         three[0].resetHealth(level);
         two[3].resetHealth(level);
         ViewSetxy(one[3].getInstance(), 0, -94);
         ViewSetxy(three[0].getInstance(), 113, -94);
         ViewSetxy(two[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 6 * ENEMY_SPAWN_TIME) {
         three[1].resetHealth(level);
         two[4].resetHealth(level);
         three[2].resetHealth(level);
         ViewSetxy(three[1].getInstance(), 0, -94);
         ViewSetxy(two[4].getInstance(), 113, -94);
         ViewSetxy(three[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 7 * ENEMY_SPAWN_TIME) {
         one[4].resetHealth(level);
         one[5].resetHealth(level);
         two[5].resetHealth(level);
         ViewSetxy(one[4].getInstance(), 0, -94);
         ViewSetxy(one[5].getInstance(), 113, -94);
         ViewSetxy(two[5].getInstance(), 226, -94);
-    } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 8 * ENEMY_SPAWN_TIME) {
         three[3].resetHealth(level);
         one[6].resetHealth(level);
         one[7].resetHealth(level);
         ViewSetxy(three[3].getInstance(), 0, -94);
         ViewSetxy(one[6].getInstance(), 113, -94);
         ViewSetxy(one[7].getInstance(), 226, -94);
-    } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 9 * ENEMY_SPAWN_TIME) {
         two[6].resetHealth(level);
         three[4].resetHealth(level);
         ViewSetxy(two[6].getInstance(), 33, -94);
         ViewSetxy(three[4].getInstance(), 193, -94);
-    } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 10 * ENEMY_SPAWN_TIME) {
         four[0].resetHealth(level);
         ViewSetxy(four[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 11 * ENEMY_SPAWN_TIME) {
         three[5].resetHealth(level);
         four[1].resetHealth(level);
         ViewSetxy(three[5].getInstance(), 33, -94);
         ViewSetxy(four[1].getInstance(), 193, -94);
-    } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 12 * ENEMY_SPAWN_TIME) {
         one[8].resetHealth(level);
         two[7].resetHealth(level);
         one[9].resetHealth(level);
         ViewSetxy(one[8].getInstance(), 0, -94);
         ViewSetxy(two[7].getInstance(), 113, -94);
         ViewSetxy(one[9].getInstance(), 226, -94);
-    } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 13 * ENEMY_SPAWN_TIME) {
         four[2].resetHealth(level);
         one[0].resetHealth(level);
         three[6].resetHealth(level);
         ViewSetxy(four[2].getInstance(), 0, -94);
         ViewSetxy(one[0].getInstance(), 113, -94);
         ViewSetxy(three[6].getInstance(), 226, -94);
-    } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 14 * ENEMY_SPAWN_TIME) {
         two[8].resetHealth(level);
         four[3].resetHealth(level);
         three[7].resetHealth(level);
         ViewSetxy(two[8].getInstance(), 0, -94);
         ViewSetxy(four[3].getInstance(), 113, -94);
         ViewSetxy(three[7].getInstance(), 226, -94);
-    } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 15 * ENEMY_SPAWN_TIME) {
         four[4].resetHealth(level);
         four[5].resetHealth(level);
         ViewSetxy(four[4].getInstance(), 33, -94);
         ViewSetxy(four[5].getInstance(), 193, -94);
-    } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 16 * ENEMY_SPAWN_TIME) {
         two[9].resetHealth(level);
         two[0].resetHealth(level);
         three[8].resetHealth(level);
         ViewSetxy(two[9].getInstance(), 0, -94);
         ViewSetxy(two[0].getInstance(), 113, -94);
         ViewSetxy(three[8].getInstance(), 226, -94);
-    } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 17 * ENEMY_SPAWN_TIME) {
         three[9].resetHealth(level);
         one[2].resetHealth(level);
         two[1].resetHealth(level);
         ViewSetxy(three[9].getInstance(), 0, -94);
         ViewSetxy(one[2].getInstance(), 113, -94);
         ViewSetxy(two[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 18 * ENEMY_SPAWN_TIME) {
         four[6].resetHealth(level);
         two[2].resetHealth(level);
         ViewSetxy(four[6].getInstance(), 33, -94);
         ViewSetxy(two[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 19 * ENEMY_SPAWN_TIME) {
         five[0].resetHealth(level);
         ViewSetxy(five[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 20 * ENEMY_SPAWN_TIME) {
         two[3].resetHealth(level);
         four[7].resetHealth(level);
         ViewSetxy(two[3].getInstance(), 33, -94);
         ViewSetxy(four[7].getInstance(), 193, -94);
-    } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 21 * ENEMY_SPAWN_TIME) {
         one[1].resetHealth(level);
         five[1].resetHealth(level);
         one[2].resetHealth(level);
         ViewSetxy(one[1].getInstance(), 0, -94);
         ViewSetxy(five[1].getInstance(), 113, -94);
         ViewSetxy(one[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 22 * ENEMY_SPAWN_TIME) {
         four[8].resetHealth(level);
         two[4].resetHealth(level);
         four[9].resetHealth(level);
         ViewSetxy(four[8].getInstance(), 0, -94);
         ViewSetxy(two[4].getInstance(), 113, -94);
         ViewSetxy(four[9].getInstance(), 226, -94);
-    } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 23 * ENEMY_SPAWN_TIME) {
         five[2].resetHealth(level);
         five[3].resetHealth(level);
         ViewSetxy(five[2].getInstance(), 33, -94);
         ViewSetxy(five[3].getInstance(), 193, -94);
-    } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 24 * ENEMY_SPAWN_TIME) {
         four[0].resetHealth(level);
         five[4].resetHealth(level);
         four[1].resetHealth(level);
         ViewSetxy(four[0].getInstance(), 0, -94);
         ViewSetxy(five[4].getInstance(), 113, -94);
         ViewSetxy(four[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 25 * ENEMY_SPAWN_TIME) {
         five[0].resetHealth(level);
         one[3].resetHealth(level);
         three[0].resetHealth(level);
         ViewSetxy(five[0].getInstance(), 0, -94);
         ViewSetxy(one[3].getInstance(), 113, -94);
         ViewSetxy(three[0].getInstance(), 226, -94);
-    } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 26 * ENEMY_SPAWN_TIME) {
         five[1].resetHealth(level);
         five[2].resetHealth(level);
         ViewSetxy(five[1].getInstance(), 33, -94);
         ViewSetxy(five[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 27 * ENEMY_SPAWN_TIME) {
         one[4].resetHealth(level);
         three[1].resetHealth(level);
         one[1].resetHealth(level);
         ViewSetxy(one[4].getInstance(), 0, -94);
         ViewSetxy(three[1].getInstance(), 113, -94);
         ViewSetxy(one[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 28 * ENEMY_SPAWN_TIME) {
         four[2].resetHealth(level);
         five[3].resetHealth(level);
         two[5].resetHealth(level);
         ViewSetxy(four[2].getInstance(), 0, -94);
         ViewSetxy(five[3].getInstance(), 113, -94);
         ViewSetxy(two[5].getInstance(), 226, -94);
-    } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 29 * ENEMY_SPAWN_TIME) {
         one[2].resetHealth(level);
         one[3].resetHealth(level);
         ViewSetxy(one[2].getInstance(), 33, -94);
         ViewSetxy(one[3].getInstance(), 193, -94);
     }
-    if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
+    if (counter.shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_1) {
             nine.resetHealth(level);
             ViewSetxy(nine.getInstance(), 89, -240);
         }
-    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_1) {
+    } else if (counter.shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_1) {
         currentScreen = SCREEN_STORY_2A1;
         screenSwitch();
     }
 }
 void setTwo() {
-    if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
+    if (counter.shipMove == 1 * ENEMY_SPAWN_TIME) {
         one[0].resetHealth(level);
         two[0].resetHealth(level);
         ViewSetxy(one[0].getInstance(), 33, -94);
         ViewSetxy(two[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 2 * ENEMY_SPAWN_TIME) {
         four[0].resetHealth(level);
         three[0].resetHealth(level);
         ViewSetxy(four[0].getInstance(), 33, -94);
         ViewSetxy(three[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 3 * ENEMY_SPAWN_TIME) {
         five[0].resetHealth(level);
         ViewSetxy(five[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 4 * ENEMY_SPAWN_TIME) {
         three[1].resetHealth(level);
         two[1].resetHealth(level);
         ViewSetxy(three[1].getInstance(), 33, -94);
         ViewSetxy(two[1].getInstance(), 193, -94);
-    } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 5 * ENEMY_SPAWN_TIME) {
         three[2].resetHealth(level);
         four[1].resetHealth(level);
         three[3].resetHealth(level);
         ViewSetxy(three[2].getInstance(), 0, -94);
         ViewSetxy(four[1].getInstance(), 113, -94);
         ViewSetxy(three[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 6 * ENEMY_SPAWN_TIME) {
         one[1].resetHealth(level);
         two[2].resetHealth(level);
         two[3].resetHealth(level);
         ViewSetxy(one[1].getInstance(), 0, -94);
         ViewSetxy(two[2].getInstance(), 113, -94);
         ViewSetxy(two[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 7 * ENEMY_SPAWN_TIME) {
         four[2].resetHealth(level);
         two[4].resetHealth(level);
         three[4].resetHealth(level);
         ViewSetxy(four[2].getInstance(), 0, -94);
         ViewSetxy(two[4].getInstance(), 113, -94);
         ViewSetxy(three[4].getInstance(), 226, -94);
-    } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 8 * ENEMY_SPAWN_TIME) {
         two[5].resetHealth(level);
         one[2].resetHealth(level);
         one[3].resetHealth(level);
         ViewSetxy(two[5].getInstance(), 0, -94);
         ViewSetxy(one[2].getInstance(), 113, -94);
         ViewSetxy(one[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 9 * ENEMY_SPAWN_TIME) {
         four[3].resetHealth(level);
         three[5].resetHealth(level);
         ViewSetxy(four[3].getInstance(), 33, -94);
         ViewSetxy(three[5].getInstance(), 193, -94);
-    } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 10 * ENEMY_SPAWN_TIME) {
         five[1].resetHealth(level);
         five[2].resetHealth(level);
         ViewSetxy(five[1].getInstance(), 33, -94);
         ViewSetxy(five[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 11 * ENEMY_SPAWN_TIME) {
         four[4].resetHealth(level);
         ViewSetxy(four[4].getInstance(), 113, -94);
-    } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 12 * ENEMY_SPAWN_TIME) {
         five[3].resetHealth(level);
         two[6].resetHealth(level);
         ViewSetxy(five[3].getInstance(), 33, -94);
         ViewSetxy(two[6].getInstance(), 193, -94);
-    } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 13 * ENEMY_SPAWN_TIME) {
         three[6].resetHealth(level);
         two[7].resetHealth(level);
         two[8].resetHealth(level);
         ViewSetxy(three[6].getInstance(), 0, -94);
         ViewSetxy(two[7].getInstance(), 113, -94);
         ViewSetxy(two[8].getInstance(), 226, -94);
-    } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 14 * ENEMY_SPAWN_TIME) {
         two[9].resetHealth(level);
         five[4].resetHealth(level);
         one[4].resetHealth(level);
         ViewSetxy(two[9].getInstance(), 0, -94);
         ViewSetxy(five[4].getInstance(), 113, -94);
         ViewSetxy(four[4].getInstance(), 226, -94);
-    } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 15 * ENEMY_SPAWN_TIME) {
         five[0].resetHealth(level);
         one[5].resetHealth(level);
         four[5].resetHealth(level);
         ViewSetxy(five[0].getInstance(), 0, -94);
         ViewSetxy(one[5].getInstance(), 113, -94);
         ViewSetxy(four[5].getInstance(), 226, -94);
-    } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 16 * ENEMY_SPAWN_TIME) {
         one[6].resetHealth(level);
         three[7].resetHealth(level);
         ViewSetxy(one[6].getInstance(), 33, -94);
         ViewSetxy(three[7].getInstance(), 193, -94);
-    } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 17 * ENEMY_SPAWN_TIME) {
         four[6].resetHealth(level);
         five[1].resetHealth(level);
         ViewSetxy(four[6].getInstance(), 33, -94);
         ViewSetxy(five[1].getInstance(), 193, -94);
-    } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 18 * ENEMY_SPAWN_TIME) {
         one[7].resetHealth(level);
         five[2].resetHealth(level);
         one[8].resetHealth(level);
         ViewSetxy(one[7].getInstance(), 0, -94);
         ViewSetxy(five[2].getInstance(), 113, -94);
         ViewSetxy(one[8].getInstance(), 226, -94);
-    } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 19 * ENEMY_SPAWN_TIME) {
         one[9].resetHealth(level);
         three[8].resetHealth(level);
         ViewSetxy(one[9].getInstance(), 33, -94);
         ViewSetxy(three[8].getInstance(), 193, -94);
-    } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 20 * ENEMY_SPAWN_TIME) {
         six[0].resetHealth(level);
         ViewSetxy(six[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 21 * ENEMY_SPAWN_TIME) {
         three[9].resetHealth(level);
         ViewSetxy(three[9].getInstance(), 113, -94);
-    } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 22 * ENEMY_SPAWN_TIME) {
         two[0].resetHealth(level);
         one[0].resetHealth(level);
         ViewSetxy(two[0].getInstance(), 33, -94);
         ViewSetxy(one[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 23 * ENEMY_SPAWN_TIME) {
         three[0].resetHealth(level);
         five[3].resetHealth(level);
         ViewSetxy(three[0].getInstance(), 33, -94);
         ViewSetxy(five[3].getInstance(), 193, -94);
-    } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 24 * ENEMY_SPAWN_TIME) {
         six[1].resetHealth(level);
         four[7].resetHealth(level);
         six[2].resetHealth(level);
         ViewSetxy(six[1].getInstance(), 0, -94);
         ViewSetxy(four[7].getInstance(), 113, -94);
         ViewSetxy(six[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 25 * ENEMY_SPAWN_TIME) {
         four[8].resetHealth(level);
         five[4].resetHealth(level);
         one[2].resetHealth(level);
         ViewSetxy(four[8].getInstance(), 0, -94);
         ViewSetxy(five[4].getInstance(), 113, -94);
         ViewSetxy(one[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 26 * ENEMY_SPAWN_TIME) {
         six[3].resetHealth(level);
         four[9].resetHealth(level);
         six[4].resetHealth(level);
         ViewSetxy(six[3].getInstance(), 0, -94);
         ViewSetxy(four[9].getInstance(), 113, -94);
         ViewSetxy(six[4].getInstance(), 226, -94);
-    } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 27 * ENEMY_SPAWN_TIME) {
         four[0].resetHealth(level);
         five[0].resetHealth(level);
         ViewSetxy(four[0].getInstance(), 33, -94);
         ViewSetxy(five[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 28 * ENEMY_SPAWN_TIME) {
         one[2].resetHealth(level);
         six[0].resetHealth(level);
         ViewSetxy(one[2].getInstance(), 33, -94);
         ViewSetxy(six[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 29 * ENEMY_SPAWN_TIME) {
         five[1].resetHealth(level);
         three[1].resetHealth(level);
         ViewSetxy(five[1].getInstance(), 33, -94);
         ViewSetxy(three[1].getInstance(), 193, -94);
-    } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_2) {
             nine.resetHealth(level);
             ViewSetxy(nine.getInstance(), 89, -240);
         }
-    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_2) {
+    } else if (counter.shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_2) {
         currentScreen = SCREEN_STORY_3A1;
         screenSwitch();
     }
 }
 void setThree() {
-    if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
+    if (counter.shipMove == 1 * ENEMY_SPAWN_TIME) {
         six[0].resetHealth(level);
         two[0].resetHealth(level);
         ViewSetxy(six[0].getInstance(), 33, -94);
         ViewSetxy(two[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 2 * ENEMY_SPAWN_TIME) {
         three[0].resetHealth(level);
         five[0].resetHealth(level);
         ViewSetxy(three[0].getInstance(), 33, -94);
         ViewSetxy(five[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 3 * ENEMY_SPAWN_TIME) {
         one[0].resetHealth(level);
         four[0].resetHealth(level);
         four[1].resetHealth(level);
         ViewSetxy(one[0].getInstance(), 0, -94);
         ViewSetxy(four[0].getInstance(), 113, -94);
         ViewSetxy(four[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 4 * ENEMY_SPAWN_TIME) {
         one[1].resetHealth(level);
         three[1].resetHealth(level);
         four[2].resetHealth(level);
         ViewSetxy(one[1].getInstance(), 0, -94);
         ViewSetxy(three[1].getInstance(), 113, -94);
         ViewSetxy(four[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 5 * ENEMY_SPAWN_TIME) {
         six[1].resetHealth(level);
         ViewSetxy(six[1].getInstance(), 113, -94);
-    } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 6 * ENEMY_SPAWN_TIME) {
         three[2].resetHealth(level);
         one[2].resetHealth(level);
         ViewSetxy(three[2].getInstance(), 33, -94);
         ViewSetxy(one[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 7 * ENEMY_SPAWN_TIME) {
         two[1].resetHealth(level);
         five[1].resetHealth(level);
         ViewSetxy(two[1].getInstance(), 33, -94);
         ViewSetxy(five[1].getInstance(), 193, -94);
-    } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 8 * ENEMY_SPAWN_TIME) {
         six[2].resetHealth(level);
         two[2].resetHealth(level);
         five[2].resetHealth(level);
         ViewSetxy(six[2].getInstance(), 0, -94);
         ViewSetxy(two[2].getInstance(), 113, -94);
         ViewSetxy(five[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 9 * ENEMY_SPAWN_TIME) {
         one[3].resetHealth(level);
         four[3].resetHealth(level);
         two[3].resetHealth(level);
         ViewSetxy(one[3].getInstance(), 0, -94);
         ViewSetxy(four[3].getInstance(), 113, -94);
         ViewSetxy(two[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 10 * ENEMY_SPAWN_TIME) {
         three[3].resetHealth(level);
         one[4].resetHealth(level);
         five[3].resetHealth(level);
         ViewSetxy(three[3].getInstance(), 0, -94);
         ViewSetxy(one[4].getInstance(), 113, -94);
         ViewSetxy(five[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 11 * ENEMY_SPAWN_TIME) {
         five[4].resetHealth(level);
         two[4].resetHealth(level);
         four[4].resetHealth(level);
         ViewSetxy(five[4].getInstance(), 0, -94);
         ViewSetxy(two[4].getInstance(), 113, -94);
         ViewSetxy(four[4].getInstance(), 226, -94);
-    } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 12 * ENEMY_SPAWN_TIME) {
         six[3].resetHealth(level);
         three[4].resetHealth(level);
         ViewSetxy(six[3].getInstance(), 33, -94);
         ViewSetxy(three[4].getInstance(), 193, -94);
-    } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 13 * ENEMY_SPAWN_TIME) {
         one[5].resetHealth(level);
         three[5].resetHealth(level);
         ViewSetxy(one[5].getInstance(), 33, -94);
         ViewSetxy(three[5].getInstance(), 193, -94);
-    } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 14 * ENEMY_SPAWN_TIME) {
         five[0].resetHealth(level);
         six[4].resetHealth(level);
         five[1].resetHealth(level);
         ViewSetxy(five[0].getInstance(), 0, -94);
         ViewSetxy(six[4].getInstance(), 113, -94);
         ViewSetxy(five[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 15 * ENEMY_SPAWN_TIME) {
         three[6].resetHealth(level);
         four[5].resetHealth(level);
         two[5].resetHealth(level);
         ViewSetxy(three[6].getInstance(), 0, -94);
         ViewSetxy(four[5].getInstance(), 113, -94);
         ViewSetxy(two[5].getInstance(), 226, -94);
-    } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 16 * ENEMY_SPAWN_TIME) {
         six[0].resetHealth(level);
         four[6].resetHealth(level);
         six[1].resetHealth(level);
         ViewSetxy(six[0].getInstance(), 0, -94);
         ViewSetxy(four[6].getInstance(), 113, -94);
         ViewSetxy(six[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 17 * ENEMY_SPAWN_TIME) {
         seven[0].resetHealth(level);
         ViewSetxy(seven[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 18 * ENEMY_SPAWN_TIME) {
         seven[1].resetHealth(level);
         seven[2].resetHealth(level);
         ViewSetxy(seven[1].getInstance(), 33, -94);
         ViewSetxy(seven[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 19 * ENEMY_SPAWN_TIME) {
         five[2].resetHealth(level);
         seven[3].resetHealth(level);
         four[7].resetHealth(level);
         ViewSetxy(five[2].getInstance(), 0, -94);
         ViewSetxy(seven[3].getInstance(), 113, -94);
         ViewSetxy(four[7].getInstance(), 226, -94);
-    } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 20 * ENEMY_SPAWN_TIME) {
         three[7].resetHealth(level);
         five[3].resetHealth(level);
         two[6].resetHealth(level);
         ViewSetxy(three[7].getInstance(), 0, -94);
         ViewSetxy(five[3].getInstance(), 113, -94);
         ViewSetxy(two[6].getInstance(), 226, -94);
-    } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 21 * ENEMY_SPAWN_TIME) {
         five[4].resetHealth(level);
         seven[4].resetHealth(level);
         four[8].resetHealth(level);
         ViewSetxy(five[4].getInstance(), 0, -94);
         ViewSetxy(seven[4].getInstance(), 113, -94);
         ViewSetxy(four[8].getInstance(), 226, -94);
-    } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 22 * ENEMY_SPAWN_TIME) {
         six[3].resetHealth(level);
         one[6].resetHealth(level);
         three[8].resetHealth(level);
         ViewSetxy(six[3].getInstance(), 0, -94);
         ViewSetxy(one[6].getInstance(), 113, -94);
         ViewSetxy(three[8].getInstance(), 226, -94);
-    } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 23 * ENEMY_SPAWN_TIME) {
         three[9].resetHealth(level);
         four[9].resetHealth(level);
         ViewSetxy(three[9].getInstance(), 33, -94);
         ViewSetxy(four[9].getInstance(), 193, -94);
-    } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 24 * ENEMY_SPAWN_TIME) {
         seven[0].resetHealth(level);
         six[4].resetHealth(level);
         ViewSetxy(seven[0].getInstance(), 33, -94);
         ViewSetxy(six[4].getInstance(), 193, -94);
-    } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 25 * ENEMY_SPAWN_TIME) {
         six[0].resetHealth(level);
         ViewSetxy(six[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 26 * ENEMY_SPAWN_TIME) {
         two[7].resetHealth(level);
         one[7].resetHealth(level);
         ViewSetxy(two[7].getInstance(), 33, -94);
         ViewSetxy(one[7].getInstance(), 193, -94);
-    } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 27 * ENEMY_SPAWN_TIME) {
         six[1].resetHealth(level);
         seven[1].resetHealth(level);
         ViewSetxy(six[1].getInstance(), 33, -94);
         ViewSetxy(seven[1].getInstance(), 193, -94);
-    } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 28 * ENEMY_SPAWN_TIME) {
         three[1].resetHealth(level);
         one[8].resetHealth(level);
         two[8].resetHealth(level);
         ViewSetxy(three[1].getInstance(), 0, -94);
         ViewSetxy(one[8].getInstance(), 113, -94);
         ViewSetxy(two[8].getInstance(), 226, -94);
-    } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 29 * ENEMY_SPAWN_TIME) {
         five[0].resetHealth(level);
         seven[2].resetHealth(level);
         ViewSetxy(five[0].getInstance(), 33, -94);
         ViewSetxy(seven[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 30 * ENEMY_SPAWN_TIME) {
         nine.resetHealth(level);
         ViewSetxy(nine.getInstance(), 89, -240);
     }
 }
 void setFour() {
-    if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
+    if (counter.shipMove == 1 * ENEMY_SPAWN_TIME) {
         one[0].resetHealth(level);
         two[0].resetHealth(level);
         ViewSetxy(one[0].getInstance(), 33, -94);
         ViewSetxy(two[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 2 * ENEMY_SPAWN_TIME) {
         six[0].resetHealth(level);
         three[0].resetHealth(level);
         ViewSetxy(six[0].getInstance(), 33, -94);
         ViewSetxy(three[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 3 * ENEMY_SPAWN_TIME) {
         four[0].resetHealth(level);
         five[0].resetHealth(level);
         four[1].resetHealth(level);
         ViewSetxy(four[0].getInstance(), 0, -94);
         ViewSetxy(five[0].getInstance(), 113, -94);
         ViewSetxy(four[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 4 * ENEMY_SPAWN_TIME) {
         one[1].resetHealth(level);
         seven[0].resetHealth(level);
         two[1].resetHealth(level);
         ViewSetxy(one[1].getInstance(), 0, -94);
         ViewSetxy(seven[0].getInstance(), 113, -94);
         ViewSetxy(two[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 5 * ENEMY_SPAWN_TIME) {
         five[1].resetHealth(level);
         three[1].resetHealth(level);
         four[2].resetHealth(level);
         ViewSetxy(five[1].getInstance(), 0, -94);
         ViewSetxy(three[1].getInstance(), 113, -94);
         ViewSetxy(four[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 6 * ENEMY_SPAWN_TIME) {
         six[1].resetHealth(level);
         seven[1].resetHealth(level);
         ViewSetxy(six[1].getInstance(), 33, -94);
         ViewSetxy(seven[1].getInstance(), 193, -94);
-    } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 7 * ENEMY_SPAWN_TIME) {
         six[2].resetHealth(level);
         ViewSetxy(six[2].getInstance(), 113, -94);
-    } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 8 * ENEMY_SPAWN_TIME) {
         seven[2].resetHealth(level);
         ViewSetxy(seven[2].getInstance(), 113, -94);
-    } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 9 * ENEMY_SPAWN_TIME) {
         two[2].resetHealth(level);
         one[2].resetHealth(level);
         ViewSetxy(two[2].getInstance(), 33, -94);
         ViewSetxy(one[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 10 * ENEMY_SPAWN_TIME) {
         three[2].resetHealth(level);
         five[2].resetHealth(level);
         ViewSetxy(three[2].getInstance(), 33, -94);
         ViewSetxy(five[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 11 * ENEMY_SPAWN_TIME) {
         six[3].resetHealth(level);
         one[3].resetHealth(level);
         seven[3].resetHealth(level);
         ViewSetxy(six[3].getInstance(), 0, -94);
         ViewSetxy(one[3].getInstance(), 113, -94);
         ViewSetxy(seven[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 12 * ENEMY_SPAWN_TIME) {
         four[3].resetHealth(level);
         seven[4].resetHealth(level);
         three[3].resetHealth(level);
         ViewSetxy(four[3].getInstance(), 0, -94);
         ViewSetxy(seven[4].getInstance(), 113, -94);
         ViewSetxy(three[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 13 * ENEMY_SPAWN_TIME) {
         one[4].resetHealth(level);
         six[4].resetHealth(level);
         two[3].resetHealth(level);
         ViewSetxy(one[4].getInstance(), 0, -94);
         ViewSetxy(six[4].getInstance(), 113, -94);
         ViewSetxy(two[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 14 * ENEMY_SPAWN_TIME) {
         seven[0].resetHealth(level);
         ViewSetxy(seven[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 15 * ENEMY_SPAWN_TIME) {
         four[4].resetHealth(level);
         three[4].resetHealth(level);
         ViewSetxy(four[4].getInstance(), 33, -94);
         ViewSetxy(three[4].getInstance(), 193, -94);
-    } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 16 * ENEMY_SPAWN_TIME) {
         one[5].resetHealth(level);
         two[4].resetHealth(level);
         ViewSetxy(one[5].getInstance(), 33, -94);
         ViewSetxy(two[4].getInstance(), 193, -94);
-    } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 17 * ENEMY_SPAWN_TIME) {
         five[3].resetHealth(level);
         six[0].resetHealth(level);
         five[4].resetHealth(level);
         ViewSetxy(five[3].getInstance(), 0, -94);
         ViewSetxy(six[0].getInstance(), 113, -94);
         ViewSetxy(five[4].getInstance(), 226, -94);
-    } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 18 * ENEMY_SPAWN_TIME) {
         six[1].resetHealth(level);
         seven[1].resetHealth(level);
         three[5].resetHealth(level);
         ViewSetxy(six[1].getInstance(), 0, -94);
         ViewSetxy(seven[1].getInstance(), 113, -94);
         ViewSetxy(three[5].getInstance(), 226, -94);
-    } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 19 * ENEMY_SPAWN_TIME) {
         one[6].resetHealth(level);
         five[0].resetHealth(level);
         two[5].resetHealth(level);
         ViewSetxy(one[6].getInstance(), 0, -94);
         ViewSetxy(five[0].getInstance(), 113, -94);
         ViewSetxy(two[5].getInstance(), 226, -94);
-    } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 20 * ENEMY_SPAWN_TIME) {
         seven[2].resetHealth(level);
         four[5].resetHealth(level);
         five[1].resetHealth(level);
         ViewSetxy(seven[2].getInstance(), 0, -94);
         ViewSetxy(four[5].getInstance(), 113, -94);
         ViewSetxy(five[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 21 * ENEMY_SPAWN_TIME) {
         eight[0].resetHealth(level);
         ViewSetxy(eight[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 22 * ENEMY_SPAWN_TIME) {
         seven[3].resetHealth(level);
         eight[1].resetHealth(level);
         ViewSetxy(seven[3].getInstance(), 33, -94);
         ViewSetxy(eight[1].getInstance(), 193, -94);
-    } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 23 * ENEMY_SPAWN_TIME) {
         one[7].resetHealth(level);
         two[6].resetHealth(level);
         ViewSetxy(one[7].getInstance(), 33, -94);
         ViewSetxy(two[6].getInstance(), 193, -94);
-    } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 24 * ENEMY_SPAWN_TIME) {
         four[6].resetHealth(level);
         three[6].resetHealth(level);
         ViewSetxy(four[6].getInstance(), 33, -94);
         ViewSetxy(three[6].getInstance(), 193, -94);
-    } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 25 * ENEMY_SPAWN_TIME) {
         seven[4].resetHealth(level);
         eight[2].resetHealth(level);
         four[7].resetHealth(level);
         ViewSetxy(seven[4].getInstance(), 0, -94);
         ViewSetxy(eight[2].getInstance(), 113, -94);
         ViewSetxy(four[7].getInstance(), 226, -94);
-    } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 26 * ENEMY_SPAWN_TIME) {
         six[2].resetHealth(level);
         two[7].resetHealth(level);
         six[3].resetHealth(level);
         ViewSetxy(six[2].getInstance(), 0, -94);
         ViewSetxy(two[7].getInstance(), 113, -94);
         ViewSetxy(six[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 27 * ENEMY_SPAWN_TIME) {
         one[8].resetHealth(level);
         five[2].resetHealth(level);
         one[9].resetHealth(level);
         ViewSetxy(one[8].getInstance(), 0, -94);
         ViewSetxy(five[2].getInstance(), 113, -94);
         ViewSetxy(one[9].getInstance(), 226, -94);
-    } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 28 * ENEMY_SPAWN_TIME) {
         eight[3].resetHealth(level);
         three[7].resetHealth(level);
         eight[4].resetHealth(level);
         ViewSetxy(eight[3].getInstance(), 0, -94);
         ViewSetxy(three[7].getInstance(), 113, -94);
         ViewSetxy(eight[4].getInstance(), 226, -94);
-    } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 29 * ENEMY_SPAWN_TIME) {
         five[3].resetHealth(level);
         two[8].resetHealth(level);
         ViewSetxy(five[3].getInstance(), 33, -94);
         ViewSetxy(two[8].getInstance(), 193, -94);
-    } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 30 * ENEMY_SPAWN_TIME) {
         if (currentScreen != SCREEN_STORY_BATTLE_5) {
             nine.resetHealth(level);
             ViewSetxy(nine.getInstance(), 89, -240);
         }
-    } else if (counter::shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_5) {
+    } else if (counter.shipMove == 31 * ENEMY_SPAWN_TIME && currentScreen == SCREEN_STORY_BATTLE_5) {
         currentScreen = SCREEN_STORY_6A1;
         screenSwitch();
     }
 }
 void setFive() {
-    if (counter::shipMove == 1 * ENEMY_SPAWN_TIME) {
+    if (counter.shipMove == 1 * ENEMY_SPAWN_TIME) {
         six[0].resetHealth(level);
         ViewSetxy(six[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 2 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 2 * ENEMY_SPAWN_TIME) {
         seven[0].resetHealth(level);
         two[0].resetHealth(level);
         ViewSetxy(seven[0].getInstance(), 33, -94);
         ViewSetxy(two[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 3 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 3 * ENEMY_SPAWN_TIME) {
         one[0].resetHealth(level);
         eight[0].resetHealth(level);
         ViewSetxy(one[0].getInstance(), 33, -94);
         ViewSetxy(eight[0].getInstance(), 193, -94);
-    } else if (counter::shipMove == 4 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 4 * ENEMY_SPAWN_TIME) {
         five[0].resetHealth(level);
         six[1].resetHealth(level);
         four[0].resetHealth(level);
         ViewSetxy(five[0].getInstance(), 0, -94);
         ViewSetxy(six[1].getInstance(), 113, -94);
         ViewSetxy(four[0].getInstance(), 226, -94);
-    } else if (counter::shipMove == 5 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 5 * ENEMY_SPAWN_TIME) {
         three[0].resetHealth(level);
         one[1].resetHealth(level);
         seven[1].resetHealth(level);
         ViewSetxy(three[0].getInstance(), 0, -94);
         ViewSetxy(one[1].getInstance(), 113, -94);
         ViewSetxy(seven[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 6 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 6 * ENEMY_SPAWN_TIME) {
         seven[2].resetHealth(level);
         eight[1].resetHealth(level);
         six[2].resetHealth(level);
         ViewSetxy(seven[2].getInstance(), 0, -94);
         ViewSetxy(eight[1].getInstance(), 113, -94);
         ViewSetxy(six[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 7 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 7 * ENEMY_SPAWN_TIME) {
         three[1].resetHealth(level);
         one[2].resetHealth(level);
         four[1].resetHealth(level);
         ViewSetxy(three[1].getInstance(), 0, -94);
         ViewSetxy(one[2].getInstance(), 113, -94);
         ViewSetxy(four[1].getInstance(), 226, -94);
-    } else if (counter::shipMove == 8 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 8 * ENEMY_SPAWN_TIME) {
         two[1].resetHealth(level);
         seven[3].resetHealth(level);
         ViewSetxy(two[1].getInstance(), 33, -94);
         ViewSetxy(seven[3].getInstance(), 193, -94);
-    } else if (counter::shipMove == 9 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 9 * ENEMY_SPAWN_TIME) {
         six[3].resetHealth(level);
         three[2].resetHealth(level);
         ViewSetxy(six[3].getInstance(), 33, -94);
         ViewSetxy(three[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 10 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 10 * ENEMY_SPAWN_TIME) {
         six[4].resetHealth(level);
         ViewSetxy(six[4].getInstance(), 113, -94);
-    } else if (counter::shipMove == 11 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 11 * ENEMY_SPAWN_TIME) {
         eight[2].resetHealth(level);
         ViewSetxy(eight[2].getInstance(), 113, -94);
-    } else if (counter::shipMove == 12 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 12 * ENEMY_SPAWN_TIME) {
         five[1].resetHealth(level);
         one[3].resetHealth(level);
         six[0].resetHealth(level);
         ViewSetxy(five[1].getInstance(), 0, -94);
         ViewSetxy(one[3].getInstance(), 113, -94);
         ViewSetxy(six[0].getInstance(), 226, -94);
-    } else if (counter::shipMove == 13 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 13 * ENEMY_SPAWN_TIME) {
         four[2].resetHealth(level);
         three[3].resetHealth(level);
         five[2].resetHealth(level);
         ViewSetxy(four[2].getInstance(), 0, -94);
         ViewSetxy(three[3].getInstance(), 113, -94);
         ViewSetxy(five[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 14 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 14 * ENEMY_SPAWN_TIME) {
         two[2].resetHealth(level);
         six[1].resetHealth(level);
         three[4].resetHealth(level);
         ViewSetxy(two[2].getInstance(), 0, -94);
         ViewSetxy(six[1].getInstance(), 113, -94);
         ViewSetxy(three[4].getInstance(), 226, -94);
-    } else if (counter::shipMove == 15 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 15 * ENEMY_SPAWN_TIME) {
         eight[3].resetHealth(level);
         four[3].resetHealth(level);
         ViewSetxy(eight[3].getInstance(), 33, -94);
         ViewSetxy(four[3].getInstance(), 193, -94);
-    } else if (counter::shipMove == 16 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 16 * ENEMY_SPAWN_TIME) {
         three[5].resetHealth(level);
         six[2].resetHealth(level);
         ViewSetxy(three[5].getInstance(), 33, -94);
         ViewSetxy(six[2].getInstance(), 193, -94);
-    } else if (counter::shipMove == 17 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 17 * ENEMY_SPAWN_TIME) {
         eight[4].resetHealth(level);
         five[3].resetHealth(level);
         six[3].resetHealth(level);
         ViewSetxy(eight[4].getInstance(), 0, -94);
         ViewSetxy(five[3].getInstance(), 113, -94);
         ViewSetxy(six[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 18 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 18 * ENEMY_SPAWN_TIME) {
         seven[4].resetHealth(level);
         ViewSetxy(seven[4].getInstance(), 113, -94);
-    } else if (counter::shipMove == 19 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 19 * ENEMY_SPAWN_TIME) {
         eight[0].resetHealth(level);
         ViewSetxy(eight[0].getInstance(), 113, -94);
-    } else if (counter::shipMove == 20 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 20 * ENEMY_SPAWN_TIME) {
         five[4].resetHealth(level);
         six[4].resetHealth(level); 
         ViewSetxy(five[4].getInstance(), 33, -94);
         ViewSetxy(six[4].getInstance(), 193, -94);
-    } else if (counter::shipMove == 21 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 21 * ENEMY_SPAWN_TIME) {
         eight[1].resetHealth(level);
         six[0].resetHealth(level);
         seven[0].resetHealth(level);
         ViewSetxy(eight[1].getInstance(), 0, -94);
         ViewSetxy(six[0].getInstance(), 113, -94);
         ViewSetxy(seven[0].getInstance(), 226, -94);
-    } else if (counter::shipMove == 22 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 22 * ENEMY_SPAWN_TIME) {
         two[3].resetHealth(level);
         four[4].resetHealth(level);
         three[6].resetHealth(level);
         ViewSetxy(two[3].getInstance(), 0, -94);
         ViewSetxy(four[4].getInstance(), 113, -94);
         ViewSetxy(three[6].getInstance(), 226, -94);
-    } else if (counter::shipMove == 23 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 23 * ENEMY_SPAWN_TIME) {
         six[1].resetHealth(level);
         two[4].resetHealth(level);
         five[0].resetHealth(level);
         ViewSetxy(six[1].getInstance(), 0, -94);
         ViewSetxy(two[4].getInstance(), 113, -94);
         ViewSetxy(five[0].getInstance(), 226, -94);
-    } else if (counter::shipMove == 24 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 24 * ENEMY_SPAWN_TIME) {
         eight[2].resetHealth(level);
         seven[1].resetHealth(level);
         six[2].resetHealth(level);
         ViewSetxy(eight[2].getInstance(), 0, -94);
         ViewSetxy(seven[1].getInstance(), 113, -94);
         ViewSetxy(six[2].getInstance(), 226, -94);
-    } else if (counter::shipMove == 25 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 25 * ENEMY_SPAWN_TIME) {
         two[5].resetHealth(level);
         seven[2].resetHealth(level);
         three[7].resetHealth(level);
         ViewSetxy(two[5].getInstance(), 0, -94);
         ViewSetxy(seven[2].getInstance(), 113, -94);
         ViewSetxy(three[7].getInstance(), 226, -94);
-    } else if (counter::shipMove == 26 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 26 * ENEMY_SPAWN_TIME) {
         eight[3].resetHealth(level);
         one[4].resetHealth(level);
         ViewSetxy(eight[3].getInstance(), 33, -94);
         ViewSetxy(one[4].getInstance(), 193, -94);
-    } else if (counter::shipMove == 27 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 27 * ENEMY_SPAWN_TIME) {
         two[6].resetHealth(level);
         five[1].resetHealth(level);
         three[8].resetHealth(level);
         ViewSetxy(two[6].getInstance(), 0, -94);
         ViewSetxy(five[1].getInstance(), 113, -94);
         ViewSetxy(three[8].getInstance(), 226, -94);
-    } else if (counter::shipMove == 28 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 28 * ENEMY_SPAWN_TIME) {
         seven[3].resetHealth(level);
         five[2].resetHealth(level);
         six[3].resetHealth(level);
         ViewSetxy(seven[3].getInstance(), 0, -94);
         ViewSetxy(five[2].getInstance(), 113, -94);
         ViewSetxy(six[3].getInstance(), 226, -94);
-    } else if (counter::shipMove == 29 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 29 * ENEMY_SPAWN_TIME) {
         six[3].resetHealth(level);
         eight[4].resetHealth(level);
         ViewSetxy(six[3].getInstance(), 33, -94);
         ViewSetxy(eight[4].getInstance(), 193, -94);
-    } else if (counter::shipMove == 30 * ENEMY_SPAWN_TIME) {
+    } else if (counter.shipMove == 30 * ENEMY_SPAWN_TIME) {
         ten.resetHealth(level);
         ViewSetxy(ten.getInstance(), 85, -240);
     }
@@ -3108,7 +3119,7 @@ void doEnemyShipMove() {
             setFive();
             break;
         case 6:
-            counter::shipMove = 0;
+            counter.shipMove = 0;
             level += 1;
             set = 1;
             break;
@@ -3116,7 +3127,7 @@ void doEnemyShipMove() {
 }
 void doEnemyShipShoot() {
     for (int i = 0; i < 5; i++) {
-        if (counter::bulletMove == (i + 1) * ENEMY_BULLET_COOLDOWN_SPEED) {
+        if (counter.bulletMove == (i + 1) * ENEMY_BULLET_COOLDOWN_SPEED) {
             //ship 1-4
             for (int j = 0; j < 10; j++) {
                 one[j].setBullet(i, one[j].getXCoord() + 43, one[j].getYCoord() + 83);
@@ -3145,10 +3156,10 @@ void doEnemyShipShoot() {
             ten.setBulletTwo(i, ten.getXCoord() + 129, ten.getYCoord() + 83);
         }
     }
-    if (counter::bulletMove >= 5 * ENEMY_BULLET_COOLDOWN_SPEED) {
-        counter::bulletMove = 0;
+    if (counter.bulletMove >= 5 * ENEMY_BULLET_COOLDOWN_SPEED) {
+        counter.bulletMove = 0;
     }
-    if (counter::bulletMove % ENEMY_BULLET_COOLDOWN_SPEED != 0) {
+    if (counter.bulletMove % ENEMY_BULLET_COOLDOWN_SPEED != 0) {
         //1
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 5; j++) {
@@ -3157,9 +3168,9 @@ void doEnemyShipShoot() {
                 if (yCoord < 600) {
                     one[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
                 }
-                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + player.widthOne && xCoord < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoord > player.currentYCoord && yCoord < player.currentYCoord + 94 && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     one[i].setBullet(j, 600, 600);
                 }
             }
@@ -3172,9 +3183,9 @@ void doEnemyShipShoot() {
                 if (yCoord < 600) {
                     two[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
                 }
-                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + player.widthOne && xCoord < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoord > player.currentYCoord && yCoord < player.currentYCoord + 94 && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     two[i].setBullet(j, 600, 600);
                 }
             }
@@ -3187,9 +3198,9 @@ void doEnemyShipShoot() {
                 if (yCoord < 600) {
                     three[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
                 }
-                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + player.widthOne && xCoord < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoord > player.currentYCoord && yCoord < player.currentYCoord + 94 && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     three[i].setBullet(j, 600, 600);
                 }
             }
@@ -3202,9 +3213,9 @@ void doEnemyShipShoot() {
                 if (yCoord < 600) {
                     four[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
                 }
-                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + player.widthOne && xCoord < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoord > player.currentYCoord && yCoord < player.currentYCoord + 94 && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     four[i].setBullet(j, 600, 600);
                 }
             }
@@ -3220,14 +3231,14 @@ void doEnemyShipShoot() {
                     five[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
                     five[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
                 }
-                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     five[i].setBulletOne(j, 600, 600);
                 }
-                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     five[i].setBulletTwo(j, 600, 600);
                 }
             }
@@ -3243,14 +3254,14 @@ void doEnemyShipShoot() {
                     six[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
                     six[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
                 }
-                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     six[i].setBulletOne(j, 600, 600);
                 }
-                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     six[i].setBulletTwo(j, 600, 600);
                 }
             }
@@ -3263,9 +3274,9 @@ void doEnemyShipShoot() {
                 if (yCoordTwo < 600) {
                     seven[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
                 }
-                if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + player.widthOne && xCoordTwo < mX + player.widthTwo) {
-                    health -= 3;
-                    state::healthUpdate = true;
+                if (yCoordTwo > player.currentYCoord && yCoordTwo < player.currentYCoord + 94 && xCoordTwo > player.currentXCoord + player.widthOne && xCoordTwo < player.currentXCoord + player.widthTwo) {
+                    player.health -= 3;
+                    isHealthUpdate = true;
                     seven[i].setRocket(j, 600, 600);
                 }
             }
@@ -3284,19 +3295,19 @@ void doEnemyShipShoot() {
                     eight[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
                     eight[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
                 }
-                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     eight[i].setBulletOne(j, 600, 600);
                 }
-                if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + player.widthOne && xCoordTwo < mX + player.widthTwo) {
-                    health -= 3;
-                    state::healthUpdate = true;
+                if (yCoordTwo > player.currentYCoord && yCoordTwo < player.currentYCoord + 94 && xCoordTwo > player.currentXCoord + player.widthOne && xCoordTwo < player.currentXCoord + player.widthTwo) {
+                    player.health -= 3;
+                    isHealthUpdate = true;
                     eight[i].setRocket(j, 600, 600);
                 }
-                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
-                    health -= 1;
-                    state::healthUpdate = true;
+                if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
+                    player.health -= 1;
+                    isHealthUpdate = true;
                     eight[i].setBulletTwo(j, 600, 600);
                 }
             }
@@ -3314,19 +3325,19 @@ void doEnemyShipShoot() {
                 nine.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
                 nine.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
             }
-            if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
-                health -= 1;
-                state::healthUpdate = true;
+            if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
+                player.health -= 1;
+                isHealthUpdate = true;
                 nine.setBulletOne(j, 600, 600);
             }
-            if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + player.widthOne && xCoordTwo < mX + player.widthTwo) {
-                health -= 3;
-                state::healthUpdate = true;
+            if (yCoordTwo > player.currentYCoord && yCoordTwo < player.currentYCoord + 94 && xCoordTwo > player.currentXCoord + player.widthOne && xCoordTwo < player.currentXCoord + player.widthTwo) {
+                player.health -= 3;
+                isHealthUpdate = true;
                 nine.setRocket(j, 600, 600);
             }
-            if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
-                health -= 1;
-                state::healthUpdate = true;
+            if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
+                player.health -= 1;
+                isHealthUpdate = true;
                 nine.setBulletTwo(j, 600, 600);
             }
         }
@@ -3343,26 +3354,26 @@ void doEnemyShipShoot() {
                 ten.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
                 ten.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
             }
-            if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
-                health -= 1;
-                state::healthUpdate = true;
+            if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
+                player.health -= 1;
+                isHealthUpdate = true;
                 ten.setBulletOne(j, 600, 600);
             }
-            if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + player.widthOne && xCoordTwo < mX + player.widthTwo) {
-                health -= 3;
-                state::healthUpdate = true;
+            if (yCoordTwo > player.currentYCoord && yCoordTwo < player.currentYCoord + 94 && xCoordTwo > player.currentXCoord + player.widthOne && xCoordTwo < player.currentXCoord + player.widthTwo) {
+                player.health -= 3;
+                isHealthUpdate = true;
                 ten.setRocket(j, 600, 600);
             }
-            if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
-                health -= 1;
-                state::healthUpdate = true;
+            if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
+                player.health -= 1;
+                isHealthUpdate = true;
                 ten.setBulletTwo(j, 600, 600);
             }
         }
     }
 }
 bool shipInAction(int ship) {
-    const int i = counter::shipAction;
+    const int i = counter.shipAction;
     bool ret = false;
     switch (ship) {
         case 1:
@@ -3409,7 +3420,7 @@ bool shipInAction(int ship) {
     return ret;
 }
 int setEnemyExplosion(int ship) {
-    const int i = counter::shipAction;
+    const int i = counter.shipAction;
     int explosion;
     switch (ship) {
         case 1:
@@ -3442,90 +3453,90 @@ int setEnemyExplosion(int ship) {
 void enemyDied() {
     int explosion, image;
     for (int i = 1; i <= 4; i++) {
-        for (counter::shipAction = 0; counter::shipAction < 10; counter::shipAction++) {
+        for (counter.shipAction = 0; counter.shipAction < 10; counter.shipAction++) {
             bool used = false;
             for (int j = 0; j <= 8; j++) {
-                if (counter::enemyExplosion[i - 1] == j && shipInAction(i) && !used) {
+                if (counter.enemyExplosion[i - 1] == j && shipInAction(i) && !used) {
                     explosion = setEnemyExplosion(i);
                     char temp[] = "Images/Explosion_1.png";
                     temp[17] = char(j + 1 + '0');
                     image = ImageAdd(temp);
                     ViewSetImage(explosion, image);
-                    counter::enemyExplosion[i - 1] += 1;
+                    counter.enemyExplosion[i - 1] += 1;
                     used = true;
                 }
             }
-            if (counter::enemyExplosion[i - 1] == 9 && shipInAction(i)) {
+            if (counter.enemyExplosion[i - 1] == 9 && shipInAction(i)) {
                 explosion = setEnemyExplosion(i);
                 image = ImageAdd("Images/Explosion_10.png");
                 ViewSetImage(explosion, image);
-                counter::enemyExplosion[i - 1] += 1;
-            } else if (counter::enemyExplosion[i - 1] == 10 && shipInAction(i)) {
+                counter.enemyExplosion[i - 1] += 1;
+            } else if (counter.enemyExplosion[i - 1] == 10 && shipInAction(i)) {
                 explosion = setEnemyExplosion(i);
                 image = ImageAdd("Images/Explosion_11.png");
                 ViewSetImage(explosion, image);
-                counter::enemyExplosion[i - 1] += 1;
-            } else if (counter::enemyExplosion[i - 1] == 11 && shipInAction(i)) {
+                counter.enemyExplosion[i - 1] += 1;
+            } else if (counter.enemyExplosion[i - 1] == 11 && shipInAction(i)) {
                 explosion = setEnemyExplosion(i);
                 char tempShip[] = "Images/eShip_1.png";
                 tempShip[13] = char(i + '0');
                 image = ImageAdd(tempShip);
                 ViewSetImage(explosion, image);
                 if (i == 1) {
-                    ViewSetxy(one[counter::shipAction].getInstance(), 600, 600);
+                    ViewSetxy(one[counter.shipAction].getInstance(), 600, 600);
                 } else if (i == 2) {
-                    ViewSetxy(two[counter::shipAction].getInstance(), 600, 600);
+                    ViewSetxy(two[counter.shipAction].getInstance(), 600, 600);
                 } else if (i == 3) {
-                    ViewSetxy(three[counter::shipAction].getInstance(), 600, 600);
+                    ViewSetxy(three[counter.shipAction].getInstance(), 600, 600);
                 } else if (i == 4) {
-                    ViewSetxy(four[counter::shipAction].getInstance(), 600, 600);
+                    ViewSetxy(four[counter.shipAction].getInstance(), 600, 600);
                 }
-                counter::enemyExplosion[i - 1] = 0;
+                counter.enemyExplosion[i - 1] = 0;
                 xp += XP_SHIP_DESTROY_1_TO_4 + round(level / XP_INCREASE);
             }
         }
     }
 
     for (int i = 5; i <= 8; i++) {
-        for (counter::shipAction = 0; counter::shipAction < 5; counter::shipAction++) {
+        for (counter.shipAction = 0; counter.shipAction < 5; counter.shipAction++) {
             bool used = false;
             for (int j = 0; j <= 8; j++) {
-                if (counter::enemyExplosion[i - 1] == j && shipInAction(i) && !used) {
+                if (counter.enemyExplosion[i - 1] == j && shipInAction(i) && !used) {
                     explosion = setEnemyExplosion(i);
                     char temp[] = "Images/Explosion_1.png";
                     temp[17] = char(j + 1 + '0');
                     image = ImageAdd(temp);
                     ViewSetImage(explosion, image);
-                    counter::enemyExplosion[i - 1] += 1;
+                    counter.enemyExplosion[i - 1] += 1;
                     used = true;
                 }
             }
-            if (counter::enemyExplosion[i - 1] == 9 && shipInAction(i)) {
+            if (counter.enemyExplosion[i - 1] == 9 && shipInAction(i)) {
                 explosion = setEnemyExplosion(i);
                 image = ImageAdd("Images/Explosion_10.png");
                 ViewSetImage(explosion, image);
-                counter::enemyExplosion[i - 1] += 1;
-            } else if (counter::enemyExplosion[i - 1] == 10 && shipInAction(i)) {
+                counter.enemyExplosion[i - 1] += 1;
+            } else if (counter.enemyExplosion[i - 1] == 10 && shipInAction(i)) {
                 explosion = setEnemyExplosion(i);
                 image = ImageAdd("Images/Explosion_11.png");
                 ViewSetImage(explosion, image);
-                counter::enemyExplosion[i - 1] += 1;
-            } else if (counter::enemyExplosion[i - 1] == 11 && shipInAction(i)) {
+                counter.enemyExplosion[i - 1] += 1;
+            } else if (counter.enemyExplosion[i - 1] == 11 && shipInAction(i)) {
                 explosion = setEnemyExplosion(i);
                 char tempShip[] = "Images/eShip_1.png";
                 tempShip[13] = char(i + '0');
                 image = ImageAdd(tempShip);
                 ViewSetImage(explosion, image);
                 if (i == 5) {
-                    ViewSetxy(five[counter::shipAction].getInstance(), 600, 600);
+                    ViewSetxy(five[counter.shipAction].getInstance(), 600, 600);
                 } else if (i == 6) {
-                    ViewSetxy(six[counter::shipAction].getInstance(), 600, 600);
+                    ViewSetxy(six[counter.shipAction].getInstance(), 600, 600);
                 } else if (i == 7) {
-                    ViewSetxy(seven[counter::shipAction].getInstance(), 600, 600);
+                    ViewSetxy(seven[counter.shipAction].getInstance(), 600, 600);
                 } else if (i == 8) {
-                    ViewSetxy(eight[counter::shipAction].getInstance(), 600, 600);
+                    ViewSetxy(eight[counter.shipAction].getInstance(), 600, 600);
                 }
-                counter::enemyExplosion[i - 1] = 0;
+                counter.enemyExplosion[i - 1] = 0;
                 xp += XP_SHIP_DESTROY_5_TO_8 + round(level / XP_INCREASE);
             }
         }
@@ -3533,38 +3544,38 @@ void enemyDied() {
 
     bool used = false;
     for (int j = 0; j <= 8; j++) {
-        if (counter::enemyExplosion[8] == j && shipInAction(9) && !used) {
+        if (counter.enemyExplosion[8] == j && shipInAction(9) && !used) {
             explosion = nine.getInstance();
             char temp[] = "Images/BigExplosion_1.png";
             temp[20] = char(j + 1 + '0');
             image = ImageAdd(temp);
             ViewSetImage(explosion, image);
-            counter::enemyExplosion[8] += 1;
+            counter.enemyExplosion[8] += 1;
             used = true;
         }
     }
-    if (counter::enemyExplosion[8] == 9 && shipInAction(9)) {
+    if (counter.enemyExplosion[8] == 9 && shipInAction(9)) {
         explosion = nine.getInstance();
         image = ImageAdd("Images/BigExplosion_10.png");
         ViewSetImage(explosion, image);
-        counter::enemyExplosion[8] += 1;
-    } else if (counter::enemyExplosion[8] == 10 && shipInAction(9)) {
+        counter.enemyExplosion[8] += 1;
+    } else if (counter.enemyExplosion[8] == 10 && shipInAction(9)) {
         explosion = nine.getInstance();
         image = ImageAdd("Images/BigExplosion_11.png");
         ViewSetImage(explosion, image);
-        counter::enemyExplosion[8] += 1;
-    } else if (counter::enemyExplosion[8] == 11 && shipInAction(9)) {
+        counter.enemyExplosion[8] += 1;
+    } else if (counter.enemyExplosion[8] == 11 && shipInAction(9)) {
         explosion = nine.getInstance();
         image = ImageAdd("Images/eMini-Boss.png");
         ViewSetImage(explosion, image);
         ViewSetxy(nine.getInstance(), 600, 600);
-        counter::enemyExplosion[8] = 0;
+        counter.enemyExplosion[8] = 0;
         xp += XP_SHIP_DESTROY_9 + round(2 * level / XP_INCREASE);
         if (currentScreen != SCREEN_STORY_BATTLE_4) {
             set += 1;
-            counter::shipMove = 0;
-            health = player.possibleHealth;
-            state::healthUpdate = true;
+            counter.shipMove = 0;
+            player.health = player.possibleHealth;
+            isHealthUpdate = true;
         } else if (currentScreen == SCREEN_STORY_BATTLE_4) {
             currentScreen = SCREEN_STORY_5A1;
             screenSwitch();
@@ -3573,38 +3584,38 @@ void enemyDied() {
 
     used = false;
     for (int j = 0; j <= 8; j++) {
-        if (counter::enemyExplosion[9] == j && shipInAction(10) && !used) {
+        if (counter.enemyExplosion[9] == j && shipInAction(10) && !used) {
             explosion = ten.getInstance();
             char temp[] = "Images/BigExplosion_1.png";
             temp[20] = char(j + 1 + '0');
             image = ImageAdd(temp);
             ViewSetImage(explosion, image);
-            counter::enemyExplosion[9] += 1;
+            counter.enemyExplosion[9] += 1;
             used = true;
         }
     }
-    if (counter::enemyExplosion[9] == 9 && shipInAction(10)) {
+    if (counter.enemyExplosion[9] == 9 && shipInAction(10)) {
         explosion = ten.getInstance();
         image = ImageAdd("Images/BigExplosion_10.png");
         ViewSetImage(explosion, image);
-        counter::enemyExplosion[9] += 1;
-    } else if (counter::enemyExplosion[9] == 10 && shipInAction(10)) {
+        counter.enemyExplosion[9] += 1;
+    } else if (counter.enemyExplosion[9] == 10 && shipInAction(10)) {
         explosion = ten.getInstance();
         image = ImageAdd("Images/BigExplosion_11.png");
         ViewSetImage(explosion, image);
-        counter::enemyExplosion[9] += 1;
-    } else if (counter::enemyExplosion[9] == 11 && shipInAction(10)) {
+        counter.enemyExplosion[9] += 1;
+    } else if (counter.enemyExplosion[9] == 11 && shipInAction(10)) {
         explosion = ten.getInstance();
         image = ImageAdd("Images/eBoss.png");
         ViewSetImage(explosion, image);
         ViewSetxy(ten.getInstance(), 600, 600);
-        counter::enemyExplosion[9] = 0;
+        counter.enemyExplosion[9] = 0;
         xp += XP_SHIP_DESTROY_10 + round(2 * level / XP_INCREASE);
         if (currentScreen != SCREEN_STORY_BATTLE_6) {
             set += 1;
-            counter::shipMove = 0;
-            health = player.possibleHealth;
-            state::healthUpdate = true;
+            counter.shipMove = 0;
+            player.health = player.possibleHealth;
+            isHealthUpdate = true;
         } else if (currentScreen == SCREEN_STORY_BATTLE_6) {
             currentScreen = SCREEN_STORY_7W1;
             screenSwitch();
@@ -3614,96 +3625,96 @@ void enemyDied() {
 void shipCollision() {
     for (int i = 0; i < 10; i++) {
         //ship 1
-        if (mX + player.widthOne < one[i].getXCoord() + 76 && mX + player.widthTwo > one[i].getXCoord() + 18 
-            && mY < one[i].getYCoord() + 94 && mY + 94 > one[i].getYCoord()) {
+        if (player.currentXCoord + player.widthOne < one[i].getXCoord() + 76 && player.currentXCoord + player.widthTwo > one[i].getXCoord() + 18 
+            && player.currentYCoord < one[i].getYCoord() + 94 && player.currentYCoord + 94 > one[i].getYCoord()) {
             if (one[i].getHealth() > 0) {
                 one[i].damage(3);
-                health -= 3;
-                state::healthUpdate = true;
+                player.health -= 3;
+                isHealthUpdate = true;
             }
         }
         //ship 2
-        if (mX + player.widthOne < two[i].getXCoord() + 69 && mX + player.widthTwo > two[i].getXCoord() + 24 
-            && mY < two[i].getYCoord() + 94 && mY + 94 > two[i].getYCoord()) {
+        if (player.currentXCoord + player.widthOne < two[i].getXCoord() + 69 && player.currentXCoord + player.widthTwo > two[i].getXCoord() + 24 
+            && player.currentYCoord < two[i].getYCoord() + 94 && player.currentYCoord + 94 > two[i].getYCoord()) {
             if (two[i].getHealth() > 0) {
                 two[i].damage(3);
-                health -= 3;
-                state::healthUpdate = true;
+                player.health -= 3;
+                isHealthUpdate = true;
             }
         }
         //ship 3
-        if (mX + player.widthOne < three[i].getXCoord() + 66 && mX + player.widthTwo > three[i].getXCoord() + 27 
-            && mY < three[i].getYCoord() + 94 && mY + 94 > three[i].getYCoord()) {
+        if (player.currentXCoord + player.widthOne < three[i].getXCoord() + 66 && player.currentXCoord + player.widthTwo > three[i].getXCoord() + 27 
+            && player.currentYCoord < three[i].getYCoord() + 94 && player.currentYCoord + 94 > three[i].getYCoord()) {
             if (three[i].getHealth() > 0) {
                 three[i].damage(3);
-                health -= 3;
-                state::healthUpdate = true;
+                player.health -= 3;
+                isHealthUpdate = true;
             }
         }
         //ship 4
-        if (mX + player.widthOne < four[i].getXCoord() + 87 && mX + player.widthTwo > four[i].getXCoord() + 6 
-            && mY < four[i].getYCoord() + 94 && mY + 94 > four[i].getYCoord()) {
+        if (player.currentXCoord + player.widthOne < four[i].getXCoord() + 87 && player.currentXCoord + player.widthTwo > four[i].getXCoord() + 6 
+            && player.currentYCoord < four[i].getYCoord() + 94 && player.currentYCoord + 94 > four[i].getYCoord()) {
             if (four[i].getHealth() > 0) {
                 four[i].damage(3);
-                health -= 3;
-                state::healthUpdate = true;
+                player.health -= 3;
+                isHealthUpdate = true;
             }
         }
     }
     for (int i = 0; i < 5; i++) {
         //ship 5
-        if (mX + player.widthOne < five[i].getXCoord() + 71 && mX + player.widthTwo > five[i].getXCoord() + 22 
-            && mY < five[i].getYCoord() + 94 && mY + 94 > five[i].getYCoord()) {
+        if (player.currentXCoord + player.widthOne < five[i].getXCoord() + 71 && player.currentXCoord + player.widthTwo > five[i].getXCoord() + 22 
+            && player.currentYCoord < five[i].getYCoord() + 94 && player.currentYCoord + 94 > five[i].getYCoord()) {
             if (five[i].getHealth() > 0) {
                 five[i].damage(3);
-                health -= 3;
-                state::healthUpdate = true;
+                player.health -= 3;
+                isHealthUpdate = true;
             }
         }
         //ship 6
-        if (mX + player.widthOne < six[i].getXCoord() + 81 && mX + player.widthTwo > six[i].getXCoord() + 12 
-            && mY < six[i].getYCoord() + 94 && mY + 94 > six[i].getYCoord()) {
+        if (player.currentXCoord + player.widthOne < six[i].getXCoord() + 81 && player.currentXCoord + player.widthTwo > six[i].getXCoord() + 12 
+            && player.currentYCoord < six[i].getYCoord() + 94 && player.currentYCoord + 94 > six[i].getYCoord()) {
             if (six[i].getHealth() > 0) {
                 six[i].damage(3);
-                health -= 3;
-                state::healthUpdate = true;
+                player.health -= 3;
+                isHealthUpdate = true;
             }
         }
         //ship 7
-        if (mX + player.widthOne < seven[i].getXCoord() + 86 && mX + player.widthTwo > seven[i].getXCoord() + 7 
-            && mY < seven[i].getYCoord() + 94 && mY + 94 > seven[i].getYCoord()) {
+        if (player.currentXCoord + player.widthOne < seven[i].getXCoord() + 86 && player.currentXCoord + player.widthTwo > seven[i].getXCoord() + 7 
+            && player.currentYCoord < seven[i].getYCoord() + 94 && player.currentYCoord + 94 > seven[i].getYCoord()) {
             if (seven[i].getHealth() > 0) {
                 seven[i].damage(3);
-                health -= 3;
-                state::healthUpdate = true;
+                player.health -= 3;
+                isHealthUpdate = true;
             }
         }
         //ship 8
-        if (mX + player.widthOne < eight[i].getXCoord() + 86 && mX + player.widthTwo > eight[i].getXCoord() + 6 
-            && mY < eight[i].getYCoord() + 94 && mY + 94 > eight[i].getYCoord()) {
+        if (player.currentXCoord + player.widthOne < eight[i].getXCoord() + 86 && player.currentXCoord + player.widthTwo > eight[i].getXCoord() + 6 
+            && player.currentYCoord < eight[i].getYCoord() + 94 && player.currentYCoord + 94 > eight[i].getYCoord()) {
             if (eight[i].getHealth() > 0) {
                 eight[i].damage(3);
-                health -= 3;
-                state::healthUpdate = true;
+                player.health -= 3;
+                isHealthUpdate = true;
             }
         }
     }
     //ship 9
-    if (mX + player.widthOne < nine.getXCoord() + 142 && mX + player.widthTwo > nine.getXCoord() 
-        && mY < nine.getYCoord() + 240 && mY + 94 > nine.getYCoord()) {
+    if (player.currentXCoord + player.widthOne < nine.getXCoord() + 142 && player.currentXCoord + player.widthTwo > nine.getXCoord() 
+        && player.currentYCoord < nine.getYCoord() + 240 && player.currentYCoord + 94 > nine.getYCoord()) {
         if (nine.getHealth() > 0) {
             nine.damage(3);
-            health = 0;
-            state::healthUpdate = true;
+            player.health = 0;
+            isHealthUpdate = true;
         }
     }
     //ship 10
-    if (mX + player.widthOne < ten.getXCoord() + 150 && mX + player.widthTwo > ten.getXCoord() 
-        && mY < ten.getYCoord() + 240 && mY + 94 > ten.getYCoord()) {
+    if (player.currentXCoord + player.widthOne < ten.getXCoord() + 150 && player.currentXCoord + player.widthTwo > ten.getXCoord() 
+        && player.currentYCoord < ten.getYCoord() + 240 && player.currentYCoord + 94 > ten.getYCoord()) {
         if (ten.getHealth() > 0) {
             ten.damage(3);
-            health = 0;
-            state::healthUpdate = true;
+            player.health = 0;
+            isHealthUpdate = true;
         }
     }
 }
@@ -3715,10 +3726,10 @@ void rankFromXp() {
     }
 }
 void healthRegen() {
-    if (counter::healthRegen >= round(150 * 10 / PLAYER_HEALTH_RATIO)) {
-        counter::healthRegen = 0;
-        health += 1;
-        state::healthUpdate = true;
+    if (counter.healthRegen >= round(150 * 10 / PLAYER_HEALTH_RATIO)) {
+        counter.healthRegen = 0;
+        player.health += 1;
+        isHealthUpdate = true;
     }
 }
 bool createMove() {
@@ -3730,20 +3741,20 @@ void OnTimer() {
     //called 30 times per second - 1800=1min - 10000=5min 36sec
     rankFromXp();
     soundSwitch();
-    if (state::sound) {
-        counter::sound += 1;
+    if (isSoundEnabled) {
+        counter.sound += 1;
     }
-    if (!state::pause) {
+    if (!isPaused) {
         if (createMove()) {
-            counter::bulletTime += 1;
-            counter::shipMove += 1;
+            counter.bulletTime += 1;
+            counter.shipMove += 1;
             doEnemyShipMove();
-            counter::bulletMove += 1;
+            counter.bulletMove += 1;
             doEnemyShipShoot();
-            if (health < player.possibleHealth / 2) {
-                counter::healthRegen += 1;
+            if (player.health < player.possibleHealth / 2) {
+                counter.healthRegen += 1;
             } else {
-                counter::healthRegen = 0;
+                counter.healthRegen = 0;
             }
             healthRegen();
             bulletTime();
@@ -3751,28 +3762,28 @@ void OnTimer() {
             mShipMove();
             enemyDied();
             shipCollision();
-        } else if (currentScreen == SCREEN_STORY_TORTURE && state::torture) {
-            if (counter::torture == 0) {
+        } else if (currentScreen == SCREEN_STORY_TORTURE && isTorture) {
+            if (counter.torture == 0) {
                 ViewSetxy(imageTorture, -1, -1);
-            } else if (counter::torture == 1) {
+            } else if (counter.torture == 1) {
                 ViewSetxy(imageTorture, 0, 0);
-            } else if (counter::torture == 2) {
+            } else if (counter.torture == 2) {
                 ViewSetxy(imageTorture, -2, -2);
-            } else if (counter::torture == 3) {
+            } else if (counter.torture == 3) {
                 ViewSetxy(imageTorture, -1, -1);
-            } else if (counter::torture == 4) {
+            } else if (counter.torture == 4) {
                 ViewSetxy(imageTorture, -2, 0);
-            } else if (counter::torture == 5) {
+            } else if (counter.torture == 5) {
                 ViewSetxy(imageTorture, 0, -2);
             }
-            counter::hpTorture -= 3;
-            counter::torture += 1;
-            if (counter::torture >= 6) {
-                counter::torture = 0;
+            counter.hpTorture -= 3;
+            counter.torture += 1;
+            if (counter.torture >= 6) {
+                counter.torture = 0;
             }
             tortureHealth();
-        } else if (currentScreen == SCREEN_STORY_TORTURE && !state::torture) {
-            counter::hpTorture += 1;
+        } else if (currentScreen == SCREEN_STORY_TORTURE && !isTorture) {
+            counter.hpTorture += 1;
             tortureHealth();
             TextSetText(textTorture, "");
         }
