@@ -5,15 +5,20 @@ const int PLAYER_BULLETS_PER_BULLET_TYPE = 15;
 const int ENEMY_BULLETS_PER_BULLET_TYPE = 5;
 
 struct PlayerShip {
-	int possibleHealth;
+    int typeOfShip;
+    int view;
+    int speed;
+    int possibleHealth;
 
-	int bulletOneOffsetXCoord, bulletOneOffsetYCoord;
-	int rocketOffsetXCoord, rocketOffsetYCoord;
-	int bulletTwoOffsetXCoord, bulletTwoOffsetYCoord;
+    int widthOne, widthTwo;
+
+    int bulletOneOffsetXCoord, bulletOneOffsetYCoord;
+    int rocketOffsetXCoord, rocketOffsetYCoord;
+    int bulletTwoOffsetXCoord, bulletTwoOffsetYCoord;
 
     int bulletOne[PLAYER_BULLETS_PER_BULLET_TYPE];
-	int rocket[PLAYER_BULLETS_PER_BULLET_TYPE];
-	int bulletTwo[PLAYER_BULLETS_PER_BULLET_TYPE];
+    int rocket[PLAYER_BULLETS_PER_BULLET_TYPE];
+    int bulletTwo[PLAYER_BULLETS_PER_BULLET_TYPE];
 };
 
 class Ship {
