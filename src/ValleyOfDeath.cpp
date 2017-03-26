@@ -1,6 +1,6 @@
 /*
  * Bailey Thompson
- * Valley Of Death (1.3.5)
+ * Valley Of Death (1.3.6)
  * 25 March 2017
  * Info: This is a scrolling shooter iPhone app.
  */
@@ -43,8 +43,8 @@ MasterBoss ten;
 Screen currentScreen, previousScreen;
 
 char font;
-int xp, ship, highscore, health, set, level, shipView, mX, mY, newX, newY, music, shipSpeed, rank;
-int width1, width2, text1, text2, text3, imageTorture, hpTorture, textTorture, healthImage;
+int xp, highscore, health, set, level, mX, mY, newX, newY, music, rank;
+int text1, text2, text3, imageTorture, hpTorture, textTorture, healthImage;
 
 namespace counter {
     int sound, bulletTime, shipMove, bulletMove, hpTorture, torture, shipAction, healthRegen, enemyExplosion[10];
@@ -98,10 +98,10 @@ void loadGame() {
     }
     if (!fileShip) {
         fileShip = FileCreate("Ship.txt");
-        ship = 1;
+        player.typeOfShip = 1;
     } else {
         FileRead(fileShip, fileBuffer, 5);
-        ship = intFileToGame(fileBuffer);
+        player.typeOfShip = intFileToGame(fileBuffer);
     }
     if (!fileHighscore) {
         fileHighscore = FileCreate("Highscore.txt");
@@ -805,80 +805,80 @@ int onStoryMenuTouch(int id, int event, int x, int y) {
 
 void shipType() {
     const int LIFT = 10;
-    ViewSetxy(shipView, -200, -200);
-    player.possibleHealth = round((18 + 2 * ship) * PLAYER_HEALTH_RATIO / 10);
-    switch (ship) {
+    ViewSetxy(player.view, -200, -200);
+    player.possibleHealth = round((18 + 2 * player.typeOfShip) * PLAYER_HEALTH_RATIO / 10);
+    switch (player.typeOfShip) {
         case 1:
-            shipView = ViewAdd(container::endless, "Images/Ship_1.png", -200, -200);
+            player.view = ViewAdd(container::endless, "Images/Ship_1.png", -200, -200);
             player.bulletOneOffsetXCoord = 43;
             player.bulletOneOffsetYCoord = 11 - LIFT;
-            shipSpeed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
-            width1 = 9;
-            width2 = 76;
+            player.speed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
+			player.widthOne = 9;
+			player.widthTwo = 76;
             break;
         case 2:
-            shipView = ViewAdd(container::endless, "Images/Ship_2.png", -200, -200);
+            player.view = ViewAdd(container::endless, "Images/Ship_2.png", -200, -200);
             player.bulletOneOffsetXCoord = 43;
             player.bulletOneOffsetYCoord = 0 - LIFT;
-            shipSpeed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
-            width1 = 15;
-            width2 = 69;
+            player.speed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
+            player.widthOne = 15;
+            player.widthTwo = 69;
             break;
         case 3:
-            shipView = ViewAdd(container::endless, "Images/Ship_3.png", -200, -200);
+            player.view = ViewAdd(container::endless, "Images/Ship_3.png", -200, -200);
             player.bulletOneOffsetXCoord = 43;
             player.bulletOneOffsetYCoord = 6 - LIFT;
-            shipSpeed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
-            width1 = 18;
-            width2 = 66;
+            player.speed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
+            player.widthOne = 18;
+            player.widthTwo = 66;
             break;
         case 4:
-            shipView = ViewAdd(container::endless, "Images/Ship_4.png", -200, -200);
+            player.view = ViewAdd(container::endless, "Images/Ship_4.png", -200, -200);
             player.bulletOneOffsetXCoord = 43;
             player.bulletOneOffsetYCoord = 0 - LIFT;
-            shipSpeed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
-            width1 = -3;
-            width2 = 87;
+            player.speed = round(7 * PLAYER_FLY_SPEED_RATIO / 10);
+            player.widthOne = -3;
+            player.widthTwo = 87;
             break;
         case 5:
-            shipView = ViewAdd(container::endless, "Images/Ship_5.png", -200, -200);
+            player.view = ViewAdd(container::endless, "Images/Ship_5.png", -200, -200);
             player.bulletOneOffsetXCoord = 31;
             player.bulletOneOffsetYCoord = 23 - LIFT;
             player.bulletTwoOffsetXCoord = 54;
             player.bulletTwoOffsetYCoord = 23 - LIFT;
-            shipSpeed = round(6 * PLAYER_FLY_SPEED_RATIO / 10);
-            width1 = 13;
-            width2 = 71;
+            player.speed = round(6 * PLAYER_FLY_SPEED_RATIO / 10);
+            player.widthOne = 13;
+            player.widthTwo = 71;
             break;
         case 6:
-            shipView = ViewAdd(container::endless, "Images/Ship_6.png", -200, -200);
+            player.view = ViewAdd(container::endless, "Images/Ship_6.png", -200, -200);
             player.bulletOneOffsetXCoord = 15;
             player.bulletOneOffsetYCoord = 41 - LIFT;
             player.bulletTwoOffsetXCoord = 68;
             player.bulletTwoOffsetYCoord = 41 - LIFT;
-            shipSpeed = round(6 * PLAYER_FLY_SPEED_RATIO / 10);
-            width1 = 3;
-            width2 = 81;
+            player.speed = round(6 * PLAYER_FLY_SPEED_RATIO / 10);
+            player.widthOne = 3;
+            player.widthTwo = 81;
             break;
         case 7:
-            shipView = ViewAdd(container::endless, "Images/Ship_7.png", -200, -200);
+            player.view = ViewAdd(container::endless, "Images/Ship_7.png", -200, -200);
             player.rocketOffsetXCoord = 42;
             player.rocketOffsetYCoord = 11 - LIFT;
-            shipSpeed = round(5 * PLAYER_FLY_SPEED_RATIO / 10);
-            width1 = -2;
-            width2 = 86;
+            player.speed = round(5 * PLAYER_FLY_SPEED_RATIO / 10);
+            player.widthOne = -2;
+            player.widthTwo = 86;
             break;
         case 8:
-            shipView = ViewAdd(container::endless, "Images/Ship_8.png", -200, -200);
+            player.view = ViewAdd(container::endless, "Images/Ship_8.png", -200, -200);
             player.bulletOneOffsetXCoord = 12;
             player.bulletOneOffsetYCoord = 40 - LIFT;
             player.rocketOffsetXCoord = 42;
             player.rocketOffsetYCoord = 2 - LIFT;
             player.bulletTwoOffsetXCoord = 74;
             player.bulletTwoOffsetYCoord = 40 - LIFT;
-            shipSpeed = round(4 * PLAYER_FLY_SPEED_RATIO / 10);
-            width1 = -3;
-            width2 = 86;
+            player.speed = round(4 * PLAYER_FLY_SPEED_RATIO / 10);
+            player.widthOne = -3;
+            player.widthTwo = 86;
             break;
     }
 }
@@ -908,7 +908,7 @@ bool isShipUnlocked(int id) {
 }
 int unlocks(int id, int event, int x, int y) {
     if (event == 3 && isShipUnlocked(id)) {
-            ship = id;
+            player.typeOfShip = id;
             shipType();
             currentScreen = SCREEN_MENU;
             screenSwitch();
@@ -1049,7 +1049,7 @@ int options(int id, int event, int x, int y) {
         screenSwitch();
     } else if (id == 4 && event == 3) {
         xp = 0;
-        ship = 1;
+        player.typeOfShip = 1;
         highscore = 0;
         shipType();
         currentScreen = SCREEN_MENU;
@@ -1669,7 +1669,7 @@ void AppExit() {
     FileClose(fileXp);
     //fileShip
     int fileShip = FileOpen("Ship.txt");
-    intGameToFile(ship, fileBuffer);
+    intGameToFile(player.typeOfShip, fileBuffer);
     FileWrite(fileShip, fileBuffer, 5);
     FileClose(fileShip);
     //fileHighscore
@@ -1785,16 +1785,16 @@ void soundSwitch() {
 }
 void mShipMove() {
     //move x
-    if (newX > mX + shipSpeed / 2) {
-        mX += shipSpeed;
-    } else if (newX + shipSpeed / 2 < mX) {
-        mX -= shipSpeed;
+    if (newX > mX + player.speed / 2) {
+        mX += player.speed;
+    } else if (newX + player.speed / 2 < mX) {
+        mX -= player.speed;
     }
     //move y
-    if (newY > mY + shipSpeed / 2) {
-        mY += shipSpeed;
-    } else if (newY + shipSpeed / 2 < mY) {
-        mY -= shipSpeed;
+    if (newY > mY + player.speed / 2) {
+        mY += player.speed;
+    } else if (newY + player.speed / 2 < mY) {
+        mY -= player.speed;
     }
     //stop x
     if (mX < 0) {
@@ -1809,7 +1809,7 @@ void mShipMove() {
         mY = 386;
     }
     //set ship view
-    ViewSetxy(shipView, mX, mY);
+    ViewSetxy(player.view, mX, mY);
 }
 void bulletTime() {
     int x, y, x2, y2, x3, y3;
@@ -1817,13 +1817,13 @@ void bulletTime() {
     for (int i = 1; i <= 15; i++) {
         if (counter::bulletTime == i * PLAYER_BULLET_COOLDOWN_SPEED) {
             used = true;
-            if (ship == 8) {
+            if (player.typeOfShip == 8) {
                 ViewSetxy(player.bulletOne[i - 1], mX + player.bulletOneOffsetXCoord, mY + player.bulletOneOffsetYCoord);
                 ViewSetxy(player.rocket[i - 1], mX + player.rocketOffsetXCoord, mY + player.rocketOffsetYCoord);
                 ViewSetxy(player.bulletTwo[i - 1], mX + player.bulletTwoOffsetXCoord, mY + player.bulletTwoOffsetYCoord);
-            } else if (ship == 7) {
+            } else if (player.typeOfShip == 7) {
                 ViewSetxy(player.rocket[i - 1], mX + player.rocketOffsetXCoord, mY + player.rocketOffsetYCoord);
-            } else if (ship == 6 || ship == 5) {
+            } else if (player.typeOfShip == 6 || player.typeOfShip == 5) {
                 ViewSetxy(player.bulletOne[i - 1], mX + player.bulletOneOffsetXCoord, mY + player.bulletOneOffsetYCoord);
                 ViewSetxy(player.bulletTwo[i - 1], mX + player.bulletTwoOffsetXCoord, mY + player.bulletTwoOffsetYCoord);
             } else {
@@ -3157,7 +3157,7 @@ void doEnemyShipShoot() {
                 if (yCoord < 600) {
                     one[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
                 }
-                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + width1 && xCoord < mX + width2) {
+                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + player.widthOne && xCoord < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     one[i].setBullet(j, 600, 600);
@@ -3172,7 +3172,7 @@ void doEnemyShipShoot() {
                 if (yCoord < 600) {
                     two[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
                 }
-                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + width1 && xCoord < mX + width2) {
+                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + player.widthOne && xCoord < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     two[i].setBullet(j, 600, 600);
@@ -3187,7 +3187,7 @@ void doEnemyShipShoot() {
                 if (yCoord < 600) {
                     three[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
                 }
-                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + width1 && xCoord < mX + width2) {
+                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + player.widthOne && xCoord < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     three[i].setBullet(j, 600, 600);
@@ -3202,7 +3202,7 @@ void doEnemyShipShoot() {
                 if (yCoord < 600) {
                     four[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
                 }
-                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + width1 && xCoord < mX + width2) {
+                if (yCoord > mY && yCoord < mY + 94 && xCoord > mX + player.widthOne && xCoord < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     four[i].setBullet(j, 600, 600);
@@ -3220,12 +3220,12 @@ void doEnemyShipShoot() {
                     five[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
                     five[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
                 }
-                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
+                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     five[i].setBulletOne(j, 600, 600);
                 }
-                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
+                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     five[i].setBulletTwo(j, 600, 600);
@@ -3243,12 +3243,12 @@ void doEnemyShipShoot() {
                     six[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
                     six[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
                 }
-                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
+                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     six[i].setBulletOne(j, 600, 600);
                 }
-                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
+                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     six[i].setBulletTwo(j, 600, 600);
@@ -3263,7 +3263,7 @@ void doEnemyShipShoot() {
                 if (yCoordTwo < 600) {
                     seven[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
                 }
-                if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + width1 && xCoordTwo < mX + width2) {
+                if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + player.widthOne && xCoordTwo < mX + player.widthTwo) {
                     health -= 3;
                     state::healthUpdate = true;
                     seven[i].setRocket(j, 600, 600);
@@ -3284,17 +3284,17 @@ void doEnemyShipShoot() {
                     eight[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
                     eight[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
                 }
-                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
+                if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     eight[i].setBulletOne(j, 600, 600);
                 }
-                if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + width1 && xCoordTwo < mX + width2) {
+                if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + player.widthOne && xCoordTwo < mX + player.widthTwo) {
                     health -= 3;
                     state::healthUpdate = true;
                     eight[i].setRocket(j, 600, 600);
                 }
-                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
+                if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
                     health -= 1;
                     state::healthUpdate = true;
                     eight[i].setBulletTwo(j, 600, 600);
@@ -3314,17 +3314,17 @@ void doEnemyShipShoot() {
                 nine.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
                 nine.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
             }
-            if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
+            if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
                 health -= 1;
                 state::healthUpdate = true;
                 nine.setBulletOne(j, 600, 600);
             }
-            if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + width1 && xCoordTwo < mX + width2) {
+            if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + player.widthOne && xCoordTwo < mX + player.widthTwo) {
                 health -= 3;
                 state::healthUpdate = true;
                 nine.setRocket(j, 600, 600);
             }
-            if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
+            if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
                 health -= 1;
                 state::healthUpdate = true;
                 nine.setBulletTwo(j, 600, 600);
@@ -3343,17 +3343,17 @@ void doEnemyShipShoot() {
                 ten.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
                 ten.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
             }
-            if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + width1 && xCoordOne < mX + width2) {
+            if (yCoordOne > mY && yCoordOne < mY + 94 && xCoordOne > mX + player.widthOne && xCoordOne < mX + player.widthTwo) {
                 health -= 1;
                 state::healthUpdate = true;
                 ten.setBulletOne(j, 600, 600);
             }
-            if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + width1 && xCoordTwo < mX + width2) {
+            if (yCoordTwo > mY && yCoordTwo < mY + 94 && xCoordTwo > mX + player.widthOne && xCoordTwo < mX + player.widthTwo) {
                 health -= 3;
                 state::healthUpdate = true;
                 ten.setRocket(j, 600, 600);
             }
-            if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + width1 && xCoordThree < mX + width2) {
+            if (yCoordThree > mY && yCoordThree < mY + 94 && xCoordThree > mX + player.widthOne && xCoordThree < mX + player.widthTwo) {
                 health -= 1;
                 state::healthUpdate = true;
                 ten.setBulletTwo(j, 600, 600);
@@ -3614,7 +3614,7 @@ void enemyDied() {
 void shipCollision() {
     for (int i = 0; i < 10; i++) {
         //ship 1
-        if (mX + width1 < one[i].getXCoord() + 76 && mX + width2 > one[i].getXCoord() + 18 
+        if (mX + player.widthOne < one[i].getXCoord() + 76 && mX + player.widthTwo > one[i].getXCoord() + 18 
             && mY < one[i].getYCoord() + 94 && mY + 94 > one[i].getYCoord()) {
             if (one[i].getHealth() > 0) {
                 one[i].damage(3);
@@ -3623,7 +3623,7 @@ void shipCollision() {
             }
         }
         //ship 2
-        if (mX + width1 < two[i].getXCoord() + 69 && mX + width2 > two[i].getXCoord() + 24 
+        if (mX + player.widthOne < two[i].getXCoord() + 69 && mX + player.widthTwo > two[i].getXCoord() + 24 
             && mY < two[i].getYCoord() + 94 && mY + 94 > two[i].getYCoord()) {
             if (two[i].getHealth() > 0) {
                 two[i].damage(3);
@@ -3632,7 +3632,7 @@ void shipCollision() {
             }
         }
         //ship 3
-        if (mX + width1 < three[i].getXCoord() + 66 && mX + width2 > three[i].getXCoord() + 27 
+        if (mX + player.widthOne < three[i].getXCoord() + 66 && mX + player.widthTwo > three[i].getXCoord() + 27 
             && mY < three[i].getYCoord() + 94 && mY + 94 > three[i].getYCoord()) {
             if (three[i].getHealth() > 0) {
                 three[i].damage(3);
@@ -3641,7 +3641,7 @@ void shipCollision() {
             }
         }
         //ship 4
-        if (mX + width1 < four[i].getXCoord() + 87 && mX + width2 > four[i].getXCoord() + 6 
+        if (mX + player.widthOne < four[i].getXCoord() + 87 && mX + player.widthTwo > four[i].getXCoord() + 6 
             && mY < four[i].getYCoord() + 94 && mY + 94 > four[i].getYCoord()) {
             if (four[i].getHealth() > 0) {
                 four[i].damage(3);
@@ -3652,7 +3652,7 @@ void shipCollision() {
     }
     for (int i = 0; i < 5; i++) {
         //ship 5
-        if (mX + width1 < five[i].getXCoord() + 71 && mX + width2 > five[i].getXCoord() + 22 
+        if (mX + player.widthOne < five[i].getXCoord() + 71 && mX + player.widthTwo > five[i].getXCoord() + 22 
             && mY < five[i].getYCoord() + 94 && mY + 94 > five[i].getYCoord()) {
             if (five[i].getHealth() > 0) {
                 five[i].damage(3);
@@ -3661,7 +3661,7 @@ void shipCollision() {
             }
         }
         //ship 6
-        if (mX + width1 < six[i].getXCoord() + 81 && mX + width2 > six[i].getXCoord() + 12 
+        if (mX + player.widthOne < six[i].getXCoord() + 81 && mX + player.widthTwo > six[i].getXCoord() + 12 
             && mY < six[i].getYCoord() + 94 && mY + 94 > six[i].getYCoord()) {
             if (six[i].getHealth() > 0) {
                 six[i].damage(3);
@@ -3670,7 +3670,7 @@ void shipCollision() {
             }
         }
         //ship 7
-        if (mX + width1 < seven[i].getXCoord() + 86 && mX + width2 > seven[i].getXCoord() + 7 
+        if (mX + player.widthOne < seven[i].getXCoord() + 86 && mX + player.widthTwo > seven[i].getXCoord() + 7 
             && mY < seven[i].getYCoord() + 94 && mY + 94 > seven[i].getYCoord()) {
             if (seven[i].getHealth() > 0) {
                 seven[i].damage(3);
@@ -3679,7 +3679,7 @@ void shipCollision() {
             }
         }
         //ship 8
-        if (mX + width1 < eight[i].getXCoord() + 86 && mX + width2 > eight[i].getXCoord() + 6 
+        if (mX + player.widthOne < eight[i].getXCoord() + 86 && mX + player.widthTwo > eight[i].getXCoord() + 6 
             && mY < eight[i].getYCoord() + 94 && mY + 94 > eight[i].getYCoord()) {
             if (eight[i].getHealth() > 0) {
                 eight[i].damage(3);
@@ -3689,7 +3689,7 @@ void shipCollision() {
         }
     }
     //ship 9
-    if (mX + width1 < nine.getXCoord() + 142 && mX + width2 > nine.getXCoord() 
+    if (mX + player.widthOne < nine.getXCoord() + 142 && mX + player.widthTwo > nine.getXCoord() 
         && mY < nine.getYCoord() + 240 && mY + 94 > nine.getYCoord()) {
         if (nine.getHealth() > 0) {
             nine.damage(3);
@@ -3698,7 +3698,7 @@ void shipCollision() {
         }
     }
     //ship 10
-    if (mX + width1 < ten.getXCoord() + 150 && mX + width2 > ten.getXCoord() 
+    if (mX + player.widthOne < ten.getXCoord() + 150 && mX + player.widthTwo > ten.getXCoord() 
         && mY < ten.getYCoord() + 240 && mY + 94 > ten.getYCoord()) {
         if (ten.getHealth() > 0) {
             ten.damage(3);
