@@ -6,11 +6,15 @@ const int ENEMY_BULLETS_PER_BULLET_TYPE = 5;
 
 struct PlayerShip {
     int typeOfShip;
-    int view;
+    int instance;
     int speed;
+    int health;
     int possibleHealth;
 
     int widthOne, widthTwo;
+
+    int currentXCoord, currentYCoord;
+    int newXCoord, newYCoord;
 
     int bulletOneOffsetXCoord, bulletOneOffsetYCoord;
     int rocketOffsetXCoord, rocketOffsetYCoord;
