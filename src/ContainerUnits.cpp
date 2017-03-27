@@ -470,4 +470,3 @@ void containerSixSeven() {
     ViewAdd(container.story7b2, "Images/Pause.png", 270, 20, onPause, 1);
     ViewAdd(container.story7b2, "Images/btnOkBig.png", 20, 380, onStoryLevelSeven, 3);
 }
-
