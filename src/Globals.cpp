@@ -5,14 +5,14 @@
 #include "GlobalStructs.h"
 
 PlayerShip player;
-SingleShip one[AMOUNT_OF_TYPE_ONE_SHIPS];
-SingleShip two[AMOUNT_OF_TYPE_ONE_SHIPS];
-SingleShip three[AMOUNT_OF_TYPE_ONE_SHIPS];
-SingleShip four[AMOUNT_OF_TYPE_ONE_SHIPS];
-DoubleShip five[AMOUNT_OF_TYPE_TWO_SHIPS];
-DoubleShip six[AMOUNT_OF_TYPE_TWO_SHIPS];
-RocketShip seven[AMOUNT_OF_TYPE_TWO_SHIPS];
-MasterShip eight[AMOUNT_OF_TYPE_TWO_SHIPS];
+SingleShip one[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
+SingleShip two[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
+SingleShip three[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
+SingleShip four[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
+DoubleShip five[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
+DoubleShip six[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
+RocketShip seven[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
+MasterShip eight[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
 MiniBoss nine;
 MasterBoss ten;
 

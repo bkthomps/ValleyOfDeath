@@ -25,13 +25,18 @@ int onResume(int id, int event, int x, int y) {
 int onReturnToMenu(int id, int event, int x, int y) {
     if (event == 3) {
         reset();
-        if (previousScreen == SCREEN_ENDLESS) {
-            doUpdateHighscore();
-            currentScreen = SCREEN_HIGHSCORE;
-        } else if (previousScreen == SCREEN_UNLOCKS || previousScreen == SCREEN_OPTIONS) {
-            currentScreen = SCREEN_MENU;
-        } else {
-            currentScreen = SCREEN_DIED;
+        switch (previousScreen) {
+            case SCREEN_ENDLESS:
+                doUpdateHighscore();
+                currentScreen = SCREEN_HIGHSCORE;
+                break;
+            case SCREEN_UNLOCKS:
+            case SCREEN_OPTIONS:
+                currentScreen = SCREEN_MENU;
+                break;
+            default:
+                currentScreen = SCREEN_DIED;
+                break;
         }
         screenSwitch();
     }

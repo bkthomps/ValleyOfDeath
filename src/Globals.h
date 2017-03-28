@@ -7,14 +7,14 @@
 #include "Screens.h"
 
 extern PlayerShip player;
-extern SingleShip one[AMOUNT_OF_TYPE_ONE_SHIPS];
-extern SingleShip two[AMOUNT_OF_TYPE_ONE_SHIPS];
-extern SingleShip three[AMOUNT_OF_TYPE_ONE_SHIPS];
-extern SingleShip four[AMOUNT_OF_TYPE_ONE_SHIPS];
-extern DoubleShip five[AMOUNT_OF_TYPE_TWO_SHIPS];
-extern DoubleShip six[AMOUNT_OF_TYPE_TWO_SHIPS];
-extern RocketShip seven[AMOUNT_OF_TYPE_TWO_SHIPS];
-extern MasterShip eight[AMOUNT_OF_TYPE_TWO_SHIPS];
+extern SingleShip one[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
+extern SingleShip two[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
+extern SingleShip three[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
+extern SingleShip four[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
+extern DoubleShip five[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
+extern DoubleShip six[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
+extern RocketShip seven[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
+extern MasterShip eight[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
 extern MiniBoss nine;
 extern MasterBoss ten;
 

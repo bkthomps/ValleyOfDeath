@@ -174,32 +174,39 @@ int onStoryLevelFour(int id, int event, int x, int y) {
 
 int onStoryLevelFive(int id, int event, int x, int y) {
     if (event == 3) {
-        if (id == 1 && !isStoryDate) {
-            currentScreen = SCREEN_STORY_5A3;
-        } else if (id == 1 && isStoryDate) {
-            currentScreen = SCREEN_STORY_5A2;
-        } else if (id == 2) {
-            isStoryMarry = true;
-            currentScreen = SCREEN_STORY_5A3;
-        } else if (id == 8) {
-            isStoryMarry = false;
-            currentScreen = SCREEN_STORY_5A3;
-        } else if (id == 3) {
-            currentScreen = SCREEN_STORY_5B4;
-        } else if (id == 4) {
-            currentScreen = SCREEN_STORY_5A5;
-        } else if (id == 5) {
-            currentScreen = SCREEN_STORY_5A6;
-        } else if (id == 6) {
-            currentScreen = SCREEN_STORY_5B6;
+        switch (id) {
+            case 1:
+                currentScreen = (isStoryDate) ? SCREEN_STORY_5A2 : SCREEN_STORY_5A3;
+                break;
+            case 2:
+                isStoryMarry = true;
+                currentScreen = SCREEN_STORY_5A3;
+                break;
+            case 3:
+                currentScreen = SCREEN_STORY_5B4;
+                break;
+            case 4:
+                currentScreen = SCREEN_STORY_5A5;
+                break;
+            case 5:
+                currentScreen = SCREEN_STORY_5A6;
+                break;
+            case 6:
+                currentScreen = SCREEN_STORY_5B6;
+                break;
+            case 7:
+                currentScreen = SCREEN_STORY_BATTLE_5;
+                screenSwitch();
+                reset();
+                set = 4;
+                level = 1;
+                break;
+            case 8:
+                isStoryMarry = false;
+                currentScreen = SCREEN_STORY_5A3;
+                break;
         }
-        if (id == 7) {
-            currentScreen = SCREEN_STORY_BATTLE_5;
-            screenSwitch();
-            reset();
-            set = 4;
-            level = 1;
-        } else {
+        if (id != 7) {
             screenSwitch();
         }
     }

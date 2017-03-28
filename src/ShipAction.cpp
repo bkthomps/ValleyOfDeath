@@ -25,46 +25,46 @@ void doEnemyShipMove() {
             break;
         case 6:
             counter.shipMove = 0;
-            level += 1;
+            level++;
             set = 1;
             break;
     }
 }
 
 void enemyShipMove() {
-    for (int i = 0; i < 10; i++) {
-        //y cords
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
+        // y cords
         one[i].setYCoord(ViewGety(one[i].getInstance()));
         two[i].setYCoord(ViewGety(two[i].getInstance()));
         three[i].setYCoord(ViewGety(three[i].getInstance()));
         four[i].setYCoord(ViewGety(four[i].getInstance()));
-        //x cords
+        // x cords
         one[i].setXCoord(ViewGetx(one[i].getInstance()));
         two[i].setXCoord(ViewGetx(two[i].getInstance()));
         three[i].setXCoord(ViewGetx(three[i].getInstance()));
         four[i].setXCoord(ViewGetx(four[i].getInstance()));
     }
-    for (int i = 0; i < 5; i++) {
-        //y cords
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
+        // y cords
         five[i].setYCoord(ViewGety(five[i].getInstance()));
         six[i].setYCoord(ViewGety(six[i].getInstance()));
         seven[i].setYCoord(ViewGety(seven[i].getInstance()));
         eight[i].setYCoord(ViewGety(eight[i].getInstance()));
-        //x cords
+        // x cords
         five[i].setXCoord(ViewGetx(five[i].getInstance()));
         six[i].setXCoord(ViewGetx(six[i].getInstance()));
         seven[i].setXCoord(ViewGetx(seven[i].getInstance()));
         eight[i].setXCoord(ViewGetx(eight[i].getInstance()));
     }
-    //x cords
+    // x cords
     nine.setXCoord(ViewGetx(nine.getInstance()));
-    //y cords
+    // y cords
     nine.setYCoord(ViewGety(nine.getInstance()));
-    //x cords
+    // x cords
     ten.setXCoord(ViewGetx(ten.getInstance()));
-    //y cords
+    // y cords
     ten.setYCoord(ViewGety(ten.getInstance()));
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
         if (one[i].getYCoord() < 600) {
             ViewSetxy(one[i].getInstance(), one[i].getXCoord(), one[i].getYCoord() + ENEMY_FLY_SPEED);
         }
@@ -78,7 +78,7 @@ void enemyShipMove() {
             ViewSetxy(four[i].getInstance(), four[i].getXCoord(), four[i].getYCoord() + ENEMY_FLY_SPEED);
         }
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
         if (five[i].getYCoord() < 600) {
             ViewSetxy(five[i].getInstance(), five[i].getXCoord(), five[i].getYCoord() + ENEMY_FLY_SPEED);
         }
@@ -169,17 +169,27 @@ bool shipInAction(int ship) {
 }
 
 void doEnemyShipShoot() {
-    for (int i = 0; i < 5; i++) {
+    bulletFirstShot();
+    if (counter.bulletMove >= 5 * ENEMY_BULLET_COOLDOWN_SPEED) {
+        counter.bulletMove = 0;
+    }
+    if (counter.bulletMove % ENEMY_BULLET_COOLDOWN_SPEED != 0) {
+        bulletHit();
+    }
+}
+
+void bulletFirstShot() {
+    for (int i = 0; i < ENEMY_BULLETS_PER_BULLET_TYPE; i++) {
         if (counter.bulletMove == (i + 1) * ENEMY_BULLET_COOLDOWN_SPEED) {
-            //ship 1-4
-            for (int j = 0; j < 10; j++) {
+            // ship 1-4
+            for (int j = 0; j < AMOUNT_OF_SHIPS_TYPE_1_TO_4; j++) {
                 one[j].setBullet(i, one[j].getXCoord() + 43, one[j].getYCoord() + 83);
                 two[j].setBullet(i, two[j].getXCoord() + 43, two[j].getYCoord() + 94);
                 three[j].setBullet(i, three[j].getXCoord() + 43, three[j].getYCoord() + 88);
                 four[j].setBullet(i, four[j].getXCoord() + 43, four[j].getYCoord() + 94);
             }
-            //ship 5-8
-            for (int j = 0; j < 5; j++) {
+            // ship 5-8
+            for (int j = 0; j < AMOUNT_OF_SHIPS_TYPE_5_TO_8; j++) {
                 five[j].setBulletOne(i, five[j].getXCoord() + 31, five[j].getYCoord() + 71);
                 five[j].setBulletTwo(i, five[j].getXCoord() + 54, five[j].getYCoord() + 71);
                 six[j].setBulletOne(i, six[j].getXCoord() + 15, six[j].getYCoord() + 53);
@@ -189,328 +199,362 @@ void doEnemyShipShoot() {
                 eight[j].setRocket(i, eight[j].getXCoord() + 42, eight[j].getYCoord() + 92);
                 eight[j].setBulletTwo(i, eight[j].getXCoord() + 74, eight[j].getYCoord() + 54);
             }
-            //ship 9
+            // ship 9
             nine.setBulletOne(i, nine.getXCoord() + 3, nine.getYCoord() + 83);
             nine.setRocket(i, nine.getXCoord() + 66, nine.getYCoord() + 230);
             nine.setBulletTwo(i, nine.getXCoord() + 130, nine.getYCoord() + 83);
-            //ship 10
+            // ship 10
             ten.setBulletOne(i, ten.getXCoord() + 13, ten.getYCoord() + 83);
             ten.setRocket(i, ten.getXCoord() + 69, ten.getYCoord() + 233);
             ten.setBulletTwo(i, ten.getXCoord() + 129, ten.getYCoord() + 83);
         }
     }
-    if (counter.bulletMove >= 5 * ENEMY_BULLET_COOLDOWN_SPEED) {
-        counter.bulletMove = 0;
+}
+
+void bulletHit() {
+    // 1
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
+        for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+            const int xCoord = ViewGetx(one[i].getBullet(j));
+            const int yCoord = ViewGety(one[i].getBullet(j));
+            if (yCoord < 600) {
+                one[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
+            }
+            if (isBulletHit(xCoord, yCoord)) {
+                player.health -= 1;
+                isHealthUpdate = true;
+                one[i].setBullet(j, 600, 600);
+            }
+        }
     }
-    if (counter.bulletMove % ENEMY_BULLET_COOLDOWN_SPEED != 0) {
-        //1
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 5; j++) {
-                const int xCoord = ViewGetx(one[i].getBullet(j));
-                const int yCoord = ViewGety(one[i].getBullet(j));
-                if (yCoord < 600) {
-                    one[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
-                }
-                if (yCoord > player.currentYCoord && yCoord < player.currentYCoord + 94 && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    one[i].setBullet(j, 600, 600);
-                }
+    // 2
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
+        for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+            const int xCoord = ViewGetx(two[i].getBullet(j));
+            const int yCoord = ViewGety(two[i].getBullet(j));
+            if (yCoord < 600) {
+                two[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
             }
-        }
-        //2
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 5; j++) {
-                const int xCoord = ViewGetx(two[i].getBullet(j));
-                const int yCoord = ViewGety(two[i].getBullet(j));
-                if (yCoord < 600) {
-                    two[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
-                }
-                if (yCoord > player.currentYCoord && yCoord < player.currentYCoord + 94 && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    two[i].setBullet(j, 600, 600);
-                }
-            }
-        }
-        //3
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 5; j++) {
-                const int xCoord = ViewGetx(three[i].getBullet(j));
-                const int yCoord = ViewGety(three[i].getBullet(j));
-                if (yCoord < 600) {
-                    three[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
-                }
-                if (yCoord > player.currentYCoord && yCoord < player.currentYCoord + 94 && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    three[i].setBullet(j, 600, 600);
-                }
-            }
-        }
-        //4
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 5; j++) {
-                const int xCoord = ViewGetx(four[i].getBullet(j));
-                const int yCoord = ViewGety(four[i].getBullet(j));
-                if (yCoord < 600) {
-                    four[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
-                }
-                if (yCoord > player.currentYCoord && yCoord < player.currentYCoord + 94 && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    four[i].setBullet(j, 600, 600);
-                }
-            }
-        }
-        //5
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                const int xCoordOne = ViewGetx(five[i].getBulletOne(j));
-                const int yCoordOne = ViewGety(five[i].getBulletOne(j));
-                const int xCoordThree = ViewGetx(five[i].getBulletTwo(j));
-                const int yCoordThree = ViewGety(five[i].getBulletTwo(j));
-                if (yCoordOne < 600 || yCoordThree < 600) {
-                    five[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
-                    five[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
-                }
-                if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    five[i].setBulletOne(j, 600, 600);
-                }
-                if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    five[i].setBulletTwo(j, 600, 600);
-                }
-            }
-        }
-        //6
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                const int xCoordOne = ViewGetx(six[i].getBulletOne(j));
-                const int yCoordOne = ViewGety(six[i].getBulletOne(j));
-                const int xCoordThree = ViewGetx(six[i].getBulletTwo(j));
-                const int yCoordThree = ViewGety(six[i].getBulletTwo(j));
-                if (yCoordOne < 600 || yCoordThree < 600) {
-                    six[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
-                    six[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
-                }
-                if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    six[i].setBulletOne(j, 600, 600);
-                }
-                if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    six[i].setBulletTwo(j, 600, 600);
-                }
-            }
-        }
-        //7
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                const int xCoordTwo = ViewGetx(seven[i].getRocket(j));
-                const int yCoordTwo = ViewGety(seven[i].getRocket(j));
-                if (yCoordTwo < 600) {
-                    seven[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
-                }
-                if (yCoordTwo > player.currentYCoord && yCoordTwo < player.currentYCoord + 94 && xCoordTwo > player.currentXCoord + player.widthOne && xCoordTwo < player.currentXCoord + player.widthTwo) {
-                    player.health -= 3;
-                    isHealthUpdate = true;
-                    seven[i].setRocket(j, 600, 600);
-                }
-            }
-        }
-        //8
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                const int xCoordOne = ViewGetx(eight[i].getBulletOne(j));
-                const int yCoordOne = ViewGety(eight[i].getBulletOne(j));
-                const int xCoordTwo = ViewGetx(eight[i].getRocket(j));
-                const int yCoordTwo = ViewGety(eight[i].getRocket(j));
-                const int xCoordThree = ViewGetx(eight[i].getBulletTwo(j));
-                const int yCoordThree = ViewGety(eight[i].getBulletTwo(j));
-                if (yCoordOne < 600 || yCoordTwo < 600 || yCoordThree < 600) {
-                    eight[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
-                    eight[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
-                    eight[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
-                }
-                if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    eight[i].setBulletOne(j, 600, 600);
-                }
-                if (yCoordTwo > player.currentYCoord && yCoordTwo < player.currentYCoord + 94 && xCoordTwo > player.currentXCoord + player.widthOne && xCoordTwo < player.currentXCoord + player.widthTwo) {
-                    player.health -= 3;
-                    isHealthUpdate = true;
-                    eight[i].setRocket(j, 600, 600);
-                }
-                if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
-                    player.health -= 1;
-                    isHealthUpdate = true;
-                    eight[i].setBulletTwo(j, 600, 600);
-                }
-            }
-        }
-        //9
-        for (int j = 0; j < 5; j++) {
-            const int xCoordOne = ViewGetx(nine.getBulletOne(j));
-            const int yCoordOne = ViewGety(nine.getBulletOne(j));
-            const int xCoordTwo = ViewGetx(nine.getRocket(j));
-            const int yCoordTwo = ViewGety(nine.getRocket(j));
-            const int xCoordThree = ViewGetx(nine.getBulletTwo(j));
-            const int yCoordThree = ViewGety(nine.getBulletTwo(j));
-            if (yCoordOne < 600 || yCoordTwo < 600 || yCoordThree < 600) {
-                nine.setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
-                nine.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
-                nine.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
-            }
-            if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
+            if (isBulletHit(xCoord, yCoord)) {
                 player.health -= 1;
                 isHealthUpdate = true;
-                nine.setBulletOne(j, 600, 600);
+                two[i].setBullet(j, 600, 600);
             }
-            if (yCoordTwo > player.currentYCoord && yCoordTwo < player.currentYCoord + 94 && xCoordTwo > player.currentXCoord + player.widthOne && xCoordTwo < player.currentXCoord + player.widthTwo) {
+        }
+    }
+    // 3
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
+        for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+            const int xCoord = ViewGetx(three[i].getBullet(j));
+            const int yCoord = ViewGety(three[i].getBullet(j));
+            if (yCoord < 600) {
+                three[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
+            }
+            if (isBulletHit(xCoord, yCoord)) {
+                player.health -= 1;
+                isHealthUpdate = true;
+                three[i].setBullet(j, 600, 600);
+            }
+        }
+    }
+    // 4
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
+        for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+            const int xCoord = ViewGetx(four[i].getBullet(j));
+            const int yCoord = ViewGety(four[i].getBullet(j));
+            if (yCoord < 600) {
+                four[i].setBullet(j, xCoord, yCoord + ENEMY_BULLET_SPEED);
+            }
+            if (isBulletHit(xCoord, yCoord)) {
+                player.health -= 1;
+                isHealthUpdate = true;
+                four[i].setBullet(j, 600, 600);
+            }
+        }
+    }
+    // 5
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
+        for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+            const int xCoordOne = ViewGetx(five[i].getBulletOne(j));
+            const int yCoordOne = ViewGety(five[i].getBulletOne(j));
+            const int xCoordThree = ViewGetx(five[i].getBulletTwo(j));
+            const int yCoordThree = ViewGety(five[i].getBulletTwo(j));
+            if (yCoordOne < 600 || yCoordThree < 600) {
+                five[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+                five[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
+            }
+            if (isBulletHit(xCoordOne, yCoordOne)) {
+                player.health -= 1;
+                isHealthUpdate = true;
+                five[i].setBulletOne(j, 600, 600);
+            }
+            if (isBulletHit(xCoordThree, yCoordThree)) {
+                player.health -= 1;
+                isHealthUpdate = true;
+                five[i].setBulletTwo(j, 600, 600);
+            }
+        }
+    }
+    // 6
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
+        for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+            const int xCoordOne = ViewGetx(six[i].getBulletOne(j));
+            const int yCoordOne = ViewGety(six[i].getBulletOne(j));
+            const int xCoordThree = ViewGetx(six[i].getBulletTwo(j));
+            const int yCoordThree = ViewGety(six[i].getBulletTwo(j));
+            if (yCoordOne < 600 || yCoordThree < 600) {
+                six[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+                six[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
+            }
+            if (isBulletHit(xCoordOne, yCoordOne)) {
+                player.health -= 1;
+                isHealthUpdate = true;
+                six[i].setBulletOne(j, 600, 600);
+            }
+            if (isBulletHit(xCoordThree, yCoordThree)) {
+                player.health -= 1;
+                isHealthUpdate = true;
+                six[i].setBulletTwo(j, 600, 600);
+            }
+        }
+    }
+    // 7
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
+        for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+            const int xCoordTwo = ViewGetx(seven[i].getRocket(j));
+            const int yCoordTwo = ViewGety(seven[i].getRocket(j));
+            if (yCoordTwo < 600) {
+                seven[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
+            }
+            if (isBulletHit(xCoordTwo, yCoordTwo)) {
                 player.health -= 3;
                 isHealthUpdate = true;
-                nine.setRocket(j, 600, 600);
-            }
-            if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
-                player.health -= 1;
-                isHealthUpdate = true;
-                nine.setBulletTwo(j, 600, 600);
+                seven[i].setRocket(j, 600, 600);
             }
         }
-        //10
-        for (int j = 0; j < 5; j++) {
-            const int xCoordOne = ViewGetx(ten.getBulletOne(j));
-            const int yCoordOne = ViewGety(ten.getBulletOne(j));
-            const int xCoordTwo = ViewGetx(ten.getRocket(j));
-            const int yCoordTwo = ViewGety(ten.getRocket(j));
-            const int xCoordThree = ViewGetx(ten.getBulletTwo(j));
-            const int yCoordThree = ViewGety(ten.getBulletTwo(j));
+    }
+    // 8
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
+        for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+            const int xCoordOne = ViewGetx(eight[i].getBulletOne(j));
+            const int yCoordOne = ViewGety(eight[i].getBulletOne(j));
+            const int xCoordTwo = ViewGetx(eight[i].getRocket(j));
+            const int yCoordTwo = ViewGety(eight[i].getRocket(j));
+            const int xCoordThree = ViewGetx(eight[i].getBulletTwo(j));
+            const int yCoordThree = ViewGety(eight[i].getBulletTwo(j));
             if (yCoordOne < 600 || yCoordTwo < 600 || yCoordThree < 600) {
-                ten.setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
-                ten.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
-                ten.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
+                eight[i].setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+                eight[i].setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
+                eight[i].setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
             }
-            if (yCoordOne > player.currentYCoord && yCoordOne < player.currentYCoord + 94 && xCoordOne > player.currentXCoord + player.widthOne && xCoordOne < player.currentXCoord + player.widthTwo) {
+            if (isBulletHit(xCoordOne, yCoordOne)) {
                 player.health -= 1;
                 isHealthUpdate = true;
-                ten.setBulletOne(j, 600, 600);
+                eight[i].setBulletOne(j, 600, 600);
             }
-            if (yCoordTwo > player.currentYCoord && yCoordTwo < player.currentYCoord + 94 && xCoordTwo > player.currentXCoord + player.widthOne && xCoordTwo < player.currentXCoord + player.widthTwo) {
+            if (isBulletHit(xCoordTwo, yCoordTwo)) {
                 player.health -= 3;
                 isHealthUpdate = true;
-                ten.setRocket(j, 600, 600);
+                eight[i].setRocket(j, 600, 600);
             }
-            if (yCoordThree > player.currentYCoord && yCoordThree < player.currentYCoord + 94 && xCoordThree > player.currentXCoord + player.widthOne && xCoordThree < player.currentXCoord + player.widthTwo) {
+            if (isBulletHit(xCoordThree, yCoordThree)) {
                 player.health -= 1;
                 isHealthUpdate = true;
-                ten.setBulletTwo(j, 600, 600);
+                eight[i].setBulletTwo(j, 600, 600);
             }
+        }
+    }
+    // 9
+    for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+        const int xCoordOne = ViewGetx(nine.getBulletOne(j));
+        const int yCoordOne = ViewGety(nine.getBulletOne(j));
+        const int xCoordTwo = ViewGetx(nine.getRocket(j));
+        const int yCoordTwo = ViewGety(nine.getRocket(j));
+        const int xCoordThree = ViewGetx(nine.getBulletTwo(j));
+        const int yCoordThree = ViewGety(nine.getBulletTwo(j));
+        if (yCoordOne < 600 || yCoordTwo < 600 || yCoordThree < 600) {
+            nine.setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+            nine.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
+            nine.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
+        }
+        if (isBulletHit(xCoordOne, yCoordOne)) {
+            player.health -= 1;
+            isHealthUpdate = true;
+            nine.setBulletOne(j, 600, 600);
+        }
+        if (isBulletHit(xCoordTwo, yCoordTwo)) {
+            player.health -= 3;
+            isHealthUpdate = true;
+            nine.setRocket(j, 600, 600);
+        }
+        if (isBulletHit(xCoordThree, yCoordThree)) {
+            player.health -= 1;
+            isHealthUpdate = true;
+            nine.setBulletTwo(j, 600, 600);
+        }
+    }
+    // 10
+    for (int j = 0; j < ENEMY_BULLETS_PER_BULLET_TYPE; j++) {
+        const int xCoordOne = ViewGetx(ten.getBulletOne(j));
+        const int yCoordOne = ViewGety(ten.getBulletOne(j));
+        const int xCoordTwo = ViewGetx(ten.getRocket(j));
+        const int yCoordTwo = ViewGety(ten.getRocket(j));
+        const int xCoordThree = ViewGetx(ten.getBulletTwo(j));
+        const int yCoordThree = ViewGety(ten.getBulletTwo(j));
+        if (yCoordOne < 600 || yCoordTwo < 600 || yCoordThree < 600) {
+            ten.setBulletOne(j, xCoordOne, yCoordOne + ENEMY_BULLET_SPEED);
+            ten.setRocket(j, xCoordTwo, yCoordTwo + ENEMY_BULLET_SPEED);
+            ten.setBulletTwo(j, xCoordThree, yCoordThree + ENEMY_BULLET_SPEED);
+        }
+        if (isBulletHit(xCoordOne, yCoordOne)) {
+            player.health -= 1;
+            isHealthUpdate = true;
+            ten.setBulletOne(j, 600, 600);
+        }
+        if (isBulletHit(xCoordTwo, yCoordTwo)) {
+            player.health -= 3;
+            isHealthUpdate = true;
+            ten.setRocket(j, 600, 600);
+        }
+        if (isBulletHit(xCoordThree, yCoordThree)) {
+            player.health -= 1;
+            isHealthUpdate = true;
+            ten.setBulletTwo(j, 600, 600);
         }
     }
 }
 
+bool isBulletHit(int xCoord, int yCoord) {
+    const int PENETRATION_BUFFER = 94;
+    return yCoord > player.currentYCoord && yCoord < player.currentYCoord + PENETRATION_BUFFER 
+        && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo;
+}
+
 void shipCollision() {
-    for (int i = 0; i < 10; i++) {
-        //ship 1
-        if (player.currentXCoord + player.widthOne < one[i].getXCoord() + 76 && player.currentXCoord + player.widthTwo > one[i].getXCoord() + 18 
-            && player.currentYCoord < one[i].getYCoord() + 94 && player.currentYCoord + 94 > one[i].getYCoord()) {
-            if (one[i].getHealth() > 0) {
-                one[i].damage(3);
-                player.health -= 3;
-                isHealthUpdate = true;
-            }
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
+        if (isCollisionOne(i)) {
+            one[i].damage(3);
+            player.health -= 3;
+            isHealthUpdate = true;
         }
-        //ship 2
-        if (player.currentXCoord + player.widthOne < two[i].getXCoord() + 69 && player.currentXCoord + player.widthTwo > two[i].getXCoord() + 24 
-            && player.currentYCoord < two[i].getYCoord() + 94 && player.currentYCoord + 94 > two[i].getYCoord()) {
-            if (two[i].getHealth() > 0) {
-                two[i].damage(3);
-                player.health -= 3;
-                isHealthUpdate = true;
-            }
+        if (isCollisionTwo(i)) {
+            two[i].damage(3);
+            player.health -= 3;
+            isHealthUpdate = true;
         }
-        //ship 3
-        if (player.currentXCoord + player.widthOne < three[i].getXCoord() + 66 && player.currentXCoord + player.widthTwo > three[i].getXCoord() + 27 
-            && player.currentYCoord < three[i].getYCoord() + 94 && player.currentYCoord + 94 > three[i].getYCoord()) {
-            if (three[i].getHealth() > 0) {
-                three[i].damage(3);
-                player.health -= 3;
-                isHealthUpdate = true;
-            }
+        if (isCollisionThree(i)) {
+            three[i].damage(3);
+            player.health -= 3;
+            isHealthUpdate = true;
         }
-        //ship 4
-        if (player.currentXCoord + player.widthOne < four[i].getXCoord() + 87 && player.currentXCoord + player.widthTwo > four[i].getXCoord() + 6 
-            && player.currentYCoord < four[i].getYCoord() + 94 && player.currentYCoord + 94 > four[i].getYCoord()) {
-            if (four[i].getHealth() > 0) {
-                four[i].damage(3);
-                player.health -= 3;
-                isHealthUpdate = true;
-            }
-        }
-    }
-    for (int i = 0; i < 5; i++) {
-        //ship 5
-        if (player.currentXCoord + player.widthOne < five[i].getXCoord() + 71 && player.currentXCoord + player.widthTwo > five[i].getXCoord() + 22 
-            && player.currentYCoord < five[i].getYCoord() + 94 && player.currentYCoord + 94 > five[i].getYCoord()) {
-            if (five[i].getHealth() > 0) {
-                five[i].damage(3);
-                player.health -= 3;
-                isHealthUpdate = true;
-            }
-        }
-        //ship 6
-        if (player.currentXCoord + player.widthOne < six[i].getXCoord() + 81 && player.currentXCoord + player.widthTwo > six[i].getXCoord() + 12 
-            && player.currentYCoord < six[i].getYCoord() + 94 && player.currentYCoord + 94 > six[i].getYCoord()) {
-            if (six[i].getHealth() > 0) {
-                six[i].damage(3);
-                player.health -= 3;
-                isHealthUpdate = true;
-            }
-        }
-        //ship 7
-        if (player.currentXCoord + player.widthOne < seven[i].getXCoord() + 86 && player.currentXCoord + player.widthTwo > seven[i].getXCoord() + 7 
-            && player.currentYCoord < seven[i].getYCoord() + 94 && player.currentYCoord + 94 > seven[i].getYCoord()) {
-            if (seven[i].getHealth() > 0) {
-                seven[i].damage(3);
-                player.health -= 3;
-                isHealthUpdate = true;
-            }
-        }
-        //ship 8
-        if (player.currentXCoord + player.widthOne < eight[i].getXCoord() + 86 && player.currentXCoord + player.widthTwo > eight[i].getXCoord() + 6 
-            && player.currentYCoord < eight[i].getYCoord() + 94 && player.currentYCoord + 94 > eight[i].getYCoord()) {
-            if (eight[i].getHealth() > 0) {
-                eight[i].damage(3);
-                player.health -= 3;
-                isHealthUpdate = true;
-            }
-        }
-    }
-    //ship 9
-    if (player.currentXCoord + player.widthOne < nine.getXCoord() + 142 && player.currentXCoord + player.widthTwo > nine.getXCoord() 
-        && player.currentYCoord < nine.getYCoord() + 240 && player.currentYCoord + 94 > nine.getYCoord()) {
-        if (nine.getHealth() > 0) {
-            nine.damage(3);
-            player.health = 0;
+        if (isCollisionFour(i)) {
+            four[i].damage(3);
+            player.health -= 3;
             isHealthUpdate = true;
         }
     }
-    //ship 10
-    if (player.currentXCoord + player.widthOne < ten.getXCoord() + 150 && player.currentXCoord + player.widthTwo > ten.getXCoord() 
-        && player.currentYCoord < ten.getYCoord() + 240 && player.currentYCoord + 94 > ten.getYCoord()) {
-        if (ten.getHealth() > 0) {
-            ten.damage(3);
-            player.health = 0;
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
+        if (isCollisionFive(i)) {
+            five[i].damage(3);
+            player.health -= 3;
+            isHealthUpdate = true;
+        }
+        if (isCollisionSix(i)) {
+            six[i].damage(3);
+            player.health -= 3;
+            isHealthUpdate = true;
+        }
+        if (isCollisionSeven(i)) {
+            seven[i].damage(3);
+            player.health -= 3;
+            isHealthUpdate = true;
+        }
+        if (isCollisionEight(i)) {
+            eight[i].damage(3);
+            player.health -= 3;
             isHealthUpdate = true;
         }
     }
+    if (isCollisionNine()) {
+        nine.damage(3);
+        player.health = 0;
+        isHealthUpdate = true;
+    }
+    if (isCollisionTen()) {
+        ten.damage(3);
+        player.health = 0;
+        isHealthUpdate = true;
+    }
+}
+
+bool isCollisionOne(int i) {
+    return player.currentXCoord + player.widthOne < one[i].getXCoord() + 76 
+        && player.currentXCoord + player.widthTwo > one[i].getXCoord() + 18 
+        && player.currentYCoord < one[i].getYCoord() + 94 
+        && player.currentYCoord + 94 > one[i].getYCoord();
+}
+
+bool isCollisionTwo(int i) {
+    return player.currentXCoord + player.widthOne < two[i].getXCoord() + 69 
+        && player.currentXCoord + player.widthTwo > two[i].getXCoord() + 24 
+        && player.currentYCoord < two[i].getYCoord() + 94 
+        && player.currentYCoord + 94 > two[i].getYCoord();
+}
+
+bool isCollisionThree(int i) {
+    return player.currentXCoord + player.widthOne < three[i].getXCoord() + 66 
+        && player.currentXCoord + player.widthTwo > three[i].getXCoord() + 27 
+        && player.currentYCoord < three[i].getYCoord() + 94 
+        && player.currentYCoord + 94 > three[i].getYCoord();
+}
+
+bool isCollisionFour(int i) {
+    return player.currentXCoord + player.widthOne < four[i].getXCoord() + 87 
+        && player.currentXCoord + player.widthTwo > four[i].getXCoord() + 6 
+        && player.currentYCoord < four[i].getYCoord() + 94 
+        && player.currentYCoord + 94 > four[i].getYCoord();
+}
+
+bool isCollisionFive(int i) {
+    return player.currentXCoord + player.widthOne < five[i].getXCoord() + 71 
+        && player.currentXCoord + player.widthTwo > five[i].getXCoord() + 22 
+        && player.currentYCoord < five[i].getYCoord() + 94 
+        && player.currentYCoord + 94 > five[i].getYCoord();
+}
+
+bool isCollisionSix(int i) {
+    return player.currentXCoord + player.widthOne < six[i].getXCoord() + 81 
+        && player.currentXCoord + player.widthTwo > six[i].getXCoord() + 12 
+        && player.currentYCoord < six[i].getYCoord() + 94 
+        && player.currentYCoord + 94 > six[i].getYCoord();
+}
+
+bool isCollisionSeven(int i) {
+    return player.currentXCoord + player.widthOne < seven[i].getXCoord() + 86 
+        && player.currentXCoord + player.widthTwo > seven[i].getXCoord() + 7 
+        && player.currentYCoord < seven[i].getYCoord() + 94 
+        && player.currentYCoord + 94 > seven[i].getYCoord();
+}
+
+bool isCollisionEight(int i) {
+    return player.currentXCoord + player.widthOne < eight[i].getXCoord() + 86 
+        && player.currentXCoord + player.widthTwo > eight[i].getXCoord() + 6 
+        && player.currentYCoord < eight[i].getYCoord() + 94 
+        && player.currentYCoord + 94 > eight[i].getYCoord();
+}
+
+bool isCollisionNine() {
+    return player.currentXCoord + player.widthOne < nine.getXCoord() + 142 
+        && player.currentXCoord + player.widthTwo > nine.getXCoord() 
+        && player.currentYCoord < nine.getYCoord() + 240 
+        && player.currentYCoord + 94 > nine.getYCoord();
+}
+
+bool isCollisionTen() {
+    return player.currentXCoord + player.widthOne < ten.getXCoord() + 150 
+        && player.currentXCoord + player.widthTwo > ten.getXCoord() 
+        && player.currentYCoord < ten.getYCoord() + 240 
+        && player.currentYCoord + 94 > ten.getYCoord();
 }
 
 int setEnemyExplosion(int ship) {
@@ -671,7 +715,7 @@ void enemyDied() {
             counter.shipMove = 0;
             player.health = player.possibleHealth;
             isHealthUpdate = true;
-        } else if (currentScreen == SCREEN_STORY_BATTLE_4) {
+        } else {
             currentScreen = SCREEN_STORY_5A1;
             screenSwitch();
         }
@@ -711,7 +755,7 @@ void enemyDied() {
             counter.shipMove = 0;
             player.health = player.possibleHealth;
             isHealthUpdate = true;
-        } else if (currentScreen == SCREEN_STORY_BATTLE_6) {
+        } else {
             currentScreen = SCREEN_STORY_7W1;
             screenSwitch();
         }

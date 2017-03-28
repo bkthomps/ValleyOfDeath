@@ -10,19 +10,19 @@ void reset() {
     player.currentYCoord = 380;
     player.newXCoord = 113;
     player.newYCoord = 380;
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < PLAYER_BULLETS_PER_BULLET_TYPE; i++) {
         ViewSetxy(player.bulletOne[i], -10, -10);
         ViewSetxy(player.rocket[i], -20, -20);
         ViewSetxy(player.bulletTwo[i], -10, -10);
     }
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 10; j++) {
+    for (int i = 0; i < ENEMY_BULLETS_PER_BULLET_TYPE; i++) {
+        for (int j = 0; j < AMOUNT_OF_SHIPS_TYPE_1_TO_4; j++) {
             one[j].setBullet(i, 600, 600);
             two[j].setBullet(i, 600, 600);
             three[j].setBullet(i, 600, 600);
             four[j].setBullet(i, 600, 600);
         }
-        for (int j = 0; j < 5; j++) {
+        for (int j = 0; j < AMOUNT_OF_SHIPS_TYPE_5_TO_8; j++) {
             five[j].setBulletOne(i, 600, 600);
             five[j].setBulletTwo(i, 600, 600);
             six[j].setBulletOne(i, 600, 600);
@@ -40,7 +40,7 @@ void reset() {
         ten.setBulletTwo(i, 600, 600);
     }
     int picture, ship;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
         one[i].setShip(600, 600);
         ship = one[i].getInstance();
         picture = ImageAdd("Images/eShip_1.png");
@@ -58,7 +58,7 @@ void reset() {
         picture = ImageAdd("Images/eShip_4.png");
         ViewSetImage(ship, picture);
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
         five[i].setShip(600, 600);
         ship = five[i].getInstance();
         picture = ImageAdd("Images/eShip_5.png");

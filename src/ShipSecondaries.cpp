@@ -9,24 +9,28 @@ void healthBar() {
     if (player.health < 0) {
         player.health = 0;
     }
-    int image;
     if (isHealthUpdate) {
         const int FRAC_HEALTH = round(20 * player.health / player.possibleHealth);
-        image = ImageAdd(concatHealth(FRAC_HEALTH));
+        const int image = ImageAdd(concatHealth(FRAC_HEALTH));
         ViewSetImage(healthImage, image);
         if (player.health <= 0) {
-            if (currentScreen == SCREEN_ENDLESS) {
-                currentScreen = SCREEN_HIGHSCORE;
-                doUpdateHighscore();
-            } else if (currentScreen == SCREEN_STORY_BATTLE_1) {
-                currentScreen = SCREEN_STORY_2A1;
-                reset();
-            } else if (currentScreen == SCREEN_STORY_BATTLE_6) {
-                currentScreen = SCREEN_STORY_7L1;
-                reset();
-            } else {
-                currentScreen = SCREEN_DIED;
-                reset();
+            switch (currentScreen) {
+                case SCREEN_ENDLESS:
+                    currentScreen = SCREEN_HIGHSCORE;
+                    doUpdateHighscore();
+                    break;
+                case SCREEN_STORY_BATTLE_1:
+                    currentScreen = SCREEN_STORY_2A1;
+                    reset();
+                    break;
+                case SCREEN_STORY_BATTLE_6:
+                    currentScreen = SCREEN_STORY_7L1;
+                    reset();
+                    break;
+                default:
+                    currentScreen = SCREEN_DIED;
+                    reset();
+                    break;
             }
             screenSwitch();
         }
@@ -143,16 +147,23 @@ void bulletTime() {
         if (counter.bulletTime == i * PLAYER_BULLET_COOLDOWN_SPEED) {
             used = true;
             if (player.typeOfShip == 8) {
-                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, player.currentYCoord + player.bulletOneOffsetYCoord);
-                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord, player.currentYCoord + player.rocketOffsetYCoord);
-                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord, player.currentYCoord + player.bulletTwoOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, 
+                    player.currentYCoord + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord, 
+                    player.currentYCoord + player.rocketOffsetYCoord);
+                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord, 
+                    player.currentYCoord + player.bulletTwoOffsetYCoord);
             } else if (player.typeOfShip == 7) {
-                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord, player.currentYCoord + player.rocketOffsetYCoord);
+                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord, 
+                    player.currentYCoord + player.rocketOffsetYCoord);
             } else if (player.typeOfShip == 6 || player.typeOfShip == 5) {
-                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, player.currentYCoord + player.bulletOneOffsetYCoord);
-                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord, player.currentYCoord + player.bulletTwoOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, 
+                    player.currentYCoord + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord, 
+                    player.currentYCoord + player.bulletTwoOffsetYCoord);
             } else {
-                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, player.currentYCoord + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, 
+                    player.currentYCoord + player.bulletOneOffsetYCoord);
             }
         }
     }

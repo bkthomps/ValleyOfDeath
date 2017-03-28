@@ -1,7 +1,7 @@
 /*
  * Bailey Thompson
- * Valley Of Death (1.3.8)
- * 26 March 2017
+ * Valley Of Death (1.3.9)
+ * 27 March 2017
  * Info: This is a scrolling shooter iPhone app.
  */
  
@@ -31,25 +31,25 @@ void AppMain() {
     containerFive();
     containerSixSeven();
 
-    //populate container.unlocks
+    // populate unlocks
     ViewAdd(container.unlocks, "Images/Background.png", 0, 0);
     ViewAdd(container.unlocks, "Images/Pause.png", 270, 20, onPause, 1);
     TextAdd(container.unlocks, 10, 10, "\n\n\n\n\n Pick Your Ship By Clicking", font);
     ViewAdd(container.unlocks, "unlocks/UnShip_1.png", 20, 180, unlocks, 1);
-    //populate container.options
+    // populate options
     ViewAdd(container.options, "Images/Background.png", 0, 0);
     ViewAdd(container.options, "Images/Pause.png", 270, 20, onPause, 1);
     char* musicString = (isSoundEnabled) ? ("unlocks/MusicOn.png") : ("unlocks/MusicOff.png");
     music = ViewAdd(container.options, musicString, 20, 80, options, 1);
     TextAdd(container.options, 20, 320, "\nCreated By \nBailey Thompson", font);
     ViewAdd(container.options, "Images/btnDelete.png", 20, 200, options, 2);
-    //populate container.deleteCheckOne
+    // populate deleteCheckOne
     ViewAdd(container.deleteCheckOne, "Images/Background.png", 0, 0);
     TextAdd(container.deleteCheckOne, 20, 20, "Are you sure you want to \nDELETE ALL PLAYER \nDATA including xp, "
         "rank, \nhighscore, and ships?", font);
     ViewAdd(container.deleteCheckOne, "Images/btnNoDelete.png", 20, 180, options, 5);
     ViewAdd(container.deleteCheckOne, "Images/btnYesDelete.png", 20, 300, options, 3);
-    //populate container.deleteCheckTwo
+    // populate deleteCheckTwo
     ViewAdd(container.deleteCheckTwo, "Images/Background.png", 0, 0);
     TextAdd(container.deleteCheckTwo, 20, 20, "Are you really sure you \nwant to DELETE \nEVERYTHING?", font);
     ViewAdd(container.deleteCheckTwo, "Images/btnNoDelete.png", 20, 300, options, 5);
@@ -62,27 +62,27 @@ void AppMain() {
 void AppExit() {
     Mp3Stop();
     char fileBuffer[5];
-    //fileSound
+    // fileSound
     int fileSound = FileOpen("Sound.txt");
     boolGameToFile(isSoundEnabled, fileBuffer);
     FileWrite(fileSound, fileBuffer, 1);
     FileClose(fileSound);
-    //fileXp
+    // fileXp
     int fileXp = FileOpen("Xp.txt");
     intGameToFile(xp, fileBuffer);
     FileWrite(fileXp, fileBuffer, 5);
     FileClose(fileXp);
-    //fileShip
+    // fileShip
     int fileShip = FileOpen("Ship.txt");
     intGameToFile(player.typeOfShip, fileBuffer);
     FileWrite(fileShip, fileBuffer, 5);
     FileClose(fileShip);
-    //fileHighscore
+    // fileHighscore
     int fileHighscore = FileOpen("Highscore.txt");
     intGameToFile(highscore, fileBuffer);
     FileWrite(fileHighscore, fileBuffer, 5);
     FileClose(fileHighscore);
-    //fileCounter
+    // fileCounter
     int fileCounter = FileOpen("Counter.txt");
     intGameToFile(counter.sound, fileBuffer);
     FileWrite(fileCounter, fileBuffer, 5);
@@ -90,7 +90,7 @@ void AppExit() {
 }
 
 void OnTimer() {
-    //called 30 times per second - 1800=1min - 10000=5min 36sec
+    // called 30 times per second - 1800=1min - 10000=5min 36sec
     rankFromXp();
     soundSwitch();
     if (isSoundEnabled) {
@@ -115,18 +115,25 @@ void OnTimer() {
             enemyDied();
             shipCollision();
         } else if (currentScreen == SCREEN_STORY_TORTURE && isTorture) {
-            if (counter.torture == 0) {
-                ViewSetxy(imageTorture, -1, -1);
-            } else if (counter.torture == 1) {
-                ViewSetxy(imageTorture, 0, 0);
-            } else if (counter.torture == 2) {
-                ViewSetxy(imageTorture, -2, -2);
-            } else if (counter.torture == 3) {
-                ViewSetxy(imageTorture, -1, -1);
-            } else if (counter.torture == 4) {
-                ViewSetxy(imageTorture, -2, 0);
-            } else if (counter.torture == 5) {
-                ViewSetxy(imageTorture, 0, -2);
+            switch (counter.torture) {
+                case 0:
+                    ViewSetxy(imageTorture, -1, -1);
+                    break;
+                case 1:
+                    ViewSetxy(imageTorture, 0, 0);
+                    break;
+                case 2:
+                    ViewSetxy(imageTorture, -2, -2);
+                    break;
+                case 3:
+                    ViewSetxy(imageTorture, -1, -1);
+                    break;
+                case 4:
+                    ViewSetxy(imageTorture, -2, 0);
+                    break;
+                case 5:
+                    ViewSetxy(imageTorture, 0, -2);
+                    break;
             }
             counter.hpTorture -= 3;
             counter.torture += 1;
@@ -160,6 +167,6 @@ void healthRegen() {
 
 bool createMove() {
     return currentScreen == SCREEN_ENDLESS || currentScreen == SCREEN_STORY_BATTLE_1
-                || currentScreen == SCREEN_STORY_BATTLE_2 || currentScreen == SCREEN_STORY_BATTLE_4
-                || currentScreen == SCREEN_STORY_BATTLE_5 || currentScreen == SCREEN_STORY_BATTLE_6;
+        || currentScreen == SCREEN_STORY_BATTLE_2 || currentScreen == SCREEN_STORY_BATTLE_4
+        || currentScreen == SCREEN_STORY_BATTLE_5 || currentScreen == SCREEN_STORY_BATTLE_6;
 }
