@@ -432,55 +432,55 @@ bool isBulletHit(int xCoord, int yCoord) {
 
 void shipCollision() {
     for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_1_TO_4; i++) {
-        if (isCollisionOne(i)) {
+        if (one[i].getHealth() > 0 && isCollisionOne(i)) {
             one[i].damage(3);
             player.health -= 3;
             isHealthUpdate = true;
         }
-        if (isCollisionTwo(i)) {
+        if (two[i].getHealth() > 0 && isCollisionTwo(i)) {
             two[i].damage(3);
             player.health -= 3;
             isHealthUpdate = true;
         }
-        if (isCollisionThree(i)) {
+        if (three[i].getHealth() > 0 && isCollisionThree(i)) {
             three[i].damage(3);
             player.health -= 3;
             isHealthUpdate = true;
         }
-        if (isCollisionFour(i)) {
+        if (four[i].getHealth() > 0 && isCollisionFour(i)) {
             four[i].damage(3);
             player.health -= 3;
             isHealthUpdate = true;
         }
     }
     for (int i = 0; i < AMOUNT_OF_SHIPS_TYPE_5_TO_8; i++) {
-        if (isCollisionFive(i)) {
+        if (five[i].getHealth() > 0 && isCollisionFive(i)) {
             five[i].damage(3);
             player.health -= 3;
             isHealthUpdate = true;
         }
-        if (isCollisionSix(i)) {
+        if (six[i].getHealth() > 0 && isCollisionSix(i)) {
             six[i].damage(3);
             player.health -= 3;
             isHealthUpdate = true;
         }
-        if (isCollisionSeven(i)) {
+        if (seven[i].getHealth() > 0 && isCollisionSeven(i)) {
             seven[i].damage(3);
             player.health -= 3;
             isHealthUpdate = true;
         }
-        if (isCollisionEight(i)) {
+        if (eight[i].getHealth() > 0 && isCollisionEight(i)) {
             eight[i].damage(3);
             player.health -= 3;
             isHealthUpdate = true;
         }
     }
-    if (isCollisionNine()) {
+    if (nine.getHealth() > 0 && isCollisionNine()) {
         nine.damage(3);
         player.health = 0;
         isHealthUpdate = true;
     }
-    if (isCollisionTen()) {
+    if (ten.getHealth() > 0 && isCollisionTen()) {
         ten.damage(3);
         player.health = 0;
         isHealthUpdate = true;
