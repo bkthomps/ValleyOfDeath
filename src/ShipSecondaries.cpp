@@ -39,7 +39,7 @@ void healthBar() {
     }
 }
 
-char* concatHealth(int num) {
+char *concatHealth(int num) {
     if (num <= 0) {
         num = 1;
     } else if (num > 20) {
@@ -147,23 +147,23 @@ void bulletTime() {
         if (counter.bulletTime == i * PLAYER_BULLET_COOLDOWN_SPEED) {
             used = true;
             if (player.typeOfShip == 8) {
-                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, 
-                    player.currentYCoord + player.bulletOneOffsetYCoord);
-                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord, 
-                    player.currentYCoord + player.rocketOffsetYCoord);
-                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord, 
-                    player.currentYCoord + player.bulletTwoOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord,
+                          player.currentYCoord + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord,
+                          player.currentYCoord + player.rocketOffsetYCoord);
+                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord,
+                          player.currentYCoord + player.bulletTwoOffsetYCoord);
             } else if (player.typeOfShip == 7) {
-                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord, 
-                    player.currentYCoord + player.rocketOffsetYCoord);
+                ViewSetxy(player.rocket[i - 1], player.currentXCoord + player.rocketOffsetXCoord,
+                          player.currentYCoord + player.rocketOffsetYCoord);
             } else if (player.typeOfShip == 6 || player.typeOfShip == 5) {
-                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, 
-                    player.currentYCoord + player.bulletOneOffsetYCoord);
-                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord, 
-                    player.currentYCoord + player.bulletTwoOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord,
+                          player.currentYCoord + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.bulletTwo[i - 1], player.currentXCoord + player.bulletTwoOffsetXCoord,
+                          player.currentYCoord + player.bulletTwoOffsetYCoord);
             } else {
-                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord, 
-                    player.currentYCoord + player.bulletOneOffsetYCoord);
+                ViewSetxy(player.bulletOne[i - 1], player.currentXCoord + player.bulletOneOffsetXCoord,
+                          player.currentYCoord + player.bulletOneOffsetYCoord);
             }
         }
     }

@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include "FileIO.h"
 
-int intFileToGame(char* buffer) {
+int intFileToGame(char *buffer) {
     int ret = 0;
     ret += ((int) buffer[0] - '0') * 10000;
     ret += ((int) buffer[1] - '0') * 1000;
@@ -12,11 +12,11 @@ int intFileToGame(char* buffer) {
     return ret;
 }
 
-bool boolFileToGame(char* buffer) {
+bool boolFileToGame(char *buffer) {
     return buffer[0] == 't';
 }
 
-void intGameToFile(int num, char* buffer) {
+void intGameToFile(int num, char *buffer) {
     int numToSave = num;
     buffer[0] = char(numToSave / 10000 + '0');
     numToSave %= 10000;
@@ -29,7 +29,7 @@ void intGameToFile(int num, char* buffer) {
     buffer[4] = char(numToSave + '0');
 }
 
-void boolGameToFile(bool num, char* buffer) {
+void boolGameToFile(bool num, char *buffer) {
     buffer[0] = (num) ? ('t') : ('f');
 }
 
