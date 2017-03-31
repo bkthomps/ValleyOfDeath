@@ -1,3 +1,7 @@
+/*
+ * Functions which dictate what happens when the user causes an event to occur.
+ */
+
 #ifndef USER_EVENT_H
 #define USER_EVENT_H
 

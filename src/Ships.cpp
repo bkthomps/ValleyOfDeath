@@ -1,3 +1,7 @@
+/*
+ * Provides functionality for the enemy ships.
+ */
+
 #include "DragonFireSDK.h"
 #include "CustomMath.h"
 #include "Ships.h"

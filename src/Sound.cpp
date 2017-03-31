@@ -1,3 +1,7 @@
+/*
+ * Relates to what song will be playing, and for how long, and what song will play on app start.
+ */
+
 #include "DragonFireSDK.h"
 #include "Globals.h"
 #include "Sound.h"
@@ -169,7 +173,7 @@ void soundSwitch() {
 
 bool isNotActive() {
     return currentScreen != SCREEN_ENDLESS && currentScreen != SCREEN_STORY_BATTLE_1
-               && currentScreen != SCREEN_STORY_BATTLE_2 && currentScreen != SCREEN_STORY_BATTLE_4
-               && currentScreen != SCREEN_STORY_BATTLE_5 && currentScreen != SCREEN_STORY_BATTLE_6
-               && currentScreen != SCREEN_DIED && currentScreen != SCREEN_HIGHSCORE;
+           && currentScreen != SCREEN_STORY_BATTLE_2 && currentScreen != SCREEN_STORY_BATTLE_4
+           && currentScreen != SCREEN_STORY_BATTLE_5 && currentScreen != SCREEN_STORY_BATTLE_6
+           && currentScreen != SCREEN_DIED && currentScreen != SCREEN_HIGHSCORE;
 }

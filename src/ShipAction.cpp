@@ -1,3 +1,7 @@
+/*
+ * Provides the actions that ships can take.
+ */
+
 #include "DragonFireSDK.h"
 #include "Globals.h"
 #include "ShipAction.h"
@@ -92,7 +96,7 @@ void enemyShipMove() {
             ViewSetxy(eight[i].getInstance(), eight[i].getXCoord(), eight[i].getYCoord() + ENEMY_FLY_SPEED);
         }
     }
-    
+
     static bool goRight = false;
     //ship 9
     if (nine.getYCoord() < 40) {
@@ -125,44 +129,44 @@ bool shipInAction(int ship) {
     bool ret = false;
     switch (ship) {
         case 1:
-            ret = one[i].getHealth() <= 0 && one[i].getYCoord() >= 0 && one[i].getXCoord() < 600 
-                && one[i].getYCoord() >= 0 && one[i].getXCoord() <= 320;
+            ret = one[i].getHealth() <= 0 && one[i].getYCoord() >= 0 && one[i].getXCoord() < 600
+                  && one[i].getYCoord() >= 0 && one[i].getXCoord() <= 320;
             break;
         case 2:
-            ret = two[i].getHealth() <= 0 && two[i].getYCoord() >= 0 && two[i].getXCoord() < 600 
-                && two[i].getYCoord() >= 0 && two[i].getXCoord() <= 320;
+            ret = two[i].getHealth() <= 0 && two[i].getYCoord() >= 0 && two[i].getXCoord() < 600
+                  && two[i].getYCoord() >= 0 && two[i].getXCoord() <= 320;
             break;
         case 3:
-            ret = three[i].getHealth() <= 0 && three[i].getYCoord() >= 0 && three[i].getXCoord() < 600 
-                && three[i].getYCoord() >= 0 && three[i].getXCoord() <= 320;
+            ret = three[i].getHealth() <= 0 && three[i].getYCoord() >= 0 && three[i].getXCoord() < 600
+                  && three[i].getYCoord() >= 0 && three[i].getXCoord() <= 320;
             break;
         case 4:
-            ret = four[i].getHealth() <= 0 && four[i].getYCoord() >= 0 && four[i].getXCoord() < 600 
-                && four[i].getYCoord() >= 0 && four[i].getXCoord() <= 320;
+            ret = four[i].getHealth() <= 0 && four[i].getYCoord() >= 0 && four[i].getXCoord() < 600
+                  && four[i].getYCoord() >= 0 && four[i].getXCoord() <= 320;
             break;
         case 5:
-            ret = five[i].getHealth() <= 0 && five[i].getYCoord() >= 0 && five[i].getXCoord() < 600 
-                && five[i].getYCoord() >= 0 && five[i].getXCoord() <= 320;
+            ret = five[i].getHealth() <= 0 && five[i].getYCoord() >= 0 && five[i].getXCoord() < 600
+                  && five[i].getYCoord() >= 0 && five[i].getXCoord() <= 320;
             break;
         case 6:
-            ret = six[i].getHealth() <= 0 && six[i].getYCoord() >= 0 && six[i].getXCoord() < 600 
-                && six[i].getYCoord() >= 0 && six[i].getXCoord() <= 320;
+            ret = six[i].getHealth() <= 0 && six[i].getYCoord() >= 0 && six[i].getXCoord() < 600
+                  && six[i].getYCoord() >= 0 && six[i].getXCoord() <= 320;
             break;
         case 7:
-            ret = seven[i].getHealth() <= 0 && seven[i].getYCoord() >= 0 && seven[i].getXCoord() < 600 
-                && seven[i].getYCoord() >= 0 && seven[i].getXCoord() <= 320;
+            ret = seven[i].getHealth() <= 0 && seven[i].getYCoord() >= 0 && seven[i].getXCoord() < 600
+                  && seven[i].getYCoord() >= 0 && seven[i].getXCoord() <= 320;
             break;
         case 8:
-            ret = eight[i].getHealth() <= 0 && eight[i].getYCoord() >= 0 && eight[i].getXCoord() < 600 
-                && eight[i].getYCoord() >= 0 && eight[i].getXCoord() <= 320;
+            ret = eight[i].getHealth() <= 0 && eight[i].getYCoord() >= 0 && eight[i].getXCoord() < 600
+                  && eight[i].getYCoord() >= 0 && eight[i].getXCoord() <= 320;
             break;
         case 9:
-            ret = nine.getHealth() <= 0 && nine.getYCoord() >= 0 && nine.getXCoord() < 600 
-                && nine.getYCoord() >= 0 && nine.getXCoord() <= 320;
+            ret = nine.getHealth() <= 0 && nine.getYCoord() >= 0 && nine.getXCoord() < 600
+                  && nine.getYCoord() >= 0 && nine.getXCoord() <= 320;
             break;
         case 10:
-            ret = ten.getHealth() <= 0 && ten.getYCoord() >= 0 && ten.getXCoord() < 600 
-                && ten.getYCoord() >= 0 && ten.getXCoord() <= 320;
+            ret = ten.getHealth() <= 0 && ten.getYCoord() >= 0 && ten.getXCoord() < 600
+                  && ten.getYCoord() >= 0 && ten.getXCoord() <= 320;
             break;
     }
     return ret;
@@ -426,8 +430,8 @@ void bulletHit() {
 
 bool isBulletHit(int xCoord, int yCoord) {
     const int PENETRATION_BUFFER = 94;
-    return yCoord > player.currentYCoord && yCoord < player.currentYCoord + PENETRATION_BUFFER 
-        && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo;
+    return yCoord > player.currentYCoord && yCoord < player.currentYCoord + PENETRATION_BUFFER
+           && xCoord > player.currentXCoord + player.widthOne && xCoord < player.currentXCoord + player.widthTwo;
 }
 
 void shipCollision() {
@@ -488,73 +492,73 @@ void shipCollision() {
 }
 
 bool isCollisionOne(int i) {
-    return player.currentXCoord + player.widthOne < one[i].getXCoord() + 76 
-        && player.currentXCoord + player.widthTwo > one[i].getXCoord() + 18 
-        && player.currentYCoord < one[i].getYCoord() + 94 
-        && player.currentYCoord + 94 > one[i].getYCoord();
+    return player.currentXCoord + player.widthOne < one[i].getXCoord() + 76
+           && player.currentXCoord + player.widthTwo > one[i].getXCoord() + 18
+           && player.currentYCoord < one[i].getYCoord() + 94
+           && player.currentYCoord + 94 > one[i].getYCoord();
 }
 
 bool isCollisionTwo(int i) {
-    return player.currentXCoord + player.widthOne < two[i].getXCoord() + 69 
-        && player.currentXCoord + player.widthTwo > two[i].getXCoord() + 24 
-        && player.currentYCoord < two[i].getYCoord() + 94 
-        && player.currentYCoord + 94 > two[i].getYCoord();
+    return player.currentXCoord + player.widthOne < two[i].getXCoord() + 69
+           && player.currentXCoord + player.widthTwo > two[i].getXCoord() + 24
+           && player.currentYCoord < two[i].getYCoord() + 94
+           && player.currentYCoord + 94 > two[i].getYCoord();
 }
 
 bool isCollisionThree(int i) {
-    return player.currentXCoord + player.widthOne < three[i].getXCoord() + 66 
-        && player.currentXCoord + player.widthTwo > three[i].getXCoord() + 27 
-        && player.currentYCoord < three[i].getYCoord() + 94 
-        && player.currentYCoord + 94 > three[i].getYCoord();
+    return player.currentXCoord + player.widthOne < three[i].getXCoord() + 66
+           && player.currentXCoord + player.widthTwo > three[i].getXCoord() + 27
+           && player.currentYCoord < three[i].getYCoord() + 94
+           && player.currentYCoord + 94 > three[i].getYCoord();
 }
 
 bool isCollisionFour(int i) {
-    return player.currentXCoord + player.widthOne < four[i].getXCoord() + 87 
-        && player.currentXCoord + player.widthTwo > four[i].getXCoord() + 6 
-        && player.currentYCoord < four[i].getYCoord() + 94 
-        && player.currentYCoord + 94 > four[i].getYCoord();
+    return player.currentXCoord + player.widthOne < four[i].getXCoord() + 87
+           && player.currentXCoord + player.widthTwo > four[i].getXCoord() + 6
+           && player.currentYCoord < four[i].getYCoord() + 94
+           && player.currentYCoord + 94 > four[i].getYCoord();
 }
 
 bool isCollisionFive(int i) {
-    return player.currentXCoord + player.widthOne < five[i].getXCoord() + 71 
-        && player.currentXCoord + player.widthTwo > five[i].getXCoord() + 22 
-        && player.currentYCoord < five[i].getYCoord() + 94 
-        && player.currentYCoord + 94 > five[i].getYCoord();
+    return player.currentXCoord + player.widthOne < five[i].getXCoord() + 71
+           && player.currentXCoord + player.widthTwo > five[i].getXCoord() + 22
+           && player.currentYCoord < five[i].getYCoord() + 94
+           && player.currentYCoord + 94 > five[i].getYCoord();
 }
 
 bool isCollisionSix(int i) {
-    return player.currentXCoord + player.widthOne < six[i].getXCoord() + 81 
-        && player.currentXCoord + player.widthTwo > six[i].getXCoord() + 12 
-        && player.currentYCoord < six[i].getYCoord() + 94 
-        && player.currentYCoord + 94 > six[i].getYCoord();
+    return player.currentXCoord + player.widthOne < six[i].getXCoord() + 81
+           && player.currentXCoord + player.widthTwo > six[i].getXCoord() + 12
+           && player.currentYCoord < six[i].getYCoord() + 94
+           && player.currentYCoord + 94 > six[i].getYCoord();
 }
 
 bool isCollisionSeven(int i) {
-    return player.currentXCoord + player.widthOne < seven[i].getXCoord() + 86 
-        && player.currentXCoord + player.widthTwo > seven[i].getXCoord() + 7 
-        && player.currentYCoord < seven[i].getYCoord() + 94 
-        && player.currentYCoord + 94 > seven[i].getYCoord();
+    return player.currentXCoord + player.widthOne < seven[i].getXCoord() + 86
+           && player.currentXCoord + player.widthTwo > seven[i].getXCoord() + 7
+           && player.currentYCoord < seven[i].getYCoord() + 94
+           && player.currentYCoord + 94 > seven[i].getYCoord();
 }
 
 bool isCollisionEight(int i) {
-    return player.currentXCoord + player.widthOne < eight[i].getXCoord() + 86 
-        && player.currentXCoord + player.widthTwo > eight[i].getXCoord() + 6 
-        && player.currentYCoord < eight[i].getYCoord() + 94 
-        && player.currentYCoord + 94 > eight[i].getYCoord();
+    return player.currentXCoord + player.widthOne < eight[i].getXCoord() + 86
+           && player.currentXCoord + player.widthTwo > eight[i].getXCoord() + 6
+           && player.currentYCoord < eight[i].getYCoord() + 94
+           && player.currentYCoord + 94 > eight[i].getYCoord();
 }
 
 bool isCollisionNine() {
-    return player.currentXCoord + player.widthOne < nine.getXCoord() + 142 
-        && player.currentXCoord + player.widthTwo > nine.getXCoord() 
-        && player.currentYCoord < nine.getYCoord() + 240 
-        && player.currentYCoord + 94 > nine.getYCoord();
+    return player.currentXCoord + player.widthOne < nine.getXCoord() + 142
+           && player.currentXCoord + player.widthTwo > nine.getXCoord()
+           && player.currentYCoord < nine.getYCoord() + 240
+           && player.currentYCoord + 94 > nine.getYCoord();
 }
 
 bool isCollisionTen() {
-    return player.currentXCoord + player.widthOne < ten.getXCoord() + 150 
-        && player.currentXCoord + player.widthTwo > ten.getXCoord() 
-        && player.currentYCoord < ten.getYCoord() + 240 
-        && player.currentYCoord + 94 > ten.getYCoord();
+    return player.currentXCoord + player.widthOne < ten.getXCoord() + 150
+           && player.currentXCoord + player.widthTwo > ten.getXCoord()
+           && player.currentYCoord < ten.getYCoord() + 240
+           && player.currentYCoord + 94 > ten.getYCoord();
 }
 
 int setEnemyExplosion(int ship) {

@@ -1,3 +1,7 @@
+/*
+ * Dictates which screens will be visible based on user decision when in story mode.
+ */
+
 #include "DragonFireSDK.h"
 #include "Globals.h"
 #include "UserStoryEvent.h"
@@ -248,10 +252,10 @@ int onStoryLevelSeven(int id, int event, int x, int y) {
             const int SAVE_RON = TextAdd(container.story7b2, 0, 0, "", font);
             if (isStoryDate && !isStoryMarry) {
                 TextSetText(SAVE_RON, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell "
-                    "your girlfriend that you \nwere a great man.");
+                        "your girlfriend that you \nwere a great man.");
             } else if (isStoryDate && isStoryMarry) {
                 TextSetText(SAVE_RON, "\n\nRon: \nThe world will know of your \ngreatness. I will be sure to \ntell "
-                    "your wife that you were a \ngreat man.");
+                        "your wife that you were a \ngreat man.");
             } else if (!isStoryDate && !isStoryMarry) {
                 TextSetText(SAVE_RON, "\n\nRon: \nThe world will know of your \ngreatness.");
             }

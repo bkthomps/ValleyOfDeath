@@ -1,3 +1,7 @@
+/*
+ * Functions which specify which screens are visible based on user choice in story mode.
+ */
+
 #ifndef USER_STORY_EVENT_H
 #define USER_STORY_EVENT_H
 

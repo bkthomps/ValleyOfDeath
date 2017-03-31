@@ -1,3 +1,8 @@
+/*
+ * Dictates what ships will spawn in each level. There are five levels, each level has 30 rounds of ship spawning. At
+ * the end of each level, there is a boss battle.
+ */
+
 #include "DragonFireSDK.h"
 #include "Globals.h"
 #include "EnemyShipSpawning.h"
@@ -576,6 +581,7 @@ void setThree() {
             ViewSetxy(six[3].getInstance(), 0, -94);
             ViewSetxy(one[6].getInstance(), 113, -94);
             ViewSetxy(three[8].getInstance(), 226, -94);
+            break;
         case 23 * ENEMY_SPAWN_TIME:
             three[9].resetHealth(level);
             four[9].resetHealth(level);
@@ -960,7 +966,7 @@ void setFive() {
             break;
         case 20 * ENEMY_SPAWN_TIME:
             five[4].resetHealth(level);
-            six[4].resetHealth(level); 
+            six[4].resetHealth(level);
             ViewSetxy(five[4].getInstance(), 33, -94);
             ViewSetxy(six[4].getInstance(), 193, -94);
             break;
@@ -1036,5 +1042,5 @@ void setFive() {
             ten.resetHealth(level);
             ViewSetxy(ten.getInstance(), 85, -240);
             break;
-        }
+    }
 }

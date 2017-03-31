@@ -1,3 +1,7 @@
+/*
+ * Functions related to ship actions.
+ */
+
 #ifndef SHIP_ACTION
 #define SHIP_ACTION
 

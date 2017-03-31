@@ -1,3 +1,7 @@
+/*
+ * Classes which contain methods that pertain to the status of enemy ships.
+ */
+
 #ifndef SHIPS_H
 #define SHIPS_H
 

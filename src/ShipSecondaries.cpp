@@ -1,3 +1,7 @@
+/*
+ * Provides secondary ship functionality.
+ */
+
 #include "DragonFireSDK.h"
 #include "Globals.h"
 #include "ShipSecondaries.h"
@@ -39,7 +43,7 @@ void healthBar() {
     }
 }
 
-char *concatHealth(int num) {
+char* concatHealth(int num) {
     if (num <= 0) {
         num = 1;
     } else if (num > 20) {

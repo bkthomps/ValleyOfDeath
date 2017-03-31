@@ -1,3 +1,8 @@
+/*
+ * Provides functionality for setting which screen is visible. Also provides functionality for changing the ship, and
+ * the attributes that belong to the respective ship.
+ */
+
 #include "DragonFireSDK.h"
 #include "Globals.h"
 #include "StateToggle.h"

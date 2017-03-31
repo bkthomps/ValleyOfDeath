@@ -1,3 +1,7 @@
+/*
+ * Whichever files include this one can use the following global variables.
+ */
+
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
@@ -7,14 +11,14 @@
 #include "Screens.h"
 
 extern PlayerShip player;
-extern SingleShip one[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
-extern SingleShip two[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
-extern SingleShip three[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
-extern SingleShip four[AMOUNT_OF_SHIPS_TYPE_1_TO_4];
-extern DoubleShip five[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
-extern DoubleShip six[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
-extern RocketShip seven[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
-extern MasterShip eight[AMOUNT_OF_SHIPS_TYPE_5_TO_8];
+extern SingleShip one[];
+extern SingleShip two[];
+extern SingleShip three[];
+extern SingleShip four[];
+extern DoubleShip five[];
+extern DoubleShip six[];
+extern RocketShip seven[];
+extern MasterShip eight[];
 extern MiniBoss nine;
 extern MasterBoss ten;
 

@@ -1,3 +1,7 @@
+/*
+ * Global variables which are used by many different functions in many different files.
+ */
+
 #include "DragonFireSDK.h"
 #include "Ships.h"
 #include "Screens.h"

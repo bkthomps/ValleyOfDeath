@@ -1,3 +1,7 @@
+/*
+ * Functions which relate to the story line.
+ */
+
 #ifndef CONTAINER_UNITS_H
 #define CONTAINER_UNITS_H
 

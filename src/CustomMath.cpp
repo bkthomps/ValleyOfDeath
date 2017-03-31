@@ -1,3 +1,7 @@
+/*
+ * Math functionality which is not available from the standard library.
+ */
+
 #include "DragonFireSDK.h"
 #include "CustomMath.h"
 

@@ -1,3 +1,7 @@
+/*
+ * Functions which relate to secondary ship functionality.
+ */
+
 #ifndef SHIP_SECONDARIES
 #define SHIP_SECONDARIES
 

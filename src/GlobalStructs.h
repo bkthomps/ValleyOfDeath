@@ -1,3 +1,7 @@
+/*
+ * Provides structs which are globally used.
+ */
+
 #ifndef GLOBAL_STRUCTS_H
 #define GLOBAL_STRUCTS_H
 

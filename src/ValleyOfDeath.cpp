@@ -1,8 +1,6 @@
 /*
- * Bailey Thompson
- * Valley Of Death (1.3.11)
- * 30 March 2017
- * Info: This is a scrolling shooter iPhone app.
+ * Provides the central functions of the app. AppMain is called when the app starts. AppExit is called when the app is
+ * exited. OnTimer is called 30 times a second.
  */
 
 #include <math.h>
@@ -39,7 +37,7 @@ void AppMain() {
     // populate options
     ViewAdd(container.options, "Images/Background.png", 0, 0);
     ViewAdd(container.options, "Images/Pause.png", 270, 20, onPause, 1);
-    char *musicString = (isSoundEnabled) ? ("unlocks/MusicOn.png") : ("unlocks/MusicOff.png");
+    char* musicString = (isSoundEnabled) ? ("unlocks/MusicOn.png") : ("unlocks/MusicOff.png");
     music = ViewAdd(container.options, musicString, 20, 80, options, 1);
     TextAdd(container.options, 20, 320, "\nCreated By \nBailey Thompson", font);
     ViewAdd(container.options, "Images/btnDelete.png", 20, 200, options, 2);

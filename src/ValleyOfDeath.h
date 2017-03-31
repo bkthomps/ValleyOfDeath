@@ -1,3 +1,7 @@
+/*
+ * Functions which are the main control of the app.
+ */
+
 #ifndef VALLEY_OF_DEATH_H
 #define VALLEY_OF_DEATH_H
 

@@ -1,3 +1,7 @@
+/*
+ * General constants which relate to a wide variety of uses.
+ */
+
 #ifndef GLOBAL_CONTANTS_H
 #define GLOBAL_CONTANTS_H
 

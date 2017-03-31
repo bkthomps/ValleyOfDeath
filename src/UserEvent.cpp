@@ -1,3 +1,7 @@
+/*
+ * Provides functionality for top level user interaction.
+ */
+
 #include "DragonFireSDK.h"
 #include "Globals.h"
 #include "UserEvent.h"
@@ -266,17 +270,17 @@ int onUnlocksMenuTouch(int id, int event, int x, int y) {
 
 int unlocks(int id, int event, int x, int y) {
     if (event == 3 && isShipUnlocked(id)) {
-            player.typeOfShip = id;
-            shipType();
-            currentScreen = SCREEN_MENU;
-            screenSwitch();
+        player.typeOfShip = id;
+        shipType();
+        currentScreen = SCREEN_MENU;
+        screenSwitch();
     }
     return 0;
 }
 
 bool isShipUnlocked(int id) {
-    return (id == 1 && rank >= 1) || (id == 2 && rank >= 3) || (id == 3 && rank >= 5) || (id == 4 && rank >= 8) 
-        || (id == 5 && rank >= 11) || (id == 6 && rank >= 14) || (id == 7 && rank >= 17) || (id == 8 && rank >= 20);
+    return (id == 1 && rank >= 1) || (id == 2 && rank >= 3) || (id == 3 && rank >= 5) || (id == 4 && rank >= 8)
+           || (id == 5 && rank >= 11) || (id == 6 && rank >= 14) || (id == 7 && rank >= 17) || (id == 8 && rank >= 20);
 }
 
 int onEndlessMenuTouch(int id, int event, int x, int y) {

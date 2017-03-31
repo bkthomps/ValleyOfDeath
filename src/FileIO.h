@@ -1,3 +1,7 @@
+/*
+ * Functions that provide the ability to save and load data to and from files
+ */
+
 #ifndef FILE_IO_H
 #define FILE_IO_H
 
