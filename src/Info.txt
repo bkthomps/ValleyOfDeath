@@ -2,8 +2,7 @@ Bailey Thompson
 Valley Of Death (1.4.0)
 13 May 2017
 
-You take control of an airship to battle waves of enemies, unlocking new ships as you progress. You are able to play a
-story mode, as well as an endless mode. To top it off, there is a soundtrack.
+You take control of an airship to battle waves of enemies, unlocking new ships as you progress. You can play a story mode, as well as an endless mode. To top it off, there is a soundtrack.
 
 This is a scrolling shooter iPhone app. The user has the ability to play story mode. In this mode, the user must make
 decisions which will lead to the outcome of the story. Every once in a while, the decisions that the user has made will
